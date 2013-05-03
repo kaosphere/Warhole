@@ -20,7 +20,8 @@ SOURCES += main.cpp\
     model/modelanimal.cpp \
     model/modelcavalry.cpp \
     model/modelwarmachine.cpp \
-    model/modelcharacter.cpp
+    model/modelcharacter.cpp \
+    model/modelmonster.cpp
 
 HEADERS  += mainwindow.h \
     model/modelabstract.h \
@@ -29,4 +30,5 @@ HEADERS  += mainwindow.h \
     model/modelanimal.h \
     model/modelcavalry.h \
     model/modelwarmachine.h \
-    model/modelcharacter.h
+    model/modelcharacter.h \
+    model/modelmonster.h
