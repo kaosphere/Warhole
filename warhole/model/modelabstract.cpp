@@ -47,6 +47,16 @@ void ModelAbstract::setChampion(QList<ModelAbstract *> value)
     champion += value;
 }
 
+void ModelAbstract::addChampion(ModelAbstract *ch)
+{
+    champion<<ch;
+}
+
+void ModelAbstract::removeChampion(ModelAbstract *ch)
+{
+    champion.removeOne(ch);
+}
+
 
 QString ModelAbstract::getSvgInv() const
 {
@@ -217,4 +227,24 @@ void ModelAbstract::setFigSupInd(bool value)
     figSupInd = value;
 }
 
+
+QList<OptionModel *> ModelAbstract::getOptions() const
+{
+    return options;
+}
+
+void ModelAbstract::setOptions(const QList<OptionModel *> &value)
+{
+    options = value;
+}
+
+void ModelAbstract::addOption(OptionModel *opt)
+{
+    options<<opt;
+}
+
+void ModelAbstract::removeOption(OptionModel *opt)
+{
+    options.removeOne(opt);
+}
 

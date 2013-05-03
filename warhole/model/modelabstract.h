@@ -5,6 +5,8 @@
 #include <QtCore>
 #include <QtWidgets>
 
+#include "option/optionmodel.h"
+
 class ModelAbstract : public QObject
 {
     Q_OBJECT
@@ -68,9 +70,16 @@ public:
 
     QList<ModelAbstract *> getChampion() const;
     void setChampion(QList<ModelAbstract *> value);
+    void addChampion(ModelAbstract *ch);
+    void removeChampion(ModelAbstract *ch);
 
     bool getFigSupInd() const;
     void setFigSupInd(bool value);
+
+    QList<OptionModel *> getOptions() const;
+    void setOptions(const QList<OptionModel *> &value);
+    void addOption(OptionModel* opt);
+    void removeOption(OptionModel *opt);
 
 protected:
     QString name;
@@ -96,6 +105,8 @@ protected:
     bool figSupInd;     //independant models (for charriots, war machines and monsters)
 
     QPixmap *image;     //sprite of the model to be used in the graphics
+
+    QList<OptionModel *> options;   //list of options possible for model
 
     
 public slots:
