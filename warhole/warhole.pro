@@ -18,11 +18,13 @@ SOURCES += main.cpp\
     model/modelinfantery.cpp \
     option/optionmodel.cpp \
     model/modelanimal.cpp \
-    model/modelcavalry.cpp
+    model/modelcavalry.cpp \
+    model/modelwarmachine.cpp
 
 HEADERS  += mainwindow.h \
     model/modelabstract.h \
     model/modelinfantery.h \
     option/optionmodel.h \
     model/modelanimal.h \
-    model/modelcavalry.h
+    model/modelcavalry.h \
+    model/modelwarmachine.h
