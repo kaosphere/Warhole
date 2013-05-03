@@ -10,7 +10,8 @@ ModelAbstract::ModelAbstract(const QString &n, const QString &move, const QStrin
                              const QString &wounds, const QString &init, const QString &attacks,
                              const QString &leadership, const QString &save, const QString &invSave,
                              const QList<ModelAbstract *> *&champ, const int &widthBase,
-                             const int &lengthBase, const int &unitP, const QString &urlImage)
+                             const int &lengthBase, const int &unitP, const QString &urlImage, QObject *parent) :
+    QObject(parent)
 {
     name = n;
     m = move;
