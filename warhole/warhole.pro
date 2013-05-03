@@ -22,7 +22,8 @@ SOURCES += main.cpp\
     model/modelwarmachine.cpp \
     model/modelcharacter.cpp \
     model/modelmonster.cpp \
-    model/modelcharriot.cpp
+    model/modelcharriot.cpp \
+    modelwindow.cpp
 
 HEADERS  += mainwindow.h \
     model/modelabstract.h \
@@ -33,4 +34,8 @@ HEADERS  += mainwindow.h \
     model/modelwarmachine.h \
     model/modelcharacter.h \
     model/modelmonster.h \
-    model/modelcharriot.h
+    model/modelcharriot.h \
+    modelwindow.h
+
+FORMS += \
+    modelwindow.ui

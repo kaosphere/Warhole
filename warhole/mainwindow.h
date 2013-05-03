@@ -2,6 +2,11 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QObject>
+#include <QtCore>
+#include <QtWidgets>
+
+#include "modelwindow.h"
 
 class MainWindow : public QMainWindow
 {
@@ -10,6 +15,15 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
+
+public slots:
+   void openModelWindow();
+
+private:
+    QWidget* s;
+    QPushButton* p;
+
+    ModelWindow* mod;
 };
 
 #endif // MAINWINDOW_H
