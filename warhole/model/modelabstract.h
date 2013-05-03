@@ -11,6 +11,12 @@ class ModelAbstract : public QObject
 public:
     explicit ModelAbstract(QObject *parent = 0);
 
+    ModelAbstract(const QString &n, const QString &move, const QString &weaponS, const QString &balisticS,
+                  const QString &strength, const QString &toughness, const QString &wounds,
+                  const QString &init, const QString &attacks, const QString &leadership,
+                  const QString &save, const QString &invSave, const QList<ModelAbstract *>* &champ, const int &widthBase,
+                  const int &lengthBase, const int &unitP, const QString& urlImage);
+
     //private attributes accessors
     QString getName() const;
     void setName(const QString &value);
@@ -63,7 +69,7 @@ public:
     QList<ModelAbstract *> *getChampion() const;
     void setChampion(QList<ModelAbstract *> *value);
 
-private:
+protected:
     QString name;
     QString m;      //movement
     QString ws;     //weapon skill

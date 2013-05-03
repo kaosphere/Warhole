@@ -5,6 +5,34 @@ ModelAbstract::ModelAbstract(QObject *parent) :
 {
 }
 
+ModelAbstract::ModelAbstract(const QString &n, const QString &move, const QString &weaponS,
+                             const QString &balisticS, const QString &strength, const QString &toughness,
+                             const QString &wounds, const QString &init, const QString &attacks,
+                             const QString &leadership, const QString &save, const QString &invSave,
+                             const QList<ModelAbstract *> *&champ, const int &widthBase,
+                             const int &lengthBase, const int &unitP, const QString &urlImage)
+{
+    name = n;
+    m = move;
+    ws = weaponS;
+    bs = balisticS;
+    s = strength;
+    t = toughness;
+    w = wounds;
+    i = init;
+    a = attacks;
+    ld = leadership;
+    svg = save;
+    svgInv = invSave;
+    champion = champ;
+    squareBaseW = widthBase;
+    squareBaseL = lengthBase;
+    unitPower = unitP;
+
+    image = new QPixmap(urlImage);
+
+}
+
 
 QList<ModelAbstract *> *ModelAbstract::getChampion() const
 {
