@@ -16,7 +16,7 @@ public:
     ModelAbstract(const QString &n, const QString &move, const QString &weaponS, const QString &balisticS,
                   const QString &strength, const QString &toughness, const QString &wounds,
                   const QString &init, const QString &attacks, const QString &leadership,
-                  const QString &save, const QString &invSave, const QList<ModelAbstract *> &champ, const int &widthBase,
+                  const QString &save, const QString &invSave, const int &widthBase,
                   const int &lengthBase, const int &unitP, const QString& urlImage, bool figSup, QObject *parent = 0);
 
     //private attributes accessors
