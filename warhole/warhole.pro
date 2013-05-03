@@ -16,9 +16,11 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     model/modelabstract.cpp \
     model/modelinfantery.cpp \
-    option/optionmodel.cpp
+    option/optionmodel.cpp \
+    model/modelanimal.cpp
 
 HEADERS  += mainwindow.h \
     model/modelabstract.h \
     model/modelinfantery.h \
-    option/optionmodel.h
+    option/optionmodel.h \
+    model/modelanimal.h
