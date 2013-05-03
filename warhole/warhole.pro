@@ -15,8 +15,10 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     model/modelabstract.cpp \
-    model/modelinfantery.cpp
+    model/modelinfantery.cpp \
+    option/optionmodel.cpp
 
 HEADERS  += mainwindow.h \
     model/modelabstract.h \
-    model/modelinfantery.h
+    model/modelinfantery.h \
+    option/optionmodel.h
