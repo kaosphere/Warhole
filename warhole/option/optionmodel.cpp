@@ -25,7 +25,7 @@ void OptionModel::setName(const QString &value)
     name = value;
 }
 
-bool OptionModel::getActivated() const
+bool OptionModel::isActivated() const
 {
     return activated;
 }
