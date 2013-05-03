@@ -9,7 +9,7 @@ ModelAbstract::ModelAbstract(const QString &n, const QString &move, const QStrin
                              const QString &balisticS, const QString &strength, const QString &toughness,
                              const QString &wounds, const QString &init, const QString &attacks,
                              const QString &leadership, const QString &save, const QString &invSave,
-                             const QList<ModelAbstract *> *&champ, const int &widthBase,
+                             const QList<ModelAbstract *> &champ, const int &widthBase,
                              const int &lengthBase, const int &unitP, const QString &urlImage, QObject *parent) :
     QObject(parent)
 {
@@ -25,7 +25,7 @@ ModelAbstract::ModelAbstract(const QString &n, const QString &move, const QStrin
     ld = leadership;
     svg = save;
     svgInv = invSave;
-    champion = champ;
+    champion += champ;
     squareBaseW = widthBase;
     squareBaseL = lengthBase;
     unitPower = unitP;
@@ -35,14 +35,14 @@ ModelAbstract::ModelAbstract(const QString &n, const QString &move, const QStrin
 }
 
 
-QList<ModelAbstract *> *ModelAbstract::getChampion() const
+QList<ModelAbstract *> ModelAbstract::getChampion() const
 {
     return champion;
 }
 
-void ModelAbstract::setChampion(QList<ModelAbstract *> *value)
+void ModelAbstract::setChampion(QList<ModelAbstract *> value)
 {
-    champion = value;
+    champion += value;
 }
 
 
