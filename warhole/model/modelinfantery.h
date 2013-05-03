@@ -17,7 +17,7 @@ public:
                   const QString &strength, const QString &toughness, const QString &wounds,
                   const QString &init, const QString &attacks, const QString &leadership,
                   const QString &save, const QString &invSave, const QList<ModelAbstract *> &champ, const int &widthBase,
-                  const int &lengthBase, const int &unitP, const QString& urlImage ,
+                  const int &lengthBase, const int &unitP, const QString& urlImage , bool figSup,
                   const QString& specRules, QObject *parent = 0);
 
 

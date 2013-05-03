@@ -15,7 +15,7 @@ public:
                   const QString &strength, const QString &toughness, const QString &wounds,
                   const QString &init, const QString &attacks, const QString &leadership,
                   const QString &save, const QString &invSave, const QList<ModelAbstract *> &champ, const int &widthBase,
-                  const int &lengthBase, const int &unitP, const QString& urlImage, QObject *parent = 0);
+                  const int &lengthBase, const int &unitP, const QString& urlImage, bool figSup, QObject *parent = 0);
 
     //private attributes accessors
     QString getName() const;
@@ -69,6 +69,9 @@ public:
     QList<ModelAbstract *> getChampion() const;
     void setChampion(QList<ModelAbstract *> value);
 
+    bool getFigSupInd() const;
+    void setFigSupInd(bool value);
+
 protected:
     QString name;
     QString m;      //movement
@@ -89,6 +92,8 @@ protected:
     int squareBaseL;    //length of the square base
 
     int unitPower;      //unit power of the model
+
+    bool figSupInd;     //independant models (for charriots, war machines and monsters)
 
     QPixmap *image;     //sprite of the model to be used in the graphics
 

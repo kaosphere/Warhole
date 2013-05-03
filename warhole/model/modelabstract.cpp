@@ -10,7 +10,8 @@ ModelAbstract::ModelAbstract(const QString &n, const QString &move, const QStrin
                              const QString &wounds, const QString &init, const QString &attacks,
                              const QString &leadership, const QString &save, const QString &invSave,
                              const QList<ModelAbstract *> &champ, const int &widthBase,
-                             const int &lengthBase, const int &unitP, const QString &urlImage, QObject *parent) :
+                             const int &lengthBase, const int &unitP, const QString &urlImage,
+                             bool figSup, QObject *parent) :
     QObject(parent)
 {
     name = n;
@@ -32,6 +33,7 @@ ModelAbstract::ModelAbstract(const QString &n, const QString &move, const QStrin
 
     image = new QPixmap(urlImage);
 
+    figSupInd = figSup;
 }
 
 
@@ -204,4 +206,15 @@ void ModelAbstract::setSquareBaseW(int value)
 {
     squareBaseW = value;
 }
+
+bool ModelAbstract::getFigSupInd() const
+{
+    return figSupInd;
+}
+
+void ModelAbstract::setFigSupInd(bool value)
+{
+    figSupInd = value;
+}
+
 
