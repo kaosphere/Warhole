@@ -81,6 +81,9 @@ public:
     void addOption(OptionModel* opt);
     void removeOption(OptionModel *opt);
 
+    QString getUrlImage() const;
+    void setUrlImage(const QString &value);
+
 protected:
     QString name;
     QString m;      //movement
