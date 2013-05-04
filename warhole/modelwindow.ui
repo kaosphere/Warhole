@@ -19,7 +19,7 @@
      <x>40</x>
      <y>90</y>
      <width>135</width>
-     <height>41</height>
+     <height>47</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -41,7 +41,7 @@
      <x>40</x>
      <y>150</y>
      <width>97</width>
-     <height>295</height>
+     <height>346</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -199,8 +199,8 @@
     <rect>
      <x>41</x>
      <y>30</y>
-     <width>321</width>
-     <height>43</height>
+     <width>404</width>
+     <height>51</height>
     </rect>
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout_11">
@@ -340,9 +340,9 @@
    <property name="geometry">
     <rect>
      <x>40</x>
-     <y>460</y>
-     <width>121</width>
-     <height>128</height>
+     <y>500</y>
+     <width>166</width>
+     <height>152</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -427,7 +427,7 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>610</x>
@@ -595,29 +595,6 @@
     </item>
    </layout>
   </widget>
-  <zorder>layoutWidget</zorder>
-  <zorder>layoutWidget</zorder>
-  <zorder>layoutWidget</zorder>
-  <zorder>textEdit</zorder>
-  <zorder>label_15</zorder>
-  <zorder>layoutWidget</zorder>
-  <zorder>graphicsView</zorder>
-  <zorder>pushButtonSave</zorder>
-  <zorder>pushButtonCancel</zorder>
-  <zorder>layoutWidget</zorder>
-  <zorder>label_23</zorder>
-  <zorder>viewOptions</zorder>
-  <zorder>lineOptionName</zorder>
-  <zorder>lineEditOptionPts</zorder>
-  <zorder>lineEditOptionSpec</zorder>
-  <zorder>label_24</zorder>
-  <zorder>label_25</zorder>
-  <zorder>label_26</zorder>
-  <zorder>addOption</zorder>
-  <zorder>deleteOption</zorder>
-  <zorder>line</zorder>
-  <zorder>line_2</zorder>
-  <zorder>label_22</zorder>
  </widget>
  <resources/>
  <connections/>

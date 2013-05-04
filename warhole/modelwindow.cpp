@@ -103,7 +103,7 @@ void ModelWindow::on_toolButtonImage_pressed()
     QString fileName;
     QPixmap image;
 
-    fileName = QFileDialog::getOpenFileName(this, tr("Open Image"), "C:", tr("Image Files (*.png *.jpg *.bmp)"));
+    fileName = QFileDialog::getOpenFileName(this, tr("Open Image"), ".", tr("Image Files (*.png *.jpg *.bmp)"));
     ui->lineEditImage->setText(fileName);
 
     image.load(fileName);
