@@ -6,6 +6,8 @@
 #include <QtCore>
 #include <QtWidgets>
 
+#include "option/optionmodel.h"
+
 namespace Ui {
 class ModelWindow;
 }
@@ -28,14 +30,16 @@ public:
     
 private slots:
     void on_comboUnitType_currentIndexChanged(int index);
-
     void on_toolButtonImage_pressed();
-
     void on_pushButtonCancel_clicked();
+    void on_addOption_clicked();
+
+    void on_deleteOption_clicked();
 
 private:
     Ui::ModelWindow *ui;
     QGraphicsScene* scene;
+    QStandardItemModel* options;
 };
 
 #endif // MODELWINDOW_H

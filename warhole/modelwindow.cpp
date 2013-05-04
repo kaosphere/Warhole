@@ -13,6 +13,11 @@ ModelWindow::ModelWindow(QWidget *parent) :
 
     ui->spinWidth->setValue(25);
     ui->spinLength->setValue(50);
+
+    options = new QStandardItemModel(1,4);
+
+    ui->viewOptions->setModel(options);
+    ui->viewOptions->header()->hide();
 }
 
 ModelWindow::~ModelWindow()
@@ -111,4 +116,27 @@ void ModelWindow::on_pushButtonCancel_clicked()
 {
     this->close();
     this->deleteLater();
+}
+
+void ModelWindow::on_addOption_clicked()
+{
+    QList<QStandardItem *> newOption;
+
+    newOption<<new QStandardItem(ui->lineOptionName->text())
+            <<new QStandardItem(ui->lineEditOptionPts->text())
+           <<new QStandardItem(ui->lineEditOptionSpec->text());
+
+    options->appendRow(newOption);
+
+    ui->lineOptionName->clear();
+    ui->lineEditOptionPts->clear();
+    ui->lineEditOptionSpec->clear();
+}
+
+void ModelWindow::on_deleteOption_clicked()
+{
+    QItemSelectionModel *selection = ui->viewOptions->selectionModel();
+    QModelIndex indexElementSelectionne = selection->currentIndex();
+
+    options->removeRow(indexElementSelectionne.row());
 }
