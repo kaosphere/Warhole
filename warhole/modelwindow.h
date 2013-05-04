@@ -36,10 +36,13 @@ private slots:
 
     void on_deleteOption_clicked();
 
+    void on_pushButtonSave_clicked();
+
 private:
     Ui::ModelWindow *ui;
     QGraphicsScene* scene;
     QStandardItemModel* options;
+    QPixmap* image;
 };
 
 #endif // MODELWINDOW_H

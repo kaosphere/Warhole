@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1132</width>
-    <height>779</height>
+    <height>659</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -433,7 +433,7 @@
      <x>610</x>
      <y>20</y>
      <width>506</width>
-     <height>745</height>
+     <height>571</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_14">
@@ -592,6 +592,97 @@
        </widget>
       </item>
      </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="layoutWidget_2">
+   <property name="geometry">
+    <rect>
+     <x>190</x>
+     <y>180</y>
+     <width>401</width>
+     <height>111</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout_16">
+    <item>
+     <widget class="QLabel" name="label_28">
+      <property name="text">
+       <string>Figurines additionnelles (servants, maitres des bêtes, conducteurs de chars...)</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QTreeView" name="viewModelCrew"/>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="layoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>190</x>
+     <y>310</y>
+     <width>401</width>
+     <height>111</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout_15">
+    <item>
+     <widget class="QLabel" name="label_27">
+      <property name="text">
+       <string>Amimaux (monture ou tirant les chars)</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QTreeView" name="viewModelAnimals"/>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="layoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>220</x>
+     <y>140</y>
+     <width>340</width>
+     <height>19</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout_20">
+    <item>
+     <widget class="QCheckBox" name="checkMounted">
+      <property name="text">
+       <string>monté</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QCheckBox" name="checkLord">
+      <property name="text">
+       <string>Seigneur</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QCheckBox" name="checkGeneral">
+      <property name="text">
+       <string>Général</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QCheckBox" name="checkMage">
+      <property name="text">
+       <string>Mage</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QCheckBox" name="checkGB">
+      <property name="text">
+       <string>Gde Banniere</string>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>

@@ -11,13 +11,12 @@ ModelWindow::ModelWindow(QWidget *parent) :
 
     ui->graphicsView->setScene(scene);
 
-    ui->spinWidth->setValue(25);
-    ui->spinLength->setValue(50);
-
-    options = new QStandardItemModel(1,4);
+    options = new QStandardItemModel();
 
     ui->viewOptions->setModel(options);
     ui->viewOptions->header()->hide();
+
+    loadAnimalWidget();
 }
 
 ModelWindow::~ModelWindow()
@@ -29,42 +28,91 @@ void ModelWindow::loadAnimalWidget()
 {
     ui->spinWidth->setValue(25);
     ui->spinLength->setValue(50);
+
+    //hide character checkboxes
+    ui->checkGB->setEnabled(false);
+    ui->checkGeneral->setEnabled(false);
+    ui->checkLord->setEnabled(false);
+    ui->checkMage->setEnabled(false);
+    ui->checkMounted->setEnabled(false);
 }
 
 void ModelWindow::loadCavaleryWidget()
 {
     ui->spinWidth->setValue(25);
     ui->spinLength->setValue(50);
+
+    //hide character checkboxes
+    ui->checkGB->setEnabled(false);
+    ui->checkGeneral->setEnabled(false);
+    ui->checkLord->setEnabled(false);
+    ui->checkMage->setEnabled(false);
+    ui->checkMounted->setEnabled(false);
 }
 
 void ModelWindow::loadCharacterWidget()
 {
     ui->spinWidth->setValue(25);
     ui->spinLength->setValue(25);
+
+    //show character checkboxes
+    ui->checkGB->setEnabled(true);
+    ui->checkGeneral->setEnabled(true);
+    ui->checkLord->setEnabled(true);
+    ui->checkMage->setEnabled(true);
+    ui->checkMounted->setEnabled(true);
 }
 
 void ModelWindow::loadCharriotWidget()
 {
     ui->spinWidth->setValue(50);
     ui->spinLength->setValue(100);
+
+    //hide character checkboxes
+    ui->checkGB->setEnabled(false);
+    ui->checkGeneral->setEnabled(false);
+    ui->checkLord->setEnabled(false);
+    ui->checkMage->setEnabled(false);
+    ui->checkMounted->setEnabled(false);
 }
 
 void ModelWindow::loadInfanteryWidget()
 {
     ui->spinWidth->setValue(25);
     ui->spinLength->setValue(25);
+
+    //hide character checkboxes
+    ui->checkGB->setEnabled(false);
+    ui->checkGeneral->setEnabled(false);
+    ui->checkLord->setEnabled(false);
+    ui->checkMage->setEnabled(false);
+    ui->checkMounted->setEnabled(false);
 }
 
 void ModelWindow::loadMonsterWidget()
 {
     ui->spinWidth->setValue(50);
     ui->spinLength->setValue(50);
+
+    //hide character checkboxes
+    ui->checkGB->setEnabled(false);
+    ui->checkGeneral->setEnabled(false);
+    ui->checkLord->setEnabled(false);
+    ui->checkMage->setEnabled(false);
+    ui->checkMounted->setEnabled(false);
 }
 
 void ModelWindow::loadWarMachineWidget()
 {
     ui->spinWidth->setValue(25);
     ui->spinLength->setValue(25);
+
+    //hide character checkboxes
+    ui->checkGB->setEnabled(false);
+    ui->checkGeneral->setEnabled(false);
+    ui->checkLord->setEnabled(false);
+    ui->checkMage->setEnabled(false);
+    ui->checkMounted->setEnabled(false);
 }
 
 void ModelWindow::on_comboUnitType_currentIndexChanged(int index)
@@ -101,14 +149,14 @@ void ModelWindow::on_comboUnitType_currentIndexChanged(int index)
 void ModelWindow::on_toolButtonImage_pressed()
 {
     QString fileName;
-    QPixmap image;
+    image = new QPixmap();
 
     fileName = QFileDialog::getOpenFileName(this, tr("Open Image"), ".", tr("Image Files (*.png *.jpg *.bmp)"));
     ui->lineEditImage->setText(fileName);
 
-    image.load(fileName);
+    image->load(fileName);
 
-    scene->addPixmap(image);
+    scene->addPixmap(*image);
 
 }
 
@@ -139,4 +187,19 @@ void ModelWindow::on_deleteOption_clicked()
     QModelIndex indexElementSelectionne = selection->currentIndex();
 
     options->removeRow(indexElementSelectionne.row());
+}
+
+void ModelWindow::on_pushButtonSave_clicked()
+{
+    //Slot where everything happens !
+    //Create a Model depending on the type of model chosen
+    //begin to check if everything is ok
+
+    if(ui->lineEditName->text().isEmpty() || ui->lineEditImage->text().isEmpty())
+    {
+        QMessageBox::warning(this, "Info", "Vous devez obligatoirement remplir un nom et une image.");
+        return;
+    }
+
+
 }
