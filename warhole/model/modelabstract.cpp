@@ -28,9 +28,9 @@ ModelAbstract::ModelAbstract(const QString &n, const QString &move, const QStrin
     squareBaseW = widthBase;
     squareBaseL = lengthBase;
     unitPower = unitP;
-
+    
     image = new QPixmap(urlImage);
-
+    
     figSupInd = figSup;
 }
 
@@ -246,3 +246,12 @@ void ModelAbstract::removeOption(OptionModel *opt)
     options.removeOne(opt);
 }
 
+QString ModelAbstract::getUrlImage() const
+{
+    return urlImage;
+}
+
+void ModelAbstract::setUrlImage(const QString &value)
+{
+    urlImage = value;
+}

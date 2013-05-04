@@ -105,6 +105,7 @@ protected:
     bool figSupInd;     //independant models (for charriots, war machines and monsters)
 
     QPixmap *image;     //sprite of the model to be used in the graphics
+    QString urlImage;
 
     QList<OptionModel *> options;   //list of options possible for model
 
