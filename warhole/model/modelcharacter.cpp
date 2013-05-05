@@ -1,8 +1,8 @@
 #include "modelcharacter.h"
 
 
-ModelCharacter::ModelCharacter(QObject *parent):
-    ModelAbstract(parent)
+ModelCharacter::ModelCharacter():
+    ModelAbstract()
 {
 }
 
@@ -14,7 +14,7 @@ ModelCharacter::ModelCharacter(const QString &n, const QString &move, const QStr
                                bool figSup, const QString &specRules, bool lord, bool general, bool mage,
                                bool mounted, QObject *parent) :
     ModelAbstract(n,move,weaponS,balisticS, strength, toughness, wounds, init, attacks, leadership, save,
-                  invSave, widthBase, lengthBase, unitP, urlImage, figSup, parent)
+                  invSave, widthBase, lengthBase, unitP, urlImage, figSup)
 {
     specialRules = specRules;
     isALord = lord;

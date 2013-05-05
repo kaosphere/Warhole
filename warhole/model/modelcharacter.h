@@ -10,9 +10,8 @@
 
 class ModelCharacter : public ModelAbstract
 {
-    Q_OBJECT
 public:
-    ModelCharacter(QObject *parent = 0);
+    ModelCharacter();
 
     ModelCharacter(const QString &n, const QString &move, const QString &weaponS, const QString &balisticS,
                   const QString &strength, const QString &toughness, const QString &wounds,

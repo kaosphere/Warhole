@@ -7,6 +7,7 @@
 #include <QtWidgets>
 
 #include "option/optionmodel.h"
+#include "model/modelanimal.h"
 
 namespace Ui {
 class ModelWindow;
@@ -37,6 +38,8 @@ private slots:
     void on_deleteOption_clicked();
 
     void on_pushButtonSave_clicked();
+
+    void on_pushButtonLoad_clicked();
 
 private:
     Ui::ModelWindow *ui;

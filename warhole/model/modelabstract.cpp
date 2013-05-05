@@ -1,7 +1,6 @@
 #include "modelabstract.h"
 
-ModelAbstract::ModelAbstract(QObject *parent) :
-    QObject(parent)
+ModelAbstract::ModelAbstract()
 {
 }
 
@@ -10,8 +9,7 @@ ModelAbstract::ModelAbstract(const QString &n, const QString &move, const QStrin
                              const QString &wounds, const QString &init, const QString &attacks,
                              const QString &leadership, const QString &save, const QString &invSave,
                              const int &widthBase, const int &lengthBase, const int &unitP, const QString &urlImage,
-                             bool figSup, QObject *parent) :
-    QObject(parent)
+                             bool figSup)
 {
     name = n;
     m = move;
@@ -34,26 +32,26 @@ ModelAbstract::ModelAbstract(const QString &n, const QString &move, const QStrin
     figSupInd = figSup;
 }
 
-
-QList<ModelAbstract *> ModelAbstract::getChampion() const
+ModelAbstract::ModelAbstract(const ModelAbstract &Copy)
 {
-    return champion;
+    name = Copy.name;
+    m = Copy.m;
+    ws = Copy.ws;
+    bs = Copy.bs;
+    s = Copy.s;
+    t = Copy.t;
+    w = Copy.w;
+    i = Copy.i;
+    a = Copy.a;
+    ld = Copy.ld;
+    svg = Copy.svg;
+    svgInv = Copy.svgInv;
+    squareBaseW = Copy.squareBaseW;
+    squareBaseL = Copy.squareBaseL;
+    unitPower = Copy.unitPower;
 }
 
-void ModelAbstract::setChampion(QList<ModelAbstract *> value)
-{
-    champion += value;
-}
-
-void ModelAbstract::addChampion(ModelAbstract *ch)
-{
-    champion<<ch;
-}
-
-void ModelAbstract::removeChampion(ModelAbstract *ch)
-{
-    champion.removeOne(ch);
-}
+ModelAbstract::~ModelAbstract(){}
 
 
 QString ModelAbstract::getSvgInv() const
@@ -254,4 +252,52 @@ QString ModelAbstract::getUrlImage() const
 void ModelAbstract::setUrlImage(const QString &value)
 {
     urlImage = value;
+}
+
+
+
+QDataStream & ModelAbstract::streamOut() const
+{
+    QDataStream out;
+    out << name
+        << m
+        << ws
+        << bs
+        << s
+        << t
+        << w
+        << i
+        << a
+        << ld
+        << svg
+        << svgInv
+        << squareBaseW
+        << squareBaseL
+        << unitPower
+        << figSupInd
+        << urlImage;
+
+
+    return out;
+}
+
+void ModelAbstract::streamIn(QDataStream & in)
+{
+    in >> name;
+    in >> m;
+    in >> ws;
+    in >> bs;
+    in >> s;
+    in >> t;
+    in >> w;
+    in >> i;
+    in >> a;
+    in >> ld;
+    in >> svg;
+    in >> svgInv;
+    in >> squareBaseW;
+    in >> squareBaseL;
+    in >> unitPower;
+    in >> figSupInd;
+    in >> urlImage;
 }

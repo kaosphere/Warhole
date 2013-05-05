@@ -7,17 +7,20 @@
 
 #include "option/optionmodel.h"
 
-class ModelAbstract : public QObject
+class ModelAbstract
 {
-    Q_OBJECT
 public:
-    explicit ModelAbstract(QObject *parent = 0);
+    explicit ModelAbstract();
 
     ModelAbstract(const QString &n, const QString &move, const QString &weaponS, const QString &balisticS,
                   const QString &strength, const QString &toughness, const QString &wounds,
                   const QString &init, const QString &attacks, const QString &leadership,
                   const QString &save, const QString &invSave, const int &widthBase,
-                  const int &lengthBase, const int &unitP, const QString& urlImage, bool figSup, QObject *parent = 0);
+                  const int &lengthBase, const int &unitP, const QString& urlImage, bool figSup);
+
+    ModelAbstract(const ModelAbstract &Copy);
+
+    ~ModelAbstract();
 
     //private attributes accessors
     QString getName() const;
@@ -68,11 +71,6 @@ public:
     QPixmap *getImage() const;
     void setImage(QPixmap *value);
 
-    QList<ModelAbstract *> getChampion() const;
-    void setChampion(QList<ModelAbstract *> value);
-    void addChampion(ModelAbstract *ch);
-    void removeChampion(ModelAbstract *ch);
-
     bool getFigSupInd() const;
     void setFigSupInd(bool value);
 
@@ -83,6 +81,9 @@ public:
 
     QString getUrlImage() const;
     void setUrlImage(const QString &value);
+
+    QDataStream & streamOut() const;
+    void streamIn(QDataStream &in);
 
 protected:
     QString name;
@@ -98,7 +99,7 @@ protected:
     QString svg;    //armor save
     QString svgInv; //invulnerable armor save
 
-    QList<ModelAbstract *> champion; //list of possible champion
+    //QList<ModelAbstract *> champion; //list of possible champion
 
     int squareBaseW;    //width of the square base
     int squareBaseL;    //length of the square base

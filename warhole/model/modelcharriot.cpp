@@ -1,8 +1,8 @@
 #include "modelcharriot.h"
 
 
-ModelCharriot::ModelCharriot(QObject *parent):
-    ModelAbstract(parent)
+ModelCharriot::ModelCharriot():
+    ModelAbstract()
 {
 }
 
@@ -11,9 +11,9 @@ ModelCharriot::ModelCharriot(const QString &n, const QString &move, const QStrin
                              const QString &wounds, const QString &init, const QString &attacks,
                              const QString &leadership, const QString &save, const QString &invSave,
                              const int &widthBase, const int &lengthBase, const int &unitP, const QString &urlImage,
-                             bool figSup, const QString &specRules, QObject *parent) :
+                             bool figSup, const QString &specRules) :
     ModelAbstract(n,move,weaponS,balisticS, strength, toughness, wounds, init, attacks, leadership, save,
-                  invSave, widthBase, lengthBase, unitP, urlImage, figSup, parent)
+                  invSave, widthBase, lengthBase, unitP, urlImage, figSup)
 {
     specialRules = specRules;
 }

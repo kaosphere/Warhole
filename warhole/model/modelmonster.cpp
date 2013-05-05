@@ -1,7 +1,7 @@
 #include "modelmonster.h"
 
-ModelMonster::ModelMonster(QObject *parent):
-    ModelAbstract(parent)
+ModelMonster::ModelMonster():
+    ModelAbstract()
 {
 }
 
@@ -10,9 +10,9 @@ ModelMonster::ModelMonster(const QString &n, const QString &move, const QString 
                                  const QString &wounds, const QString &init, const QString &attacks,
                                  const QString &leadership, const QString &save, const QString &invSave,
                                  const int &widthBase, const int &lengthBase, const int &unitP, const QString &urlImage,
-                                 bool figSup, const QString &specRules, bool hasCrew, QObject *parent) :
+                                 bool figSup, const QString &specRules, bool hasCrew) :
     ModelAbstract(n,move,weaponS,balisticS, strength, toughness, wounds, init, attacks, leadership, save,
-                  invSave, widthBase, lengthBase, unitP, urlImage, figSup, parent)
+                  invSave, widthBase, lengthBase, unitP, urlImage, figSup)
 {
     specialRules = specRules;
     hasACrew = hasCrew;

@@ -200,6 +200,47 @@ void ModelWindow::on_pushButtonSave_clicked()
         QMessageBox::warning(this, "Info", "Vous devez obligatoirement remplir un nom et une image.");
         return;
     }
+    ModelAnimal poupik(ui->lineEditName->text(), ui->lineEditM->text(),ui->lineEditCC->text(),
+                                          ui->lineEditCT->text(), ui->lineEditF->text(),ui->lineEditE->text(),
+                                          ui->lineEditPV->text(), ui->lineEditI->text(), ui->lineEditA->text(),
+                                          ui->lineEditCdt->text(), ui->lineEditSvg->text(), ui->lineEditSvgInv->text(),
+                                          ui->spinWidth->value(), ui->spinLength->value(),ui->spinPU->value(), ui->lineEditImage->text(),
+                                          false, ui->textEdit->toPlainText());
+
+    QFile::remove("./poupik.unit");
+    QSettings savedFile("./poupik.unit", QSettings::IniFormat);
+    savedFile.setValue("ModelAnimal", qVariantFromValue(poupik));
+    savedFile.sync();
+
+    QMessageBox::information(this, "Info", "Fichier ecrit : " + ui->lineEditName->text());
+
+}
+
+void ModelWindow::on_pushButtonLoad_clicked()
+{
+    ModelAnimal poupik;
+    QSettings readFile("./poupik.unit", QSettings::IniFormat);
+    poupik = readFile.value("ModelAnimal", qVariantFromValue(ModelAnimal())).value<ModelAnimal>();
+
+    ui->lineEditName->setText(poupik.getName());
+    ui->lineEditM->setText(poupik.getM());
+    ui->lineEditCC->setText(poupik.getWs());
+    ui->lineEditCT->setText(poupik.getBs());
+    ui->lineEditF->setText(poupik.getS());
+    ui->lineEditE->setText(poupik.getT());
+    ui->lineEditPV->setText(poupik.getW());
+    ui->lineEditI->setText(poupik.getI());
+    ui->lineEditA->setText(poupik.getA());
+    ui->lineEditCdt->setText(poupik.getLd());
+    ui->lineEditSvg->setText(poupik.getSvg());
+    ui->lineEditSvgInv->setText(poupik.getSvgInv());
+    ui->spinWidth->setValue(poupik.getSquareBaseW());
+    ui->spinLength->setValue(poupik.getSquareBaseL());
+    ui->spinPU->setValue(poupik.getUnitPower());
+    //ui->lineEditName->setText(poupik.getFigSupInd());
+    ui->lineEditImage->setText(poupik.getUrlImage());
+    ui->textEdit->append(poupik.getSpecialRules());
+
 
 
 }

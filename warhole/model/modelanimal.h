@@ -4,28 +4,36 @@
 #include <QObject>
 #include <QtCore>
 #include <QtWidgets>
+#include <QVariant>
 
 #include "modelabstract.h"
 
 class ModelAnimal : public ModelAbstract
 {
-    Q_OBJECT
 public:
-    ModelAnimal(QObject *parent = 0);
-
+    ModelAnimal();
     ModelAnimal(const QString &n, const QString &move, const QString &weaponS, const QString &balisticS,
                   const QString &strength, const QString &toughness, const QString &wounds,
                   const QString &init, const QString &attacks, const QString &leadership,
                   const QString &save, const QString &invSave, const int &widthBase,
                   const int &lengthBase, const int &unitP, const QString& urlImage , bool figSup,
-                  const QString& specRules, QObject *parent = 0);
-
+                  const QString& specRules);
+    ModelAnimal(const ModelAnimal & Copy);
+    ~ModelAnimal();
+    static void initModelAnimalSystem ();
 
     QString getSpecialRules() const;
     void setSpecialRules(const QString &value);
 
-private:
+protected:
     QString specialRules;
+
+    friend QDataStream & operator << (QDataStream &, const ModelAnimal &);
+    friend QDataStream & operator >> (QDataStream &, ModelAnimal &);
 };
+
+Q_DECLARE_METATYPE(ModelAnimal)
+QDataStream & operator << (QDataStream & out, const ModelAnimal &);
+QDataStream & operator >> (QDataStream & in, ModelAnimal &);
 
 #endif // MODELANIMAL_H
