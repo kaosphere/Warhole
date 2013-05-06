@@ -18,7 +18,7 @@ public:
                   const QString &init, const QString &attacks, const QString &leadership,
                   const QString &save, const QString &invSave, const int &widthBase,
                   const int &lengthBase, const int &unitP, const QString& urlImage , bool figSup,
-                  const QString& specRules, bool lord, bool general, bool mage, bool mounted, QObject *parent = 0);
+                  const QString& specRules, bool lord, bool general, bool mage, bool mounted);
 
 
     QString getSpecialRules() const;

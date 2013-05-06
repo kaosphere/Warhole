@@ -12,7 +12,7 @@ ModelCharacter::ModelCharacter(const QString &n, const QString &move, const QStr
                                const QString &leadership, const QString &save, const QString &invSave,
                                const int &widthBase, const int &lengthBase, const int &unitP, const QString &urlImage,
                                bool figSup, const QString &specRules, bool lord, bool general, bool mage,
-                               bool mounted, QObject *parent) :
+                               bool mounted) :
     ModelAbstract(n,move,weaponS,balisticS, strength, toughness, wounds, init, attacks, leadership, save,
                   invSave, widthBase, lengthBase, unitP, urlImage, figSup)
 {
