@@ -36,9 +36,6 @@ public:
     bool getIsMounted() const;
     void setIsMounted(bool value);
 
-    ModelAbstract *getMount() const;
-    void setMount(ModelAbstract *value);
-
 private:
     QString specialRules;
     bool isALord;
@@ -46,7 +43,7 @@ private:
     bool isAMage;
     bool isMounted;
 
-    ModelAbstract *mount;
+    //ModelAbstract *mount;
 };
 
 #endif // MODELCHARACTER_H

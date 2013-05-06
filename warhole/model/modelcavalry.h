@@ -29,7 +29,7 @@ public:
 
 private:
     QString specialRules;
-    ModelAbstract* mount;
+    //ModelAbstract* mount;
 };
 
 #endif // MODELCAVALRY_H

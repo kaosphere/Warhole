@@ -72,13 +72,3 @@ void ModelCharacter::setIsMounted(bool value)
 {
     isMounted = value;
 }
-
-ModelAbstract *ModelCharacter::getMount() const
-{
-    return mount;
-}
-
-void ModelCharacter::setMount(ModelAbstract *value)
-{
-    mount = value;
-}

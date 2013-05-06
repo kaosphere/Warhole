@@ -17,6 +17,12 @@ ModelCavalry::ModelCavalry(const QString &n, const QString &move, const QString 
     specialRules = specRules;
 }
 
+// Copy constructor
+ModelCavalry::ModelCavalry(const ModelCavalry &copy) : ModelAbstract(copy)
+{
+    specialRules = copy.specialRules;
+}
+
 QString ModelCavalry::getSpecialRules() const
 {
     return specialRules;
