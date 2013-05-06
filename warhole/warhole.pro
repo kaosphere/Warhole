@@ -23,7 +23,8 @@ SOURCES += main.cpp\
     model/modelcharacter.cpp \
     model/modelmonster.cpp \
     model/modelcharriot.cpp \
-    modelwindow.cpp
+    modelwindow.cpp \
+    stats/statsmodel.cpp
 
 HEADERS  += mainwindow.h \
     model/modelabstract.h \
@@ -35,7 +36,8 @@ HEADERS  += mainwindow.h \
     model/modelcharacter.h \
     model/modelmonster.h \
     model/modelcharriot.h \
-    modelwindow.h
+    modelwindow.h \
+    stats/statsmodel.h
 
 FORMS += \
     modelwindow.ui
