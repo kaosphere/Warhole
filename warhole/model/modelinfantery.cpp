@@ -17,6 +17,11 @@ ModelInfantery::ModelInfantery(const QString &n, const QString &move, const QStr
     specialRules = specRules;
 }
 
+ModelInfantery::ModelInfantery(const ModelInfantery &copy) : ModelAbstract(copy)
+{
+    specialRules = copy.specialRules;
+}
+
 QString ModelInfantery::getSpecialRules() const
 {
     return specialRules;
