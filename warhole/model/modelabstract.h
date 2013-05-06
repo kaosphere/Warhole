@@ -16,7 +16,7 @@ public:
                   const QString &strength, const QString &toughness, const QString &wounds,
                   const QString &init, const QString &attacks, const QString &leadership,
                   const QString &save, const QString &invSave, const int &widthBase,
-                  const int &lengthBase, const int &unitP, const QString& urlImage, bool figSup);
+                  const int &lengthBase, const int &unitP, const QString& url, bool figSup);
 
     ModelAbstract(const ModelAbstract &Copy);
 

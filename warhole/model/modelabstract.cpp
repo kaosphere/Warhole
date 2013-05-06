@@ -8,7 +8,7 @@ ModelAbstract::ModelAbstract(const QString &n, const QString &move, const QStrin
                              const QString &balisticS, const QString &strength, const QString &toughness,
                              const QString &wounds, const QString &init, const QString &attacks,
                              const QString &leadership, const QString &save, const QString &invSave,
-                             const int &widthBase, const int &lengthBase, const int &unitP, const QString &urlImage,
+                             const int &widthBase, const int &lengthBase, const int &unitP, const QString &url,
                              bool figSup)
 {
     name = n;
@@ -28,27 +28,30 @@ ModelAbstract::ModelAbstract(const QString &n, const QString &move, const QStrin
     unitPower = unitP;
     
     image = new QPixmap(urlImage);
+
+    urlImage = url;
     
     figSupInd = figSup;
 }
 
-ModelAbstract::ModelAbstract(const ModelAbstract &Copy)
+ModelAbstract::ModelAbstract(const ModelAbstract &copy)
 {
-    name = Copy.name;
-    m = Copy.m;
-    ws = Copy.ws;
-    bs = Copy.bs;
-    s = Copy.s;
-    t = Copy.t;
-    w = Copy.w;
-    i = Copy.i;
-    a = Copy.a;
-    ld = Copy.ld;
-    svg = Copy.svg;
-    svgInv = Copy.svgInv;
-    squareBaseW = Copy.squareBaseW;
-    squareBaseL = Copy.squareBaseL;
-    unitPower = Copy.unitPower;
+    name = copy.name;
+    m = copy.m;
+    ws = copy.ws;
+    bs = copy.bs;
+    s = copy.s;
+    t = copy.t;
+    w = copy.w;
+    i = copy.i;
+    a = copy.a;
+    ld = copy.ld;
+    svg = copy.svg;
+    svgInv = copy.svgInv;
+    urlImage = copy.urlImage;
+    squareBaseW = copy.squareBaseW;
+    squareBaseL = copy.squareBaseL;
+    unitPower = copy.unitPower;
 }
 
 ModelAbstract::~ModelAbstract(){}

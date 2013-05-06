@@ -20,28 +20,32 @@ ModelAnimal::ModelAnimal(const QString &n, const QString &move, const QString &w
 }
 
 // Copy constructor
-ModelAnimal::ModelAnimal(const ModelAnimal &copy)
+ModelAnimal::ModelAnimal(const ModelAnimal &copy) : ModelAbstract(copy)
 {
-    name = copy.name;
-    m = copy.m;
-    ws = copy.ws;
-    bs = copy.bs;
-    s = copy.s;
-    t = copy.t;
-    w = copy.w;
-    i = copy.i;
-    a = copy.a;
-    ld = copy.ld;
-    svg = copy.svg;
-    svgInv = copy.svgInv;
-    squareBaseW = copy.squareBaseW;
-    squareBaseL = copy.squareBaseL;
-    unitPower = copy.unitPower;
+//    name = copy.name;
+//    m = copy.m;
+//    ws = copy.ws;
+//    bs = copy.bs;
+//    s = copy.s;
+//    t = copy.t;
+//    w = copy.w;
+//    i = copy.i;
+//    a = copy.a;
+//    ld = copy.ld;
+//    svg = copy.svg;
+//    svgInv = copy.svgInv;
+//    squareBaseW = copy.squareBaseW;
+//    squareBaseL = copy.squareBaseL;
+//    urlImage = copy.urlImage;
+//    unitPower = copy.unitPower;
     specialRules = copy.specialRules;
 }
 
 //Destructor
-ModelAnimal::~ModelAnimal(){}
+ModelAnimal::~ModelAnimal()
+{
+
+}
 
 
 

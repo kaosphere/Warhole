@@ -212,7 +212,7 @@ void ModelWindow::on_pushButtonSave_clicked()
     savedFile.setValue("ModelAnimal", qVariantFromValue(poupik));
     savedFile.sync();
 
-    QMessageBox::information(this, "Info", "Fichier ecrit : " + ui->lineEditName->text());
+    QMessageBox::information(this, "Info", "Fichier ecrit : " + ui->lineEditImage->text());
 
 }
 
@@ -241,6 +241,6 @@ void ModelWindow::on_pushButtonLoad_clicked()
     ui->lineEditImage->setText(poupik.getUrlImage());
     ui->textEdit->append(poupik.getSpecialRules());
 
-
+     QMessageBox::information(this, "Info", "Figurine chargée : " + poupik.getUrlImage());
 
 }
