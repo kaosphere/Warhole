@@ -18,7 +18,7 @@ public:
                   const QString &save, const QString &invSave, const int &widthBase,
                   const int &lengthBase, const int &unitP, const QString& urlImage , bool figSup,
                   const QString& specRules);
-
+    ModelCavalry(const ModelCavalry &copy);
 
     QString getSpecialRules() const;
     void setSpecialRules(const QString &value);

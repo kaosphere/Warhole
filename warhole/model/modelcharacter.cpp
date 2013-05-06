@@ -23,6 +23,15 @@ ModelCharacter::ModelCharacter(const QString &n, const QString &move, const QStr
     isMounted = mounted;
 }
 
+ModelCharacter::ModelCharacter(const ModelCharacter &copy) : ModelAbstract(copy)
+{
+    specialRules = copy.specialRules;
+    isALord = copy.isALord;
+    isTheGeneral = copy.isTheGeneral;
+    isAMage = copy.isAMage;
+    isMounted = copy.isMounted;
+}
+
 QString ModelCharacter::getSpecialRules() const
 {
     return specialRules;
