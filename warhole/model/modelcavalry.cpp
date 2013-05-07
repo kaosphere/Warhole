@@ -33,15 +33,5 @@ void ModelCavalry::setSpecialRules(const QString &value)
     specialRules = value;
 }
 
-ModelAbstract *ModelCavalry::getMount() const
-{
-    return mount;
-}
-
-void ModelCavalry::setMount(ModelAbstract *value)
-{
-    mount = value;
-}
-
 
 
