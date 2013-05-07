@@ -20,6 +20,33 @@ ModelAbstract::ModelAbstract(const StatsModel &stat,
     figSupInd = figSup;
 }
 
+ModelAbstract::ModelAbstract(const QString &n, const QString &move, const QString &weaponS, const QString &balisticS, const QString &strength, const QString &toughness, const QString &wounds, const QString &init, const QString &attacks, const QString &leadership, const QString &save, const QString &invSave, const int &widthBase, const int &lengthBase, const int &unitP, const QString &url, bool figSup)
+{
+    stats.setName(n);
+    stats.setM(move);
+    stats.setWs(weaponS);
+    stats.setBs(balisticS);
+    stats.setS(strength);
+    stats.setT(toughness);
+    stats.setW(wounds);
+    stats.setI(init);
+    stats.setA(attacks);
+    stats.setLd(leadership);
+    stats.setSvg(save);
+    stats.setSvgInv(invSave);
+
+    squareBaseW = widthBase;
+    squareBaseL = lengthBase;
+    unitPower = unitP;
+
+    image = new QPixmap(urlImage);
+
+    urlImage = url;
+
+    figSupInd = figSup;
+
+}
+
 ModelAbstract::ModelAbstract(const ModelAbstract &copy)
 {
     stats = copy.stats;
@@ -129,19 +156,8 @@ void ModelAbstract::setUrlImage(const QString &value)
 QDataStream & ModelAbstract::streamOut() const
 {
     QDataStream out;
-    out << name
-        << m
-        << ws
-        << bs
-        << s
-        << t
-        << w
-        << i
-        << a
-        << ld
-        << svg
-        << svgInv
-        << squareBaseW
+    //out << stats
+    out << squareBaseW
         << squareBaseL
         << unitPower
         << figSupInd
@@ -153,18 +169,7 @@ QDataStream & ModelAbstract::streamOut() const
 
 void ModelAbstract::streamIn(QDataStream & in)
 {
-    in >> name;
-    in >> m;
-    in >> ws;
-    in >> bs;
-    in >> s;
-    in >> t;
-    in >> w;
-    in >> i;
-    in >> a;
-    in >> ld;
-    in >> svg;
-    in >> svgInv;
+    //in >> stats;
     in >> squareBaseW;
     in >> squareBaseL;
     in >> unitPower;
