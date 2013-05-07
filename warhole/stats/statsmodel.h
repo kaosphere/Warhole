@@ -9,8 +9,13 @@ class StatsModel
 {
 public:
     StatsModel();
+    StatsModel(const StatsModel&);
+    StatsModel(const QString &n, const QString &move, const QString &weaponS, const QString &balisticS,
+               const QString &strength, const QString &toughness, const QString &wounds,
+               const QString &init, const QString &attacks, const QString &leadership,
+               const QString &save, const QString &invSave);
 
-
+    StatsModel& operator=(const StatsModel&);
 
     QString getName() const;
     void setName(const QString &value);

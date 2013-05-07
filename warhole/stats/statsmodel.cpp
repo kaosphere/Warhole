@@ -4,6 +4,54 @@ StatsModel::StatsModel()
 {
 }
 
+StatsModel::StatsModel(const StatsModel &stat)
+{
+    name = stat.name;
+    m = stat.m;
+    ws = stat.ws;
+    bs = stat.bs;
+    s = stat.s;
+    t = stat.s;
+    w = stat.w;
+    i = stat.i;
+    a = stat.a;
+    ld = stat.ld;
+    svg = stat.svg;
+    svgInv = stat.svgInv;
+}
+
+StatsModel::StatsModel(const QString &n, const QString &move, const QString &weaponS, const QString &balisticS, const QString &strength, const QString &toughness, const QString &wounds, const QString &init, const QString &attacks, const QString &leadership, const QString &save, const QString &invSave)
+{
+    name = n;
+    m = move;
+    ws = weaponS;
+    bs = balisticS;
+    s = strength;
+    t = toughness;
+    w = wounds;
+    i = init;
+    a = attacks;
+    ld = leadership;
+    svg = save;
+    svgInv = invSave;
+}
+
+StatsModel &StatsModel::operator =(const StatsModel &stat)
+{
+    name = stat.name;
+    m = stat.m;
+    ws = stat.ws;
+    bs = stat.bs;
+    s = stat.s;
+    t = stat.s;
+    w = stat.w;
+    i = stat.i;
+    a = stat.a;
+    ld = stat.ld;
+    svg = stat.svg;
+    svgInv = stat.svgInv;
+}
+
 
 QString StatsModel::getName() const
 {
