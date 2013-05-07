@@ -5,14 +5,14 @@
 #include <QtCore>
 #include <QtWidgets>
 
-class OptionModel : public QObject
+class OptionModel
 {
-    Q_OBJECT
 public:
-    explicit OptionModel(QObject *parent = 0);
+    explicit OptionModel();
 
-    OptionModel(const QString &n, const int& pts, const bool& act, const QString& specRules,
-                QObject *parent = 0);
+    OptionModel(const QString &n, const int& pts, const bool& act, const QString& specRules);
+
+    bool operator==(const OptionModel&);
 
     QString getName() const;
     void setName(const QString &value);

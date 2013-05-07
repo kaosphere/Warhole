@@ -54,18 +54,7 @@ void ModelAnimal::initModelAnimalSystem()
 QDataStream & operator << (QDataStream & out, const ModelAnimal & obj)
 {
     //out << obj.streamOut();
-    out << obj.name
-        << obj.m
-        << obj.ws
-        << obj.bs
-        << obj.s
-        << obj.t
-        << obj.w
-        << obj.i
-        << obj.a
-        << obj.ld
-        << obj.svg
-        << obj.svgInv
+    out << obj.stats
         << obj.squareBaseW
         << obj.squareBaseL
         << obj.unitPower
@@ -79,18 +68,7 @@ QDataStream & operator << (QDataStream & out, const ModelAnimal & obj)
 QDataStream & operator >> (QDataStream & in, ModelAnimal & obj)
 {
     //obj.streamIn(in);
-    in >> obj.name;
-    in >> obj.m;
-    in >> obj.ws;
-    in >> obj.bs;
-    in >> obj.s;
-    in >> obj.t;
-    in >> obj.w;
-    in >> obj.i;
-    in >> obj.a;
-    in >> obj.ld;
-    in >> obj.svg;
-    in >> obj.svgInv;
+    in >> obj.stats;
     in >> obj.squareBaseW;
     in >> obj.squareBaseL;
     in >> obj.unitPower;

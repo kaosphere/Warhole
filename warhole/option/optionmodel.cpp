@@ -1,18 +1,22 @@
 #include "optionmodel.h"
 
-OptionModel::OptionModel(QObject *parent) :
-    QObject(parent)
+OptionModel::OptionModel()
 {
 }
 
-OptionModel::OptionModel(const QString &n, const int &pts, const bool &act, const QString &specRules,
-                         QObject *parent) :
-    QObject(parent)
+OptionModel::OptionModel(const QString &n, const int &pts, const bool &act, const QString &specRules)
 {
     name = n;
     nbPoints = pts;
     activated = act;
     specialRules = specRules;
+}
+
+bool OptionModel::operator ==(const OptionModel &o)
+{
+    if(name == o.name && nbPoints == o.nbPoints && activated == o.activated && specialRules == o.specialRules)
+        return true;
+    else return false;
 }
 
 QString OptionModel::getName() const
