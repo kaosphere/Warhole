@@ -4,25 +4,11 @@ ModelAbstract::ModelAbstract()
 {
 }
 
-ModelAbstract::ModelAbstract(const QString &n, const QString &move, const QString &weaponS,
-                             const QString &balisticS, const QString &strength, const QString &toughness,
-                             const QString &wounds, const QString &init, const QString &attacks,
-                             const QString &leadership, const QString &save, const QString &invSave,
+ModelAbstract::ModelAbstract(const StatsModel &stat,
                              const int &widthBase, const int &lengthBase, const int &unitP, const QString &url,
                              bool figSup)
 {
-    name = n;
-    m = move;
-    ws = weaponS;
-    bs = balisticS;
-    s = strength;
-    t = toughness;
-    w = wounds;
-    i = init;
-    a = attacks;
-    ld = leadership;
-    svg = save;
-    svgInv = invSave;
+    stats = stat;
     squareBaseW = widthBase;
     squareBaseL = lengthBase;
     unitPower = unitP;
@@ -36,18 +22,7 @@ ModelAbstract::ModelAbstract(const QString &n, const QString &move, const QStrin
 
 ModelAbstract::ModelAbstract(const ModelAbstract &copy)
 {
-    name = copy.name;
-    m = copy.m;
-    ws = copy.ws;
-    bs = copy.bs;
-    s = copy.s;
-    t = copy.t;
-    w = copy.w;
-    i = copy.i;
-    a = copy.a;
-    ld = copy.ld;
-    svg = copy.svg;
-    svgInv = copy.svgInv;
+    stats = copy.stats;
     urlImage = copy.urlImage;
     squareBaseW = copy.squareBaseW;
     squareBaseL = copy.squareBaseL;
@@ -57,124 +32,16 @@ ModelAbstract::ModelAbstract(const ModelAbstract &copy)
 ModelAbstract::~ModelAbstract(){}
 
 
-QString ModelAbstract::getSvgInv() const
+StatsModel ModelAbstract::getStats() const
 {
-    return svgInv;
+    return stats;
 }
 
-void ModelAbstract::setSvgInv(const QString &value)
+void ModelAbstract::setStats(const StatsModel &value)
 {
-    svgInv = value;
+    stats = value;
 }
 
-QString ModelAbstract::getSvg() const
-{
-    return svg;
-}
-
-void ModelAbstract::setSvg(const QString &value)
-{
-    svg = value;
-}
-
-QString ModelAbstract::getLd() const
-{
-    return ld;
-}
-
-void ModelAbstract::setLd(const QString &value)
-{
-    ld = value;
-}
-
-QString ModelAbstract::getA() const
-{
-    return a;
-}
-
-void ModelAbstract::setA(const QString &value)
-{
-    a = value;
-}
-
-QString ModelAbstract::getI() const
-{
-    return i;
-}
-
-void ModelAbstract::setI(const QString &value)
-{
-    i = value;
-}
-
-QString ModelAbstract::getW() const
-{
-    return w;
-}
-
-void ModelAbstract::setW(const QString &value)
-{
-    w = value;
-}
-
-QString ModelAbstract::getT() const
-{
-    return t;
-}
-
-void ModelAbstract::setT(const QString &value)
-{
-    t = value;
-}
-
-QString ModelAbstract::getS() const
-{
-    return s;
-}
-
-void ModelAbstract::setS(const QString &value)
-{
-    s = value;
-}
-
-QString ModelAbstract::getBs() const
-{
-    return bs;
-}
-
-void ModelAbstract::setBs(const QString &value)
-{
-    bs = value;
-}
-
-QString ModelAbstract::getWs() const
-{
-    return ws;
-}
-
-void ModelAbstract::setWs(const QString &value)
-{
-    ws = value;
-}
-
-QString ModelAbstract::getM() const
-{
-    return m;
-}
-
-void ModelAbstract::setM(const QString &value)
-{
-    m = value;
-}
-QString ModelAbstract::getName() const
-{
-    return name;
-}
-
-void ModelAbstract::setName(const QString &value)
-{
-    name = value;
-}
 
 int ModelAbstract::getUnitPower() const
 {
@@ -227,22 +94,22 @@ void ModelAbstract::setFigSupInd(bool value)
 }
 
 
-QList<OptionModel *> ModelAbstract::getOptions() const
+QList<OptionModel> ModelAbstract::getOptions() const
 {
     return options;
 }
 
-void ModelAbstract::setOptions(const QList<OptionModel *> &value)
+void ModelAbstract::setOptions(const QList<OptionModel> &value)
 {
     options = value;
 }
 
-void ModelAbstract::addOption(OptionModel *opt)
+void ModelAbstract::addOption(OptionModel opt)
 {
     options<<opt;
 }
 
-void ModelAbstract::removeOption(OptionModel *opt)
+void ModelAbstract::removeOption(OptionModel opt)
 {
     options.removeOne(opt);
 }
