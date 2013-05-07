@@ -19,6 +19,7 @@ class ModelWindow : public QWidget
     
 public:
     explicit ModelWindow(QWidget *parent = 0);
+    ModelWindow(QString f, QWidget *parent = 0);
     ~ModelWindow();
 
     void loadAnimalWidget();
@@ -46,6 +47,7 @@ private:
     QGraphicsScene* scene;
     QStandardItemModel* options;
     QPixmap* image;
+    ModelAnimal poupik;
 };
 
 #endif // MODELWINDOW_H

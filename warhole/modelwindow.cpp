@@ -19,6 +19,45 @@ ModelWindow::ModelWindow(QWidget *parent) :
     loadAnimalWidget();
 }
 
+ModelWindow::ModelWindow(QString f, QWidget *parent) :
+    QWidget(parent),
+    ui(new Ui::ModelWindow)
+{
+    ui->setupUi(this);
+
+    scene = new QGraphicsScene();
+
+    ui->graphicsView->setScene(scene);
+
+    options = new QStandardItemModel();
+
+    ui->viewOptions->setModel(options);
+    ui->viewOptions->header()->hide();
+
+    loadAnimalWidget();
+
+    poupik.load(f);
+
+    ui->lineEditName->setText(poupik.getStats().getName());
+    ui->lineEditM->setText(poupik.getStats().getM());
+    ui->lineEditCC->setText(poupik.getStats().getWs());
+    ui->lineEditCT->setText(poupik.getStats().getBs());
+    ui->lineEditF->setText(poupik.getStats().getS());
+    ui->lineEditE->setText(poupik.getStats().getT());
+    ui->lineEditPV->setText(poupik.getStats().getW());
+    ui->lineEditI->setText(poupik.getStats().getI());
+    ui->lineEditA->setText(poupik.getStats().getA());
+    ui->lineEditCdt->setText(poupik.getStats().getLd());
+    ui->lineEditSvg->setText(poupik.getStats().getSvg());
+    ui->lineEditSvgInv->setText(poupik.getStats().getSvgInv());
+    ui->spinWidth->setValue(poupik.getSquareBaseW());
+    ui->spinLength->setValue(poupik.getSquareBaseL());
+    ui->spinPU->setValue(poupik.getUnitPower());
+    //ui->lineEditName->setText(poupik.getFigSupInd());
+    ui->lineEditImage->setText(poupik.getUrlImage());
+    ui->textEdit->append(poupik.getSpecialRules());
+}
+
 ModelWindow::~ModelWindow()
 {
     delete ui;
@@ -207,10 +246,7 @@ void ModelWindow::on_pushButtonSave_clicked()
                                           ui->spinWidth->value(), ui->spinLength->value(),ui->spinPU->value(), ui->lineEditImage->text(),
                                           false, ui->textEdit->toPlainText());
 
-    QFile::remove("./poupik.unit");
-    QSettings savedFile("./poupik.unit", QSettings::IniFormat);
-    savedFile.setValue("ModelAnimal", qVariantFromValue(poupik));
-    savedFile.sync();
+    poupik.save("models/" + ui->comboRace->itemText(ui->comboRace->currentIndex()) + "/" + ui->comboUnitType->itemText(ui->comboUnitType->currentIndex()) + "/" + ui->lineEditName->text() +".unit");
 
     QMessageBox::information(this, "Info", "Fichier ecrit : " + ui->lineEditImage->text());
 
@@ -218,9 +254,9 @@ void ModelWindow::on_pushButtonSave_clicked()
 
 void ModelWindow::on_pushButtonLoad_clicked()
 {
-    ModelAnimal poupik;
-    QSettings readFile("./poupik.unit", QSettings::IniFormat);
-    poupik = readFile.value("ModelAnimal", qVariantFromValue(ModelAnimal())).value<ModelAnimal>();
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open Model"), "./models", tr("Model files (*.unit)"));
+
+    poupik.load(fileName);
 
     ui->lineEditName->setText(poupik.getStats().getName());
     ui->lineEditM->setText(poupik.getStats().getM());

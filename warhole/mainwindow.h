@@ -18,6 +18,7 @@ public:
 
 public slots:
    void openModelWindow();
+   void openEditModelWindow();
 
 private:
     QWidget* s;
