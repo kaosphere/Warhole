@@ -17,6 +17,7 @@ public:
 
     StatsModel& operator=(const StatsModel&);
 
+
     QString getName() const;
     void setName(const QString &value);
 
@@ -66,6 +67,9 @@ protected:
     QString ld;     //leadership
     QString svg;    //armor save
     QString svgInv; //invulnerable armor save
+
+    friend QDataStream & operator << (QDataStream &, const StatsModel &);
+    friend QDataStream & operator >> (QDataStream &, StatsModel &);
 
 };
 
