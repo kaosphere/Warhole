@@ -158,25 +158,25 @@ void ModelWindow::on_comboUnitType_currentIndexChanged(int index)
 {
     switch(index)
     {
-        case 0:
+        case 1:
             loadAnimalWidget();
             break;
-        case 1:
+        case 2:
             loadCavaleryWidget();
             break;
-        case 2:
+        case 3:
             loadCharriotWidget();
             break;
-        case 3:
+        case 4:
             loadInfanteryWidget();
             break;
-        case 4:
+        case 5:
             loadMonsterWidget();
             break;
-        case 5:
+        case 6:
             loadWarMachineWidget();
             break;
-        case 6:
+        case 7:
             loadCharacterWidget();
             break;
         default:
@@ -234,9 +234,9 @@ void ModelWindow::on_pushButtonSave_clicked()
     //Create a Model depending on the type of model chosen
     //begin to check if everything is ok
 
-    if(ui->lineEditName->text().isEmpty() || ui->lineEditImage->text().isEmpty())
+    if(ui->lineEditName->text().isEmpty() || ui->lineEditImage->text().isEmpty() || ui->comboRace->currentIndex() == 0 || ui->comboUnitType->currentIndex() == 0 )
     {
-        QMessageBox::warning(this, "Info", "Vous devez obligatoirement remplir un nom et une image.");
+        QMessageBox::warning(this, "Info", "Vous devez obligatoirement choisir une race, un type d'unité et remplir un nom et une image.");
         return;
     }
     ModelAnimal poupik(ui->lineEditName->text(), ui->lineEditM->text(),ui->lineEditCC->text(),
@@ -248,7 +248,12 @@ void ModelWindow::on_pushButtonSave_clicked()
 
     poupik.save("models/" + ui->comboRace->itemText(ui->comboRace->currentIndex()) + "/" + ui->comboUnitType->itemText(ui->comboUnitType->currentIndex()) + "/" + ui->lineEditName->text() +".unit");
 
-    QMessageBox::information(this, "Info", "Fichier ecrit : " + ui->lineEditImage->text());
+    //QMessageBox::information(this, "Info", "Fichier ecrit : " + ui->lineEditImage->text());
+
+    QMessageBox::information(this, "Info", "Figurine sauvegardée avec succès.");
+
+    this->close();
+    this->deleteLater();
 
 }
 
@@ -277,6 +282,6 @@ void ModelWindow::on_pushButtonLoad_clicked()
     ui->lineEditImage->setText(poupik.getUrlImage());
     ui->textEdit->append(poupik.getSpecialRules());
 
-     QMessageBox::information(this, "Info", "Figurine chargée : " + poupik.getUrlImage());
+    QMessageBox::information(this, "Info", "Figurine chargée : " + poupik.getStats().getName());
 
 }

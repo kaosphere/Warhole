@@ -231,6 +231,11 @@
        <widget class="QComboBox" name="comboRace">
         <item>
          <property name="text">
+          <string>&lt;aucune&gt;</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
           <string>Bretonniens</string>
          </property>
         </item>
@@ -309,6 +314,11 @@
       </item>
       <item>
        <widget class="QComboBox" name="comboUnitType">
+        <item>
+         <property name="text">
+          <string>&lt;aucune&gt;</string>
+         </property>
+        </item>
         <item>
          <property name="text">
           <string>Animal (montures et chars)</string>
