@@ -22,6 +22,9 @@ public:
     ~ModelAnimal();
     static void initModelAnimalSystem ();
 
+    void load(QString path);
+    void save(QString path);
+
     QString getSpecialRules() const;
     void setSpecialRules(const QString &value);
 

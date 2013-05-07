@@ -50,6 +50,36 @@ void ModelAnimal::initModelAnimalSystem()
     qMetaTypeId<ModelAnimal>();
 }
 
+void ModelAnimal::load(QString path)
+{
+    ModelAnimal temp;
+
+    QSettings readFile(path, QSettings::IniFormat);
+    temp = readFile.value("ModelAnimal", qVariantFromValue(ModelAnimal())).value<ModelAnimal>();
+
+    stats = temp.getStats();
+    squareBaseW = temp.getSquareBaseW();
+    squareBaseL = temp.getSquareBaseL();
+    unitPower = temp.getUnitPower();
+
+    urlImage = temp.getUrlImage();
+
+    //image->load(urlImage);
+
+    figSupInd = temp.getFigSupInd();
+    specialRules = temp.getSpecialRules();
+}
+
+void ModelAnimal::save(QString path)
+{
+    QFile::remove(path);
+    QSettings savedFile(path, QSettings::IniFormat);
+
+    savedFile.setValue("ModelAnimal", qVariantFromValue(*this));
+    savedFile.sync();
+}
+
+
 // Overloading of << operator
 QDataStream & operator << (QDataStream & out, const ModelAnimal & obj)
 {
