@@ -44,6 +44,7 @@ ModelWindow::ModelWindow(QString f, QWidget *parent) :
     poupik.load(f);
 
     ui->lineEditName->setText(poupik.getStats().getName());
+    ui->spinPoints->setValue(poupik.getStats().getPoints());
     ui->lineEditM->setText(poupik.getStats().getM());
     ui->lineEditCC->setText(poupik.getStats().getWs());
     ui->lineEditCT->setText(poupik.getStats().getBs());
@@ -88,6 +89,7 @@ void ModelWindow::loadWidgets(bool l)
     ui->lineEditSvg2->setVisible(l);
     ui->lineEditM2->setVisible(l);
     ui->lineEditName2->setVisible(l);
+    ui->spinPoints2->setVisible(l);
 
     ui->label_54->setVisible(l);
     ui->label_55->setVisible(l);
@@ -102,6 +104,7 @@ void ModelWindow::loadWidgets(bool l)
     ui->label_64->setVisible(l);
     ui->label_65->setVisible(l);
     ui->label_66->setVisible(l);
+    ui->label_67->setVisible(l);
 
     ui->pushButtonAdd->setVisible(l);
 
@@ -299,7 +302,7 @@ void ModelWindow::on_pushButtonSave_clicked()
     ModelAnimal poupik(ui->lineEditName->text(), ui->lineEditM->text(),ui->lineEditCC->text(),
                                           ui->lineEditCT->text(), ui->lineEditF->text(),ui->lineEditE->text(),
                                           ui->lineEditPV->text(), ui->lineEditI->text(), ui->lineEditA->text(),
-                                          ui->lineEditCdt->text(), ui->lineEditSvg->text(), ui->lineEditSvgInv->text(),
+                                          ui->lineEditCdt->text(), ui->lineEditSvg->text(), ui->lineEditSvgInv->text(),ui->spinPoints->value(),
                                           ui->spinWidth->value(), ui->spinLength->value(),ui->spinPU->value(), ui->lineEditImage->text(),
                                           false, ui->textEdit->toPlainText());
 
@@ -320,6 +323,10 @@ void ModelWindow::on_pushButtonSave_clicked()
             QMessageBox::critical(this, "Annulation", "Sauvegarde annulée");
         }
     }
+    else{
+        poupik.save(path);
+        QMessageBox::information(this, "Info", "Figurine sauvegardée avec succès.");
+    }
     this->close();
     this->deleteLater();
 
@@ -332,6 +339,7 @@ void ModelWindow::on_pushButtonLoad_clicked()
     poupik.load(fileName);
 
     ui->lineEditName->setText(poupik.getStats().getName());
+    ui->spinPoints->setValue(poupik.getStats().getPoints());
     ui->lineEditM->setText(poupik.getStats().getM());
     ui->lineEditCC->setText(poupik.getStats().getWs());
     ui->lineEditCT->setText(poupik.getStats().getBs());

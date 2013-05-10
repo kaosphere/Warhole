@@ -20,7 +20,7 @@ ModelAbstract::ModelAbstract(const StatsModel &stat,
     figSupInd = figSup;
 }
 
-ModelAbstract::ModelAbstract(const QString &n, const QString &move, const QString &weaponS, const QString &balisticS, const QString &strength, const QString &toughness, const QString &wounds, const QString &init, const QString &attacks, const QString &leadership, const QString &save, const QString &invSave, const int &widthBase, const int &lengthBase, const int &unitP, const QString &url, bool figSup)
+ModelAbstract::ModelAbstract(const QString &n, const QString &move, const QString &weaponS, const QString &balisticS, const QString &strength, const QString &toughness, const QString &wounds, const QString &init, const QString &attacks, const QString &leadership, const QString &save, const QString &invSave, const int points, const int &widthBase, const int &lengthBase, const int &unitP, const QString &url, bool figSup)
 {
     stats.setName(n);
     stats.setM(move);
@@ -34,6 +34,7 @@ ModelAbstract::ModelAbstract(const QString &n, const QString &move, const QStrin
     stats.setLd(leadership);
     stats.setSvg(save);
     stats.setSvgInv(invSave);
+    stats.setPoints(points);
 
     squareBaseW = widthBase;
     squareBaseL = lengthBase;

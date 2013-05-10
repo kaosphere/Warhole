@@ -18,8 +18,8 @@
     <rect>
      <x>40</x>
      <y>90</y>
-     <width>135</width>
-     <height>47</height>
+     <width>141</width>
+     <height>88</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -33,25 +33,32 @@
     <item>
      <widget class="QLineEdit" name="lineEditName"/>
     </item>
+    <item>
+     <widget class="QLabel" name="label_27">
+      <property name="text">
+       <string>Points (sans options)</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QSpinBox" name="spinPoints">
+      <property name="maximum">
+       <number>999</number>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>40</x>
-     <y>140</y>
+     <y>178</y>
      <width>97</width>
-     <height>379</height>
+     <height>361</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_3">
-    <item>
-     <widget class="QLabel" name="label_3">
-      <property name="text">
-       <string>Stats</string>
-      </property>
-     </widget>
-    </item>
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
@@ -767,6 +774,20 @@
       </item>
       <item>
        <widget class="QLineEdit" name="lineEditName2"/>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_67">
+        <property name="text">
+         <string>Points</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="spinPoints2">
+        <property name="maximum">
+         <number>999</number>
+        </property>
+       </widget>
       </item>
      </layout>
     </item>
