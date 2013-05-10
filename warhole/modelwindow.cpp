@@ -6,7 +6,7 @@ ModelWindow::ModelWindow(QWidget *parent) :
     ui(new Ui::ModelWindow)
 {
     ui->setupUi(this);
-
+    image = new QPixmap();
     scene = new QGraphicsScene();
 
     ui->graphicsView->setScene(scene);
@@ -24,6 +24,7 @@ ModelWindow::ModelWindow(QString f, QWidget *parent) :
     ui(new Ui::ModelWindow)
 {
     ui->setupUi(this);
+    image = new QPixmap();
 
     scene = new QGraphicsScene();
 
@@ -56,6 +57,9 @@ ModelWindow::ModelWindow(QString f, QWidget *parent) :
     //ui->lineEditName->setText(poupik.getFigSupInd());
     ui->lineEditImage->setText(poupik.getUrlImage());
     ui->textEdit->append(poupik.getSpecialRules());
+
+    if(image->load(poupik.getUrlImage())) scene->addPixmap(*image);
+    else  QMessageBox::warning(this, "Info", "URL de l'image non valide");
 }
 
 ModelWindow::~ModelWindow()
@@ -188,14 +192,12 @@ void ModelWindow::on_comboUnitType_currentIndexChanged(int index)
 void ModelWindow::on_toolButtonImage_pressed()
 {
     QString fileName;
-    image = new QPixmap();
 
     fileName = QFileDialog::getOpenFileName(this, tr("Open Image"), ".", tr("Image Files (*.png *.jpg *.bmp)"));
     ui->lineEditImage->setText(fileName);
 
-    image->load(fileName);
-
-    scene->addPixmap(*image);
+    if(image->load(fileName)) scene->addPixmap(*image);
+    else  QMessageBox::warning(this, "Info", "URL de l'image non valide");
 
 }
 
@@ -281,6 +283,9 @@ void ModelWindow::on_pushButtonLoad_clicked()
     //ui->lineEditName->setText(poupik.getFigSupInd());
     ui->lineEditImage->setText(poupik.getUrlImage());
     ui->textEdit->append(poupik.getSpecialRules());
+
+    if(image->load(poupik.getUrlImage())) scene->addPixmap(*image);
+    else  QMessageBox::warning(this, "Info", "URL de l'image non valide");
 
     QMessageBox::information(this, "Info", "Figurine chargée : " + poupik.getStats().getName());
 
