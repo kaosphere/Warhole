@@ -72,8 +72,10 @@ void ModelAnimal::load(QString path)
 
 void ModelAnimal::save(QString path)
 {
+
     QFile::remove(path);
     QSettings savedFile(path, QSettings::IniFormat);
+
 
     savedFile.setValue("ModelAnimal", qVariantFromValue(*this));
     savedFile.sync();

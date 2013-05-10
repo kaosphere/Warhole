@@ -248,12 +248,23 @@ void ModelWindow::on_pushButtonSave_clicked()
                                           ui->spinWidth->value(), ui->spinLength->value(),ui->spinPU->value(), ui->lineEditImage->text(),
                                           false, ui->textEdit->toPlainText());
 
-    poupik.save("models/" + ui->comboRace->itemText(ui->comboRace->currentIndex()) + "/" + ui->comboUnitType->itemText(ui->comboUnitType->currentIndex()) + "/" + ui->lineEditName->text() +".unit");
+    QString path = "models/" + ui->comboRace->itemText(ui->comboRace->currentIndex()) + "/" + ui->comboUnitType->itemText(ui->comboUnitType->currentIndex()) + "/" + ui->lineEditName->text() +".unit";
+    QFile f;
+    f.setFileName(path);
 
-    //QMessageBox::information(this, "Info", "Fichier ecrit : " + ui->lineEditImage->text());
-
-    QMessageBox::information(this, "Info", "Figurine sauvegardée avec succès.");
-
+    if(f.exists())
+    {
+        int rep = QMessageBox::question(this,"Ecraser", "La figurine existe déjà, voulez vous l'écraser?", QMessageBox::Yes | QMessageBox::No);
+        if (rep == QMessageBox::Yes)
+        {
+            poupik.save(path);
+            QMessageBox::information(this, "Info", "Figurine sauvegardée avec succès.");
+        }
+        else if (rep == QMessageBox::No)
+        {
+            QMessageBox::critical(this, "Annulation", "Sauvegarde annulée");
+        }
+    }
     this->close();
     this->deleteLater();
 
