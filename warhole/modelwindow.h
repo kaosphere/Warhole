@@ -29,7 +29,8 @@ public:
     void loadInfanteryWidget();
     void loadMonsterWidget();
     void loadWarMachineWidget();
-    
+    void loadWidgets(bool l);
+
 private slots:
     void on_comboUnitType_currentIndexChanged(int index);
     void on_toolButtonImage_pressed();
@@ -42,10 +43,15 @@ private slots:
 
     void on_pushButtonLoad_clicked();
 
+    void on_pushButtonAdd_clicked();
+
+    void on_pushButtonAdd_2_clicked();
+
 private:
     Ui::ModelWindow *ui;
     QGraphicsScene* scene;
     QStandardItemModel* options;
+    QStandardItemModel* crew;
     QPixmap* image;
     ModelAnimal poupik;
 };

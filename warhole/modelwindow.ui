@@ -39,7 +39,7 @@
    <property name="geometry">
     <rect>
      <x>40</x>
-     <y>150</y>
+     <y>140</y>
      <width>97</width>
      <height>379</height>
     </rect>
@@ -451,57 +451,13 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="layoutWidget_2">
-   <property name="geometry">
-    <rect>
-     <x>190</x>
-     <y>180</y>
-     <width>401</width>
-     <height>111</height>
-    </rect>
-   </property>
-   <layout class="QVBoxLayout" name="verticalLayout_16">
-    <item>
-     <widget class="QLabel" name="label_28">
-      <property name="text">
-       <string>Figurines additionnelles (servants, maitres des bêtes, conducteurs de chars...)</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QTreeView" name="viewModelCrew"/>
-    </item>
-   </layout>
-  </widget>
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>190</x>
-     <y>310</y>
-     <width>401</width>
-     <height>111</height>
-    </rect>
-   </property>
-   <layout class="QVBoxLayout" name="verticalLayout_15">
-    <item>
-     <widget class="QLabel" name="label_27">
-      <property name="text">
-       <string>Amimaux (monture ou tirant les chars)</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QTreeView" name="viewModelAnimals"/>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QWidget" name="layoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>220</x>
-     <y>140</y>
-     <width>392</width>
-     <height>20</height>
+     <y>90</y>
+     <width>399</width>
+     <height>19</height>
     </rect>
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout_20">
@@ -741,6 +697,249 @@
      <widget class="Line" name="line">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="">
+   <property name="geometry">
+    <rect>
+     <x>190</x>
+     <y>330</y>
+     <width>401</width>
+     <height>231</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout_20">
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout_16">
+      <item>
+       <widget class="QLabel" name="label_28">
+        <property name="text">
+         <string>Statistiques des conducteurs de chars</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QTreeView" name="viewModelCrew"/>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButtonAdd_2">
+        <property name="text">
+         <string>supprimer</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="">
+   <property name="geometry">
+    <rect>
+     <x>190</x>
+     <y>130</y>
+     <width>401</width>
+     <height>193</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout_21">
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_57">
+      <item>
+       <widget class="QLabel" name="label_54">
+        <property name="text">
+         <string>Stats additionnelles (montures, conducteur de char...)</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_58">
+      <item>
+       <widget class="QLabel" name="label_66">
+        <property name="text">
+         <string>Nom de la figurine</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEditName2"/>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_56">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_43">
+        <item>
+         <widget class="QLabel" name="label_55">
+          <property name="text">
+           <string>M   </string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="lineEditM2"/>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_44">
+        <item>
+         <widget class="QLabel" name="label_56">
+          <property name="text">
+           <string>CC </string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="lineEditCC2"/>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_45">
+        <item>
+         <widget class="QLabel" name="label_57">
+          <property name="text">
+           <string>CT </string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="lineEditCT2"/>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_46">
+        <item>
+         <widget class="QLabel" name="label_58">
+          <property name="text">
+           <string>F   </string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="lineEditF2"/>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_47">
+        <item>
+         <widget class="QLabel" name="label_59">
+          <property name="text">
+           <string>E   </string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="lineEditE2"/>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_55">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_48">
+        <item>
+         <widget class="QLabel" name="label_60">
+          <property name="text">
+           <string>I    </string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="lineEditI2"/>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_49">
+        <item>
+         <widget class="QLabel" name="label_61">
+          <property name="text">
+           <string>A   </string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="lineEditA2"/>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_50">
+        <item>
+         <widget class="QLabel" name="label_62">
+          <property name="text">
+           <string>PV  </string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="lineEditPV2"/>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_54">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_51">
+        <item>
+         <widget class="QLabel" name="label_63">
+          <property name="text">
+           <string>Cdt  </string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="lineEditCdt2"/>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_52">
+        <item>
+         <widget class="QLabel" name="label_64">
+          <property name="text">
+           <string>Svg</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="lineEditSvg2"/>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_53">
+        <item>
+         <widget class="QLabel" name="label_65">
+          <property name="text">
+           <string>Svg Inv</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="lineEditSvgInv2"/>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="QPushButton" name="pushButtonAdd">
+      <property name="text">
+       <string>ajouter</string>
       </property>
      </widget>
     </item>

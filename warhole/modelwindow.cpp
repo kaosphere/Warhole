@@ -12,9 +12,13 @@ ModelWindow::ModelWindow(QWidget *parent) :
     ui->graphicsView->setScene(scene);
 
     options = new QStandardItemModel();
+    crew = new QStandardItemModel();
 
     ui->viewOptions->setModel(options);
     ui->viewOptions->header()->hide();
+
+    ui->viewModelCrew->setModel(crew);
+    ui->viewModelCrew->header()->hide();
 
     loadAnimalWidget();
 }
@@ -67,6 +71,43 @@ ModelWindow::~ModelWindow()
     delete ui;
 }
 
+void ModelWindow::loadWidgets(bool l)
+{
+    ui->viewModelCrew->setEnabled(l);
+
+    ui->lineEditA2->setVisible(l);
+    ui->lineEditCC2->setVisible(l);
+    ui->lineEditCdt2->setVisible(l);
+    ui->lineEditCT2->setVisible(l);
+    ui->lineEditE2->setVisible(l);
+    ui->lineEditF2->setVisible(l);
+    ui->lineEditF2->setVisible(l);
+    ui->lineEditI2->setVisible(l);
+    ui->lineEditPV2->setVisible(l);
+    ui->lineEditSvgInv2->setVisible(l);
+    ui->lineEditSvg2->setVisible(l);
+    ui->lineEditM2->setVisible(l);
+    ui->lineEditName2->setVisible(l);
+
+    ui->label_54->setVisible(l);
+    ui->label_55->setVisible(l);
+    ui->label_56->setVisible(l);
+    ui->label_57->setVisible(l);
+    ui->label_58->setVisible(l);
+    ui->label_59->setVisible(l);
+    ui->label_60->setVisible(l);
+    ui->label_61->setVisible(l);
+    ui->label_62->setVisible(l);
+    ui->label_63->setVisible(l);
+    ui->label_64->setVisible(l);
+    ui->label_65->setVisible(l);
+    ui->label_66->setVisible(l);
+
+    ui->pushButtonAdd->setVisible(l);
+
+
+}
+
 void ModelWindow::loadAnimalWidget()
 {
     ui->spinWidth->setValue(25);
@@ -78,84 +119,98 @@ void ModelWindow::loadAnimalWidget()
     ui->checkLord->setEnabled(false);
     ui->checkMage->setEnabled(false);
     ui->checkMounted->setEnabled(false);
+
+    loadWidgets(false);
 }
 
 void ModelWindow::loadCavaleryWidget()
 {
-    ui->spinWidth->setValue(25);
-    ui->spinLength->setValue(50);
-
     //hide character checkboxes
     ui->checkGB->setEnabled(false);
     ui->checkGeneral->setEnabled(false);
     ui->checkLord->setEnabled(false);
     ui->checkMage->setEnabled(false);
     ui->checkMounted->setEnabled(false);
+
+    ui->spinWidth->setValue(25);
+    ui->spinLength->setValue(50);
+    loadWidgets(true);
+
 }
 
 void ModelWindow::loadCharacterWidget()
 {
-    ui->spinWidth->setValue(25);
-    ui->spinLength->setValue(25);
-
-    //show character checkboxes
+    //character checkboxes
     ui->checkGB->setEnabled(true);
     ui->checkGeneral->setEnabled(true);
     ui->checkLord->setEnabled(true);
     ui->checkMage->setEnabled(true);
     ui->checkMounted->setEnabled(true);
+
+    ui->spinWidth->setValue(25);
+    ui->spinLength->setValue(25);
+
+    loadWidgets(true);
 }
 
 void ModelWindow::loadCharriotWidget()
 {
-    ui->spinWidth->setValue(50);
-    ui->spinLength->setValue(100);
-
     //hide character checkboxes
     ui->checkGB->setEnabled(false);
     ui->checkGeneral->setEnabled(false);
     ui->checkLord->setEnabled(false);
     ui->checkMage->setEnabled(false);
     ui->checkMounted->setEnabled(false);
+
+    ui->spinWidth->setValue(50);
+    ui->spinLength->setValue(100);
+
+    loadWidgets(true);
 }
 
 void ModelWindow::loadInfanteryWidget()
 {
-    ui->spinWidth->setValue(25);
-    ui->spinLength->setValue(25);
-
     //hide character checkboxes
     ui->checkGB->setEnabled(false);
     ui->checkGeneral->setEnabled(false);
     ui->checkLord->setEnabled(false);
     ui->checkMage->setEnabled(false);
     ui->checkMounted->setEnabled(false);
+
+    ui->spinWidth->setValue(25);
+    ui->spinLength->setValue(25);
+
+    loadWidgets(false);
 }
 
 void ModelWindow::loadMonsterWidget()
 {
-    ui->spinWidth->setValue(50);
-    ui->spinLength->setValue(50);
-
     //hide character checkboxes
     ui->checkGB->setEnabled(false);
     ui->checkGeneral->setEnabled(false);
     ui->checkLord->setEnabled(false);
     ui->checkMage->setEnabled(false);
     ui->checkMounted->setEnabled(false);
+
+    ui->spinWidth->setValue(50);
+    ui->spinLength->setValue(50);
+
+    loadWidgets(false);
 }
 
 void ModelWindow::loadWarMachineWidget()
 {
-    ui->spinWidth->setValue(25);
-    ui->spinLength->setValue(25);
-
     //hide character checkboxes
     ui->checkGB->setEnabled(false);
     ui->checkGeneral->setEnabled(false);
     ui->checkLord->setEnabled(false);
     ui->checkMage->setEnabled(false);
     ui->checkMounted->setEnabled(false);
+
+    ui->spinWidth->setValue(25);
+    ui->spinLength->setValue(25);
+
+    loadWidgets(false);
 }
 
 void ModelWindow::on_comboUnitType_currentIndexChanged(int index)
@@ -300,4 +355,45 @@ void ModelWindow::on_pushButtonLoad_clicked()
 
     QMessageBox::information(this, "Info", "Figurine chargée : " + poupik.getStats().getName());
 
+}
+
+void ModelWindow::on_pushButtonAdd_clicked()
+{
+    QList<QStandardItem *> newStat;
+
+    newStat<<new QStandardItem(ui->lineEditName2->text())
+            <<new QStandardItem(ui->lineEditM2->text())
+            <<new QStandardItem(ui->lineEditCC2->text())
+            <<new QStandardItem(ui->lineEditCT2->text())
+            <<new QStandardItem(ui->lineEditF2->text())
+            <<new QStandardItem(ui->lineEditE2->text())
+            <<new QStandardItem(ui->lineEditPV2->text())
+            <<new QStandardItem(ui->lineEditI2->text())
+            <<new QStandardItem(ui->lineEditA2->text())
+            <<new QStandardItem(ui->lineEditCdt2->text())
+            <<new QStandardItem(ui->lineEditSvg2->text())
+            <<new QStandardItem(ui->lineEditSvgInv2->text());
+
+    crew->appendRow(newStat);
+
+    ui->lineEditName2->clear();
+    ui->lineEditM2->clear();
+    ui->lineEditCC2->clear();
+    ui->lineEditCT2->clear();
+    ui->lineEditF2->clear();
+    ui->lineEditE2->clear();
+    ui->lineEditPV2->clear();
+    ui->lineEditI2->clear();
+    ui->lineEditA2->clear();
+    ui->lineEditCdt2->clear();
+    ui->lineEditSvg2->clear();
+    ui->lineEditSvgInv2->clear();
+}
+
+void ModelWindow::on_pushButtonAdd_2_clicked()
+{
+    QItemSelectionModel *selection = ui->viewModelCrew->selectionModel();
+    QModelIndex indexElementSelectionne = selection->currentIndex();
+
+    crew->removeRow(indexElementSelectionne.row());
 }
