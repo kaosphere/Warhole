@@ -18,9 +18,10 @@ StatsModel::StatsModel(const StatsModel &stat)
     ld = stat.ld;
     svg = stat.svg;
     svgInv = stat.svgInv;
+    points = stat.points;
 }
 
-StatsModel::StatsModel(const QString &n, const QString &move, const QString &weaponS, const QString &balisticS, const QString &strength, const QString &toughness, const QString &wounds, const QString &init, const QString &attacks, const QString &leadership, const QString &save, const QString &invSave)
+StatsModel::StatsModel(const QString &n, const QString &move, const QString &weaponS, const QString &balisticS, const QString &strength, const QString &toughness, const QString &wounds, const QString &init, const QString &attacks, const QString &leadership, const QString &save, const QString &invSave, int p)
 {
     name = n;
     m = move;
@@ -34,6 +35,7 @@ StatsModel::StatsModel(const QString &n, const QString &move, const QString &wea
     ld = leadership;
     svg = save;
     svgInv = invSave;
+    points = p;
 }
 
 StatsModel & StatsModel::operator =(const StatsModel &stat)
@@ -50,6 +52,7 @@ StatsModel & StatsModel::operator =(const StatsModel &stat)
     ld = stat.ld;
     svg = stat.svg;
     svgInv = stat.svgInv;
+    points = stat.points;
 }
 
 // Overloading of << operator
@@ -67,7 +70,8 @@ QDataStream & operator << (QDataStream & out, const StatsModel & obj)
         << obj.a
         << obj.ld
         << obj.svg
-        << obj.svgInv;
+        << obj.svgInv
+        << obj.points;
     return out;
 }
 
@@ -87,7 +91,8 @@ QDataStream & operator >> (QDataStream & in, StatsModel & obj)
     in >> obj.ld;
     in >> obj.svg;
     in >> obj.svgInv;
-
+    in >> obj.points;
+    
     return in;
 }
 
@@ -211,3 +216,13 @@ void StatsModel::setName(const QString &value)
     name = value;
 }
 
+
+int StatsModel::getPoints() const
+{
+    return points;
+}
+
+void StatsModel::setPoints(int value)
+{
+    points = value;
+}

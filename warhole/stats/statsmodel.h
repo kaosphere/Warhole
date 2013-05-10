@@ -13,7 +13,7 @@ public:
     StatsModel(const QString &n, const QString &move, const QString &weaponS, const QString &balisticS,
                const QString &strength, const QString &toughness, const QString &wounds,
                const QString &init, const QString &attacks, const QString &leadership,
-               const QString &save, const QString &invSave);
+               const QString &save, const QString &invSave, int p);
 
     StatsModel& operator=(const StatsModel&);
 
@@ -54,6 +54,9 @@ public:
     QString getSvgInv() const;
     void setSvgInv(const QString &value);
 
+    int getPoints() const;
+    void setPoints(int value);
+
 protected:
     QString name;
     QString m;      //movement
@@ -67,6 +70,8 @@ protected:
     QString ld;     //leadership
     QString svg;    //armor save
     QString svgInv; //invulnerable armor save
+
+    int points;     //points of the model
 
     friend QDataStream & operator << (QDataStream &, const StatsModel &);
     friend QDataStream & operator >> (QDataStream &, StatsModel &);
