@@ -72,6 +72,7 @@ QDataStream & operator << (QDataStream & out, const StatsModel & obj)
         << obj.svg
         << obj.svgInv
         << obj.points;
+
     return out;
 }
 

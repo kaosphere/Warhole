@@ -53,7 +53,7 @@ private:
     QStandardItemModel* options;
     QStandardItemModel* crew;
     QPixmap* image;
-    ModelAnimal poupik;
+    ModelAbstract* model;
 };
 
 #endif // MODELWINDOW_H

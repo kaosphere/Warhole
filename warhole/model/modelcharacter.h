@@ -20,6 +20,11 @@ public:
                   const int &lengthBase, const int &unitP, const QString& urlImage , bool figSup,
                   const QString& specRules, bool lord, bool general, bool mage, bool mounted);
     ModelCharacter(const ModelCharacter &copy);
+    ~ModelCharacter();
+
+    static void initModelCharacterSystem();
+    void load(QString path);
+    void save(QString path);
 
     QString getSpecialRules() const;
     void setSpecialRules(const QString &value);
@@ -43,7 +48,14 @@ private:
     bool isAMage;
     bool isMounted;
 
+    friend QDataStream & operator << (QDataStream &, const ModelCharacter &);
+    friend QDataStream & operator >> (QDataStream &, ModelCharacter &);
+
     //ModelAbstract *mount;
 };
+
+Q_DECLARE_METATYPE( ModelCharacter)
+QDataStream & operator << (QDataStream & out, const  ModelCharacter &);
+QDataStream & operator >> (QDataStream & in,  ModelCharacter &);
 
 #endif // MODELCHARACTER_H

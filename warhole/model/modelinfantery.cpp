@@ -22,6 +22,44 @@ ModelInfantery::ModelInfantery(const ModelInfantery &copy) : ModelAbstract(copy)
     specialRules = copy.specialRules;
 }
 
+ModelInfantery::~ModelInfantery()
+{
+}
+
+void ModelInfantery::initModelInfanterySystem()
+{
+    qRegisterMetaTypeStreamOperators<ModelInfantery>("ModelInfantery");
+    qMetaTypeId<ModelInfantery>();
+}
+
+void ModelInfantery::load(QString path)
+{
+    ModelInfantery temp;
+
+    QSettings readFile(path, QSettings::IniFormat);
+    temp = readFile.value("ModelInfantery", qVariantFromValue(ModelInfantery())).value<ModelInfantery>();
+
+    stats = temp.getStats();
+    squareBaseW = temp.getSquareBaseW();
+    squareBaseL = temp.getSquareBaseL();
+    unitPower = temp.getUnitPower();
+
+    urlImage = temp.getUrlImage();
+
+    //image->load(urlImage);
+
+    figSupInd = temp.getFigSupInd();
+    specialRules = temp.getSpecialRules();
+}
+
+void ModelInfantery::save(QString path)
+{
+    QFile::remove(path);
+    QSettings savedFile(path, QSettings::IniFormat);
+    savedFile.setValue("ModelInfantery", qVariantFromValue(*this));
+    savedFile.sync();
+}
+
 QString ModelInfantery::getSpecialRules() const
 {
     return specialRules;
@@ -30,5 +68,30 @@ QString ModelInfantery::getSpecialRules() const
 void ModelInfantery::setSpecialRules(const QString &value)
 {
     specialRules = value;
+}
+
+QDataStream & operator <<(QDataStream & out, const ModelInfantery & obj)
+{
+    out << obj.stats
+        << obj.squareBaseW
+        << obj.squareBaseL
+        << obj.unitPower
+        << obj.figSupInd
+        << obj.urlImage
+        << obj.specialRules;
+    return out;
+}
+
+QDataStream & operator >>(QDataStream & in, ModelInfantery & obj)
+{
+    in >> obj.stats;
+    in >> obj.squareBaseW;
+    in >> obj.squareBaseL;
+    in >> obj.unitPower;
+    in >> obj.figSupInd;
+    in >> obj.urlImage;
+    in >> obj.specialRules;
+
+    return in;
 }
 

@@ -19,6 +19,11 @@ public:
                   const int &lengthBase, const int &unitP, const QString& urlImage , bool figSup,
                   const QString& specRules);
     ModelInfantery(const ModelInfantery &copy);
+    ~ModelInfantery();
+
+    static void initModelInfanterySystem();
+    void load(QString path);
+    void save(QString path);
 
     QString getSpecialRules() const;
     void setSpecialRules(const QString &value);
@@ -26,6 +31,13 @@ public:
 private:
     QString specialRules;
 
+    friend QDataStream & operator << (QDataStream &, const ModelInfantery &);
+    friend QDataStream & operator >> (QDataStream &, ModelInfantery &);
+
 };
+
+Q_DECLARE_METATYPE(ModelInfantery)
+QDataStream & operator << (QDataStream & out, const  ModelInfantery &);
+QDataStream & operator >> (QDataStream & in,  ModelInfantery &);
 
 #endif // MODELINFANTERY_H

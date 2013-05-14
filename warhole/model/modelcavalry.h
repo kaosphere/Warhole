@@ -19,9 +19,14 @@ public:
                   const int &lengthBase, const int &unitP, const QString& urlImage , bool figSup,
                   const QString& specRules);
     ModelCavalry(const ModelCavalry &copy);
+    ~ModelCavalry();
 
     QString getSpecialRules() const;
     void setSpecialRules(const QString &value);
+
+    static void initModelCavalrySystem();
+    void load(QString path);
+    void save(QString path);
 
     //monture du cavalier
     ModelAbstract *getMount() const;
@@ -30,6 +35,12 @@ public:
 private:
     QString specialRules;
     //ModelAbstract* mount;
+    friend QDataStream & operator << (QDataStream &, const ModelCavalry &);
+    friend QDataStream & operator >> (QDataStream &, ModelCavalry &);
 };
+
+Q_DECLARE_METATYPE(ModelCavalry)
+QDataStream & operator << (QDataStream & out, const ModelCavalry &);
+QDataStream & operator >> (QDataStream & in, ModelCavalry &);
 
 #endif // MODELCAVALRY_H

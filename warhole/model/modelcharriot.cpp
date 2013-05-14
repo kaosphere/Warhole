@@ -18,6 +18,44 @@ ModelCharriot::ModelCharriot(const QString &n, const QString &move, const QStrin
     specialRules = specRules;
 }
 
+ModelCharriot::~ModelCharriot()
+{
+}
+
+void ModelCharriot::initModelCharriotSystem()
+{
+    qRegisterMetaTypeStreamOperators<ModelCharriot>("ModelCharriot");
+    qMetaTypeId<ModelCharriot>();
+}
+
+void ModelCharriot::load(QString path)
+{
+    ModelCharriot temp;
+
+    QSettings readFile(path, QSettings::IniFormat);
+    temp = readFile.value("ModelCharriot", qVariantFromValue(ModelCharriot())).value<ModelCharriot>();
+
+    stats = temp.getStats();
+    squareBaseW = temp.getSquareBaseW();
+    squareBaseL = temp.getSquareBaseL();
+    unitPower = temp.getUnitPower();
+
+    urlImage = temp.getUrlImage();
+
+    //image->load(urlImage);
+
+    figSupInd = temp.getFigSupInd();
+    specialRules = temp.getSpecialRules();
+}
+
+void ModelCharriot::save(QString path)
+{
+    QFile::remove(path);
+    QSettings savedFile(path, QSettings::IniFormat);
+    savedFile.setValue("ModelCharriot", qVariantFromValue(*this));
+    savedFile.sync();
+}
+
 QString ModelCharriot::getSpecialRules() const
 {
     return specialRules;
@@ -66,4 +104,29 @@ void ModelCharriot::addCrew(ModelInfantery *c)
 void ModelCharriot::removeCrew(ModelInfantery *c)
 {
     crew.removeOne(c);
+}
+
+QDataStream & operator <<(QDataStream & out, const ModelCharriot & obj)
+{
+    out << obj.stats
+        << obj.squareBaseW
+        << obj.squareBaseL
+        << obj.unitPower
+        << obj.figSupInd
+        << obj.urlImage
+        << obj.specialRules;
+    return out;
+}
+
+QDataStream & operator >>(QDataStream & in, ModelCharriot & obj)
+{
+    in >> obj.stats;
+    in >> obj.squareBaseW;
+    in >> obj.squareBaseL;
+    in >> obj.unitPower;
+    in >> obj.figSupInd;
+    in >> obj.urlImage;
+    in >> obj.specialRules;
+
+    return in;
 }

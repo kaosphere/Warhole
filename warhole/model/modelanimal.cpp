@@ -1,4 +1,4 @@
-#include "modelanimal.h"
+ #include "modelanimal.h"
 
 // Default constructor
 ModelAnimal::ModelAnimal():

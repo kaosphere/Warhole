@@ -18,6 +18,44 @@ ModelMonster::ModelMonster(const QString &n, const QString &move, const QString 
     hasACrew = hasCrew;
 }
 
+ModelMonster::~ModelMonster()
+{
+}
+
+void ModelMonster::initModelMonsterSystem()
+{
+    qRegisterMetaTypeStreamOperators<ModelMonster>("ModelMonster");
+    qMetaTypeId<ModelMonster>();
+}
+
+void ModelMonster::load(QString path)
+{
+    ModelMonster temp;
+
+    QSettings readFile(path, QSettings::IniFormat);
+    temp = readFile.value("ModelMonster", qVariantFromValue(ModelMonster())).value<ModelMonster>();
+
+    stats = temp.getStats();
+    squareBaseW = temp.getSquareBaseW();
+    squareBaseL = temp.getSquareBaseL();
+    unitPower = temp.getUnitPower();
+
+    urlImage = temp.getUrlImage();
+
+    //image->load(urlImage);
+
+    figSupInd = temp.getFigSupInd();
+    specialRules = temp.getSpecialRules();
+}
+
+void ModelMonster::save(QString path)
+{
+    QFile::remove(path);
+    QSettings savedFile(path, QSettings::IniFormat);
+    savedFile.setValue("ModelMonster", qVariantFromValue(*this));
+    savedFile.sync();
+}
+
 QString ModelMonster::getSpecialRules() const
 {
     return specialRules;
@@ -57,4 +95,31 @@ bool ModelMonster::getHasACrew() const
 void ModelMonster::setHasACrew(bool value)
 {
     hasACrew = value;
+}
+
+QDataStream & operator <<(QDataStream & out, const ModelMonster & obj)
+{
+    out << obj.stats
+        << obj.squareBaseW
+        << obj.squareBaseL
+        << obj.unitPower
+        << obj.figSupInd
+        << obj.urlImage
+        << obj.specialRules
+        << obj.hasACrew;
+    return out;
+}
+
+QDataStream & operator >>(QDataStream & in, ModelMonster & obj)
+{
+    in >> obj.stats;
+    in >> obj.squareBaseW;
+    in >> obj.squareBaseL;
+    in >> obj.unitPower;
+    in >> obj.figSupInd;
+    in >> obj.urlImage;
+    in >> obj.specialRules;
+    in >> obj.hasACrew;
+
+     return in;
 }

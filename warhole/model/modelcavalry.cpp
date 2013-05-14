@@ -23,6 +23,11 @@ ModelCavalry::ModelCavalry(const ModelCavalry &copy) : ModelAbstract(copy)
     specialRules = copy.specialRules;
 }
 
+//Destructor
+ModelCavalry::~ModelCavalry()
+{
+}
+
 QString ModelCavalry::getSpecialRules() const
 {
     return specialRules;
@@ -33,5 +38,66 @@ void ModelCavalry::setSpecialRules(const QString &value)
     specialRules = value;
 }
 
+// Init for serialization
+void ModelCavalry::initModelCavalrySystem()
+{
+    qRegisterMetaTypeStreamOperators<ModelCavalry>("ModelCavalry");
+    qMetaTypeId<ModelCavalry>();
+}
 
+void  ModelCavalry::load(QString path)
+{
+    ModelCavalry temp;
 
+    QSettings readFile(path, QSettings::IniFormat);
+    temp = readFile.value(" ModelCavalry", qVariantFromValue(ModelCavalry())).value< ModelCavalry>();
+
+    stats = temp.getStats();
+    squareBaseW = temp.getSquareBaseW();
+    squareBaseL = temp.getSquareBaseL();
+    unitPower = temp.getUnitPower();
+
+    urlImage = temp.getUrlImage();
+
+    //image->load(urlImage);
+
+    figSupInd = temp.getFigSupInd();
+    specialRules = temp.getSpecialRules();
+}
+
+void ModelCavalry::save(QString path)
+{
+    QFile::remove(path);
+    QSettings savedFile(path, QSettings::IniFormat);
+    savedFile.setValue("ModelCavalry", qVariantFromValue(*this));
+    savedFile.sync();
+}
+
+// Overloading of << operator
+QDataStream & operator << (QDataStream & out, const ModelCavalry & obj)
+{
+    //out << obj.streamOut();
+    out << obj.stats
+        << obj.squareBaseW
+        << obj.squareBaseL
+        << obj.unitPower
+        << obj.figSupInd
+        << obj.urlImage
+        << obj.specialRules;
+    return out;
+}
+
+// Overloading of >> operator
+QDataStream & operator >> (QDataStream & in, ModelCavalry & obj)
+{
+    //obj.streamIn(in);
+    in >> obj.stats;
+    in >> obj.squareBaseW;
+    in >> obj.squareBaseL;
+    in >> obj.unitPower;
+    in >> obj.figSupInd;
+    in >> obj.urlImage;
+    in >> obj.specialRules;
+
+    return in;
+}

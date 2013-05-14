@@ -17,6 +17,44 @@ ModelWarMachine::ModelWarMachine(const QString &n, const QString &move, const QS
     specialRules = specRules;
 }
 
+ModelWarMachine::~ModelWarMachine()
+{
+}
+
+void ModelWarMachine::initModelWarMachine()
+{
+    qRegisterMetaTypeStreamOperators<ModelWarMachine>("ModelWarMachine");
+    qMetaTypeId<ModelWarMachine>();
+}
+
+void ModelWarMachine::load(QString path)
+{
+    ModelWarMachine temp;
+
+    QSettings readFile(path, QSettings::IniFormat);
+    temp = readFile.value("ModelWarMachine", qVariantFromValue(ModelWarMachine())).value<ModelWarMachine>();
+
+    stats = temp.getStats();
+    squareBaseW = temp.getSquareBaseW();
+    squareBaseL = temp.getSquareBaseL();
+    unitPower = temp.getUnitPower();
+
+    urlImage = temp.getUrlImage();
+
+    //image->load(urlImage);
+
+    figSupInd = temp.getFigSupInd();
+    specialRules = temp.getSpecialRules();
+}
+
+void ModelWarMachine::save(QString path)
+{
+    QFile::remove(path);
+    QSettings savedFile(path, QSettings::IniFormat);
+    savedFile.setValue("ModelWarMachine", qVariantFromValue(*this));
+    savedFile.sync();
+}
+
 QString ModelWarMachine::getSpecialRules() const
 {
     return specialRules;
@@ -45,4 +83,30 @@ void ModelWarMachine::addCrewMember(ModelInfantery *c)
 void ModelWarMachine::removeCrewMember(ModelInfantery *c)
 {
     crew.removeOne(c);
+}
+
+QDataStream & operator <<(QDataStream & out, const ModelWarMachine & obj)
+{
+    out << obj.stats
+        << obj.squareBaseW
+        << obj.squareBaseL
+        << obj.unitPower
+        << obj.figSupInd
+        << obj.urlImage
+        << obj.specialRules;
+
+    return out;
+}
+
+QDataStream & operator >>(QDataStream & in, ModelWarMachine & obj)
+{
+    in >> obj.stats;
+    in >> obj.squareBaseW;
+    in >> obj.squareBaseL;
+    in >> obj.unitPower;
+    in >> obj.figSupInd;
+    in >> obj.urlImage;
+    in >> obj.specialRules;
+
+    return in;
 }

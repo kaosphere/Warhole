@@ -32,6 +32,47 @@ ModelCharacter::ModelCharacter(const ModelCharacter &copy) : ModelAbstract(copy)
     isMounted = copy.isMounted;
 }
 
+ModelCharacter::~ModelCharacter()
+{
+}
+
+void ModelCharacter::initModelCharacterSystem()
+{
+    qRegisterMetaTypeStreamOperators<ModelCharacter>("ModelCharacter");
+    qMetaTypeId<ModelCharacter>();
+}
+
+void ModelCharacter::load(QString path)
+{
+    ModelCharacter temp;
+    QSettings readFile(path, QSettings::IniFormat);
+    temp = readFile.value("ModelCharacter", qVariantFromValue( ModelCharacter())).value< ModelCharacter>();
+
+    stats = temp.getStats();
+    squareBaseW = temp.getSquareBaseW();
+    squareBaseL = temp.getSquareBaseL();
+    unitPower = temp.getUnitPower();
+
+    urlImage = temp.getUrlImage();
+
+    //image->load(urlImage);
+
+    figSupInd = temp.getFigSupInd();
+    specialRules = temp.getSpecialRules();
+    isALord = temp.getIsALord();
+    isTheGeneral = temp.getIsTheGeneral();
+    isAMage = temp.getIsAMage();
+    isMounted = temp.getIsMounted();
+}
+
+void ModelCharacter::save(QString path)
+{
+    QFile::remove(path);
+    QSettings savedFile(path, QSettings::IniFormat);
+    savedFile.setValue("ModelCharacter", qVariantFromValue(*this));
+    savedFile.sync();
+}
+
 QString ModelCharacter::getSpecialRules() const
 {
     return specialRules;
@@ -80,4 +121,38 @@ bool ModelCharacter::getIsMounted() const
 void ModelCharacter::setIsMounted(bool value)
 {
     isMounted = value;
+}
+
+QDataStream & operator <<(QDataStream & out, const ModelCharacter & obj)
+{
+    //out << obj.streamOut();
+    out << obj.stats
+        << obj.squareBaseW
+        << obj.squareBaseL
+        << obj.unitPower
+        << obj.figSupInd
+        << obj.urlImage
+        << obj.specialRules
+        << obj.isALord
+        << obj.isTheGeneral
+        << obj.isAMage
+        << obj.isMounted;
+    return out;
+}
+
+QDataStream & operator >>(QDataStream & in, ModelCharacter & obj)
+{
+    in >> obj.stats;
+    in >> obj.squareBaseW;
+    in >> obj.squareBaseL;
+    in >> obj.unitPower;
+    in >> obj.figSupInd;
+    in >> obj.urlImage;
+    in >> obj.specialRules;
+    in >> obj.isALord;
+    in >> obj.isTheGeneral;
+    in >> obj.isAMage;
+    in >> obj.isMounted;
+
+    return in;
 }
