@@ -65,26 +65,6 @@ void ModelWarMachine::setSpecialRules(const QString &value)
     specialRules = value;
 }
 
-QList<ModelInfantery *> ModelWarMachine::getCrew() const
-{
-    return crew;
-}
-
-void ModelWarMachine::setCrew(const QList<ModelInfantery *> &value)
-{
-    crew = value;
-}
-
-void ModelWarMachine::addCrewMember(ModelInfantery *c)
-{
-    crew<<c;
-}
-
-void ModelWarMachine::removeCrewMember(ModelInfantery *c)
-{
-    crew.removeOne(c);
-}
-
 QDataStream & operator <<(QDataStream & out, const ModelWarMachine & obj)
 {
     out << obj.stats

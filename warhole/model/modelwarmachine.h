@@ -29,11 +29,6 @@ public:
     QString getSpecialRules() const;
     void setSpecialRules(const QString &value);
 
-    QList<ModelInfantery *> getCrew() const;
-    void setCrew(const QList<ModelInfantery *> &value);
-    void addCrewMember(ModelInfantery* c);
-    void removeCrewMember(ModelInfantery* c);
-
 private:
     QString specialRules;
     QList<ModelInfantery *> crew;
