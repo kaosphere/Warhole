@@ -66,46 +66,6 @@ void ModelCharriot::setSpecialRules(const QString &value)
     specialRules = value;
 }
 
-QList<ModelAnimal *> ModelCharriot::getMount() const
-{
-    return mounts;
-}
-
-void ModelCharriot::setMount(const QList<ModelAnimal *> &value)
-{
-    mounts = value;
-}
-
-void ModelCharriot::addMount(ModelAnimal *m)
-{
-    mounts<<m;
-}
-
-void ModelCharriot::removeMount(ModelAnimal *m)
-{
-    mounts.removeOne(m);
-}
-
-QList<ModelInfantery *> ModelCharriot::getCrew() const
-{
-    return crew;
-}
-
-void ModelCharriot::setCrew(const QList<ModelInfantery *> &value)
-{
-    crew = value;
-}
-
-void ModelCharriot::addCrew(ModelInfantery *c)
-{
-    crew<<c;
-}
-
-void ModelCharriot::removeCrew(ModelInfantery *c)
-{
-    crew.removeOne(c);
-}
-
 QDataStream & operator <<(QDataStream & out, const ModelCharriot & obj)
 {
     out << obj.stats

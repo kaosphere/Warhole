@@ -29,17 +29,6 @@ public:
     QString getSpecialRules() const;
     void setSpecialRules(const QString &value);
 
-
-    QList<ModelAnimal *> getMount() const;
-    void setMount(const QList<ModelAnimal *> &value);
-    void addMount(ModelAnimal* m);
-    void removeMount(ModelAnimal* m);
-
-    QList<ModelInfantery *> getCrew() const;
-    void setCrew(const QList<ModelInfantery *> &value);
-    void addCrew(ModelInfantery* c);
-    void removeCrew(ModelInfantery* c);
-
 private:
     QString specialRules;
     QList<ModelAnimal *> mounts;
