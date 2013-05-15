@@ -7,7 +7,7 @@
 
 #include "modelabstract.h"
 
-class ModelInfantery : protected ModelAbstract
+class ModelInfantery : public ModelAbstract
 {
 public:
     ModelInfantery();
