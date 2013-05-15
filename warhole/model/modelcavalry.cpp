@@ -50,7 +50,7 @@ void  ModelCavalry::load(QString path)
     ModelCavalry temp;
 
     QSettings readFile(path, QSettings::IniFormat);
-    temp = readFile.value(" ModelCavalry", qVariantFromValue(ModelCavalry())).value< ModelCavalry>();
+    temp = readFile.value("ModelCavalry", qVariantFromValue(ModelCavalry())).value< ModelCavalry>();
 
     stats = temp.getStats();
     squareBaseW = temp.getSquareBaseW();

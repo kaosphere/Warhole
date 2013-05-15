@@ -28,9 +28,6 @@ public:
     void load(QString path);
     void save(QString path);
 
-    //monture du cavalier
-    ModelAbstract *getMount() const;
-    void setMount(ModelAbstract *value);
 
 private:
     QString specialRules;
