@@ -348,12 +348,12 @@
         </item>
         <item>
          <property name="text">
-          <string>Monstre</string>
+          <string>Machine de guerre</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>Machine de guerre</string>
+          <string>Monstre</string>
          </property>
         </item>
         <item>
@@ -528,7 +528,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>612</x>
@@ -561,7 +561,7 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>611</x>
@@ -612,7 +612,7 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>611</x>
@@ -709,7 +709,7 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>190</x>
@@ -742,7 +742,7 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>190</x>

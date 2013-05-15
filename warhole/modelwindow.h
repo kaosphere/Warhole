@@ -6,8 +6,18 @@
 #include <QtCore>
 #include <QtWidgets>
 
+#include <typeinfo>
+
 #include "option/optionmodel.h"
 #include "model/modelanimal.h"
+#include "model/modelcavalry.h"
+#include "model/modelcharacter.h"
+#include "model/modelcharriot.h"
+#include "model/modelinfantery.h"
+#include "model/modelmonster.h"
+#include "model/modelwarmachine.h"
+
+#include "stats/statsmodel.h"
 
 namespace Ui {
 class ModelWindow;
@@ -30,7 +40,10 @@ public:
     void loadMonsterWidget();
     void loadWarMachineWidget();
     void loadWidgets(bool l);
-
+    void load(QString path);
+    void fillUI(ModelAbstract *m);
+    void setModelProperties(ModelAbstract *m);
+    void save(QString path);
 private slots:
     void on_comboUnitType_currentIndexChanged(int index);
     void on_toolButtonImage_pressed();
@@ -53,7 +66,15 @@ private:
     QStandardItemModel* options;
     QStandardItemModel* crew;
     QPixmap* image;
-    ModelAbstract* model;
+
+    ModelCavalry* cav;
+    ModelCharacter* hero;
+    ModelCharriot* charriot;
+    ModelInfantery* inf;
+    ModelMonster* monster;
+    ModelWarMachine* machine;
+
+    ModelAbstract* poupik;
 };
 
 #endif // MODELWINDOW_H

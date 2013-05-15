@@ -21,6 +21,13 @@ ModelWindow::ModelWindow(QWidget *parent) :
     ui->viewModelCrew->header()->hide();
 
     loadAnimalWidget();
+
+    cav = new ModelCavalry();
+    hero = new ModelCharacter();
+    charriot = new ModelCharriot();
+    inf = new ModelInfantery();
+    monster = new ModelMonster();
+    machine = new ModelWarMachine();
 }
 
 ModelWindow::ModelWindow(QString f, QWidget *parent) :
@@ -41,30 +48,14 @@ ModelWindow::ModelWindow(QString f, QWidget *parent) :
 
     loadAnimalWidget();
 
-    poupik.load(f);
+    cav = new ModelCavalry();
+    hero = new ModelCharacter();
+    charriot = new ModelCharriot();
+    inf = new ModelInfantery();
+    monster = new ModelMonster();
+    machine = new ModelWarMachine();
 
-    ui->lineEditName->setText(poupik.getStats().getName());
-    ui->spinPoints->setValue(poupik.getStats().getPoints());
-    ui->lineEditM->setText(poupik.getStats().getM());
-    ui->lineEditCC->setText(poupik.getStats().getWs());
-    ui->lineEditCT->setText(poupik.getStats().getBs());
-    ui->lineEditF->setText(poupik.getStats().getS());
-    ui->lineEditE->setText(poupik.getStats().getT());
-    ui->lineEditPV->setText(poupik.getStats().getW());
-    ui->lineEditI->setText(poupik.getStats().getI());
-    ui->lineEditA->setText(poupik.getStats().getA());
-    ui->lineEditCdt->setText(poupik.getStats().getLd());
-    ui->lineEditSvg->setText(poupik.getStats().getSvg());
-    ui->lineEditSvgInv->setText(poupik.getStats().getSvgInv());
-    ui->spinWidth->setValue(poupik.getSquareBaseW());
-    ui->spinLength->setValue(poupik.getSquareBaseL());
-    ui->spinPU->setValue(poupik.getUnitPower());
-    //ui->lineEditName->setText(poupik.getFigSupInd());
-    ui->lineEditImage->setText(poupik.getUrlImage());
-    ui->textEdit->append(poupik.getSpecialRules());
-
-    if(image->load(poupik.getUrlImage())) scene->addPixmap(*image);
-    else  QMessageBox::warning(this, "Info", "URL de l'image non valide");
+    load(f);
 }
 
 ModelWindow::~ModelWindow()
@@ -299,12 +290,6 @@ void ModelWindow::on_pushButtonSave_clicked()
         QMessageBox::warning(this, "Info", "Vous devez obligatoirement choisir une race, un type d'unité et remplir un nom et une image.");
         return;
     }
-    ModelAnimal poupik(ui->lineEditName->text(), ui->lineEditM->text(),ui->lineEditCC->text(),
-                                          ui->lineEditCT->text(), ui->lineEditF->text(),ui->lineEditE->text(),
-                                          ui->lineEditPV->text(), ui->lineEditI->text(), ui->lineEditA->text(),
-                                          ui->lineEditCdt->text(), ui->lineEditSvg->text(), ui->lineEditSvgInv->text(),ui->spinPoints->value(),
-                                          ui->spinWidth->value(), ui->spinLength->value(),ui->spinPU->value(), ui->lineEditImage->text(),
-                                          false, ui->textEdit->toPlainText());
 
     QString path = "models/" + ui->comboRace->itemText(ui->comboRace->currentIndex()) + "/" + ui->comboUnitType->itemText(ui->comboUnitType->currentIndex()) + "/" + ui->lineEditName->text() +".unit";
     QFile f;
@@ -315,7 +300,7 @@ void ModelWindow::on_pushButtonSave_clicked()
         int rep = QMessageBox::question(this,"Ecraser", "La figurine existe déjà, voulez vous l'écraser?", QMessageBox::Yes | QMessageBox::No);
         if (rep == QMessageBox::Yes)
         {
-            poupik.save(path);
+            save(path);
             QMessageBox::information(this, "Info", "Figurine sauvegardée avec succès.");
         }
         else if (rep == QMessageBox::No)
@@ -324,7 +309,7 @@ void ModelWindow::on_pushButtonSave_clicked()
         }
     }
     else{
-        poupik.save(path);
+        save(path);
         QMessageBox::information(this, "Info", "Figurine sauvegardée avec succès.");
     }
     this->close();
@@ -332,37 +317,147 @@ void ModelWindow::on_pushButtonSave_clicked()
 
 }
 
+void ModelWindow::fillUI(ModelAbstract* m)
+{
+    ui->lineEditName->setText(m->getStats().getName());
+    ui->spinPoints->setValue(m->getStats().getPoints());
+    ui->lineEditM->setText(m->getStats().getM());
+    ui->lineEditCC->setText(m->getStats().getWs());
+    ui->lineEditCT->setText(m->getStats().getBs());
+    ui->lineEditF->setText(m->getStats().getS());
+    ui->lineEditE->setText(m->getStats().getT());
+    ui->lineEditPV->setText(m->getStats().getW());
+    ui->lineEditI->setText(m->getStats().getI());
+    ui->lineEditA->setText(m->getStats().getA());
+    ui->lineEditCdt->setText(m->getStats().getLd());
+    ui->lineEditSvg->setText(m->getStats().getSvg());
+    ui->lineEditSvgInv->setText(m->getStats().getSvgInv());
+    ui->spinWidth->setValue(m->getSquareBaseW());
+    ui->spinLength->setValue(m->getSquareBaseL());
+    ui->spinPU->setValue(m->getUnitPower());
+    //ui->lineEditName->setText(poupik.getFigSupInd());
+    ui->lineEditImage->setText(m->getUrlImage());
+    //ui->textEdit->append(poupik->getSpecialRules());
+
+    if(image->load(m->getUrlImage())) scene->addPixmap(*image);
+    else  QMessageBox::warning(this, "Info", "URL de l'image non valide");
+
+    QMessageBox::information(this, "Info", "Figurine chargée : " + m->getStats().getName());
+}
+
+void ModelWindow::setModelProperties(ModelAbstract* m)
+{
+    StatsModel s(ui->lineEditName->text(), ui->lineEditM->text(),ui->lineEditCC->text(),
+                 ui->lineEditCT->text(), ui->lineEditF->text(),ui->lineEditE->text(),
+                 ui->lineEditPV->text(), ui->lineEditI->text(), ui->lineEditA->text(),
+                 ui->lineEditCdt->text(), ui->lineEditSvg->text(), ui->lineEditSvgInv->text(),ui->spinPoints->value());
+    m->setStats(s);
+    m->setSquareBaseW(ui->spinWidth->value());
+    m->setSquareBaseL(ui->spinLength->value());
+    m->setUnitPower(ui->spinPU->value());
+    m->setUrlImage(ui->lineEditImage->text());
+}
+
+void ModelWindow::save(QString path)
+{
+    switch(ui->comboUnitType->currentIndex())
+    {
+    case 1:
+        //caca
+        break;
+    case 2:
+        setModelProperties(static_cast<ModelAbstract*>(cav));
+        cav->setSpecialRules(ui->textEdit->toPlainText());
+        cav->save(path);
+        break;
+    case 3:
+        setModelProperties(static_cast<ModelAbstract*>(charriot));
+        charriot->setSpecialRules(ui->textEdit->toPlainText());
+        charriot->save(path);
+        break;
+    case 4:
+        setModelProperties(static_cast<ModelAbstract*>(inf));
+        inf->setSpecialRules(ui->textEdit->toPlainText());
+        inf->save(path);
+        break;
+    case 5:
+        setModelProperties(static_cast<ModelAbstract*>(machine));
+        machine->setSpecialRules(ui->textEdit->toPlainText());
+        machine->save(path);
+        break;
+    case 6:
+        setModelProperties(static_cast<ModelAbstract*>(monster));
+        monster->setSpecialRules(ui->textEdit->toPlainText());
+        monster->save(path);
+        break;
+    case 7:
+        setModelProperties(static_cast<ModelAbstract*>(hero));
+        hero->setSpecialRules(ui->textEdit->toPlainText());
+        hero->setIsALord(ui->checkLord->isChecked());
+        hero->setIsAMage(ui->checkMage->isChecked());
+        hero->setIsMounted(ui->checkMounted->isChecked());
+        hero->setIsTheGeneral(ui->checkGeneral->isChecked());
+        hero->save(path);
+        break;
+    default:
+        break;
+    }
+}
+
+void ModelWindow::load(QString path)
+{
+    QString s = path.section('/',-2,-2);
+    QMessageBox::information(this, "Info", "type de fig : " + s);
+
+    QStringList l;
+    l << "Cavalerie" << "Char" << "Infanterie" << "Personnage" << "Machine de guerre" << "Monstre";
+
+    switch(l.indexOf(s))
+    {
+    case 0:
+        cav->load(path);
+        fillUI(static_cast<ModelAbstract*>(cav));
+        ui->textEdit->append(cav->getSpecialRules());
+        break;
+    case 1:
+        charriot->load(path);
+        fillUI(static_cast<ModelAbstract*>(charriot));
+        ui->textEdit->append(charriot->getSpecialRules());
+        break;
+    case 2:
+        inf->load(path);
+        fillUI(static_cast<ModelAbstract*>(inf));
+        ui->textEdit->append(inf->getSpecialRules());
+        break;
+    case 3:
+        hero->load(path);
+        fillUI(static_cast<ModelAbstract*>(hero));
+        ui->textEdit->append(hero->getSpecialRules());
+        ui->checkLord->setChecked(hero->getIsALord());
+        ui->checkMage->setChecked(hero->getIsAMage());
+        ui->checkGeneral->setChecked(hero->getIsTheGeneral());
+        ui->checkMounted->setChecked(hero->getIsMounted());
+        break;
+    case 4:
+        machine->load(path);
+        fillUI(static_cast<ModelAbstract*>(machine));
+        ui->textEdit->append(machine->getSpecialRules());
+        break;
+    case 5:
+        monster->load(path);
+        fillUI(static_cast<ModelAbstract*>(monster));
+        ui->textEdit->append(monster->getSpecialRules());
+        break;
+    default:
+        break;
+    }
+}
+
 void ModelWindow::on_pushButtonLoad_clicked()
 {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open Model"), "./models", tr("Model files (*.unit)"));
 
-    poupik.load(fileName);
-
-    ui->lineEditName->setText(poupik.getStats().getName());
-    ui->spinPoints->setValue(poupik.getStats().getPoints());
-    ui->lineEditM->setText(poupik.getStats().getM());
-    ui->lineEditCC->setText(poupik.getStats().getWs());
-    ui->lineEditCT->setText(poupik.getStats().getBs());
-    ui->lineEditF->setText(poupik.getStats().getS());
-    ui->lineEditE->setText(poupik.getStats().getT());
-    ui->lineEditPV->setText(poupik.getStats().getW());
-    ui->lineEditI->setText(poupik.getStats().getI());
-    ui->lineEditA->setText(poupik.getStats().getA());
-    ui->lineEditCdt->setText(poupik.getStats().getLd());
-    ui->lineEditSvg->setText(poupik.getStats().getSvg());
-    ui->lineEditSvgInv->setText(poupik.getStats().getSvgInv());
-    ui->spinWidth->setValue(poupik.getSquareBaseW());
-    ui->spinLength->setValue(poupik.getSquareBaseL());
-    ui->spinPU->setValue(poupik.getUnitPower());
-    //ui->lineEditName->setText(poupik.getFigSupInd());
-    ui->lineEditImage->setText(poupik.getUrlImage());
-    ui->textEdit->append(poupik.getSpecialRules());
-
-    if(image->load(poupik.getUrlImage())) scene->addPixmap(*image);
-    else  QMessageBox::warning(this, "Info", "URL de l'image non valide");
-
-    QMessageBox::information(this, "Info", "Figurine chargée : " + poupik.getStats().getName());
-
+    load(fileName);
 }
 
 void ModelWindow::on_pushButtonAdd_clicked()
