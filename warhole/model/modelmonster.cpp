@@ -66,36 +66,6 @@ void ModelMonster::setSpecialRules(const QString &value)
     specialRules = value;
 }
 
-QList<ModelInfantery *> ModelMonster::getCrew() const
-{
-    return crew;
-}
-
-void ModelMonster::setCrew(const QList<ModelInfantery *> &value)
-{
-    crew = value;
-}
-
-void ModelMonster::addCrewMember(ModelInfantery *c)
-{
-    crew<<c;
-}
-
-void ModelMonster::removeCrewMember(ModelInfantery *c)
-{
-    crew.removeOne(c);
-}
-
-
-bool ModelMonster::getHasACrew() const
-{
-    return hasACrew;
-}
-
-void ModelMonster::setHasACrew(bool value)
-{
-    hasACrew = value;
-}
 
 QDataStream & operator <<(QDataStream & out, const ModelMonster & obj)
 {
