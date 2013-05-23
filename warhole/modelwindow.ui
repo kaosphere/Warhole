@@ -19,7 +19,7 @@
      <x>40</x>
      <y>90</y>
      <width>141</width>
-     <height>88</height>
+     <height>105</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -273,12 +273,12 @@
         </item>
         <item>
          <property name="text">
-          <string>Hommes bêtes</string>
+          <string>Hommes betes</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>Hommes lézards</string>
+          <string>Hommes lezards</string>
          </property>
         </item>
         <item>
@@ -464,7 +464,7 @@
      <x>190</x>
      <y>90</y>
      <width>399</width>
-     <height>19</height>
+     <height>20</height>
     </rect>
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout_20">
@@ -534,7 +534,7 @@
      <x>612</x>
      <y>254</y>
      <width>231</width>
-     <height>43</height>
+     <height>51</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -748,7 +748,7 @@
      <x>190</x>
      <y>130</y>
      <width>401</width>
-     <height>193</height>
+     <height>202</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_21">
