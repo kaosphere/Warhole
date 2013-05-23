@@ -63,6 +63,8 @@ void ModelCharacter::load(QString path)
     isTheGeneral = temp.getIsTheGeneral();
     isAMage = temp.getIsAMage();
     isMounted = temp.getIsMounted();
+
+    options = temp.getOptions();
 }
 
 void ModelCharacter::save(QString path)
@@ -126,12 +128,7 @@ void ModelCharacter::setIsMounted(bool value)
 QDataStream & operator <<(QDataStream & out, const ModelCharacter & obj)
 {
     //out << obj.streamOut();
-    out << obj.stats
-        << obj.squareBaseW
-        << obj.squareBaseL
-        << obj.unitPower
-        << obj.figSupInd
-        << obj.urlImage
+    out << static_cast<ModelAbstract>(obj)
         << obj.specialRules
         << obj.isALord
         << obj.isTheGeneral
@@ -142,12 +139,7 @@ QDataStream & operator <<(QDataStream & out, const ModelCharacter & obj)
 
 QDataStream & operator >>(QDataStream & in, ModelCharacter & obj)
 {
-    in >> obj.stats;
-    in >> obj.squareBaseW;
-    in >> obj.squareBaseL;
-    in >> obj.unitPower;
-    in >> obj.figSupInd;
-    in >> obj.urlImage;
+    in >> static_cast<ModelAbstract&>(obj);
     in >> obj.specialRules;
     in >> obj.isALord;
     in >> obj.isTheGeneral;

@@ -45,6 +45,8 @@ void ModelWarMachine::load(QString path)
 
     figSupInd = temp.getFigSupInd();
     specialRules = temp.getSpecialRules();
+
+    options = temp.getOptions();
 }
 
 void ModelWarMachine::save(QString path)
@@ -67,12 +69,7 @@ void ModelWarMachine::setSpecialRules(const QString &value)
 
 QDataStream & operator <<(QDataStream & out, const ModelWarMachine & obj)
 {
-    out << obj.stats
-        << obj.squareBaseW
-        << obj.squareBaseL
-        << obj.unitPower
-        << obj.figSupInd
-        << obj.urlImage
+    out << static_cast<ModelAbstract>(obj)
         << obj.specialRules;
 
     return out;
@@ -80,12 +77,7 @@ QDataStream & operator <<(QDataStream & out, const ModelWarMachine & obj)
 
 QDataStream & operator >>(QDataStream & in, ModelWarMachine & obj)
 {
-    in >> obj.stats;
-    in >> obj.squareBaseW;
-    in >> obj.squareBaseL;
-    in >> obj.unitPower;
-    in >> obj.figSupInd;
-    in >> obj.urlImage;
+    in >> static_cast<ModelAbstract&>(obj);
     in >> obj.specialRules;
 
     return in;

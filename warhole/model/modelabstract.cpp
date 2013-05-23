@@ -55,6 +55,7 @@ ModelAbstract::ModelAbstract(const ModelAbstract &copy)
     squareBaseW = copy.squareBaseW;
     squareBaseL = copy.squareBaseL;
     unitPower = copy.unitPower;
+    options = copy.options;
 }
 
 ModelAbstract::~ModelAbstract(){}
@@ -134,7 +135,9 @@ void ModelAbstract::setOptions(const QList<OptionModel> &value)
 
 void ModelAbstract::addOption(OptionModel opt)
 {
-    options<<opt;
+    options << opt;
+
+    //std::cout << options[0].getName().toStdString();
 }
 
 void ModelAbstract::removeOption(OptionModel opt)
@@ -152,28 +155,43 @@ void ModelAbstract::setUrlImage(const QString &value)
     urlImage = value;
 }
 
-
-
-QDataStream & ModelAbstract::streamOut() const
+QDataStream &operator <<(QDataStream & out, const ModelAbstract & obj)
 {
-    QDataStream out;
-    //out << stats
-    out << squareBaseW
-        << squareBaseL
-        << unitPower
-        << figSupInd
-        << urlImage;
+    out << obj.stats
+        << obj.squareBaseW
+        << obj.squareBaseL
+        << obj.unitPower
+        << obj.figSupInd
+        << obj.urlImage
+        << obj.options.size();
 
+    for(int i = 0 ; i < obj.options.size() ; i++)
+    {
+        out << obj.options[i];
+    }
 
     return out;
 }
 
-void ModelAbstract::streamIn(QDataStream & in)
+QDataStream &operator >>(QDataStream & in, ModelAbstract & obj)
 {
-    //in >> stats;
-    in >> squareBaseW;
-    in >> squareBaseL;
-    in >> unitPower;
-    in >> figSupInd;
-    in >> urlImage;
+    int nb;
+
+    in >> obj.stats;
+    in >> obj.squareBaseW;
+    in >> obj.squareBaseL;
+    in >> obj.unitPower;
+    in >> obj.figSupInd;
+    in >> obj.urlImage;
+
+    in >> nb;
+
+    for(int i = 0 ; i < nb ; i++)
+    {
+        OptionModel o;
+        in >> o;
+        obj.addOption(o);
+    }
+
+    return in;
 }

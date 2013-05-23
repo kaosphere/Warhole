@@ -46,6 +46,8 @@ void ModelCharriot::load(QString path)
 
     figSupInd = temp.getFigSupInd();
     specialRules = temp.getSpecialRules();
+
+    options = temp.getOptions();
 }
 
 void ModelCharriot::save(QString path)
@@ -68,24 +70,14 @@ void ModelCharriot::setSpecialRules(const QString &value)
 
 QDataStream & operator <<(QDataStream & out, const ModelCharriot & obj)
 {
-    out << obj.stats
-        << obj.squareBaseW
-        << obj.squareBaseL
-        << obj.unitPower
-        << obj.figSupInd
-        << obj.urlImage
+    out << static_cast<ModelAbstract>(obj)
         << obj.specialRules;
     return out;
 }
 
 QDataStream & operator >>(QDataStream & in, ModelCharriot & obj)
 {
-    in >> obj.stats;
-    in >> obj.squareBaseW;
-    in >> obj.squareBaseL;
-    in >> obj.unitPower;
-    in >> obj.figSupInd;
-    in >> obj.urlImage;
+    in >> static_cast<ModelAbstract&>(obj);
     in >> obj.specialRules;
 
     return in;

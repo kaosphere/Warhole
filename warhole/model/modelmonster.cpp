@@ -46,6 +46,8 @@ void ModelMonster::load(QString path)
 
     figSupInd = temp.getFigSupInd();
     specialRules = temp.getSpecialRules();
+
+    options = temp.getOptions();
 }
 
 void ModelMonster::save(QString path)
@@ -69,12 +71,7 @@ void ModelMonster::setSpecialRules(const QString &value)
 
 QDataStream & operator <<(QDataStream & out, const ModelMonster & obj)
 {
-    out << obj.stats
-        << obj.squareBaseW
-        << obj.squareBaseL
-        << obj.unitPower
-        << obj.figSupInd
-        << obj.urlImage
+    out << static_cast<ModelAbstract>(obj)
         << obj.specialRules
         << obj.hasACrew;
     return out;
@@ -82,12 +79,7 @@ QDataStream & operator <<(QDataStream & out, const ModelMonster & obj)
 
 QDataStream & operator >>(QDataStream & in, ModelMonster & obj)
 {
-    in >> obj.stats;
-    in >> obj.squareBaseW;
-    in >> obj.squareBaseL;
-    in >> obj.unitPower;
-    in >> obj.figSupInd;
-    in >> obj.urlImage;
+    in >> static_cast<ModelAbstract&>(obj);
     in >> obj.specialRules;
     in >> obj.hasACrew;
 

@@ -41,7 +41,7 @@ public:
     void loadWarMachineWidget();
     void loadWidgets(bool l);
     void load(QString path);
-    void fillUI(ModelAbstract *m);
+    void fillUI(ModelAbstract *m, QString path);
     void setModelProperties(ModelAbstract *m);
     void save(QString path);
 private slots:

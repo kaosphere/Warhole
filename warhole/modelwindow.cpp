@@ -317,8 +317,14 @@ void ModelWindow::on_pushButtonSave_clicked()
 
 }
 
-void ModelWindow::fillUI(ModelAbstract* m)
+void ModelWindow::fillUI(ModelAbstract* m, QString path)
 {
+    QString type = path.section('/',-2,-2);
+    QString race = path.section('/',-3,-3);
+
+    ui->comboRace->setCurrentText(race);
+    ui->comboUnitType->setCurrentText(type);
+
     ui->lineEditName->setText(m->getStats().getName());
     ui->spinPoints->setValue(m->getStats().getPoints());
     ui->lineEditM->setText(m->getStats().getM());
@@ -342,6 +348,17 @@ void ModelWindow::fillUI(ModelAbstract* m)
     if(image->load(m->getUrlImage())) scene->addPixmap(*image);
     else  QMessageBox::warning(this, "Info", "URL de l'image non valide");
 
+    for(int i = 0 ; i < m->getOptions().length() ; i++)
+    {
+        QList<QStandardItem *> newOption;
+
+        newOption<<new QStandardItem(m->getOptions()[i].getName())
+                <<new QStandardItem(QString::number(m->getOptions()[i].getNbPoints()))
+               <<new QStandardItem(m->getOptions()[i].getSpecialRules());
+
+        options->appendRow(newOption);
+    }
+
     QMessageBox::information(this, "Info", "Figurine chargée : " + m->getStats().getName());
 }
 
@@ -356,10 +373,41 @@ void ModelWindow::setModelProperties(ModelAbstract* m)
     m->setSquareBaseL(ui->spinLength->value());
     m->setUnitPower(ui->spinPU->value());
     m->setUrlImage(ui->lineEditImage->text());
+
+    //opTions
+    for(int i = 0; i< options->rowCount(); i++)
+    {
+        OptionModel o;
+        for(int j = 0; j < options->columnCount(); j++)
+        {
+
+            QStandardItem* item = options->item(i,j);
+            //QMessageBox::information(this, "Info", item->text());
+
+            switch(j)
+            {
+                case 0:
+                    o.setName(item->text());
+                    break;
+                case 1:
+                    o.setNbPoints(item->text().toUInt());
+                    //QMessageBox::information(this, "Info", o.getNbPoints());
+                    break;
+                case 2:
+                    o.setSpecialRules(item->text());
+                    break;
+                default:
+                    break;
+            }
+            o.setActivated(false);
+        }
+        m->addOption(o);
+    }
 }
 
 void ModelWindow::save(QString path)
 {
+    int nb;
     switch(ui->comboUnitType->currentIndex())
     {
     case 1:
@@ -416,22 +464,22 @@ void ModelWindow::load(QString path)
     {
     case 0:
         cav->load(path);
-        fillUI(static_cast<ModelAbstract*>(cav));
+        fillUI(static_cast<ModelAbstract*>(cav), path);
         ui->textEdit->append(cav->getSpecialRules());
         break;
     case 1:
         charriot->load(path);
-        fillUI(static_cast<ModelAbstract*>(charriot));
+        fillUI(static_cast<ModelAbstract*>(charriot), path);
         ui->textEdit->append(charriot->getSpecialRules());
         break;
     case 2:
         inf->load(path);
-        fillUI(static_cast<ModelAbstract*>(inf));
+        fillUI(static_cast<ModelAbstract*>(inf), path);
         ui->textEdit->append(inf->getSpecialRules());
         break;
     case 3:
         hero->load(path);
-        fillUI(static_cast<ModelAbstract*>(hero));
+        fillUI(static_cast<ModelAbstract*>(hero), path);
         ui->textEdit->append(hero->getSpecialRules());
         ui->checkLord->setChecked(hero->getIsALord());
         ui->checkMage->setChecked(hero->getIsAMage());
@@ -440,12 +488,12 @@ void ModelWindow::load(QString path)
         break;
     case 4:
         machine->load(path);
-        fillUI(static_cast<ModelAbstract*>(machine));
+        fillUI(static_cast<ModelAbstract*>(machine), path);
         ui->textEdit->append(machine->getSpecialRules());
         break;
     case 5:
         monster->load(path);
-        fillUI(static_cast<ModelAbstract*>(monster));
+        fillUI(static_cast<ModelAbstract*>(monster), path);
         ui->textEdit->append(monster->getSpecialRules());
         break;
     default:

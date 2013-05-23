@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QtCore>
 #include <QtWidgets>
+#include <iostream>
 
 #include "option/optionmodel.h"
 #include "stats/statsmodel.h"
@@ -52,10 +53,6 @@ public:
     QString getUrlImage() const;
     void setUrlImage(const QString &value);
 
-    QDataStream & streamOut() const;
-    void streamIn(QDataStream &in);
-
-
 protected:
 
     StatsModel stats;
@@ -73,6 +70,8 @@ protected:
 
     QList<OptionModel> options;   //list of options possible for model
 
+    friend QDataStream & operator << (QDataStream &, const ModelAbstract &);
+    friend QDataStream & operator >> (QDataStream &, ModelAbstract &);
     
 public slots:
 
