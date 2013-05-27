@@ -60,6 +60,13 @@ ModelWindow::ModelWindow(QString f, QWidget *parent) :
 
 ModelWindow::~ModelWindow()
 {
+    delete cav;
+    delete hero;
+    delete charriot;
+    delete inf;
+    delete monster;
+    delete machine;
+
     delete ui;
 }
 
