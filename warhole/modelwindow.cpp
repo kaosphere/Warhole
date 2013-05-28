@@ -244,8 +244,10 @@ void ModelWindow::on_pushButtonCancel_clicked()
 void ModelWindow::on_addOption_clicked()
 {
     bool ok;
+    //check if the point number for the option is an integer
     ui->lineEditOptionPts->text().toUInt(&ok);
 
+    //save it if nbPoints is integer
     if(ok)
     {
         QList<QStandardItem *> newOption;
@@ -260,6 +262,7 @@ void ModelWindow::on_addOption_clicked()
         ui->lineEditOptionPts->clear();
         ui->lineEditOptionSpec->clear();
     }
+    //don't do anything if not
     else
     {
         QMessageBox::warning(this, "Erreur", "Le nombre de point doit être un nombre entier.");
@@ -353,8 +356,6 @@ void ModelWindow::fillUI(ModelAbstract* m, QString path)
 
         options->appendRow(newOption);
     }
-
-    QMessageBox::information(this, "Info", "Figurine chargée : " + m->getStats().getName());
 }
 
 void ModelWindow::setModelProperties(ModelAbstract* m)
@@ -449,8 +450,6 @@ void ModelWindow::save(QString path)
 void ModelWindow::load(QString path)
 {
     QString s = path.section('/',-2,-2);
-    QMessageBox::information(this, "Info", "type de fig : " + s);
-
     QStringList l;
     l << "Cavalerie" << "Char" << "Infanterie" << "Personnage" << "Machine de guerre" << "Monstre";
 
