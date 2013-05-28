@@ -382,6 +382,9 @@ void ModelWindow::setModelProperties(ModelAbstract* m)
     m->setUrlImage(ui->lineEditImage->text());
 
     //opTions
+    //remove options not to make doubles
+    m->clearOptions();
+    //then fill options again
     for(int i = 0; i< options->rowCount(); i++)
     {
         OptionModel o;
@@ -470,21 +473,37 @@ void ModelWindow::load(QString path)
     switch(l.indexOf(s))
     {
     case 0:
+        //delete object first to prevent options to stack
+        delete cav;
+        cav = new ModelCavalry();
+        //load
         cav->load(path);
         fillUI(static_cast<ModelAbstract*>(cav), path);
         ui->textEdit->append(cav->getSpecialRules());
         break;
     case 1:
+        //delete object first to prevent options to stack
+        delete charriot;
+        charriot = new ModelCharriot();
+        //load
         charriot->load(path);
         fillUI(static_cast<ModelAbstract*>(charriot), path);
         ui->textEdit->append(charriot->getSpecialRules());
         break;
     case 2:
+        //delete object first to prevent options to stack
+        delete inf;
+        inf = new ModelInfantery();
+        //load
         inf->load(path);
         fillUI(static_cast<ModelAbstract*>(inf), path);
         ui->textEdit->append(inf->getSpecialRules());
         break;
     case 3:
+        //delete object first to prevent options to stack
+        delete hero;
+        hero = new ModelCharacter();
+        //load
         hero->load(path);
         fillUI(static_cast<ModelAbstract*>(hero), path);
         ui->textEdit->append(hero->getSpecialRules());
@@ -494,11 +513,19 @@ void ModelWindow::load(QString path)
         ui->checkMounted->setChecked(hero->getIsMounted());
         break;
     case 4:
+        //delete object first to prevent options to stack
+        delete machine;
+        machine = new ModelWarMachine();
+        //load
         machine->load(path);
         fillUI(static_cast<ModelAbstract*>(machine), path);
         ui->textEdit->append(machine->getSpecialRules());
         break;
     case 5:
+        //delete object first to prevent options to stack
+        delete monster;
+        monster = new ModelMonster();
+        //load
         monster->load(path);
         fillUI(static_cast<ModelAbstract*>(monster), path);
         ui->textEdit->append(monster->getSpecialRules());
@@ -512,6 +539,30 @@ void ModelWindow::on_pushButtonLoad_clicked()
 {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open Model"), "./models", tr("Model files (*.unit)"));
 
+    //clean all ui
+    ui->comboRace->setCurrentIndex(0);
+    ui->comboUnitType->setCurrentIndex(0);
+
+    ui->lineEditA->clear();
+    ui->lineEditCC->clear();
+    ui->lineEditCdt->clear();
+    ui->lineEditCT->clear();
+    ui->lineEditE->clear();
+    ui->lineEditF->clear();
+    ui->lineEditSvgInv->clear();
+    ui->lineEditSvg->clear();
+    ui->lineEditPV->clear();
+    ui->lineEditName->clear();
+    ui->lineEditM->clear();
+    ui->lineEditImage->clear();
+    ui->lineEditI->clear();
+    ui->textEdit->clear();
+    ui->spinPoints->clear();
+    ui->spinPU->clear();
+
+    options->clear();
+
+    //load the file
     load(fileName);
 }
 

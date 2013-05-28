@@ -145,6 +145,11 @@ void ModelAbstract::removeOption(OptionModel opt)
     options.removeOne(opt);
 }
 
+void ModelAbstract::clearOptions()
+{
+    options.clear();
+}
+
 QString ModelAbstract::getUrlImage() const
 {
     return urlImage;

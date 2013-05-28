@@ -49,6 +49,7 @@ public:
     void setOptions(const QList<OptionModel> &value);
     void addOption(OptionModel opt);
     void removeOption(OptionModel opt);
+    void clearOptions();
 
     QString getUrlImage() const;
     void setUrlImage(const QString &value);
