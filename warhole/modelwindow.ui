@@ -708,7 +708,7 @@
    <property name="geometry">
     <rect>
      <x>190</x>
-     <y>330</y>
+     <y>340</y>
      <width>401</width>
      <height>231</height>
     </rect>
@@ -725,13 +725,6 @@
       </item>
       <item>
        <widget class="QTreeView" name="viewModelCrew"/>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButtonAdd_2">
-        <property name="text">
-         <string>supprimer</string>
-        </property>
-       </widget>
       </item>
      </layout>
     </item>
@@ -956,6 +949,13 @@
      <widget class="QPushButton" name="pushButtonAdd">
       <property name="text">
        <string>ajouter</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="pushButtonAdd_2">
+      <property name="text">
+       <string>supprimer</string>
       </property>
      </widget>
     </item>
