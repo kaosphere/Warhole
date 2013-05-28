@@ -328,11 +328,6 @@
         </item>
         <item>
          <property name="text">
-          <string>Animal (montures et chars)</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
           <string>Cavalerie</string>
          </property>
         </item>

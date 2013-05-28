@@ -20,8 +20,6 @@ ModelWindow::ModelWindow(QWidget *parent) :
     ui->viewModelCrew->setModel(crew);
     ui->viewModelCrew->header()->hide();
 
-    loadAnimalWidget();
-
     cav = new ModelCavalry();
     hero = new ModelCharacter();
     charriot = new ModelCharriot();
@@ -45,8 +43,6 @@ ModelWindow::ModelWindow(QString f, QWidget *parent) :
 
     ui->viewOptions->setModel(options);
     ui->viewOptions->header()->hide();
-
-    loadAnimalWidget();
 
     cav = new ModelCavalry();
     hero = new ModelCharacter();
@@ -107,21 +103,6 @@ void ModelWindow::loadWidgets(bool l)
     ui->pushButtonAdd->setVisible(l);
 
 
-}
-
-void ModelWindow::loadAnimalWidget()
-{
-    ui->spinWidth->setValue(25);
-    ui->spinLength->setValue(50);
-
-    //hide character checkboxes
-    ui->checkGB->setEnabled(false);
-    ui->checkGeneral->setEnabled(false);
-    ui->checkLord->setEnabled(false);
-    ui->checkMage->setEnabled(false);
-    ui->checkMounted->setEnabled(false);
-
-    loadWidgets(false);
 }
 
 void ModelWindow::loadCavaleryWidget()
@@ -219,24 +200,21 @@ void ModelWindow::on_comboUnitType_currentIndexChanged(int index)
     switch(index)
     {
         case 1:
-            loadAnimalWidget();
-            break;
-        case 2:
             loadCavaleryWidget();
             break;
-        case 3:
+        case 2:
             loadCharriotWidget();
             break;
-        case 4:
+        case 3:
             loadInfanteryWidget();
             break;
-        case 5:
+        case 4:
             loadMonsterWidget();
             break;
-        case 6:
+        case 5:
             loadWarMachineWidget();
             break;
-        case 7:
+        case 6:
             loadCharacterWidget();
             break;
         default:
@@ -417,38 +395,34 @@ void ModelWindow::setModelProperties(ModelAbstract* m)
 
 void ModelWindow::save(QString path)
 {
-    int nb;
     switch(ui->comboUnitType->currentIndex())
     {
     case 1:
-        //caca
-        break;
-    case 2:
         setModelProperties(static_cast<ModelAbstract*>(cav));
         cav->setSpecialRules(ui->textEdit->toPlainText());
         cav->save(path);
         break;
-    case 3:
+    case 2:
         setModelProperties(static_cast<ModelAbstract*>(charriot));
         charriot->setSpecialRules(ui->textEdit->toPlainText());
         charriot->save(path);
         break;
-    case 4:
+    case 3:
         setModelProperties(static_cast<ModelAbstract*>(inf));
         inf->setSpecialRules(ui->textEdit->toPlainText());
         inf->save(path);
         break;
-    case 5:
+    case 4:
         setModelProperties(static_cast<ModelAbstract*>(machine));
         machine->setSpecialRules(ui->textEdit->toPlainText());
         machine->save(path);
         break;
-    case 6:
+    case 5:
         setModelProperties(static_cast<ModelAbstract*>(monster));
         monster->setSpecialRules(ui->textEdit->toPlainText());
         monster->save(path);
         break;
-    case 7:
+    case 6:
         setModelProperties(static_cast<ModelAbstract*>(hero));
         hero->setSpecialRules(ui->textEdit->toPlainText());
         hero->setIsALord(ui->checkLord->isChecked());
