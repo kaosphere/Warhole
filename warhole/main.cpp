@@ -13,7 +13,6 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    ModelAnimal::initModelAnimalSystem();
     ModelCavalry::initModelCavalrySystem();
     ModelCharacter::initModelCharacterSystem();
     ModelCharriot::initModelCharriotSystem();
