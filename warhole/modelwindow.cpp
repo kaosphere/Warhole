@@ -243,17 +243,27 @@ void ModelWindow::on_pushButtonCancel_clicked()
 
 void ModelWindow::on_addOption_clicked()
 {
-    QList<QStandardItem *> newOption;
+    bool ok;
+    ui->lineEditOptionPts->text().toUInt(&ok);
 
-    newOption<<new QStandardItem(ui->lineOptionName->text())
-            <<new QStandardItem(ui->lineEditOptionPts->text())
-           <<new QStandardItem(ui->lineEditOptionSpec->text());
+    if(ok)
+    {
+        QList<QStandardItem *> newOption;
 
-    options->appendRow(newOption);
+        newOption<<new QStandardItem(ui->lineOptionName->text())
+                <<new QStandardItem(ui->lineEditOptionPts->text())
+               <<new QStandardItem(ui->lineEditOptionSpec->text());
 
-    ui->lineOptionName->clear();
-    ui->lineEditOptionPts->clear();
-    ui->lineEditOptionSpec->clear();
+        options->appendRow(newOption);
+
+        ui->lineOptionName->clear();
+        ui->lineEditOptionPts->clear();
+        ui->lineEditOptionSpec->clear();
+    }
+    else
+    {
+        QMessageBox::warning(this, "Erreur", "Le nombre de point doit être un nombre entier.");
+    }
 }
 
 void ModelWindow::on_deleteOption_clicked()
