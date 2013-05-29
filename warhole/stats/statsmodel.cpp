@@ -11,7 +11,7 @@ StatsModel::StatsModel(const StatsModel &stat)
     ws = stat.ws;
     bs = stat.bs;
     s = stat.s;
-    t = stat.s;
+    t = stat.t;
     w = stat.w;
     i = stat.i;
     a = stat.a;

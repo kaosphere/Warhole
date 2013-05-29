@@ -622,7 +622,7 @@
       <item>
        <widget class="QLabel" name="label_23">
         <property name="text">
-         <string>Options possibles pour la figurine (Armes, boucliers ...)</string>
+         <string>Options possibles pour la figurine (Armes, boucliers, objets magiques ...)</string>
         </property>
        </widget>
       </item>
@@ -719,7 +719,7 @@
       <item>
        <widget class="QLabel" name="label_28">
         <property name="text">
-         <string>Statistiques des conducteurs de chars</string>
+         <string>Statistiques des montures et conducteurs de chars</string>
         </property>
        </widget>
       </item>
@@ -771,11 +771,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QSpinBox" name="spinPoints2">
-        <property name="maximum">
-         <number>999</number>
-        </property>
-       </widget>
+       <widget class="QLineEdit" name="lineEditPts2"/>
       </item>
      </layout>
     </item>
@@ -858,6 +854,20 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_48">
         <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_50">
+          <item>
+           <widget class="QLabel" name="label_62">
+            <property name="text">
+             <string>PV  </string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="lineEditPV2"/>
+          </item>
+         </layout>
+        </item>
+        <item>
          <widget class="QLabel" name="label_60">
           <property name="text">
            <string>I    </string>
@@ -880,20 +890,6 @@
         </item>
         <item>
          <widget class="QLineEdit" name="lineEditA2"/>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_50">
-        <item>
-         <widget class="QLabel" name="label_62">
-          <property name="text">
-           <string>PV  </string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLineEdit" name="lineEditPV2"/>
         </item>
        </layout>
       </item>
@@ -953,7 +949,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QPushButton" name="pushButtonAdd_2">
+     <widget class="QPushButton" name="pushButtonRmv">
       <property name="text">
        <string>supprimer</string>
       </property>

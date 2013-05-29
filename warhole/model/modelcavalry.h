@@ -28,9 +28,16 @@ public:
     void load(QString path);
     void save(QString path);
 
+    QList<StatsModel> getMount() const;
+    void setMount(const QList<StatsModel> &value);
+
+    void addMount(StatsModel m);
+    void clearMount();
 
 private:
     QString specialRules;
+    QList<StatsModel> mount;
+
     //ModelAbstract* mount;
     friend QDataStream & operator << (QDataStream &, const ModelCavalry &);
     friend QDataStream & operator >> (QDataStream &, ModelCavalry &);

@@ -44,20 +44,16 @@ public:
     void fillUI(ModelAbstract *m, QString path);
     void setModelProperties(ModelAbstract *m);
     void save(QString path);
+
 private slots:
     void on_comboUnitType_currentIndexChanged(int index);
     void on_toolButtonImage_pressed();
     void on_pushButtonCancel_clicked();
     void on_addOption_clicked();
-
     void on_deleteOption_clicked();
-
     void on_pushButtonSave_clicked();
-
     void on_pushButtonLoad_clicked();
-
     void on_pushButtonAdd_clicked();
-
     void on_pushButtonAdd_2_clicked();
 
 private:

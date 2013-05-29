@@ -26,6 +26,8 @@ ModelWindow::ModelWindow(QWidget *parent) :
     inf = new ModelInfantery();
     monster = new ModelMonster();
     machine = new ModelWarMachine();
+
+    loadInfanteryWidget();
 }
 
 ModelWindow::ModelWindow(QString f, QWidget *parent) :
@@ -40,9 +42,13 @@ ModelWindow::ModelWindow(QString f, QWidget *parent) :
     ui->graphicsView->setScene(scene);
 
     options = new QStandardItemModel();
+    crew = new QStandardItemModel();
 
     ui->viewOptions->setModel(options);
     ui->viewOptions->header()->hide();
+
+    ui->viewModelCrew->setModel(crew);
+    ui->viewModelCrew->header()->hide();
 
     cav = new ModelCavalry();
     hero = new ModelCharacter();
@@ -50,6 +56,8 @@ ModelWindow::ModelWindow(QString f, QWidget *parent) :
     inf = new ModelInfantery();
     monster = new ModelMonster();
     machine = new ModelWarMachine();
+
+    loadInfanteryWidget();
 
     load(f);
 }
@@ -63,13 +71,15 @@ ModelWindow::~ModelWindow()
     delete monster;
     delete machine;
 
+    delete crew;
+    delete options;
+    delete scene;
+
     delete ui;
 }
 
 void ModelWindow::loadWidgets(bool l)
 {
-    ui->viewModelCrew->setEnabled(l);
-
     ui->lineEditA2->setVisible(l);
     ui->lineEditCC2->setVisible(l);
     ui->lineEditCdt2->setVisible(l);
@@ -83,7 +93,7 @@ void ModelWindow::loadWidgets(bool l)
     ui->lineEditSvg2->setVisible(l);
     ui->lineEditM2->setVisible(l);
     ui->lineEditName2->setVisible(l);
-    ui->spinPoints2->setVisible(l);
+    ui->lineEditPts2->setVisible(l);
 
     ui->label_54->setVisible(l);
     ui->label_55->setVisible(l);
@@ -101,8 +111,9 @@ void ModelWindow::loadWidgets(bool l)
     ui->label_67->setVisible(l);
 
     ui->pushButtonAdd->setVisible(l);
+    ui->pushButtonRmv->setVisible(l);
 
-
+    ui->viewModelCrew->setVisible(l);
 }
 
 void ModelWindow::loadCavaleryWidget()
@@ -411,6 +422,64 @@ void ModelWindow::save(QString path)
     case 1:
         setModelProperties(static_cast<ModelAbstract*>(cav));
         cav->setSpecialRules(ui->textEdit->toPlainText());
+        //fill stats if its a cav, charriot or character
+        cav->clearMount();
+        for(int i = 0; i< crew->rowCount(); i++)
+        {
+            StatsModel s;
+            for(int j = 0; j < crew->columnCount(); j++)
+            {
+
+                QStandardItem* item = crew->item(i,j);
+                //QMessageBox::information(this, "Info", item->text());
+
+                switch(j)
+                {
+                    case 0:
+                        s.setName(item->text());
+                        break;
+                    case 1:
+                        s.setPoints(item->text().toUInt());
+                        break;
+                    case 2:
+                        s.setM(item->text());
+                        break;
+                    case 3:
+                        s.setWs(item->text());
+                        break;
+                    case 4:
+                        s.setBs(item->text());
+                        break;
+                    case 5:
+                        s.setS(item->text());
+                        break;
+                    case 6:
+                        s.setT(item->text());
+                        break;
+                    case 7:
+                        s.setW(item->text());
+                        break;
+                    case 8:
+                        s.setI(item->text());
+                        break;
+                    case 9:
+                        s.setA(item->text());
+                        break;
+                    case 10:
+                        s.setLd(item->text());
+                        break;
+                    case 11:
+                        s.setSvg(item->text());
+                        break;
+                    case 12:
+                        s.setSvgInv(item->text());
+                        break;
+                    default:
+                        break;
+                }
+            }
+            cav->addMount(s);
+        }
         cav->save(path);
         break;
     case 2:
@@ -462,6 +531,27 @@ void ModelWindow::load(QString path)
         //load
         cav->load(path);
         fillUI(static_cast<ModelAbstract*>(cav), path);
+
+        for(int i = 0 ; i < cav->getMount().size() ; i++)
+        {
+            QList<QStandardItem *> newCrew;
+
+            newCrew<<new QStandardItem(cav->getMount()[i].getName())
+                    <<new QStandardItem(QString::number(cav->getMount()[i].getPoints()))
+                    <<new QStandardItem(cav->getMount()[i].getM())
+                    <<new QStandardItem(cav->getMount()[i].getWs())
+                    <<new QStandardItem(cav->getMount()[i].getBs())
+                    <<new QStandardItem(cav->getMount()[i].getS())
+                    <<new QStandardItem(cav->getMount()[i].getT())
+                    <<new QStandardItem(cav->getMount()[i].getW())
+                    <<new QStandardItem(cav->getMount()[i].getI())
+                    <<new QStandardItem(cav->getMount()[i].getA())
+                    <<new QStandardItem(cav->getMount()[i].getLd())
+                    <<new QStandardItem(cav->getMount()[i].getSvg())
+                    <<new QStandardItem(cav->getMount()[i].getSvgInv());
+
+            crew->appendRow(newCrew);
+        }
         ui->textEdit->append(cav->getSpecialRules());
         break;
     case 1:
@@ -544,6 +634,7 @@ void ModelWindow::on_pushButtonLoad_clicked()
     ui->spinPU->clear();
 
     options->clear();
+    crew->clear();
 
     //load the file
     load(fileName);
@@ -551,35 +642,44 @@ void ModelWindow::on_pushButtonLoad_clicked()
 
 void ModelWindow::on_pushButtonAdd_clicked()
 {
-    QList<QStandardItem *> newStat;
+    bool ok;
+    ui->lineEditPts2->text().toUInt(&ok);
 
-    newStat<<new QStandardItem(ui->lineEditName2->text())
-            <<new QStandardItem(ui->lineEditM2->text())
-            <<new QStandardItem(ui->lineEditCC2->text())
-            <<new QStandardItem(ui->lineEditCT2->text())
-            <<new QStandardItem(ui->lineEditF2->text())
-            <<new QStandardItem(ui->lineEditE2->text())
-            <<new QStandardItem(ui->lineEditPV2->text())
-            <<new QStandardItem(ui->lineEditI2->text())
-            <<new QStandardItem(ui->lineEditA2->text())
-            <<new QStandardItem(ui->lineEditCdt2->text())
-            <<new QStandardItem(ui->lineEditSvg2->text())
-            <<new QStandardItem(ui->lineEditSvgInv2->text());
+    if(ok)
+    {
+        QList<QStandardItem *> newStat;
 
-    crew->appendRow(newStat);
+        newStat<<new QStandardItem(ui->lineEditName2->text())
+                <<new QStandardItem(ui->lineEditPts2->text())
+                <<new QStandardItem(ui->lineEditM2->text())
+                <<new QStandardItem(ui->lineEditCC2->text())
+                <<new QStandardItem(ui->lineEditCT2->text())
+                <<new QStandardItem(ui->lineEditF2->text())
+                <<new QStandardItem(ui->lineEditE2->text())
+                <<new QStandardItem(ui->lineEditPV2->text())
+                <<new QStandardItem(ui->lineEditI2->text())
+                <<new QStandardItem(ui->lineEditA2->text())
+                <<new QStandardItem(ui->lineEditCdt2->text())
+                <<new QStandardItem(ui->lineEditSvg2->text())
+                <<new QStandardItem(ui->lineEditSvgInv2->text());
 
-    ui->lineEditName2->clear();
-    ui->lineEditM2->clear();
-    ui->lineEditCC2->clear();
-    ui->lineEditCT2->clear();
-    ui->lineEditF2->clear();
-    ui->lineEditE2->clear();
-    ui->lineEditPV2->clear();
-    ui->lineEditI2->clear();
-    ui->lineEditA2->clear();
-    ui->lineEditCdt2->clear();
-    ui->lineEditSvg2->clear();
-    ui->lineEditSvgInv2->clear();
+        crew->appendRow(newStat);
+
+        ui->lineEditName2->clear();
+        ui->lineEditPts2->clear();
+        ui->lineEditM2->clear();
+        ui->lineEditCC2->clear();
+        ui->lineEditCT2->clear();
+        ui->lineEditF2->clear();
+        ui->lineEditE2->clear();
+        ui->lineEditPV2->clear();
+        ui->lineEditI2->clear();
+        ui->lineEditA2->clear();
+        ui->lineEditCdt2->clear();
+        ui->lineEditSvg2->clear();
+        ui->lineEditSvgInv2->clear();
+    }
+    else QMessageBox::warning(this, "Erreur", "Le nombre de point doit être un nombre entier.");
 }
 
 void ModelWindow::on_pushButtonAdd_2_clicked()

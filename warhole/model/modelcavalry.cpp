@@ -21,6 +21,7 @@ ModelCavalry::ModelCavalry(const QString &n, const QString &move, const QString 
 ModelCavalry::ModelCavalry(const ModelCavalry &copy) : ModelAbstract(copy)
 {
     specialRules = copy.specialRules;
+    mount = copy.mount;
 }
 
 //Destructor
@@ -65,6 +66,8 @@ void  ModelCavalry::load(QString path)
     specialRules = temp.getSpecialRules();
 
     options = temp.getOptions();
+
+    mount = temp.getMount();
 }
 
 void ModelCavalry::save(QString path)
@@ -78,16 +81,55 @@ void ModelCavalry::save(QString path)
 // Overloading of << operator
 QDataStream & operator << (QDataStream & out, const ModelCavalry & obj)
 {
+    int nb;
+    nb = obj.mount.size();
+
     out << static_cast<ModelAbstract>(obj)
-        << obj.specialRules;
+        << obj.specialRules
+        << nb;
+
+    for(int i = 0 ; i < obj.mount.size() ; i++)
+    {
+        out << obj.mount[i];
+    }
     return out;
 }
 
 // Overloading of >> operator
 QDataStream & operator >> (QDataStream & in, ModelCavalry & obj)
 {
+    int nb;
+
     in >> static_cast<ModelAbstract&>(obj);
     in >> obj.specialRules;
+    in >> nb;
+
+    for(int i = 0 ; i < nb ; i++)
+    {
+        StatsModel s;
+        in >> s;
+        obj.addMount(s);
+    }
 
     return in;
+}
+
+QList<StatsModel> ModelCavalry::getMount() const
+{
+    return mount;
+}
+
+void ModelCavalry::setMount(const QList<StatsModel> &value)
+{
+    mount = value;
+}
+
+void ModelCavalry::addMount(StatsModel m)
+{
+    mount << m;
+}
+
+void ModelCavalry::clearMount()
+{
+    mount.clear();
 }
