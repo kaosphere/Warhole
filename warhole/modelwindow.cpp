@@ -568,6 +568,64 @@ void ModelWindow::save(QString path)
         hero->setIsAMage(ui->checkMage->isChecked());
         hero->setIsMounted(ui->checkMounted->isChecked());
         hero->setIsTheGeneral(ui->checkGeneral->isChecked());
+        //fill stats if its a cav, charriot or character
+        hero->clearMount();
+        for(int i = 0; i< crew->rowCount(); i++)
+        {
+            StatsModel s;
+            for(int j = 0; j < crew->columnCount(); j++)
+            {
+
+                QStandardItem* item = crew->item(i,j);
+                //QMessageBox::information(this, "Info", item->text());
+
+                switch(j)
+                {
+                    case 0:
+                        s.setName(item->text());
+                        break;
+                    case 1:
+                        s.setPoints(item->text().toUInt());
+                        break;
+                    case 2:
+                        s.setM(item->text());
+                        break;
+                    case 3:
+                        s.setWs(item->text());
+                        break;
+                    case 4:
+                        s.setBs(item->text());
+                        break;
+                    case 5:
+                        s.setS(item->text());
+                        break;
+                    case 6:
+                        s.setT(item->text());
+                        break;
+                    case 7:
+                        s.setW(item->text());
+                        break;
+                    case 8:
+                        s.setI(item->text());
+                        break;
+                    case 9:
+                        s.setA(item->text());
+                        break;
+                    case 10:
+                        s.setLd(item->text());
+                        break;
+                    case 11:
+                        s.setSvg(item->text());
+                        break;
+                    case 12:
+                        s.setSvgInv(item->text());
+                        break;
+                    default:
+                        break;
+                }
+            }
+            hero->addMount(s);
+        }
         hero->save(path);
         break;
     default:
@@ -663,6 +721,26 @@ void ModelWindow::load(QString path)
         ui->checkMage->setChecked(hero->getIsAMage());
         ui->checkGeneral->setChecked(hero->getIsTheGeneral());
         ui->checkMounted->setChecked(hero->getIsMounted());
+        for(int i = 0 ; i < hero->getMount().size() ; i++)
+        {
+            QList<QStandardItem *> newCrew;
+
+            newCrew<<new QStandardItem(hero->getMount()[i].getName())
+                    <<new QStandardItem(QString::number(hero->getMount()[i].getPoints()))
+                    <<new QStandardItem(hero->getMount()[i].getM())
+                    <<new QStandardItem(hero->getMount()[i].getWs())
+                    <<new QStandardItem(hero->getMount()[i].getBs())
+                    <<new QStandardItem(hero->getMount()[i].getS())
+                    <<new QStandardItem(hero->getMount()[i].getT())
+                    <<new QStandardItem(hero->getMount()[i].getW())
+                    <<new QStandardItem(hero->getMount()[i].getI())
+                    <<new QStandardItem(hero->getMount()[i].getA())
+                    <<new QStandardItem(hero->getMount()[i].getLd())
+                    <<new QStandardItem(hero->getMount()[i].getSvg())
+                    <<new QStandardItem(hero->getMount()[i].getSvgInv());
+
+            crew->appendRow(newCrew);
+        }
         break;
     case 4:
         //delete object first to prevent options to stack

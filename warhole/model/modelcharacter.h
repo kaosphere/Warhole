@@ -41,12 +41,19 @@ public:
     bool getIsMounted() const;
     void setIsMounted(bool value);
 
+    QList<StatsModel> getMount() const;
+    void setMount(const QList<StatsModel> &value);
+    void addMount(StatsModel m);
+    void clearMount();
+
 private:
     QString specialRules;
     bool isALord;
     bool isTheGeneral;
     bool isAMage;
     bool isMounted;
+
+    QList<StatsModel> mount;
 
     friend QDataStream & operator << (QDataStream &, const ModelCharacter &);
     friend QDataStream & operator >> (QDataStream &, ModelCharacter &);

@@ -30,6 +30,8 @@ ModelCharacter::ModelCharacter(const ModelCharacter &copy) : ModelAbstract(copy)
     isTheGeneral = copy.isTheGeneral;
     isAMage = copy.isAMage;
     isMounted = copy.isMounted;
+
+    mount = copy.mount;
 }
 
 ModelCharacter::~ModelCharacter()
@@ -47,24 +49,26 @@ void ModelCharacter::load(QString path)
     ModelCharacter temp;
     QSettings readFile(path, QSettings::IniFormat);
     temp = readFile.value("ModelCharacter", qVariantFromValue( ModelCharacter())).value< ModelCharacter>();
-
+    
     stats = temp.getStats();
     squareBaseW = temp.getSquareBaseW();
     squareBaseL = temp.getSquareBaseL();
     unitPower = temp.getUnitPower();
-
+    
     urlImage = temp.getUrlImage();
-
+    
     //image->load(urlImage);
-
+    
     figSupInd = temp.getFigSupInd();
     specialRules = temp.getSpecialRules();
     isALord = temp.getIsALord();
     isTheGeneral = temp.getIsTheGeneral();
     isAMage = temp.getIsAMage();
     isMounted = temp.getIsMounted();
-
+    
     options = temp.getOptions();
+
+    mount = temp.getMount();
 }
 
 void ModelCharacter::save(QString path)
@@ -127,18 +131,29 @@ void ModelCharacter::setIsMounted(bool value)
 
 QDataStream & operator <<(QDataStream & out, const ModelCharacter & obj)
 {
+    int nb;
+    nb = obj.mount.size();
+
     //out << obj.streamOut();
     out << static_cast<ModelAbstract>(obj)
         << obj.specialRules
         << obj.isALord
         << obj.isTheGeneral
         << obj.isAMage
-        << obj.isMounted;
+        << obj.isMounted
+        << nb;
+
+    for(int i = 0 ; i < obj.mount.size() ; i++)
+    {
+        out << obj.mount[i];
+    }
     return out;
 }
 
 QDataStream & operator >>(QDataStream & in, ModelCharacter & obj)
 {
+    int nb;
+
     in >> static_cast<ModelAbstract&>(obj);
     in >> obj.specialRules;
     in >> obj.isALord;
@@ -146,5 +161,34 @@ QDataStream & operator >>(QDataStream & in, ModelCharacter & obj)
     in >> obj.isAMage;
     in >> obj.isMounted;
 
+    in >> nb;
+
+    for(int i = 0 ; i < nb ; i++)
+    {
+        StatsModel s;
+        in >> s;
+        obj.addMount(s);
+    }
+    
     return in;
+}
+
+QList<StatsModel> ModelCharacter::getMount() const
+{
+    return mount;
+}
+
+void ModelCharacter::setMount(const QList<StatsModel> &value)
+{
+    mount = value;
+}
+
+void ModelCharacter::addMount(StatsModel m)
+{
+    mount << m;
+}
+
+void ModelCharacter::clearMount()
+{
+    mount.clear();
 }
