@@ -485,6 +485,64 @@ void ModelWindow::save(QString path)
     case 2:
         setModelProperties(static_cast<ModelAbstract*>(charriot));
         charriot->setSpecialRules(ui->textEdit->toPlainText());
+        //fill stats if its a cav, charriot or character
+        charriot->clearCrew();
+        for(int i = 0; i< crew->rowCount(); i++)
+        {
+            StatsModel s;
+            for(int j = 0; j < crew->columnCount(); j++)
+            {
+
+                QStandardItem* item = crew->item(i,j);
+                //QMessageBox::information(this, "Info", item->text());
+
+                switch(j)
+                {
+                    case 0:
+                        s.setName(item->text());
+                        break;
+                    case 1:
+                        s.setPoints(item->text().toUInt());
+                        break;
+                    case 2:
+                        s.setM(item->text());
+                        break;
+                    case 3:
+                        s.setWs(item->text());
+                        break;
+                    case 4:
+                        s.setBs(item->text());
+                        break;
+                    case 5:
+                        s.setS(item->text());
+                        break;
+                    case 6:
+                        s.setT(item->text());
+                        break;
+                    case 7:
+                        s.setW(item->text());
+                        break;
+                    case 8:
+                        s.setI(item->text());
+                        break;
+                    case 9:
+                        s.setA(item->text());
+                        break;
+                    case 10:
+                        s.setLd(item->text());
+                        break;
+                    case 11:
+                        s.setSvg(item->text());
+                        break;
+                    case 12:
+                        s.setSvgInv(item->text());
+                        break;
+                    default:
+                        break;
+                }
+            }
+            charriot->addCrew(s);
+        }
         charriot->save(path);
         break;
     case 3:
@@ -561,6 +619,26 @@ void ModelWindow::load(QString path)
         //load
         charriot->load(path);
         fillUI(static_cast<ModelAbstract*>(charriot), path);
+        for(int i = 0 ; i < charriot->getCrew().size() ; i++)
+        {
+            QList<QStandardItem *> newCrew;
+
+            newCrew<<new QStandardItem(charriot->getCrew()[i].getName())
+                    <<new QStandardItem(QString::number(charriot->getCrew()[i].getPoints()))
+                    <<new QStandardItem(charriot->getCrew()[i].getM())
+                    <<new QStandardItem(charriot->getCrew()[i].getWs())
+                    <<new QStandardItem(charriot->getCrew()[i].getBs())
+                    <<new QStandardItem(charriot->getCrew()[i].getS())
+                    <<new QStandardItem(charriot->getCrew()[i].getT())
+                    <<new QStandardItem(charriot->getCrew()[i].getW())
+                    <<new QStandardItem(charriot->getCrew()[i].getI())
+                    <<new QStandardItem(charriot->getCrew()[i].getA())
+                    <<new QStandardItem(charriot->getCrew()[i].getLd())
+                    <<new QStandardItem(charriot->getCrew()[i].getSvg())
+                    <<new QStandardItem(charriot->getCrew()[i].getSvgInv());
+
+            crew->appendRow(newCrew);
+        }
         ui->textEdit->append(charriot->getSpecialRules());
         break;
     case 2:

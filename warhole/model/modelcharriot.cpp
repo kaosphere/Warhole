@@ -18,6 +18,13 @@ ModelCharriot::ModelCharriot(const QString &n, const QString &move, const QStrin
     specialRules = specRules;
 }
 
+// Copy constructor
+//ModelCharriot::ModelCharriot(const ModelCharriot &copy) : ModelAbstract(copy)
+//{
+//    specialRules = copy.specialRules;
+//    crew = copy.crew;
+//}
+
 ModelCharriot::~ModelCharriot()
 {
 }
@@ -31,23 +38,25 @@ void ModelCharriot::initModelCharriotSystem()
 void ModelCharriot::load(QString path)
 {
     ModelCharriot temp;
-
+    
     QSettings readFile(path, QSettings::IniFormat);
     temp = readFile.value("ModelCharriot", qVariantFromValue(ModelCharriot())).value<ModelCharriot>();
-
+    
     stats = temp.getStats();
     squareBaseW = temp.getSquareBaseW();
     squareBaseL = temp.getSquareBaseL();
     unitPower = temp.getUnitPower();
-
+    
     urlImage = temp.getUrlImage();
-
+    
     //image->load(urlImage);
-
+    
     figSupInd = temp.getFigSupInd();
     specialRules = temp.getSpecialRules();
-
+    
     options = temp.getOptions();
+
+    crew = temp.getCrew();
 }
 
 void ModelCharriot::save(QString path)
@@ -70,15 +79,53 @@ void ModelCharriot::setSpecialRules(const QString &value)
 
 QDataStream & operator <<(QDataStream & out, const ModelCharriot & obj)
 {
+    int nb;
+    nb = obj.crew.size();
+
     out << static_cast<ModelAbstract>(obj)
-        << obj.specialRules;
+        << obj.specialRules
+        << nb;
+
+    for(int i = 0 ; i < obj.crew.size() ; i++)
+    {
+        out << obj.crew[i];
+    }
     return out;
 }
 
 QDataStream & operator >>(QDataStream & in, ModelCharriot & obj)
 {
+    int nb;
     in >> static_cast<ModelAbstract&>(obj);
     in >> obj.specialRules;
+    in >> nb;
 
+    for(int i = 0 ; i < nb ; i++)
+    {
+        StatsModel s;
+        in >> s;
+        obj.addCrew(s);
+    }
+    
     return in;
+}
+
+QList<StatsModel> ModelCharriot::getCrew() const
+{
+    return crew;
+}
+
+void ModelCharriot::setCrew(const QList<StatsModel> &value)
+{
+    crew = value;
+}
+
+void ModelCharriot::addCrew(StatsModel c)
+{
+    crew << c;
+}
+
+void ModelCharriot::clearCrew()
+{
+    crew.clear();
 }

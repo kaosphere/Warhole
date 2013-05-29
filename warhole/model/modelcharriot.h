@@ -20,6 +20,7 @@ public:
                   const QString &save, const QString &invSave, const int points, const int &widthBase,
                   const int &lengthBase, const int &unitP, const QString& urlImage , bool figSup,
                   const QString& specRules);
+    //ModelCharriot(const ModelCharriot &copy);
     ~ModelCharriot();
 
     static void initModelCharriotSystem();
@@ -29,10 +30,14 @@ public:
     QString getSpecialRules() const;
     void setSpecialRules(const QString &value);
 
+    QList<StatsModel> getCrew() const;
+    void setCrew(const QList<StatsModel> &value);
+    void addCrew(StatsModel c);
+    void clearCrew();
+
 private:
     QString specialRules;
-    QList<ModelAnimal *> mounts;
-    QList<ModelInfantery *> crew;
+    QList<StatsModel> crew;
 
     friend QDataStream & operator << (QDataStream &, const ModelCharriot &);
     friend QDataStream & operator >> (QDataStream &, ModelCharriot &);
