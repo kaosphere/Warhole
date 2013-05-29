@@ -19,11 +19,11 @@ ModelCharriot::ModelCharriot(const QString &n, const QString &move, const QStrin
 }
 
 // Copy constructor
-//ModelCharriot::ModelCharriot(const ModelCharriot &copy) : ModelAbstract(copy)
-//{
-//    specialRules = copy.specialRules;
-//    crew = copy.crew;
-//}
+ModelCharriot::ModelCharriot(const ModelCharriot &copy) : ModelAbstract(copy)
+{
+    specialRules = copy.specialRules;
+    crew = copy.crew;
+}
 
 ModelCharriot::~ModelCharriot()
 {

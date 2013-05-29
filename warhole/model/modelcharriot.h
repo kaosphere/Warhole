@@ -20,7 +20,7 @@ public:
                   const QString &save, const QString &invSave, const int points, const int &widthBase,
                   const int &lengthBase, const int &unitP, const QString& urlImage , bool figSup,
                   const QString& specRules);
-    //ModelCharriot(const ModelCharriot &copy);
+    ModelCharriot(const ModelCharriot &copy);
     ~ModelCharriot();
 
     static void initModelCharriotSystem();
