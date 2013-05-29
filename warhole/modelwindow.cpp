@@ -95,6 +95,7 @@ void ModelWindow::loadWidgets(bool l)
     ui->lineEditName2->setVisible(l);
     ui->lineEditPts2->setVisible(l);
 
+    ui->label_28->setVisible(l);
     ui->label_54->setVisible(l);
     ui->label_55->setVisible(l);
     ui->label_56->setVisible(l);
