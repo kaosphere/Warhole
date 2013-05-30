@@ -26,7 +26,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
-    
+    delete mod;
 }
 
 
@@ -38,7 +38,7 @@ void MainWindow::openModelWindow()
 
 void MainWindow::openEditModelWindow()
 {
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Open Model"), ".", tr("Model files (*.unit)"));
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open Model"), "./models", tr("Model files (*.unit)"));
 
     mod = new ModelWindow(fileName); // Be sure to destroy you window somewhere
     mod->show();
