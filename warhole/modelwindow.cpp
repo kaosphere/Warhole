@@ -839,7 +839,7 @@ void ModelWindow::on_pushButtonAdd_clicked()
     else QMessageBox::warning(this, "Erreur", "Le nombre de point doit être un nombre entier.");
 }
 
-void ModelWindow::on_pushButtonAdd_2_clicked()
+void ModelWindow::on_pushButtonRmv_clicked()
 {
     QItemSelectionModel *selection = ui->viewModelCrew->selectionModel();
     QModelIndex indexElementSelectionne = selection->currentIndex();

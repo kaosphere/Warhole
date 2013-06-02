@@ -54,7 +54,7 @@ private slots:
     void on_pushButtonSave_clicked();
     void on_pushButtonLoad_clicked();
     void on_pushButtonAdd_clicked();
-    void on_pushButtonAdd_2_clicked();
+    void on_pushButtonRmv_clicked();
 
 private:
     Ui::ModelWindow *ui;
