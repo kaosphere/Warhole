@@ -7,6 +7,7 @@
 #include <QtWidgets>
 
 #include "modelwindow.h"
+#include "armywindow.h"
 
 class MainWindow : public QMainWindow
 {
@@ -19,12 +20,15 @@ public:
 public slots:
    void openModelWindow();
    void openEditModelWindow();
+   void openArmyWindow();
+   void openEditArmyWindow();
 
 private:
     QWidget* s;
     QPushButton* p;
 
     ModelWindow* mod;
+    ArmyWindow* arm;
 };
 
 #endif // MAINWINDOW_H

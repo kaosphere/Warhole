@@ -15,6 +15,16 @@ MainWindow::MainWindow(QWidget *parent)
     actionEditModel->setShortcut(QKeySequence("Ctrl+E"));
     connect(actionEditModel, SIGNAL(triggered()), this, SLOT(openEditModelWindow()));
 
+    QAction *actionCreateArmy = new QAction("&Créer une armée", this);
+    menuFichier->addAction(actionCreateArmy);
+    actionCreateArmy->setShortcut(QKeySequence("Ctrl+A"));
+    connect(actionCreateArmy, SIGNAL(triggered()), this, SLOT(openArmyWindow()));
+
+    QAction *actionEditArmy = new QAction("&Editer une armée", this);
+    menuFichier->addAction(actionEditArmy);
+    actionEditArmy->setShortcut(QKeySequence("Ctrl+D"));
+    connect(actionEditArmy, SIGNAL(triggered()), this, SLOT(openEditArmyWindow()));
+
     QAction *actionQuitter = new QAction("&Quitter", this);
     menuFichier->addAction(actionQuitter);
     actionQuitter->setShortcut(QKeySequence("Ctrl+Q"));
@@ -42,4 +52,18 @@ void MainWindow::openEditModelWindow()
 
     mod = new ModelWindow(fileName); // Be sure to destroy you window somewhere
     mod->show();
+}
+
+void MainWindow::openArmyWindow()
+{
+    arm = new ArmyWindow();
+    arm->show();
+}
+
+void MainWindow::openEditArmyWindow()
+{
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open Model"), "./armies", tr("Model files (*.army)"));
+
+    arm = new ArmyWindow(fileName);
+    arm->show();
 }
