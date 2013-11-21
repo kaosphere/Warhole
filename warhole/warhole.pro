@@ -24,7 +24,9 @@ SOURCES += main.cpp\
     model/modelcharriot.cpp \
     modelwindow.cpp \
     stats/statsmodel.cpp \
-    armywindow.cpp
+    armywindow.cpp \
+    unit/unitabstract.cpp \
+    army/army.cpp
 
 HEADERS  += mainwindow.h \
     model/modelabstract.h \
@@ -37,7 +39,9 @@ HEADERS  += mainwindow.h \
     model/modelcharriot.h \
     modelwindow.h \
     stats/statsmodel.h \
-    armywindow.h
+    armywindow.h \
+    unit/unitabstract.h \
+    army/army.h
 
 FORMS += \
     modelwindow.ui \
