@@ -2,9 +2,41 @@
 
 UnitAbstract::UnitAbstract()
 {
+    name = "";
+    models.clear();
+    type = "UNKNOWN";
+    musician = false;
+    champion = false;
+    skirmishers = false;
+    banner = false;
 }
 
-bool UnitAbstract::operator ==(const UnitAbstract &u)
+UnitAbstract::UnitAbstract(const QString &n, const QList<ModelAbstract *> &l, const QString &t, const bool &m, const bool &s, const bool &c, const bool &b,
+                           const StatsModel& st)
+{
+    name = n;
+    models = l;
+    type = t;
+    musician = m;
+    skirmishers = s;
+    champion = c;
+    banner = b;
+    championStats = st;
+}
+
+UnitAbstract::UnitAbstract(const UnitAbstract &u)
+{
+    name = u.name;
+    models = u.models;
+    type = u.type;
+    musician = u.musician;
+    skirmishers = u.skirmishers;
+    champion = u.champion;
+    banner = u.banner;
+    championStats = u.championStats;
+}
+
+bool UnitAbstract::operator==(const UnitAbstract &u)
 {
     if(musician == u.musician && skirmishers == u.skirmishers && champion == u.champion &&
             name == u.name && models.size() == u.models.size() && banner == u.banner &&
@@ -94,5 +126,13 @@ void UnitAbstract::setBanner(bool value)
     banner = value;
 }
 
+StatsModel UnitAbstract::getChampionStats() const
+{
+    return championStats;
+}
 
+void UnitAbstract::setChampionStats(const StatsModel &value)
+{
+    championStats = value;
+}
 

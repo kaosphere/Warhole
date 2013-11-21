@@ -12,6 +12,9 @@ class UnitAbstract
 {
 public:
     UnitAbstract();
+    UnitAbstract(const QString& n, const QList<ModelAbstract*> & l, const QString& t,
+                 const bool& m, const bool& s, const bool& c, const bool& b, const StatsModel& st);
+    UnitAbstract(const UnitAbstract& u);
 
     bool operator==(const UnitAbstract&);
 
@@ -38,6 +41,9 @@ public:
     QString getType() const;
     void setType(const QString &value);
 
+    StatsModel getChampionStats() const;
+    void setChampionStats(const StatsModel &value);
+
 private:
     QString name;
     QList<ModelAbstract *> models;
@@ -46,6 +52,7 @@ private:
     bool musician;
     bool champion;
     bool skirmishers;
+    StatsModel championStats;
 };
 
 #endif // UNITABSTRACT_H
