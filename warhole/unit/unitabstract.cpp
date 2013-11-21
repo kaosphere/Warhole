@@ -1,8 +1,37 @@
 #include "unitabstract.h"
 
+UnitAbstract::UnitAbstract()
+{
+}
+
+bool UnitAbstract::operator ==(const UnitAbstract &u)
+{
+    if(musician == u.musician && skirmishers == u.skirmishers && champion == u.champion &&
+            name == u.name && models.size() == u.models.size() && banner == u.banner &&
+            type == u.type)
+        return true;
+    else return false;
+}
+
+QString UnitAbstract::getType() const
+{
+    return type;
+}
+
+void UnitAbstract::setType(const QString &value)
+{
+    type = value;
+}
+
+
 bool UnitAbstract::getMusician() const
 {
     return musician;
+}
+
+void UnitAbstract::setMusician(bool value)
+{
+    musician = value;
 }
 
 bool UnitAbstract::getSkirmishers() const
@@ -45,14 +74,14 @@ void UnitAbstract::setModels(const QList<ModelAbstract *> &value)
     models = value;
 }
 
-void UnitAbstract::addModel(const ModelAbstract &m)
+void UnitAbstract::addModel(ModelAbstract * m)
 {
-    models.append(&m);
+    models.append(m);
 }
 
-void UnitAbstract::removeModel(const ModelAbstract &m)
+void UnitAbstract::removeModel(ModelAbstract * m)
 {
-    models.removeOne(&m);
+    models.removeOne(m);
 }
 
 bool UnitAbstract::getBanner() const
@@ -65,11 +94,5 @@ void UnitAbstract::setBanner(bool value)
     banner = value;
 }
 
-void UnitAbstract::setMusician(bool value)
-{
-    musician = value;
-}
 
-UnitAbstract::UnitAbstract()
-{
-}
+

@@ -13,6 +13,8 @@ class UnitAbstract
 public:
     UnitAbstract();
 
+    bool operator==(const UnitAbstract&);
+
     bool getMusician() const;
     void setMusician(bool value);
 
@@ -21,8 +23,8 @@ public:
 
     QList<ModelAbstract *> getModels() const;
     void setModels(const QList<ModelAbstract *> &value);
-    void addModel(const ModelAbstract& m);
-    void removeModel(const ModelAbstract& m);
+    void addModel(ModelAbstract *m);
+    void removeModel(ModelAbstract * m);
 
     QString getName() const;
     void setName(const QString &value);
@@ -33,9 +35,13 @@ public:
     bool getSkirmishers() const;
     void setSkirmishers(bool value);
 
+    QString getType() const;
+    void setType(const QString &value);
+
 private:
     QString name;
     QList<ModelAbstract *> models;
+    QString type;
     bool banner;
     bool musician;
     bool champion;
