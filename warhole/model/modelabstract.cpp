@@ -133,14 +133,14 @@ void ModelAbstract::setOptions(const QList<OptionModel> &value)
     options = value;
 }
 
-void ModelAbstract::addOption(OptionModel opt)
+void ModelAbstract::addOption(const OptionModel &opt)
 {
     options << opt;
 
     //std::cout << options[0].getName().toStdString();
 }
 
-void ModelAbstract::removeOption(OptionModel opt)
+void ModelAbstract::removeOption(const OptionModel& opt)
 {
     options.removeOne(opt);
 }

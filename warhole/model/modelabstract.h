@@ -47,8 +47,8 @@ public:
 
     QList<OptionModel> getOptions() const;
     void setOptions(const QList<OptionModel> &value);
-    void addOption(OptionModel opt);
-    void removeOption(OptionModel opt);
+    void addOption(const OptionModel& opt);
+    void removeOption(const OptionModel &opt);
     void clearOptions();
 
     QString getUrlImage() const;
