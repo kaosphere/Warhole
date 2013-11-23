@@ -41,7 +41,8 @@ HEADERS  += mainwindow.h \
     stats/statsmodel.h \
     armywindow.h \
     unit/unitabstract.h \
-    army/army.h
+    army/army.h \
+    version.h
 
 FORMS += \
     modelwindow.ui \
