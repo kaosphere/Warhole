@@ -45,3 +45,34 @@ void Army::setPoints(unsigned int value)
 {
     points = value;
 }
+
+QDataStream &operator <<(QDataStream & out, const Army & obj)
+{
+    out << obj.name
+        << obj.points
+        << obj.units.size();
+    for(int i = 0; i < obj.units.size(); i++)
+    {
+        out << obj.units[i];
+    }
+
+    return out;
+}
+
+QDataStream &operator >>(QDataStream & in, Army & obj)
+{
+    int nb;
+
+    in >> obj.name;
+    in >> obj.points;
+    in >> nb;
+
+    for(int i = 0 ; i < nb ; i++)
+    {
+        UnitAbstract u;
+        in >> u;
+        obj.addUnit(u);
+    }
+
+    return in;
+}

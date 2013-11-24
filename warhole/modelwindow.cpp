@@ -211,6 +211,7 @@ void ModelWindow::on_comboUnitType_currentIndexChanged(int index)
 {
     switch(index)
     {
+    //TODO:replace numbers by type enum
         case 1:
             loadCavaleryWidget();
             break;
