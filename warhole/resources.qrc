@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>ressources/exp_template.png</file>
+        <file>ressources/exp_template_icon_small.png</file>
+        <file>ressources/blowTemplate.png</file>
+    </qresource>
+</RCC>

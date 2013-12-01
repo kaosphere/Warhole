@@ -26,7 +26,10 @@ SOURCES += main.cpp\
     stats/statsmodel.cpp \
     armywindow.cpp \
     unit/unitabstract.cpp \
-    army/army.cpp
+    army/army.cpp \
+    gamewindow.cpp \
+    game/testgi.cpp \
+    game/fieldlimits.cpp
 
 HEADERS  += mainwindow.h \
     model/modelabstract.h \
@@ -42,8 +45,16 @@ HEADERS  += mainwindow.h \
     armywindow.h \
     unit/unitabstract.h \
     army/army.h \
-    version.h
+    version.h \
+    gamewindow.h \
+    game/testgi.h \
+    game/fieldlimits.h \
+    game/distances.h
 
 FORMS += \
     modelwindow.ui \
-    armywindow.ui
+    armywindow.ui \
+    gamewindow.ui
+
+RESOURCES += \
+    resources.qrc

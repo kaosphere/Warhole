@@ -5,6 +5,10 @@ MainWindow::MainWindow(QWidget *parent)
 {
     QMenu *menuFichier = menuBar()->addMenu("&Fichier");
 
+    QAction *actionLaunchGame = new QAction("&Ecran de jeu", this);
+    menuFichier->addAction(actionLaunchGame);
+    connect(actionLaunchGame, SIGNAL(triggered()), this, SLOT(openGameWindow()));
+
     QAction *actionCreateModel = new QAction("&Creer une figurine", this);
     menuFichier->addAction(actionCreateModel);
     actionCreateModel->setShortcut(QKeySequence("Ctrl+C"));
@@ -66,4 +70,10 @@ void MainWindow::openEditArmyWindow()
 
     arm = new ArmyWindow(fileName);
     arm->show();
+}
+
+void MainWindow::openGameWindow()
+{
+    game = new GameWindow();
+    game->show();
 }

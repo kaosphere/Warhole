@@ -8,6 +8,7 @@
 
 #include "modelwindow.h"
 #include "armywindow.h"
+#include "gamewindow.h"
 
 class MainWindow : public QMainWindow
 {
@@ -22,6 +23,7 @@ public slots:
    void openEditModelWindow();
    void openArmyWindow();
    void openEditArmyWindow();
+   void openGameWindow();
 
 private:
     QWidget* s;
@@ -29,6 +31,7 @@ private:
 
     ModelWindow* mod;
     ArmyWindow* arm;
+    GameWindow* game;
 };
 
 #endif // MAINWINDOW_H
