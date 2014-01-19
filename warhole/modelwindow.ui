@@ -326,36 +326,6 @@
           <string>&lt;aucune&gt;</string>
          </property>
         </item>
-        <item>
-         <property name="text">
-          <string>Cavalerie</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Char</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Infanterie</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Machine de guerre</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Monstre</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Personnage</string>
-         </property>
-        </item>
        </widget>
       </item>
      </layout>
@@ -736,7 +706,7 @@
      <x>190</x>
      <y>130</y>
      <width>401</width>
-     <height>202</height>
+     <height>235</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_21">

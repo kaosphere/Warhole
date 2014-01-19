@@ -14,11 +14,16 @@ ModelWindow::ModelWindow(QWidget *parent) :
     options = new QStandardItemModel();
     crew = new QStandardItemModel();
 
+    QStringList modelList;
+    modelList << CAVALERY_STRING << CHARACTER_STRING << CHARRIOT_STRING << INFANTERY_STRING << MONSTER_STRING << WARMACHINE_STRING;
+    ui->comboUnitType->addItems(modelList);
+
     ui->viewOptions->setModel(options);
     ui->viewOptions->header()->hide();
 
     ui->viewModelCrew->setModel(crew);
     ui->viewModelCrew->header()->hide();
+
 
     cav = new ModelCavalry();
     hero = new ModelCharacter();
@@ -43,6 +48,10 @@ ModelWindow::ModelWindow(QString f, QWidget *parent) :
 
     options = new QStandardItemModel();
     crew = new QStandardItemModel();
+
+    QStringList modelList;
+    modelList << CAVALERY_STRING << CHARACTER_STRING << CHARRIOT_STRING << INFANTERY_STRING << MONSTER_STRING << WARMACHINE_STRING;
+    ui->comboUnitType->addItems(modelList);
 
     ui->viewOptions->setModel(options);
     ui->viewOptions->header()->hide();
@@ -419,7 +428,10 @@ void ModelWindow::setModelProperties(ModelAbstract* m)
 
 void ModelWindow::save(QString path)
 {
-    switch(ui->comboUnitType->currentIndex())
+    QStringList modelList;
+    modelList << CAVALERY_STRING << CHARRIOT_STRING << INFANTERY_STRING << WARMACHINE_STRING << CHARACTER_STRING;
+    int index = modelList.indexOf(ui->comboUnitType->currentText());
+    switch(index+1) // +1 because ui->comboUnitType->currentText() contains "<aucune>" in first position
     {
     case 1:
         setModelProperties(static_cast<ModelAbstract*>(cav));
@@ -638,7 +650,7 @@ void ModelWindow::load(QString path)
 {
     QString s = path.section('/',-2,-2);
     QStringList l;
-    l << "Cavalerie" << "Char" << "Infanterie" << "Personnage" << "Machine de guerre" << "Monstre";
+    l << CAVALERY_STRING << CHARRIOT_STRING << INFANTERY_STRING << CHARACTER_STRING << WARMACHINE_STRING << MONSTER_STRING;
 
     switch(l.indexOf(s))
     {

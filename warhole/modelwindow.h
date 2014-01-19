@@ -19,6 +19,8 @@
 
 #include "stats/statsmodel.h"
 
+#include"defines.h"
+
 namespace Ui {
 class ModelWindow;
 }
