@@ -8,7 +8,8 @@ QT       += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = ../bin/warhole
+win32: TARGET = ../bin/warhole
+
 TEMPLATE = app
 
 
@@ -49,7 +50,8 @@ HEADERS  += mainwindow.h \
     gamewindow.h \
     game/testgi.h \
     game/fieldlimits.h \
-    game/distances.h
+    game/distances.h \
+    defines.h
 
 FORMS += \
     modelwindow.ui \
