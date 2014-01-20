@@ -71,22 +71,22 @@ void ArmyWindow::on_comboBoxRace_currentIndexChanged(const QString &raceDir)
          ui->treeViewExistingModels->hideColumn(i);
     }
 
-    qDebug() << i;
-
     ui->treeViewExistingModels->setModel(model);
     ui->treeViewExistingModels->setRootIndex(model->index(MODEL_PATH + "/" + raceDir));
+}
 
 
+void ArmyWindow::on_treeViewExistingModels_clicked(const QModelIndex &index)
+{
+    QString name = index.data().toString();
+    QStringList pieces = name.split(".");
+
+    if(pieces.last() == "unit")
+    {
+        QString path(model->filePath(index));
+        ModelFactory fac;
+        ModelAbstract* ma = fac.create(index.parent().data().toString(), path);
+    }
 
 
-
-//    QList<QStandardItem *> newModel;
-
-
-//    for(QList<QString>::Iterator it = existingModels.begin(); it == existingModels.end(); it++)
-//    {
-//        newModel << new QStandardItem(*it);
-//    }
-
-//    listOfModels->appendRow(newModel);
 }

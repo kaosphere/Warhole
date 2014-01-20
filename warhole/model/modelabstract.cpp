@@ -60,6 +60,14 @@ ModelAbstract::ModelAbstract(const ModelAbstract &copy)
 
 ModelAbstract::~ModelAbstract(){}
 
+ModelAbstract *ModelAbstract::clone(const QString path)
+{
+}
+
+void ModelAbstract::load(const QString path)
+{
+}
+
 
 StatsModel ModelAbstract::getStats() const
 {

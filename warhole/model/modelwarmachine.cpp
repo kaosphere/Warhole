@@ -27,6 +27,14 @@ void ModelWarMachine::initModelWarMachine()
     qMetaTypeId<ModelWarMachine>();
 }
 
+ModelWarMachine *ModelWarMachine::clone(QString path)
+{
+    ModelWarMachine* tmp = new ModelWarMachine(*this);
+    tmp->load(path);
+
+    return tmp;
+}
+
 void ModelWarMachine::load(QString path)
 {
     ModelWarMachine temp;

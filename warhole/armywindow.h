@@ -7,6 +7,9 @@
 #include <QMessageBox>
 #include "defines.h"
 #include <QStandardItemModel>
+#include "model/modelfactory.h"
+
+#include <QDebug>
 
 namespace Ui {
 class ArmyWindow;
@@ -24,6 +27,9 @@ public:
 private slots:
 
     void on_comboBoxRace_currentIndexChanged(const QString &raceDir);
+
+
+    void on_treeViewExistingModels_clicked(const QModelIndex &index);
 
 private:
     Ui::ArmyWindow *ui;

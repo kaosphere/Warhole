@@ -23,7 +23,8 @@ public:
     ~ModelCharacter();
 
     static void initModelCharacterSystem();
-    void load(QString path);
+    virtual ModelCharacter* clone(QString path);
+    virtual void load(QString path);
     void save(QString path);
 
     QString getSpecialRules() const;

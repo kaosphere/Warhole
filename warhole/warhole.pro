@@ -30,7 +30,8 @@ SOURCES += main.cpp\
     army/army.cpp \
     gamewindow.cpp \
     game/testgi.cpp \
-    game/fieldlimits.cpp
+    game/fieldlimits.cpp \
+    model/modelfactory.cpp
 
 HEADERS  += mainwindow.h \
     model/modelabstract.h \
@@ -51,7 +52,8 @@ HEADERS  += mainwindow.h \
     game/testgi.h \
     game/fieldlimits.h \
     game/distances.h \
-    defines.h
+    defines.h \
+    model/modelfactory.h
 
 FORMS += \
     modelwindow.ui \

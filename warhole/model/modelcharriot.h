@@ -24,7 +24,8 @@ public:
     ~ModelCharriot();
 
     static void initModelCharriotSystem();
-    void load(QString path);
+    virtual ModelCharriot* clone(QString path);
+    virtual void load(QString path);
     void save(QString path);
 
     QString getSpecialRules() const;

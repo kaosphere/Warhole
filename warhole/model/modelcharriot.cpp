@@ -35,6 +35,14 @@ void ModelCharriot::initModelCharriotSystem()
     qMetaTypeId<ModelCharriot>();
 }
 
+ModelCharriot *ModelCharriot::clone(QString path)
+{
+    ModelCharriot* tmp = new ModelCharriot(*this);
+    tmp->load(path);
+
+    return tmp;
+}
+
 void ModelCharriot::load(QString path)
 {
     ModelCharriot temp;

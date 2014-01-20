@@ -27,6 +27,9 @@ public:
 
     ~ModelAbstract();
 
+    virtual ModelAbstract* clone(const QString path);
+    virtual void load(const QString path);
+
     StatsModel getStats() const;
     void setStats(const StatsModel &value);
 

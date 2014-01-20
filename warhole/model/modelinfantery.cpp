@@ -32,6 +32,15 @@ void ModelInfantery::initModelInfanterySystem()
     qMetaTypeId<ModelInfantery>();
 }
 
+ModelInfantery *ModelInfantery::clone(QString path)
+{
+    ModelInfantery* tmp = new ModelInfantery(*this);
+    tmp->load(path);
+
+    return tmp;
+}
+
+
 void ModelInfantery::load(QString path)
 {
     ModelInfantery temp;

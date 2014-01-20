@@ -44,6 +44,14 @@ void ModelCharacter::initModelCharacterSystem()
     qMetaTypeId<ModelCharacter>();
 }
 
+ModelCharacter *ModelCharacter::clone(QString path)
+{
+    ModelCharacter* tmp = new ModelCharacter(*this);
+    tmp->load(path);
+
+    return tmp;
+}
+
 void ModelCharacter::load(QString path)
 {
     ModelCharacter temp;

@@ -46,6 +46,14 @@ void ModelCavalry::initModelCavalrySystem()
     qMetaTypeId<ModelCavalry>();
 }
 
+ModelCavalry *ModelCavalry::clone(QString path)
+{
+    ModelCavalry* tmp = new ModelCavalry(*this);
+    tmp->load(path);
+
+    return tmp;
+}
+
 void  ModelCavalry::load(QString path)
 {
     ModelCavalry temp;

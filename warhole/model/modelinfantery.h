@@ -22,7 +22,8 @@ public:
     ~ModelInfantery();
 
     static void initModelInfanterySystem();
-    void load(QString path);
+    virtual ModelInfantery* clone(QString path);
+    virtual void load(QString path);
     void save(QString path);
 
     QString getSpecialRules() const;

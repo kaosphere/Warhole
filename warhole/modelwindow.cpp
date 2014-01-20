@@ -659,6 +659,7 @@ void ModelWindow::load(QString path)
         delete cav;
         cav = new ModelCavalry();
         //load
+        qDebug() << "path in load de model window " << path;
         cav->load(path);
         fillUI(static_cast<ModelAbstract*>(cav), path);
 

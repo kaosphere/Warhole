@@ -28,6 +28,14 @@ void ModelMonster::initModelMonsterSystem()
     qMetaTypeId<ModelMonster>();
 }
 
+ModelMonster *ModelMonster::clone(QString path)
+{
+    ModelMonster* tmp = new ModelMonster(*this);
+    tmp->load(path);
+
+    return tmp;
+}
+
 void ModelMonster::load(QString path)
 {
     ModelMonster temp;

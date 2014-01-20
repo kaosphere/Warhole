@@ -23,7 +23,8 @@ public:
     ~ModelWarMachine();
 
     static void initModelWarMachine();
-    void load(QString path);
+    virtual ModelWarMachine* clone(QString path);
+    virtual void load(QString path);
     void save(QString path);
 
     QString getSpecialRules() const;
