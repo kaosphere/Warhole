@@ -20,7 +20,7 @@ public:
                   const QString &save, const QString &invSave, const int points, const int &widthBase,
                   const int &lengthBase, const int &unitP, const QString& urlImage , bool figSup,
                   const QString& specRules, bool hasCrew);
-    ~ModelMonster();
+    virtual ~ModelMonster();
 
     static void initModelMonsterSystem();
     virtual ModelMonster* clone(QString path);

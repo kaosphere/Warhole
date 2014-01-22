@@ -20,7 +20,7 @@ public:
                   const QString &save, const QString &invSave, const int points, const int &widthBase,
                   const int &lengthBase, const int &unitP, const QString& urlImage , bool figSup,
                   const QString& specRules);
-    ~ModelWarMachine();
+    virtual ~ModelWarMachine();
 
     static void initModelWarMachine();
     virtual ModelWarMachine* clone(QString path);

@@ -20,7 +20,7 @@ public:
                   const int &lengthBase, const int &unitP, const QString& urlImage , bool figSup,
                   const QString& specRules, bool lord, bool general, bool mage, bool mounted);
     ModelCharacter(const ModelCharacter &copy);
-    ~ModelCharacter();
+    virtual ~ModelCharacter();
 
     static void initModelCharacterSystem();
     virtual ModelCharacter* clone(QString path);

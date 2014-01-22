@@ -19,7 +19,7 @@ public:
                   const int &lengthBase, const int &unitP, const QString& urlImage , bool figSup,
                   const QString& specRules);
     ModelCavalry(const ModelCavalry &copy);
-    ~ModelCavalry();
+    virtual ~ModelCavalry();
 
     QString getSpecialRules() const;
     void setSpecialRules(const QString &value);

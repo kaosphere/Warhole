@@ -20,7 +20,7 @@ public:
                   const int &lengthBase, const int &unitP, const QString& urlImage , bool figSup,
                   const QString& specRules);
     ModelCharriot(const ModelCharriot &copy);
-    ~ModelCharriot();
+    virtual ~ModelCharriot();
 
     static void initModelCharriotSystem();
     virtual ModelCharriot* clone(QString path);

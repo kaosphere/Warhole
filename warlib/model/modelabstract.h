@@ -25,7 +25,7 @@ public:
 
     ModelAbstract(const ModelAbstract &Copy);
 
-    ~ModelAbstract();
+    virtual ~ModelAbstract();
 
     virtual ModelAbstract* clone(const QString path);
     virtual void load(const QString path);

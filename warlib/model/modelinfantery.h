@@ -19,7 +19,7 @@ public:
                   const int &lengthBase, const int &unitP, const QString& urlImage , bool figSup,
                   const QString& specRules);
     ModelInfantery(const ModelInfantery &copy);
-    ~ModelInfantery();
+    virtual ~ModelInfantery();
 
     static void initModelInfanterySystem();
     virtual ModelInfantery* clone(QString path);
