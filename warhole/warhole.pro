@@ -31,8 +31,7 @@ HEADERS  += mainwindow.h \
     gamewindow.h \
     game/testgi.h \
     game/fieldlimits.h \
-    game/distances.h \
-    defines.h
+    game/distances.h
 
 FORMS += \
     modelwindow.ui \

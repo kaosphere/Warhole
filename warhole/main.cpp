@@ -9,30 +9,14 @@
 #include <model/modelinfantery.h>
 #include <model/modelmonster.h>
 #include <model/modelwarmachine.h>
-#include <warlib.h>
-
-#include"defines.h"
+#include <warlibinitializer.h>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    ModelCavalry::initModelCavalrySystem();
-    ModelCharacter::initModelCharacterSystem();
-    ModelCharriot::initModelCharriotSystem();
-    ModelInfantery::initModelInfanterySystem();
-    ModelMonster::initModelMonsterSystem();
-    ModelWarMachine::initModelWarMachine();
-
-    ModelFactory::associateKeyToClass(CAVALERY_STRING,new ModelCavalry);
-    ModelFactory::associateKeyToClass(CHARACTER_STRING,new ModelCharacter);
-    ModelFactory::associateKeyToClass(CHARRIOT_STRING,new ModelCharriot);
-    ModelFactory::associateKeyToClass(INFANTERY_STRING,new ModelInfantery);
-    ModelFactory::associateKeyToClass(MONSTER_STRING,new ModelMonster);
-    ModelFactory::associateKeyToClass(WARMACHINE_STRING,new ModelWarMachine);
-
-    Warlib war;
-    qDebug() << war.returnNb();
+    // Initialization of the warlib
+    WarlibInit::initWarlib();
 
     MainWindow w;
     w.show();
