@@ -12,7 +12,7 @@ TARGET = warlib
 TEMPLATE = lib
 CONFIG += staticlib
 
-SOURCES += warlib.cpp \
+SOURCES += \
     stats/statsmodel.cpp \
     army/army.cpp \
     model/modelwarmachine.cpp \
@@ -24,9 +24,10 @@ SOURCES += warlib.cpp \
     model/modelcavalry.cpp \
     model/modelabstract.cpp \
     option/optionmodel.cpp \
-    unit/unitabstract.cpp
+    unit/unitabstract.cpp \
+    warlibinitializer.cpp
 
-HEADERS += warlib.h \
+HEADERS += \
     stats/statsmodel.h \
     army/army.h \
     model/modelwarmachine.h \
@@ -38,7 +39,9 @@ HEADERS += warlib.h \
     model/modelcavalry.h \
     model/modelabstract.h \
     option/optionmodel.h \
-    unit/unitabstract.h
+    unit/unitabstract.h \
+    warlibinitializer.h \
+    defines.h
 
 INSTALLS += target
 
