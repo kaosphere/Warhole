@@ -8,16 +8,15 @@
 
 #include <typeinfo>
 
-#include "option/optionmodel.h"
-#include "model/modelanimal.h"
-#include "model/modelcavalry.h"
-#include "model/modelcharacter.h"
-#include "model/modelcharriot.h"
-#include "model/modelinfantery.h"
-#include "model/modelmonster.h"
-#include "model/modelwarmachine.h"
+#include <option/optionmodel.h>
+#include <model/modelcavalry.h>
+#include <model/modelcharacter.h>
+#include <model/modelcharriot.h>
+#include <model/modelinfantery.h>
+#include <model/modelmonster.h>
+#include <model/modelwarmachine.h>
 
-#include "stats/statsmodel.h"
+#include <stats/statsmodel.h>
 
 #include"defines.h"
 

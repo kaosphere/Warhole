@@ -7,7 +7,7 @@
 #include <QMessageBox>
 #include "defines.h"
 #include <QStandardItemModel>
-#include "model/modelfactory.h"
+#include <model/modelfactory.h>
 
 #include <QDebug>
 

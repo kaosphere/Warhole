@@ -12,48 +12,27 @@ win32: TARGET = ../bin/warhole
 
 TEMPLATE = app
 
+debug:LIBS += -L../../warlib/build/debug -lwarlib
+release:LIBS += -L../../warlib/build/release -lwarlib
+INCLUDEPATH += ../../warlib/warlib
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    model/modelabstract.cpp \
-    model/modelinfantery.cpp \
-    option/optionmodel.cpp \
-    model/modelcavalry.cpp \
-    model/modelwarmachine.cpp \
-    model/modelcharacter.cpp \
-    model/modelmonster.cpp \
-    model/modelcharriot.cpp \
     modelwindow.cpp \
-    stats/statsmodel.cpp \
     armywindow.cpp \
-    unit/unitabstract.cpp \
-    army/army.cpp \
     gamewindow.cpp \
     game/testgi.cpp \
-    game/fieldlimits.cpp \
-    model/modelfactory.cpp
+    game/fieldlimits.cpp
 
 HEADERS  += mainwindow.h \
-    model/modelabstract.h \
-    model/modelinfantery.h \
-    option/optionmodel.h \
-    model/modelcavalry.h \
-    model/modelwarmachine.h \
-    model/modelcharacter.h \
-    model/modelmonster.h \
-    model/modelcharriot.h \
     modelwindow.h \
-    stats/statsmodel.h \
     armywindow.h \
-    unit/unitabstract.h \
-    army/army.h \
     version.h \
     gamewindow.h \
     game/testgi.h \
     game/fieldlimits.h \
     game/distances.h \
-    defines.h \
-    model/modelfactory.h
+    defines.h
 
 FORMS += \
     modelwindow.ui \

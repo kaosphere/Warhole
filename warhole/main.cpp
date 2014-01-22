@@ -1,14 +1,16 @@
 #include "mainwindow.h"
 #include <QApplication>
+#include <QDebug>
 
-#include"model/modelanimal.h"
-#include"model/modelcavalry.h"
-#include"model/modelcharacter.h"
-#include"model/modelcharriot.h"
-#include"model/modelinfantery.h"
-#include"model/modelmonster.h"
-#include"model/modelwarmachine.h"
-#include"model/modelfactory.h"
+
+#include <model/modelcavalry.h>
+#include <model/modelcharacter.h>
+#include <model/modelcharriot.h>
+#include <model/modelinfantery.h>
+#include <model/modelmonster.h>
+#include <model/modelwarmachine.h>
+#include <warlib.h>
+
 #include"defines.h"
 
 int main(int argc, char *argv[])
@@ -28,6 +30,9 @@ int main(int argc, char *argv[])
     ModelFactory::associateKeyToClass(INFANTERY_STRING,new ModelInfantery);
     ModelFactory::associateKeyToClass(MONSTER_STRING,new ModelMonster);
     ModelFactory::associateKeyToClass(WARMACHINE_STRING,new ModelWarMachine);
+
+    Warlib war;
+    qDebug() << war.returnNb();
 
     MainWindow w;
     w.show();
