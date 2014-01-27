@@ -28,6 +28,8 @@ GameWindow::GameWindow(QWidget *parent) :
 
     back = new BackGroundItem(5400,2700);
     scene.addItem(back);
+    regiment = new testGI();
+    scene.addItem(regiment);
 }
 
 void GameWindow::setSceneZoomFactor(double zoomFactor)

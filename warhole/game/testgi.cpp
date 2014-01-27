@@ -6,8 +6,25 @@ testGI::testGI()
     h = 60;
     w = 60;
     nbRectW = 5;
-    nbRectH = 2;
+    nbRectH = 4;
     setFlag(ItemIsMovable);
+
+    deads=7;
+
+    QPixmap* logoTmp = new QPixmap();
+    if(!logoTmp->load("..\\pix\\orcbanner.png"))
+    {
+        qDebug()<<"GAMEWINDOW : Can't load logo image";
+    }
+    logo = logoTmp->scaled((nbRectW*w)/2,
+                           (nbRectH*h)/2);
+
+    QPixmap* deadTmp = new QPixmap();
+    if(!deadTmp->load("..\\pix\\whiteskull.png"))
+    {
+        qDebug()<<"GAMEWINDOW : Can't load dead image";
+    }
+    dead = deadTmp->scaled(w, h);
 }
 
 QRectF testGI::boundingRect() const
@@ -21,15 +38,35 @@ QRectF testGI::boundingRect() const
 void testGI::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     QRectF rec = boundingRect();
-    QBrush brush(Qt::blue);
+    QLinearGradient gradient(0, nbRectH*h, nbRectW*w, 0);
+    gradient.setColorAt(0, QColor::fromRgb(qRgba(6, 52, 69, 0)));
+    gradient.setColorAt(1, QColor::fromRgb(qRgba(9, 85, 112, 0)));
 
+    QBrush brush(gradient);
+
+    painter->setBackground(QColor(0,0,0,0));
     painter->fillRect(rec,brush);
+    painter->drawPixmap((nbRectW*w)/2-(nbRectW*w/4),
+                        (nbRectH*h)/2-(nbRectH*h/4),
+                        logo.width(),
+                        logo.height(),
+                        logo);
     painter->drawRect(rec);
+
     for(int i=0;i<nbRectH;i++)
     {
         for(int j=0;j<nbRectW;j++)
         {
+            if(((i*nbRectW)+j)>=((nbRectH*nbRectW)-deads))
+            {
+                qDebug() << "i*nbRect+j : " << ((i*nbRectH)+j);
+                painter->fillRect(
+                            QRect((j*w),(i*h),w,h),
+                            QColor(50,50,50,100));
+                painter->drawPixmap((j*w),(i*h),w,h,dead);
+            }
             painter->drawRect((j*w),(i*h),w,h);
+            qDebug() << "outside if : " << ((i*nbRectH)+j);
         }
     }
 }
@@ -88,4 +125,14 @@ void testGI::setH(int value)
     h = value;
 }
 
+
+int testGI::getDeads() const
+{
+    return deads;
+}
+
+void testGI::setDeads(int value)
+{
+    deads = value;
+}
 

@@ -5,7 +5,9 @@
 #include <QBrush>
 #include <QPainter>
 #include <QGraphicsScene>
+#include <QDebug>
 
+#include <QLinearGradient>
 
 class testGI : public QGraphicsItem
 {
@@ -28,6 +30,9 @@ public:
 
     void setPosition(QPointF pos);
 
+    int getDeads() const;
+    void setDeads(int value);
+
 signals:
     
 public slots:
@@ -41,6 +46,9 @@ private:
     int nbRectH;
     int h;
     int w;
+    QPixmap logo;
+    QPixmap dead;
+    int deads;
 };
 
 #endif // TESTGI_H

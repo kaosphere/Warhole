@@ -45,6 +45,7 @@ private:
     QBrush* backGroundBrush;
     double scaleFactor;
     QPixmap background;
+    testGI* regiment;
 
     const double maxScaleFactor = 2;
     const double minScaleFactor = 0.2;
