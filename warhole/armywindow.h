@@ -8,6 +8,8 @@
 #include "defines.h"
 #include <QStandardItemModel>
 #include <model/modelfactory.h>
+#include <option/optionmodel.h>
+#include <unit/unitabstract.h>
 
 #include <QDebug>
 
@@ -31,10 +33,19 @@ private slots:
 
     void on_treeViewExistingModels_clicked(const QModelIndex &index);
 
+    void on_pushButton_clicked();
+
 private:
     Ui::ArmyWindow *ui;
     QDirModel *model;
     QStringList existingRaces;
+    ModelFactory fac;
+    ModelAbstract* ma;
+    QStandardItemModel* options;
+    QGraphicsScene* scene;
+    QStandardItemModel* reg;
+    QList<UnitAbstract*> regiments;
+    QModelIndex selectedModel;
 };
 
 #endif // ARMYWINDOW_H
