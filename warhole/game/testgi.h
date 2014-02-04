@@ -6,7 +6,7 @@
 #include <QPainter>
 #include <QGraphicsScene>
 #include <QDebug>
-
+#include <QPointF>
 #include <QLinearGradient>
 
 class testGI : public QGraphicsItem
@@ -49,6 +49,8 @@ private:
     QPixmap logo;
     QPixmap dead;
     int deads;
+
+    QPointF* points;
 };
 
 #endif // TESTGI_H

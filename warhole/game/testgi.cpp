@@ -25,7 +25,10 @@ testGI::testGI()
         qDebug()<<"GAMEWINDOW : Can't load dead image";
     }
     dead = deadTmp->scaled(w, h);
+
+
 }
+
 
 QRectF testGI::boundingRect() const
 {
@@ -43,14 +46,17 @@ void testGI::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
     gradient.setColorAt(1, QColor::fromRgb(qRgba(9, 85, 112, 0)));
 
     QBrush brush(gradient);
+    QPen pen(QColor(0,20,40),3);
 
-    painter->setBackground(QColor(0,0,0,0));
+
+    painter->setBackgroundMode(Qt::TransparentMode);
     painter->fillRect(rec,brush);
     painter->drawPixmap((nbRectW*w)/2-(nbRectW*w/4),
                         (nbRectH*h)/2-(nbRectH*h/4),
                         logo.width(),
                         logo.height(),
                         logo);
+    painter->setPen(pen);
     painter->drawRect(rec);
 
     for(int i=0;i<nbRectH;i++)
@@ -59,16 +65,22 @@ void testGI::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
         {
             if(((i*nbRectW)+j)>=((nbRectH*nbRectW)-deads))
             {
-                qDebug() << "i*nbRect+j : " << ((i*nbRectH)+j);
                 painter->fillRect(
                             QRect((j*w),(i*h),w,h),
                             QColor(50,50,50,100));
                 painter->drawPixmap((j*w),(i*h),w,h,dead);
             }
             painter->drawRect((j*w),(i*h),w,h);
-            qDebug() << "outside if : " << ((i*nbRectH)+j);
         }
     }
+
+
+    static const QPointF points[3] = {
+        QPointF((nbRectW*w)/2 - (nbRectW*w)/8, 0),
+        QPointF((nbRectW*w)/2 + (nbRectW*w)/8, 0),
+        QPointF(((nbRectW*w)/2), 30)
+        };
+    painter->drawPolygon(points,3);
 }
 
 void testGI::mousePressEvent(QGraphicsSceneMouseEvent *event)
