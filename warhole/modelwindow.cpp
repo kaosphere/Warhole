@@ -252,7 +252,11 @@ void ModelWindow::on_toolButtonImage_pressed()
     fileName = QFileDialog::getOpenFileName(this, tr("Open Image"), ".", tr("Image Files (*.png *.jpg *.bmp)"));
     ui->lineEditImage->setText(fileName);
 
-    if(image->load(fileName)) scene->addPixmap(*image);
+    if(image->load(fileName))
+    {
+    	scene->clear();
+    	scene->addPixmap(*image);
+    }
     else  QMessageBox::warning(this, "Info", "URL de l'image non valide");
 
 }
@@ -365,7 +369,11 @@ void ModelWindow::fillUI(ModelAbstract* m, QString path)
     ui->lineEditImage->setText(m->getUrlImage());
     //ui->textEdit->append(poupik->getSpecialRules());
 
-    if(image->load(m->getUrlImage())) scene->addPixmap(*image);
+    if(image->load(m->getUrlImage()))
+    {
+    	scene->clear();
+    	scene->addPixmap(*image);
+    }
     else  QMessageBox::warning(this, "Info", "URL de l'image non valide");
 
     for(int i = 0 ; i < m->getOptions().length() ; i++)
