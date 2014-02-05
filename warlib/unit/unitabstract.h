@@ -68,6 +68,9 @@ public:
 
     void updateNbModels();
 
+    int getNbModels() const;
+    void setNbModels(int value);
+
 private:
     QString name;
     QList<ModelAbstract*> models;

@@ -53,14 +53,14 @@ UnitAbstract::UnitAbstract(const UnitAbstract &u)
 bool UnitAbstract::operator==(const UnitAbstract &u)
 {
     if(musician == u.musician &&
-       skirmishers == u.skirmishers &&
-       champion == u.champion &&
-       name == u.name &&
-       models.size() == u.models.size() &&
-       banner == u.banner &&
-       type == u.type &&
-       path == u.path &&
-       nbModels == u.nbModels)
+            skirmishers == u.skirmishers &&
+            champion == u.champion &&
+            name == u.name &&
+            models.size() == u.models.size() &&
+            banner == u.banner &&
+            type == u.type &&
+            path == u.path &&
+            nbModels == u.nbModels)
         return true;
     else return false;
 }
@@ -193,6 +193,7 @@ QDataStream &operator >>(QDataStream & in, UnitAbstract & obj)
 void UnitAbstract::loadAllModels()
 {
     ModelAbstract * m;
+
     for(int i = 0; i < nbModels; i++)
     {
         switch(type)
@@ -247,3 +248,14 @@ void UnitAbstract::setPath(const QString &value)
 {
     path = value;
 }
+
+int UnitAbstract::getNbModels() const
+{
+    return nbModels;
+}
+
+void UnitAbstract::setNbModels(int value)
+{
+    nbModels = value;
+}
+
