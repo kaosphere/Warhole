@@ -15,6 +15,7 @@
 #include <model/modelinfantery.h>
 #include <model/modelmonster.h>
 #include <model/modelwarmachine.h>
+#include <model/modelfactory.h>
 
 #include <stats/statsmodel.h>
 

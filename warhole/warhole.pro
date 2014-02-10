@@ -12,9 +12,13 @@ win32: TARGET = ../bin/warhole
 
 TEMPLATE = app
 
-debug:LIBS += -L../../warlib/build/debug -lwarlib
-release:LIBS += -L../../warlib/build/release -lwarlib
-INCLUDEPATH += ../../warlib/warlib
+win32:debug:LIBS += -L../../warlib/build/debug -lwarlib
+win32:release:LIBS += -L../../warlib/build/release -lwarlib
+
+unix:debug:LIBS += -L../../warlib/build/Debug -lwarlib
+unix:release:LIBS += -L../../warlib/build/Release -lwarlib
+
+INCLUDEPATH += ../../warlib
 
 SOURCES += main.cpp\
         mainwindow.cpp \
