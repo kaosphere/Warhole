@@ -38,6 +38,10 @@ StatsModel::StatsModel(const QString &n, const QString &move, const QString &wea
     points = p;
 }
 
+StatsModel::~StatsModel()
+{
+}
+
 StatsModel & StatsModel::operator =(const StatsModel &stat)
 {
     name = stat.name;

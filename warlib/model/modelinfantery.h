@@ -22,9 +22,10 @@ public:
     virtual ~ModelInfantery();
 
     static void initModelInfanterySystem();
-    virtual ModelInfantery* clone(QString path);
+    virtual ModelInfantery* setFromFile(QString path);
+    virtual ModelInfantery* setFromUI(const ParamsfromUImodel *params);
     virtual void load(QString path);
-    void save(QString path);
+    virtual void save(QString path);
 
     QString getSpecialRules() const;
     void setSpecialRules(const QString &value);

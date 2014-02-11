@@ -25,9 +25,10 @@ public:
     void setSpecialRules(const QString &value);
 
     static void initModelCavalrySystem();
-    virtual ModelCavalry* clone(QString path);
+    virtual ModelCavalry* setFromFile(QString path);
+    virtual ModelCavalry* setFromUI(const ParamsfromUImodel* params);
     virtual void load(QString path);
-    void save(QString path);
+    virtual void save(QString path);
 
     QList<StatsModel> getMount() const;
     void setMount(const QList<StatsModel> &value);

@@ -24,8 +24,9 @@ SOURCES += \
     model/modelcavalry.cpp \
     model/modelabstract.cpp \
     option/optionmodel.cpp \
-    unit/unitabstract.cpp \
-    warlibinitializer.cpp
+    warlibinitializer.cpp \
+    paramsfromUI/paramsfromuimodel.cpp \
+    regiment/regimentabstract.cpp
 
 HEADERS += \
     stats/statsmodel.h \
@@ -39,9 +40,10 @@ HEADERS += \
     model/modelcavalry.h \
     model/modelabstract.h \
     option/optionmodel.h \
-    unit/unitabstract.h \
     warlibinitializer.h \
-    defines.h
+    defines.h \
+    paramsfromUI/paramsfromuimodel.h \
+    regiment/regimentabstract.h
 
 INSTALLS += target
 

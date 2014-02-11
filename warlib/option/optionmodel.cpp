@@ -20,6 +20,10 @@ OptionModel::OptionModel(const OptionModel &obj)
     specialRules = obj.specialRules;
 }
 
+OptionModel::~OptionModel()
+{
+}
+
 bool OptionModel::operator ==(const OptionModel &o)
 {
     if(name == o.name && nbPoints == o.nbPoints && activated == o.activated && specialRules == o.specialRules)

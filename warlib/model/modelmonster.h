@@ -23,12 +23,20 @@ public:
     virtual ~ModelMonster();
 
     static void initModelMonsterSystem();
-    virtual ModelMonster* clone(QString path);
+    virtual ModelMonster* setFromFile(QString path);
+    virtual ModelMonster* setFromUI(const ParamsfromUImodel *params);
     virtual void load(QString path);
-    void save(QString path);
+    virtual void save(QString path);
 
     QString getSpecialRules() const;
     void setSpecialRules(const QString &value);
+
+    bool getHasACrew() const;
+    void setHasACrew(bool value);
+
+
+    QList<ModelInfantery *> getCrew() const;
+    void setCrew(const QList<ModelInfantery *> &value);
 
 private:
     QString specialRules;

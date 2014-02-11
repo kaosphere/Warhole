@@ -32,7 +32,7 @@ void ModelInfantery::initModelInfanterySystem()
     qMetaTypeId<ModelInfantery>();
 }
 
-ModelInfantery *ModelInfantery::clone(QString path)
+ModelInfantery *ModelInfantery::setFromFile(QString path)
 {
     ModelInfantery* tmp = new ModelInfantery(*this);
     tmp->load(path);
@@ -40,6 +40,24 @@ ModelInfantery *ModelInfantery::clone(QString path)
     return tmp;
 }
 
+ModelInfantery *ModelInfantery::setFromUI(const ParamsfromUImodel *params)
+{
+    qDebug() << "yay this is setfromUI in ModelInfantery !";
+
+    ModelInfantery* tmp = new ModelInfantery(*this);
+    // ModelAbstract params
+    tmp->setStats(params->getStats());
+    tmp->setSquareBaseW(params->getWidthBase());
+    tmp->setSquareBaseL(params->getLengthBase());
+    tmp->setUnitPower(params->getUnitP());
+    tmp->setFigSupInd(params->getFigSup());
+    tmp->setUrlImage(params->getUrlImage());
+    tmp->setOptions(params->getOptions());
+
+    // ModelInfantery params
+    tmp->setSpecialRules(params->getSpecRules());
+    return tmp;
+}
 
 void ModelInfantery::load(QString path)
 {

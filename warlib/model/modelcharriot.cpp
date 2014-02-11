@@ -35,11 +35,31 @@ void ModelCharriot::initModelCharriotSystem()
     qMetaTypeId<ModelCharriot>();
 }
 
-ModelCharriot *ModelCharriot::clone(QString path)
+ModelCharriot *ModelCharriot::setFromFile(QString path)
 {
     ModelCharriot* tmp = new ModelCharriot(*this);
     tmp->load(path);
 
+    return tmp;
+}
+
+ModelCharriot *ModelCharriot::setFromUI(const ParamsfromUImodel *params)
+{
+    qDebug() << "yay this is setfromUI in ModelCharriot !";
+
+    ModelCharriot* tmp = new ModelCharriot(*this);
+    // ModelAbstract params
+    tmp->setStats(params->getStats());
+    tmp->setSquareBaseW(params->getWidthBase());
+    tmp->setSquareBaseL(params->getLengthBase());
+    tmp->setUnitPower(params->getUnitP());
+    tmp->setFigSupInd(params->getFigSup());
+    tmp->setUrlImage(params->getUrlImage());
+    tmp->setOptions(params->getOptions());
+
+    // ModelCharriot params
+    tmp->setSpecialRules(params->getSpecRules());
+    tmp->setCrew(params->getMorC());
     return tmp;
 }
 

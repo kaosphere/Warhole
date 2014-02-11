@@ -14,6 +14,8 @@ public:
 
     OptionModel(const OptionModel & obj);
 
+    ~OptionModel();
+
     bool operator==(const OptionModel&);
     OptionModel& operator=(const OptionModel&);
 

@@ -23,9 +23,10 @@ public:
     virtual ~ModelCharacter();
 
     static void initModelCharacterSystem();
-    virtual ModelCharacter* clone(QString path);
+    virtual ModelCharacter* setFromFile(QString path);
+    virtual ModelCharacter* setFromUI(const ParamsfromUImodel* params);
     virtual void load(QString path);
-    void save(QString path);
+    virtual void save(QString path);
 
     QString getSpecialRules() const;
     void setSpecialRules(const QString &value);

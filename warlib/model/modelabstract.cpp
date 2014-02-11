@@ -60,9 +60,21 @@ ModelAbstract::ModelAbstract(const ModelAbstract &copy)
 
 ModelAbstract::~ModelAbstract(){}
 
-ModelAbstract *ModelAbstract::clone(const QString path)
+void ModelAbstract::save(const QString path)
 {
 }
+
+ModelAbstract *ModelAbstract::setFromFile(const QString path)
+{
+}
+
+ModelAbstract *ModelAbstract::setFromUI(const ParamsfromUImodel *params)
+{
+    qDebug() << "damned this is setfromUI of MODELABSTRACT...";
+
+
+}
+
 
 void ModelAbstract::load(const QString path)
 {

@@ -46,10 +46,30 @@ void ModelCavalry::initModelCavalrySystem()
     qMetaTypeId<ModelCavalry>();
 }
 
-ModelCavalry *ModelCavalry::clone(QString path)
+ModelCavalry *ModelCavalry::setFromFile(QString path)
 {
     ModelCavalry* tmp = new ModelCavalry(*this);
     tmp->load(path);
+
+    return tmp;
+}
+
+ModelCavalry *ModelCavalry::setFromUI(const ParamsfromUImodel *params)
+{
+    ModelCavalry* tmp = new ModelCavalry(*this);
+
+    // modelabstract params
+    tmp->setStats(params->getStats());
+    tmp->setSquareBaseW(params->getWidthBase());
+    tmp->setSquareBaseL(params->getLengthBase());
+    tmp->setUnitPower(params->getUnitP());
+    tmp->setFigSupInd(params->getFigSup());
+    tmp->setUrlImage(params->getUrlImage());
+    tmp->setOptions(params->getOptions());
+
+    // modelcavalery params
+    tmp->setSpecialRules(params->getSpecRules());
+    tmp->setMount(params->getMorC());
 
     return tmp;
 }

@@ -15,23 +15,23 @@ void Army::setName(const QString &value)
 }
 
 
-QList<UnitAbstract> Army::getUnits() const
+QList<RegimentAbstract> Army::getUnits() const
 {
     return units;
 }
 
-void Army::setUnits(const QList<UnitAbstract> &value)
+void Army::setUnits(const QList<RegimentAbstract> &value)
 {
     units = value;
 }
 
 
-void Army::addUnit(const UnitAbstract &u)
+void Army::addUnit(const RegimentAbstract &u)
 {
     units.append(u);
 }
 
-void Army::removeUnit(const UnitAbstract &u)
+void Army::removeUnit(const RegimentAbstract &u)
 {
     units.removeOne(u);
 }
@@ -69,7 +69,7 @@ QDataStream &operator >>(QDataStream & in, Army & obj)
 
     for(int i = 0 ; i < nb ; i++)
     {
-        UnitAbstract u;
+        RegimentAbstract u;
         in >> u;
         obj.addUnit(u);
     }

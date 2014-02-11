@@ -44,10 +44,35 @@ void ModelCharacter::initModelCharacterSystem()
     qMetaTypeId<ModelCharacter>();
 }
 
-ModelCharacter *ModelCharacter::clone(QString path)
+ModelCharacter *ModelCharacter::setFromFile(QString path)
 {
     ModelCharacter* tmp = new ModelCharacter(*this);
     tmp->load(path);
+
+    return tmp;
+}
+
+ModelCharacter *ModelCharacter::setFromUI(const ParamsfromUImodel *params)
+{
+    qDebug() << "yay this is setfromUI in modelCHARACTER !";
+
+    ModelCharacter* tmp = new ModelCharacter(*this);
+    // ModelAbstract params
+    tmp->setStats(params->getStats());
+    tmp->setSquareBaseW(params->getWidthBase());
+    tmp->setSquareBaseL(params->getLengthBase());
+    tmp->setUnitPower(params->getUnitP());
+    tmp->setFigSupInd(params->getFigSup());
+    tmp->setUrlImage(params->getUrlImage());
+    tmp->setOptions(params->getOptions());
+
+    // ModelCharacter params
+    tmp->setSpecialRules(params->getSpecRules());
+    tmp->setMount(params->getMorC());
+    tmp->setIsALord(params->getLord());
+    tmp->setIsAMage(params->getMage());
+    tmp->setIsTheGeneral(params->getGeneral());
+    tmp->setIsMounted(params->getMounted());
 
     return tmp;
 }
