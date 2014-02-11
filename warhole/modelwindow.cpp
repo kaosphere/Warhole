@@ -225,19 +225,19 @@ void ModelWindow::on_comboUnitType_currentIndexChanged(int index)
             loadCavaleryWidget();
             break;
         case 2:
-            loadCharriotWidget();
+            loadCharacterWidget();
             break;
         case 3:
-            loadInfanteryWidget();
+            loadCharriotWidget();
             break;
         case 4:
-            loadMonsterWidget();
+            loadInfanteryWidget();
             break;
         case 5:
-            loadWarMachineWidget();
+            loadMonsterWidget();
             break;
         case 6:
-            loadCharacterWidget();
+        loadWarMachineWidget();
             break;
         default:
             break;
