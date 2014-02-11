@@ -9,7 +9,7 @@
 #include <QStandardItemModel>
 #include <model/modelfactory.h>
 #include <option/optionmodel.h>
-#include <unit/unitabstract.h>
+#include <regiment/regimentabstract.h>
 
 #include <QDebug>
 
@@ -44,7 +44,7 @@ private:
     QStandardItemModel* options;
     QGraphicsScene* scene;
     QStandardItemModel* reg;
-    QList<UnitAbstract*> regiments;
+    QList<RegimentAbstract*> regiments;
     QModelIndex selectedModel;
 };
 

@@ -100,7 +100,7 @@ void ArmyWindow::on_treeViewExistingModels_clicked(const QModelIndex &index)
     if(pieces.last() == "unit")
     {
         QString path(model->filePath(index));
-        ma = fac.create(index.parent().data().toString(), path);
+        ma = fac.createFromFile(index.parent().data().toString(), path);
     }
 
     for(int i = 0 ; i < ma->getOptions().length() ; i++)
@@ -123,7 +123,7 @@ void ArmyWindow::on_pushButton_clicked()
     //add the regiment to the army list
     QList<ModelAbstract*> l;
     StatsModel m;
-    UnitAbstract* u = new UnitAbstract(ma->getStats().getName(),
+    RegimentAbstract* u = new RegimentAbstract(ma->getStats().getName(),
                                        model->filePath(selectedModel),
                                        l,
                                        0,
