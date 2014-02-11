@@ -1,5 +1,5 @@
-#ifndef UNITABSTRACT_H
-#define UNITABSTRACT_H
+#ifndef REGIMENTABSTRACT_H
+#define REGIMENTABSTRACT_H
 
 #include "model/modelabstract.h"
 #include "model/modelcavalry.h"
@@ -22,15 +22,15 @@
 #define WARMACHINE_TYPE 5
 #define UNKNOWN 99
 
-class UnitAbstract
+class RegimentAbstract
 {
 public:
-    UnitAbstract();
-    UnitAbstract(const QString& n, const QString &p, const QList<ModelAbstract *> &l, const int &t,
+    RegimentAbstract();
+    RegimentAbstract(const QString& n, const QString &p, const QList<ModelAbstract *> &l, const int &t,
                  const bool& m, const bool& s, const bool& c, const bool& b, const StatsModel& st, const int &nb);
-    UnitAbstract(const UnitAbstract& u);
+    RegimentAbstract(const RegimentAbstract& u);
 
-    bool operator==(const UnitAbstract&);
+    bool operator==(const RegimentAbstract&);
 
     bool getMusician() const;
     void setMusician(bool value);
@@ -61,8 +61,8 @@ public:
     QString getPath() const;
     void setPath(const QString &value);
 
-    friend QDataStream & operator << (QDataStream &, const UnitAbstract &);
-    friend QDataStream & operator >> (QDataStream &, UnitAbstract &);
+    friend QDataStream & operator << (QDataStream &, const RegimentAbstract &);
+    friend QDataStream & operator >> (QDataStream &, RegimentAbstract &);
 
     void loadAllModels();
 
@@ -84,4 +84,4 @@ private:
     int nbModels;
 };
 
-#endif // UNITABSTRACT_H
+#endif // REGIMENTABSTRACT_H

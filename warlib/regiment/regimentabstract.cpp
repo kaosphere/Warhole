@@ -1,6 +1,6 @@
-#include "unitabstract.h"
+#include "regimentabstract.h"
 
-UnitAbstract::UnitAbstract()
+RegimentAbstract::RegimentAbstract()
 {
     name = "";
     path = "";
@@ -13,7 +13,7 @@ UnitAbstract::UnitAbstract()
     banner = false;
 }
 
-UnitAbstract::UnitAbstract(const QString &n,
+RegimentAbstract::RegimentAbstract(const QString &n,
                            const QString &p,
                            const QList<ModelAbstract*> &l,
                            const int &t,
@@ -36,7 +36,7 @@ UnitAbstract::UnitAbstract(const QString &n,
     nbModels = nb;
 }
 
-UnitAbstract::UnitAbstract(const UnitAbstract &u)
+RegimentAbstract::RegimentAbstract(const RegimentAbstract &u)
 {
     name = u.name;
     path = u.path;
@@ -50,7 +50,7 @@ UnitAbstract::UnitAbstract(const UnitAbstract &u)
     nbModels = u.nbModels;
 }
 
-bool UnitAbstract::operator==(const UnitAbstract &u)
+bool RegimentAbstract::operator==(const RegimentAbstract &u)
 {
     if(musician == u.musician &&
             skirmishers == u.skirmishers &&
@@ -65,98 +65,98 @@ bool UnitAbstract::operator==(const UnitAbstract &u)
     else return false;
 }
 
-int UnitAbstract::getType() const
+int RegimentAbstract::getType() const
 {
     return type;
 }
 
-void UnitAbstract::setType(const int &value)
+void RegimentAbstract::setType(const int &value)
 {
     type = value;
 }
 
 
-bool UnitAbstract::getMusician() const
+bool RegimentAbstract::getMusician() const
 {
     return musician;
 }
 
-void UnitAbstract::setMusician(bool value)
+void RegimentAbstract::setMusician(bool value)
 {
     musician = value;
 }
 
-bool UnitAbstract::getSkirmishers() const
+bool RegimentAbstract::getSkirmishers() const
 {
     return skirmishers;
 }
 
-void UnitAbstract::setSkirmishers(bool value)
+void RegimentAbstract::setSkirmishers(bool value)
 {
     skirmishers = value;
 }
 
-bool UnitAbstract::getChampion() const
+bool RegimentAbstract::getChampion() const
 {
     return champion;
 }
 
-void UnitAbstract::setChampion(bool value)
+void RegimentAbstract::setChampion(bool value)
 {
     champion = value;
 }
 
-QString UnitAbstract::getName() const
+QString RegimentAbstract::getName() const
 {
     return name;
 }
 
-void UnitAbstract::setName(const QString &value)
+void RegimentAbstract::setName(const QString &value)
 {
     name = value;
 }
 
-QList<ModelAbstract*> UnitAbstract::getModels() const
+QList<ModelAbstract*> RegimentAbstract::getModels() const
 {
     return models;
 }
 
-void UnitAbstract::setModels(const QList<ModelAbstract*> &value)
+void RegimentAbstract::setModels(const QList<ModelAbstract*> &value)
 {
     models = value;
 }
 
-void UnitAbstract::addModel(ModelAbstract* m)
+void RegimentAbstract::addModel(ModelAbstract* m)
 {
     models.append(m);
 }
 
-void UnitAbstract::removeModel(ModelAbstract *m)
+void RegimentAbstract::removeModel(ModelAbstract *m)
 {
     models.removeOne(m);
 }
 
-bool UnitAbstract::getBanner() const
+bool RegimentAbstract::getBanner() const
 {
     return banner;
 }
 
-void UnitAbstract::setBanner(bool value)
+void RegimentAbstract::setBanner(bool value)
 {
     banner = value;
 }
 
-StatsModel UnitAbstract::getChampionStats() const
+StatsModel RegimentAbstract::getChampionStats() const
 {
     return championStats;
 }
 
-void UnitAbstract::setChampionStats(const StatsModel &value)
+void RegimentAbstract::setChampionStats(const StatsModel &value)
 {
     championStats = value;
 }
 
-QDataStream &operator <<(QDataStream & out, const UnitAbstract & obj)
+QDataStream &operator <<(QDataStream & out, const RegimentAbstract & obj)
 {
     out << obj.name
         << obj.type
@@ -172,7 +172,7 @@ QDataStream &operator <<(QDataStream & out, const UnitAbstract & obj)
     return out;
 }
 
-QDataStream &operator >>(QDataStream & in, UnitAbstract & obj)
+QDataStream &operator >>(QDataStream & in, RegimentAbstract & obj)
 {
     in >> obj.name;
     in >> obj.type;
@@ -190,7 +190,7 @@ QDataStream &operator >>(QDataStream & in, UnitAbstract & obj)
     return in;
 }
 
-void UnitAbstract::loadAllModels()
+void RegimentAbstract::loadAllModels()
 {
     ModelAbstract * m;
 
@@ -234,27 +234,27 @@ void UnitAbstract::loadAllModels()
     }
 }
 
-void UnitAbstract::updateNbModels()
+void RegimentAbstract::updateNbModels()
 {
     nbModels = models.size();
 }
 
-QString UnitAbstract::getPath() const
+QString RegimentAbstract::getPath() const
 {
     return path;
 }
 
-void UnitAbstract::setPath(const QString &value)
+void RegimentAbstract::setPath(const QString &value)
 {
     path = value;
 }
 
-int UnitAbstract::getNbModels() const
+int RegimentAbstract::getNbModels() const
 {
     return nbModels;
 }
 
-void UnitAbstract::setNbModels(int value)
+void RegimentAbstract::setNbModels(int value)
 {
     nbModels = value;
 }

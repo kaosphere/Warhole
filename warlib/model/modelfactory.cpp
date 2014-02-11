@@ -17,7 +17,7 @@ void ModelFactory::associateKeyToClass(const QString &key, ModelAbstract *mod)
     }
 }
 
-ModelAbstract *ModelFactory::create(const QString &key, const QString path) const
+ModelAbstract *ModelFactory::createFromFile(const QString &key, const QString path) const
 {
     ModelAbstract* tmp = 0;
     QMap<QString, ModelAbstract*>::const_iterator it = factory_model_map.find(key);
@@ -25,7 +25,7 @@ ModelAbstract *ModelFactory::create(const QString &key, const QString path) cons
     if(it != factory_model_map.end()) // key was found in map
     {
         tmp = *it;
-        tmp = tmp->clone(path);
+        tmp = tmp->setFromFile(path);
 
         qDebug() << "key found in map " << key;
         qDebug() << "name " << tmp->getStats().getName();
@@ -33,6 +33,22 @@ ModelAbstract *ModelFactory::create(const QString &key, const QString path) cons
 
     return tmp;
 }
+
+ModelAbstract* ModelFactory::createFromUI(const QString &key, const ParamsfromUImodel* params) const
+{
+    ModelAbstract* tmp = 0;
+    QMap<QString, ModelAbstract*>::const_iterator it = factory_model_map.find(key);
+    if(it != factory_model_map.end()) // key was found in map
+    {
+        tmp = *it;
+        qDebug() << "hi from modelfactory createfromUI !";
+        tmp = tmp->setFromUI(params);
+    }
+
+    return tmp;
+}
+
+
 
 
 

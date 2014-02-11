@@ -27,10 +27,29 @@ void ModelWarMachine::initModelWarMachine()
     qMetaTypeId<ModelWarMachine>();
 }
 
-ModelWarMachine *ModelWarMachine::clone(QString path)
+ModelWarMachine *ModelWarMachine::setFromFile(QString path)
 {
     ModelWarMachine* tmp = new ModelWarMachine(*this);
     tmp->load(path);
+
+    return tmp;
+}
+
+ModelWarMachine *ModelWarMachine::setFromUI(const ParamsfromUImodel *params)
+{
+    ModelWarMachine* tmp = new ModelWarMachine(*this);
+
+    // modelabstract params
+    tmp->setStats(params->getStats());
+    tmp->setSquareBaseW(params->getWidthBase());
+    tmp->setSquareBaseL(params->getLengthBase());
+    tmp->setUnitPower(params->getUnitP());
+    tmp->setFigSupInd(params->getFigSup());
+    tmp->setUrlImage(params->getUrlImage());
+    tmp->setOptions(params->getOptions());
+
+    // modelcavalery params
+    tmp->setSpecialRules(params->getSpecRules());
 
     return tmp;
 }

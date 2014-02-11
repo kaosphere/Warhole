@@ -8,6 +8,7 @@
 
 #include "option/optionmodel.h"
 #include "stats/statsmodel.h"
+#include "paramsfromUI/paramsfromuimodel.h"
 
 class ModelAbstract
 {
@@ -27,7 +28,10 @@ public:
 
     virtual ~ModelAbstract();
 
-    virtual ModelAbstract* clone(const QString path);
+    virtual void save(const QString path);
+
+    virtual ModelAbstract* setFromFile(const QString path);
+    virtual ModelAbstract* setFromUI(const ParamsfromUImodel* params);
     virtual void load(const QString path);
 
     StatsModel getStats() const;

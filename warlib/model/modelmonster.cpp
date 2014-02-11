@@ -28,11 +28,32 @@ void ModelMonster::initModelMonsterSystem()
     qMetaTypeId<ModelMonster>();
 }
 
-ModelMonster *ModelMonster::clone(QString path)
+ModelMonster *ModelMonster::setFromFile(QString path)
 {
     ModelMonster* tmp = new ModelMonster(*this);
     tmp->load(path);
 
+    return tmp;
+}
+
+ModelMonster *ModelMonster::setFromUI(const ParamsfromUImodel *params)
+{
+    qDebug() << "yay this is setfromUI in ModelMonster !";
+
+    ModelMonster* tmp = new ModelMonster(*this);
+    // ModelAbstract params
+    tmp->setStats(params->getStats());
+    tmp->setSquareBaseW(params->getWidthBase());
+    tmp->setSquareBaseL(params->getLengthBase());
+    tmp->setUnitPower(params->getUnitP());
+    tmp->setFigSupInd(params->getFigSup());
+    tmp->setUrlImage(params->getUrlImage());
+    tmp->setOptions(params->getOptions());
+
+    // ModelMonster params
+    tmp->setSpecialRules(params->getSpecRules());
+    tmp->setHasACrew(params->getHasCrew());
+    // TODO CREW
     return tmp;
 }
 
@@ -90,6 +111,26 @@ QDataStream & operator >>(QDataStream & in, ModelMonster & obj)
     in >> static_cast<ModelAbstract&>(obj);
     in >> obj.specialRules;
     in >> obj.hasACrew;
-
-     return in;
 }
+
+
+    QList<ModelInfantery *> ModelMonster::getCrew() const
+    {
+        return crew;
+    }
+
+    void ModelMonster::setCrew(const QList<ModelInfantery *> &value)
+    {
+        crew = value;
+    }
+
+    bool ModelMonster::getHasACrew() const
+    {
+        return hasACrew;
+    }
+
+    void ModelMonster::setHasACrew(bool value)
+    {
+        hasACrew = value;
+    }
+

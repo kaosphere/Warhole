@@ -15,6 +15,8 @@ public:
                const QString &init, const QString &attacks, const QString &leadership,
                const QString &save, const QString &invSave, int p);
 
+    ~StatsModel();
+
     StatsModel& operator=(const StatsModel&);
 
 
