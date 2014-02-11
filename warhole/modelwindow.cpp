@@ -388,28 +388,25 @@ void ModelWindow::fillUI(ModelAbstract* m, QString path)
     }
 }
 
-void ModelWindow::setModelProperties(ModelAbstract* m)
+void ModelWindow::setModelProperties(ParamsfromUImodel *p)
 {
+    qDebug() << "enter setModelProperty in modelwindow";
     StatsModel s(ui->lineEditName->text(), ui->lineEditM->text(),ui->lineEditCC->text(),
                  ui->lineEditCT->text(), ui->lineEditF->text(),ui->lineEditE->text(),
                  ui->lineEditPV->text(), ui->lineEditI->text(), ui->lineEditA->text(),
                  ui->lineEditCdt->text(), ui->lineEditSvg->text(), ui->lineEditSvgInv->text(),ui->spinPoints->value());
-    m->setStats(s);
-    m->setSquareBaseW(ui->spinWidth->value());
-    m->setSquareBaseL(ui->spinLength->value());
-    m->setUnitPower(ui->spinPU->value());
-    m->setUrlImage(ui->lineEditImage->text());
+    p->setStats(s);
+    p->setWidthBase(ui->spinWidth->value());
+    p->setLengthBase(ui->spinLength->value());
+    p->setUnitP(ui->spinPU->value());
+    p->setUrlImage(ui->lineEditImage->text());
 
-    //opTions
-    //remove options not to make doubles
-    m->clearOptions();
-    //then fill options again
+    QList<OptionModel> optionList;
     for(int i = 0; i< options->rowCount(); i++)
     {
         OptionModel o;
         for(int j = 0; j < options->columnCount(); j++)
         {
-
             QStandardItem* item = options->item(i,j);
             //QMessageBox::information(this, "Info", item->text());
 
@@ -430,22 +427,29 @@ void ModelWindow::setModelProperties(ModelAbstract* m)
             }
             o.setActivated(false);
         }
-        m->addOption(o);
+        optionList.append(o);
     }
+    p->setOptions(optionList);
+    qDebug() << "option 1 name : " << p->getOptions().first().getName();
+    qDebug() << "exit setModelProperty in modelwindow";
+
 }
 
 void ModelWindow::save(QString path)
 {
-    QStringList modelList;
-    modelList << CAVALERY_STRING << CHARRIOT_STRING << INFANTERY_STRING << WARMACHINE_STRING << CHARACTER_STRING;
-    int index = modelList.indexOf(ui->comboUnitType->currentText());
-    switch(index+1) // +1 because ui->comboUnitType->currentText() contains "<aucune>" in first position
+    qDebug() << "enter modelwindow save";
+    ParamsfromUImodel* params = new ParamsfromUImodel();
+    params->setSpecRules(ui->textEdit->toPlainText());
+    setModelProperties(params);
+
+    qDebug() << "begin creating statsmodel list";
+    qDebug() << "crew object name : " << crew->objectName();
+    qDebug() << "crew row count : " << crew->rowCount();
+
+    if(crew->rowCount() > 0)
     {
-    case 1:
-        setModelProperties(static_cast<ModelAbstract*>(cav));
-        cav->setSpecialRules(ui->textEdit->toPlainText());
-        //fill stats if its a cav, charriot or character
-        cav->clearMount();
+
+        QList<StatsModel> mOrCList;
         for(int i = 0; i< crew->rowCount(); i++)
         {
             StatsModel s;
@@ -500,158 +504,28 @@ void ModelWindow::save(QString path)
                         break;
                 }
             }
-            cav->addMount(s);
+            mOrCList.append(s);
         }
-        cav->save(path);
-        break;
-    case 2:
-        setModelProperties(static_cast<ModelAbstract*>(charriot));
-        charriot->setSpecialRules(ui->textEdit->toPlainText());
-        //fill stats if its a cav, charriot or character
-        charriot->clearCrew();
-        for(int i = 0; i< crew->rowCount(); i++)
-        {
-            StatsModel s;
-            for(int j = 0; j < crew->columnCount(); j++)
-            {
-
-                QStandardItem* item = crew->item(i,j);
-                //QMessageBox::information(this, "Info", item->text());
-
-                switch(j)
-                {
-                    case 0:
-                        s.setName(item->text());
-                        break;
-                    case 1:
-                        s.setPoints(item->text().toUInt());
-                        break;
-                    case 2:
-                        s.setM(item->text());
-                        break;
-                    case 3:
-                        s.setWs(item->text());
-                        break;
-                    case 4:
-                        s.setBs(item->text());
-                        break;
-                    case 5:
-                        s.setS(item->text());
-                        break;
-                    case 6:
-                        s.setT(item->text());
-                        break;
-                    case 7:
-                        s.setW(item->text());
-                        break;
-                    case 8:
-                        s.setI(item->text());
-                        break;
-                    case 9:
-                        s.setA(item->text());
-                        break;
-                    case 10:
-                        s.setLd(item->text());
-                        break;
-                    case 11:
-                        s.setSvg(item->text());
-                        break;
-                    case 12:
-                        s.setSvgInv(item->text());
-                        break;
-                    default:
-                        break;
-                }
-            }
-            charriot->addCrew(s);
-        }
-        charriot->save(path);
-        break;
-    case 3:
-        setModelProperties(static_cast<ModelAbstract*>(inf));
-        inf->setSpecialRules(ui->textEdit->toPlainText());
-        inf->save(path);
-        break;
-    case 4:
-        setModelProperties(static_cast<ModelAbstract*>(machine));
-        machine->setSpecialRules(ui->textEdit->toPlainText());
-        machine->save(path);
-        break;
-    case 5:
-        setModelProperties(static_cast<ModelAbstract*>(monster));
-        monster->setSpecialRules(ui->textEdit->toPlainText());
-        monster->save(path);
-        break;
-    case 6:
-        setModelProperties(static_cast<ModelAbstract*>(hero));
-        hero->setSpecialRules(ui->textEdit->toPlainText());
-        hero->setIsALord(ui->checkLord->isChecked());
-        hero->setIsAMage(ui->checkMage->isChecked());
-        hero->setIsMounted(ui->checkMounted->isChecked());
-        hero->setIsTheGeneral(ui->checkGeneral->isChecked());
-        //fill stats if its a cav, charriot or character
-        hero->clearMount();
-        for(int i = 0; i< crew->rowCount(); i++)
-        {
-            StatsModel s;
-            for(int j = 0; j < crew->columnCount(); j++)
-            {
-
-                QStandardItem* item = crew->item(i,j);
-                //QMessageBox::information(this, "Info", item->text());
-
-                switch(j)
-                {
-                    case 0:
-                        s.setName(item->text());
-                        break;
-                    case 1:
-                        s.setPoints(item->text().toUInt());
-                        break;
-                    case 2:
-                        s.setM(item->text());
-                        break;
-                    case 3:
-                        s.setWs(item->text());
-                        break;
-                    case 4:
-                        s.setBs(item->text());
-                        break;
-                    case 5:
-                        s.setS(item->text());
-                        break;
-                    case 6:
-                        s.setT(item->text());
-                        break;
-                    case 7:
-                        s.setW(item->text());
-                        break;
-                    case 8:
-                        s.setI(item->text());
-                        break;
-                    case 9:
-                        s.setA(item->text());
-                        break;
-                    case 10:
-                        s.setLd(item->text());
-                        break;
-                    case 11:
-                        s.setSvg(item->text());
-                        break;
-                    case 12:
-                        s.setSvgInv(item->text());
-                        break;
-                    default:
-                        break;
-                }
-            }
-            hero->addMount(s);
-        }
-        hero->save(path);
-        break;
-    default:
-        break;
+        params->setMorC(mOrCList);
+        qDebug() << "stat 1 (MorC) name" << params->getMorC().first().getName();
     }
+
+    qDebug() << "end creating statsmodel list";
+
+
+    //TODO : check that this work even if hero was not selected
+    params->setLord(ui->checkLord->isChecked());
+    params->setMage(ui->checkMage->isChecked());
+    params->setMounted(ui->checkMounted->isChecked());
+    params->setGeneral(ui->checkGeneral->isChecked());
+    qDebug() << "mage : " << params->getMage();
+    qDebug() << "Name : " << params->getStats().getName();
+    qDebug() << "end set lord/mage etc";
+
+    // save in class with factory + save in file
+    poupik = fac.createFromUI(ui->comboUnitType->currentText(), params);
+    qDebug() << "from modWin save, poupik name : " << poupik->getStats().getName();
+    poupik->save(path);
 }
 
 void ModelWindow::load(QString path)

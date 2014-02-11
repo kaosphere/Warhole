@@ -19,6 +19,8 @@
 
 #include <stats/statsmodel.h>
 
+#include <paramsfromUI/paramsfromuimodel.h>
+
 #include"defines.h"
 
 namespace Ui {
@@ -44,7 +46,7 @@ public:
     void loadWidgets(bool l);
     void load(QString path);
     void fillUI(ModelAbstract *m, QString path);
-    void setModelProperties(ModelAbstract *m);
+    void setModelProperties(ParamsfromUImodel *p);
     void save(QString path);
 
 private slots:
@@ -73,6 +75,9 @@ private:
     ModelWarMachine* machine;
 
     ModelAbstract* poupik;
+
+    ParamsfromUImodel* pfUI;
+    ModelFactory fac;
 };
 
 #endif // MODELWINDOW_H
