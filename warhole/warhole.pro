@@ -18,7 +18,7 @@ win32:release:LIBS += -L../../warlib/build/release -lwarlib
 unix:debug:LIBS += -L../../warlib/build/Debug -lwarlib
 unix:release:LIBS += -L../../warlib/build/Release -lwarlib
 
-INCLUDEPATH += ../../warlib
+INCLUDEPATH += ../../warlib/warlib
 
 SOURCES += main.cpp\
         mainwindow.cpp \
@@ -35,7 +35,8 @@ HEADERS  += mainwindow.h \
     gamewindow.h \
     game/testgi.h \
     game/fieldlimits.h \
-    game/distances.h
+    game/distances.h \
+
 
 FORMS += \
     modelwindow.ui \
