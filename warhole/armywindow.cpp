@@ -15,7 +15,6 @@ ArmyWindow::ArmyWindow(QWidget *parent) :
         existingRaces = modelDir->entryList();
     }
 
-
     if(existingRaces.isEmpty())
     {
          QMessageBox::warning(this, "Erreur", "Aucune race existante ; commencez par créer des figurines");
@@ -55,9 +54,7 @@ ArmyWindow::ArmyWindow(QString fileName)
 ArmyWindow::~ArmyWindow()
 {
     delete model;
-    delete fac;
     delete ma;
-    delete regiments;
     delete ui;
 }
 
@@ -129,7 +126,7 @@ void ArmyWindow::on_pushButton_clicked()
     //add the regiment to the army list
     QList<ModelAbstract*> l;
     StatsModel m;
-    RegimentAbstract* u = new RegimentAbstract(ma->getStats().getName(),
+    /*RegimentAbstract* u = new RegimentAbstract(ma->getStats().getName(),
                                        model->filePath(selectedModel),
                                        l,
                                        0,
@@ -145,7 +142,7 @@ void ArmyWindow::on_pushButton_clicked()
     newRegiment<<new QStandardItem(QString::number(ui->spinBoxNB->value()))
             <<new QStandardItem(u->getName());
 
-    reg->appendRow(newRegiment);
+    reg->appendRow(newRegiment);*/
 }
 
 void ArmyWindow::on_checkBoxChampion_toggled(bool checked)
