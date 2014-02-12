@@ -43,6 +43,8 @@ ArmyWindow::ArmyWindow(QWidget *parent) :
     scene = new QGraphicsScene();
 
     ui->graphicsView->setScene(scene);
+
+    setEnableChampionStats(false);
 }
 
 ArmyWindow::ArmyWindow(QString fileName)
@@ -52,6 +54,10 @@ ArmyWindow::ArmyWindow(QString fileName)
 
 ArmyWindow::~ArmyWindow()
 {
+    delete model;
+    delete fac;
+    delete ma;
+    delete regiments;
     delete ui;
 }
 
@@ -140,4 +146,25 @@ void ArmyWindow::on_pushButton_clicked()
             <<new QStandardItem(u->getName());
 
     reg->appendRow(newRegiment);
+}
+
+void ArmyWindow::on_checkBoxChampion_toggled(bool checked)
+{
+    setEnableChampionStats(checked);
+}
+
+void ArmyWindow::setEnableChampionStats(bool checked)
+{
+    ui->lineEditA->setEnabled(checked);
+    ui->lineEditCC->setEnabled(checked);
+    ui->lineEditCdt->setEnabled(checked);
+    ui->lineEditCT->setEnabled(checked);
+    ui->lineEditE->setEnabled(checked);
+    ui->lineEditF->setEnabled(checked);
+    ui->lineEditI->setEnabled(checked);
+    ui->lineEditM->setEnabled(checked);
+    ui->lineEditPV->setEnabled(checked);
+    ui->lineEditSvg->setEnabled(checked);
+    ui->lineEditSvgInv->setEnabled(checked);
+    ui->spinPoints->setEnabled(checked);
 }

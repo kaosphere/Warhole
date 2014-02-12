@@ -26,6 +26,7 @@ public:
     ArmyWindow(QString fileName);
     ~ArmyWindow();
     
+    void setEnableChampionStats(bool checked);
 private slots:
 
     void on_comboBoxRace_currentIndexChanged(const QString &raceDir);
@@ -34,6 +35,8 @@ private slots:
     void on_treeViewExistingModels_clicked(const QModelIndex &index);
 
     void on_pushButton_clicked();
+
+    void on_checkBoxChampion_toggled(bool checked);
 
 private:
     Ui::ArmyWindow *ui;
