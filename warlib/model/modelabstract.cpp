@@ -180,6 +180,10 @@ void ModelAbstract::setUrlImage(const QString &value)
     urlImage = value;
 }
 
+int ModelAbstract::computePoints()
+{
+}
+
 QDataStream &operator <<(QDataStream & out, const ModelAbstract & obj)
 {
     out << obj.stats
