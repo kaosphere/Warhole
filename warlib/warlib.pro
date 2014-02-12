@@ -26,7 +26,8 @@ SOURCES += \
     option/optionmodel.cpp \
     warlibinitializer.cpp \
     paramsfromUI/paramsfromuimodel.cpp \
-    regiment/regimentabstract.cpp
+    regiment/regimentabstract.cpp \
+    regiment/recruitsgroup.cpp
 
 HEADERS += \
     stats/statsmodel.h \
@@ -43,7 +44,8 @@ HEADERS += \
     warlibinitializer.h \
     defines.h \
     paramsfromUI/paramsfromuimodel.h \
-    regiment/regimentabstract.h
+    regiment/regimentabstract.h \
+    regiment/recruitsgroup.h
 
 INSTALLS += target
 
