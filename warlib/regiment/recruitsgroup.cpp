@@ -19,6 +19,9 @@ RecruitsGroup::RecruitsGroup(const int &n, const int &c, const QString& p)
     QStringList l;
     l << CAVALERY_STRING << CHARACTER_STRING << CHARRIOT_STRING << INFANTERY_STRING << MONSTER_STRING << WARMACHINE_STRING;
 
+
+    // TODO : change and do that with de model factory (should permit
+    // to remove the switch)
     switch(l.indexOf(s))
     {
     case CAVALERY_TYPE:
