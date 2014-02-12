@@ -61,6 +61,8 @@ public:
     QString getUrlImage() const;
     void setUrlImage(const QString &value);
 
+    virtual int computePoints();
+
 protected:
 
     StatsModel stats;

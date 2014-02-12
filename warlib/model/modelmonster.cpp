@@ -114,23 +114,35 @@ QDataStream & operator >>(QDataStream & in, ModelMonster & obj)
 }
 
 
-    QList<ModelInfantery *> ModelMonster::getCrew() const
-    {
-        return crew;
-    }
+QList<ModelInfantery *> ModelMonster::getCrew() const
+{
+    return crew;
+}
 
-    void ModelMonster::setCrew(const QList<ModelInfantery *> &value)
-    {
-        crew = value;
-    }
+void ModelMonster::setCrew(const QList<ModelInfantery *> &value)
+{
+    crew = value;
+}
 
-    bool ModelMonster::getHasACrew() const
-    {
-        return hasACrew;
-    }
+bool ModelMonster::getHasACrew() const
+{
+    return hasACrew;
+}
 
-    void ModelMonster::setHasACrew(bool value)
+void ModelMonster::setHasACrew(bool value)
+{
+    hasACrew = value;
+}
+
+int ModelMonster::computePoints()
+{
+    //compute whole points of the model
+    int points = stats.getPoints();
+    QList<OptionModel>::iterator i;
+    for (i = options.begin(); i != options.end(); ++i)
     {
-        hasACrew = value;
+        if(i->isActivated())
+            points += i->getNbPoints();
     }
+}
 

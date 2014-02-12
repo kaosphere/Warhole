@@ -30,6 +30,8 @@ public:
     QString getSpecialRules() const;
     void setSpecialRules(const QString &value);
 
+    int computePoints();
+
 private:
     QString specialRules;
 

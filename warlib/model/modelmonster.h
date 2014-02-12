@@ -34,6 +34,7 @@ public:
     bool getHasACrew() const;
     void setHasACrew(bool value);
 
+    int computePoints();
 
     QList<ModelInfantery *> getCrew() const;
     void setCrew(const QList<ModelInfantery *> &value);

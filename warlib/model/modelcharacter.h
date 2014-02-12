@@ -48,6 +48,8 @@ public:
     void addMount(StatsModel m);
     void clearMount();
 
+    virtual int computePoints();
+
 private:
     QString specialRules;
     bool isALord;
