@@ -112,9 +112,11 @@ void ModelCharacter::save(QString path)
     savedFile.sync();
 }
 
-QString ModelCavalry::displayStringInfo()
+QString ModelCharacter::displayStringInfo()
 {
 	QString info;
+	info << "====================================================" << std::endl;
+	info << "Model Character : " 
 	info << displayBaseInfo();
 	info << "Special Rules : " << std::endl;
 	info << getSpecialRules();
@@ -129,6 +131,7 @@ QString ModelCavalry::displayStringInfo()
 		info << "Mount stats : " << std::endl;
 		info << mount.first().displayStats();
 	}
+	info << "====================================================" << std::endl;
 }
 
 QString ModelCharacter::getSpecialRules() const

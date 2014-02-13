@@ -145,12 +145,15 @@ QDataStream & operator >> (QDataStream & in, ModelCavalry & obj)
 QString ModelCavalry::displayStringInfo()
 {
 	QString info;
+	info << "====================================================" << std::endl;
+	info << "Model Cavalry : " 
 	info << displayBaseInfo();
 	info << "Special Rules : " << std::endl;
 	info << getSpecialRules();
 	info << "====================================================" << std::endl;
 	info << "Mount stats : " << std::endl;
 	info << mount.first().displayStats();
+	info << "====================================================" << std::endl;
 }
 
 QList<StatsModel> ModelCavalry::getMount() const
