@@ -89,6 +89,17 @@ void ModelInfantery::save(QString path)
     savedFile.sync();
 }
 
+QString ModelInfantery::displayStringInfo()
+{
+	QString info;
+	info << "====================================================" << std::endl;
+	info << "Model Infantery : " 
+	info << displayBaseInfo();
+	info << "Special Rules : " << std::endl;
+	info << getSpecialRules();
+	info << "====================================================" << std::endl;
+}
+
 QString ModelInfantery::getSpecialRules() const
 {
     return specialRules;
