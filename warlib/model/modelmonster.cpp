@@ -87,6 +87,17 @@ void ModelMonster::save(QString path)
     savedFile.sync();
 }
 
+QString ModelMonster::displayStringInfo()
+{
+	QString info;
+	info << "====================================================" << std::endl;
+	info << "Model Monster : " 
+	info << displayBaseInfo();
+	info << "Special Rules : " << std::endl;
+	info << getSpecialRules();
+	info << "====================================================" << std::endl;
+}
+
 QString ModelMonster::getSpecialRules() const
 {
     return specialRules;
