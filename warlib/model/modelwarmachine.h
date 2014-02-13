@@ -27,6 +27,8 @@ public:
     virtual ModelWarMachine* setFromUI(const ParamsfromUImodel *params);
     virtual void load(QString path);
     virtual void save(QString path);
+    
+    virtual QString displayStringInfo();
 
     virtual int computePoints();
 
@@ -35,6 +37,7 @@ public:
 
 private:
     QString specialRules;
+    //TODO : remove this crew shit
     QList<ModelInfantery *> crew;
 
     friend QDataStream & operator << (QDataStream &, const ModelWarMachine &);

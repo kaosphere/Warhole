@@ -96,6 +96,17 @@ int ModelWarMachine::computePoints()
     }
 }
 
+QString ModelWarMachine::displayStringInfo()
+{
+	QString info;
+	info << "====================================================" << std::endl;
+	info << "Model War Machine : " 
+	info << displayBaseInfo();
+	info << "Special Rules : " << std::endl;
+	info << getSpecialRules();
+	info << "====================================================" << std::endl;
+}
+
 QString ModelWarMachine::getSpecialRules() const
 {
     return specialRules;
