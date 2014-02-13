@@ -81,6 +81,14 @@ QString ModelAbstract::displayBaseInfo()
 	info << "====================================================" << std::endl;
 	info << stats.displayStats();
 	info << "====================================================" << std::endl;
+	info << "Available options : " << std::endl;
+	QList<OptionModel>::iterator i;
+	for(i = options.begin(); i < options.end() ; ++i)
+	{
+		info << "**********" << std::endl;
+		info << options.displayString() << std::endl;
+		info << "**********" << std::endl;
+	}
 	return info;
 }
 
