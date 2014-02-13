@@ -101,6 +101,24 @@ QDataStream & operator >> (QDataStream & in, StatsModel & obj)
     return in;
 }
 
+QString displayStats()
+{
+	QString info;
+	info << "Model points : " << points << std::endl;
+	info << "Move : " << m << std::endl;
+	info << "Weapon skill : " << ws << std::endl;
+	info << "Balistic skill : " << bs << std::endl;
+	info << "Strength : " << s << std::endl;
+	info << "Toughness : " << t << std::endl;
+	info << "Wounds : " << w << std::endl;
+	info << "Initiative : " << i << std::endl;
+	info << "Attacks : " << a << std::endl;
+	info << "Leadership : " << ld << std::endl;
+	info << "Armor save : " << svg << std::endl;
+	info << "Invulnerable Armor save : " << svgInv << std::endl;
+	return info;
+}
+
 QString StatsModel::getName() const
 {
     return name;

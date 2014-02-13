@@ -19,6 +19,7 @@ public:
 
     StatsModel& operator=(const StatsModel&);
 
+	QString displayStats();
 
     QString getName() const;
     void setName(const QString &value);

@@ -142,6 +142,17 @@ QDataStream & operator >> (QDataStream & in, ModelCavalry & obj)
     return in;
 }
 
+QString ModelCavalry::displayStringInfo()
+{
+	QString info;
+	info << displayBaseInfo();
+	info << "Special Rules : " << std::endl;
+	info << getSpecialRules();
+	info << "====================================================" << std::endl;
+	info << "Mount stats : " << std::endl;
+	info << mount.first().displayStats();
+}
+
 QList<StatsModel> ModelCavalry::getMount() const
 {
     return mount;

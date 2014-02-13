@@ -68,6 +68,22 @@ ModelAbstract *ModelAbstract::setFromFile(const QString path)
 {
 }
 
+QString ModelAbstract::displayStringInfo()
+{
+}
+
+QString ModelAbstract::displayBaseInfo()
+{
+	QString info;
+	info << "====================================================" << std::endl;
+	info << "Model Cavalry : " << stats.getName() << std::endl;
+	info << "Points : " << computePoints() << std::endl;
+	info << "====================================================" << std::endl;
+	info << stats.displayStats();
+	info << "====================================================" << std::endl;
+	return info;
+}
+
 ModelAbstract *ModelAbstract::setFromUI(const ParamsfromUImodel *params)
 {
     qDebug() << "damned this is setfromUI of MODELABSTRACT...";

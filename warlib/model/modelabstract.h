@@ -33,6 +33,9 @@ public:
     virtual ModelAbstract* setFromFile(const QString path);
     virtual ModelAbstract* setFromUI(const ParamsfromUImodel* params);
     virtual void load(const QString path);
+    
+    virtual QString displayStringInfo();
+    QString displayBaseInfo();
 
     StatsModel getStats() const;
     void setStats(const StatsModel &value);
