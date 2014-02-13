@@ -112,6 +112,25 @@ void ModelCharacter::save(QString path)
     savedFile.sync();
 }
 
+QString ModelCavalry::displayStringInfo()
+{
+	QString info;
+	info << displayBaseInfo();
+	info << "Special Rules : " << std::endl;
+	info << getSpecialRules();
+	info << "====================================================" << std::endl;
+	info << "Is the general : " << isTheGeneral << std::endl;
+	info << "Is a lord : " << isALord << std::endl;
+	info << "Is a mage : " << isAMage << std::endl;
+	info << "Is mounted : " << isMounted << std::endl;
+	if(isMounted)
+	{
+		info << "=============" << std::endl;
+		info << "Mount stats : " << std::endl;
+		info << mount.first().displayStats();
+	}
+}
+
 QString ModelCharacter::getSpecialRules() const
 {
     return specialRules;
