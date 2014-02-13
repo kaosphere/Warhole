@@ -36,6 +36,8 @@ public:
     void addMount(StatsModel m);
     void clearMount();
 
+    virtual int computePoints();
+
 private:
     QString specialRules;
     QList<StatsModel> mount;

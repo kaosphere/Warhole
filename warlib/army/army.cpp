@@ -33,7 +33,9 @@ void Army::addUnit(const RegimentAbstract &u)
 
 void Army::removeUnit(const RegimentAbstract &u)
 {
-    units.removeOne(u);
+    //TODO to be changed because operator== has been removed from regiment
+    // new way to do that => map or set (see google drive)
+    //units.removeOne(u);
 }
 
 unsigned int Army::getPoints() const

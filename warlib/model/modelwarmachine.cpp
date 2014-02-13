@@ -84,6 +84,18 @@ void ModelWarMachine::save(QString path)
     savedFile.sync();
 }
 
+int ModelWarMachine::computePoints()
+{
+    //compute whole points of the model
+    int points = stats.getPoints();
+    QList<OptionModel>::iterator i;
+    for (i = options.begin(); i != options.end(); ++i)
+    {
+        if(i->isActivated())
+            points += i->getNbPoints();
+    }
+}
+
 QString ModelWarMachine::getSpecialRules() const
 {
     return specialRules;

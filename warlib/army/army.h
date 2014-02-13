@@ -24,7 +24,6 @@ public:
     friend QDataStream & operator << (QDataStream &, const Army &);
     friend QDataStream & operator >> (QDataStream &, Army &);
 
-
 private:
     QString name;
     QList<RegimentAbstract> units;

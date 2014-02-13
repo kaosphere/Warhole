@@ -28,6 +28,8 @@ public:
     virtual void load(QString path);
     virtual void save(QString path);
 
+    virtual int computePoints();
+
     QString getSpecialRules() const;
     void setSpecialRules(const QString &value);
 

@@ -12,5 +12,13 @@ const QString INFANTERY_STRING("Infanterie");
 const QString MONSTER_STRING("Monstre");
 const QString WARMACHINE_STRING("Machine de Guerre");
 
+#define CAVALERY_TYPE 0
+#define CHARACTER_TYPE 1
+#define CHARRIOT_TYPE 2
+#define INFANTERY_TYPE 3
+#define MONSTER_TYPE 4
+#define WARMACHINE_TYPE 5
+#define UNKNOWN 99
+
 
 #endif // DEFINES_H

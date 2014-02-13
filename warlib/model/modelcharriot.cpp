@@ -157,3 +157,20 @@ void ModelCharriot::clearCrew()
 {
     crew.clear();
 }
+
+int ModelCharriot::computePoints()
+{
+    //compute whole points of the model
+    int points = stats.getPoints();
+    QList<OptionModel>::iterator i;
+    for (i = options.begin(); i != options.end(); ++i)
+    {
+        if(i->isActivated())
+            points += i->getNbPoints();
+    }
+    QList<StatsModel>::Iterator j;
+    for(j = crew.begin(); j < crew.end(); ++j)
+    {
+        points += j->getPoints();
+    }
+}

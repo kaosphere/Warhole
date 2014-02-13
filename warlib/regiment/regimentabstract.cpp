@@ -3,10 +3,6 @@
 RegimentAbstract::RegimentAbstract()
 {
     name = "";
-    path = "";
-    nbModels = 0;
-    models.clear();
-    type = UNKNOWN;
     musician = false;
     champion = false;
     skirmishers = false;
@@ -14,65 +10,31 @@ RegimentAbstract::RegimentAbstract()
 }
 
 RegimentAbstract::RegimentAbstract(const QString &n,
-                           const QString &p,
-                           const QList<ModelAbstract*> &l,
-                           const int &t,
-                           const bool &m,
-                           const bool &s,
-                           const bool &c,
-                           const bool &b,
-                           const StatsModel& st,
-                           const int &nb)
+                                   const bool &m,
+                                   const bool &s,
+                                   const bool &c,
+                                   const bool &b,
+                                   const StatsModel& st,
+                                   const QList<RecruitsGroup> g)
 {
     name = n;
-    path = p;
-    models = l;
-    type = t;
     musician = m;
     skirmishers = s;
     champion = c;
     banner = b;
     championStats = st;
-    nbModels = nb;
+    groups = g;
 }
 
 RegimentAbstract::RegimentAbstract(const RegimentAbstract &u)
 {
     name = u.name;
-    path = u.path;
-    models = u.models;
-    type = u.type;
     musician = u.musician;
     skirmishers = u.skirmishers;
     champion = u.champion;
     banner = u.banner;
     championStats = u.championStats;
-    nbModels = u.nbModels;
-}
-
-bool RegimentAbstract::operator==(const RegimentAbstract &u)
-{
-    if(musician == u.musician &&
-            skirmishers == u.skirmishers &&
-            champion == u.champion &&
-            name == u.name &&
-            models.size() == u.models.size() &&
-            banner == u.banner &&
-            type == u.type &&
-            path == u.path &&
-            nbModels == u.nbModels)
-        return true;
-    else return false;
-}
-
-int RegimentAbstract::getType() const
-{
-    return type;
-}
-
-void RegimentAbstract::setType(const int &value)
-{
-    type = value;
+    groups = u.groups;
 }
 
 
@@ -116,24 +78,24 @@ void RegimentAbstract::setName(const QString &value)
     name = value;
 }
 
-QList<ModelAbstract*> RegimentAbstract::getModels() const
+QList<RecruitsGroup> RegimentAbstract::getGroups() const
 {
-    return models;
+    return groups;
 }
 
-void RegimentAbstract::setModels(const QList<ModelAbstract*> &value)
+void RegimentAbstract::setGroups(const QList<RecruitsGroup> &value)
 {
-    models = value;
+    groups = value;
 }
 
-void RegimentAbstract::addModel(ModelAbstract* m)
+void RegimentAbstract::addGroup(RecruitsGroup r)
 {
-    models.append(m);
+    groups.append(r);
 }
 
-void RegimentAbstract::removeModel(ModelAbstract *m)
+void RegimentAbstract::removeGroup(RecruitsGroup r)
 {
-    models.removeOne(m);
+    groups.removeOne(r);
 }
 
 bool RegimentAbstract::getBanner() const
@@ -156,106 +118,76 @@ void RegimentAbstract::setChampionStats(const StatsModel &value)
     championStats = value;
 }
 
+int RegimentAbstract::getPoints() const
+{
+    return points;
+}
+
+void RegimentAbstract::setPoints(int value)
+{
+    points = value;
+}
+
+int RegimentAbstract::getStartingCount() const
+{
+    return startingCount;
+}
+
+void RegimentAbstract::setStartingCount(int value)
+{
+    startingCount = value;
+}
+
+int RegimentAbstract::computePoints()
+{
+    int points = 0;
+    QList<RecruitsGroup>::Iterator i;
+    for(i=groups.begin();i<groups.end();++i)
+    {
+        points += (i->getNb() * i->getModel()->computePoints());
+    }
+}
+
 QDataStream &operator <<(QDataStream & out, const RegimentAbstract & obj)
 {
     out << obj.name
-        << obj.type
         << obj.banner
         << obj.musician
         << obj.champion
         << obj.skirmishers
         << obj.championStats
-        << obj.nbModels
-        << obj.path;
+        << obj.points
+        << obj.startingCount
+        << obj.groups.size();
 
+    for(int i; i<obj.groups.size();++i)
+    {
+        out << obj.groups[i];
+    }
 
     return out;
 }
 
 QDataStream &operator >>(QDataStream & in, RegimentAbstract & obj)
 {
-    in >> obj.name;
-    in >> obj.type;
-    in  >> obj.banner;
-    in  >> obj.musician;
-    in  >> obj.champion;
-    in  >> obj.skirmishers;
-    in  >> obj.championStats;
-    in  >> obj.nbModels;
-    in  >> obj.path;
+    int size;
 
-    //add all models to the list
-    obj.loadAllModels();
+    in >> obj.name;
+    in >> obj.banner;
+    in >> obj.musician;
+    in >> obj.champion;
+    in >> obj.skirmishers;
+    in >> obj.championStats;
+    in >> obj.points;
+    in >> obj.startingCount;
+    in >> size;
+
+    for(int i = 0; i < size; ++i)
+    {
+        RecruitsGroup r;
+        in >> r;
+        obj.addGroup(r);
+    }
 
     return in;
 }
-
-void RegimentAbstract::loadAllModels()
-{
-    ModelAbstract * m;
-
-    for(int i = 0; i < nbModels; i++)
-    {
-        switch(type)
-        {
-        case INFANTERY_TYPE:
-            m = new ModelInfantery();
-            static_cast<ModelCavalry*>(m)->load(path);
-            models.append(m);
-            break;
-        case CAVALERY_TYPE:
-            m = new ModelCavalry();
-            static_cast<ModelCavalry*>(m)->load(path);
-            models.append(m);
-            break;
-        case CHARACTER_TYPE:
-            m = new ModelCharacter();
-            static_cast<ModelCavalry*>(m)->load(path);
-            models.append(m);
-            break;
-        case CHARRIOT_TYPE:
-            m = new ModelCharriot();
-            static_cast<ModelCavalry*>(m)->load(path);
-            models.append(m);
-            break;
-        case MONSTER_TYPE:
-            m = new ModelMonster();
-            static_cast<ModelCavalry*>(m)->load(path);
-            models.append(m);
-            break;
-        case WARMACHINE_TYPE:
-            m = new ModelWarMachine();
-            static_cast<ModelCavalry*>(m)->load(path);
-            models.append(m);
-            break;
-        default:
-            break;
-        }
-    }
-}
-
-void RegimentAbstract::updateNbModels()
-{
-    nbModels = models.size();
-}
-
-QString RegimentAbstract::getPath() const
-{
-    return path;
-}
-
-void RegimentAbstract::setPath(const QString &value)
-{
-    path = value;
-}
-
-int RegimentAbstract::getNbModels() const
-{
-    return nbModels;
-}
-
-void RegimentAbstract::setNbModels(int value)
-{
-    nbModels = value;
-}
-

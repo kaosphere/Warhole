@@ -36,6 +36,8 @@ public:
     void addCrew(StatsModel c);
     void clearCrew();
 
+    virtual int computePoints();
+
 private:
     QString specialRules;
     QList<StatsModel> crew;

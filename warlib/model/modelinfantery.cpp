@@ -99,6 +99,18 @@ void ModelInfantery::setSpecialRules(const QString &value)
     specialRules = value;
 }
 
+int ModelInfantery::computePoints()
+{
+    //compute whole points of the model
+    int points = stats.getPoints();
+    QList<OptionModel>::iterator i;
+    for (i = options.begin(); i != options.end(); ++i)
+    {
+        if(i->isActivated())
+            points += i->getNbPoints();
+    }
+}
+
 QDataStream & operator <<(QDataStream & out, const ModelInfantery & obj)
 {
     out << static_cast<ModelAbstract>(obj)
