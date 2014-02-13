@@ -75,8 +75,7 @@ QString ModelAbstract::displayStringInfo()
 QString ModelAbstract::displayBaseInfo()
 {
 	QString info;
-	info << "====================================================" << std::endl;
-	info << "Model Cavalry : " << stats.getName() << std::endl;
+	info << stats.getName() << std::endl;
 	info << "Points : " << computePoints() << std::endl;
 	info << "====================================================" << std::endl;
 	info << stats.displayStats();
@@ -86,7 +85,7 @@ QString ModelAbstract::displayBaseInfo()
 	for(i = options.begin(); i < options.end() ; ++i)
 	{
 		info << "**********" << std::endl;
-		info << options.displayString() << std::endl;
+		info << (*i)->displayString() << std::endl;
 		info << "**********" << std::endl;
 	}
 	return info;
