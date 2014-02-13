@@ -18,6 +18,8 @@ public:
 
     bool operator==(const OptionModel&);
     OptionModel& operator=(const OptionModel&);
+    
+    QString displayString();
 
     QString getName() const;
     void setName(const QString &value);

@@ -39,6 +39,15 @@ OptionModel &OptionModel::operator =(const OptionModel & obj)
     specialRules = obj.specialRules;
 }
 
+QString OptionModel::displayString()
+{
+	QString info;
+	info << name << std::endl;
+	info << "Points : " << nbPoints << std::endl;
+	info << "Rules : " << specialRules << std::endl;
+	info << "Selected : " << activated << std::endl;
+}
+
 QString OptionModel::getName() const
 {
     return name;
