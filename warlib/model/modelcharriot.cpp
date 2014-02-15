@@ -140,21 +140,22 @@ QDataStream & operator >>(QDataStream & in, ModelCharriot & obj)
 
 QString ModelCharriot::displayStringInfo()
 {
-	QString info;
-	info << "====================================================" << std::endl;
-	info << "Model Charriot : " 
-	info << displayBaseInfo();
-	info << "Special Rules : " << std::endl;
-	info << getSpecialRules();
-	info << "====================================================" << std::endl;
-	info << "Crew stats : " << std::endl;
+    QTextStream info;
+    info << "====================================================" << endl;
+    info << "Model Charriot : " << endl;
+    info << displayBaseInfo();
+    info << "Special Rules : " << endl;
+    info << getSpecialRules();
+    info << "====================================================" << endl;
+    info << "Crew stats : " << endl;
 	QList<StatsModel>::iterator i;
-	for(i = options.begin(); i < options.end() ; ++i)
+    for(i = crew.begin(); i < crew.end() ; ++i)
 	{
-		info << (*i)->displayString() << std::endl;;
-		info << "=====================" << std::endl;
+        info << i->displayString() << endl;;
+        info << "=====================" << endl;
 	}
-	info << "====================================================" << std::endl;
+    info << "====================================================" << endl;
+    return*(info.string());
 }
 
 QList<StatsModel> ModelCharriot::getCrew() const

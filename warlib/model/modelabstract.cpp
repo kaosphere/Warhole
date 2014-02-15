@@ -74,21 +74,21 @@ QString ModelAbstract::displayStringInfo()
 
 QString ModelAbstract::displayBaseInfo()
 {
-	QString info;
-	info << stats.getName() << std::endl;
-	info << "Points : " << computePoints() << std::endl;
-	info << "====================================================" << std::endl;
-	info << stats.displayStats();
-	info << "====================================================" << std::endl;
-	info << "Available options : " << std::endl;
+    QTextStream info;
+    info << stats.getName() << endl;
+    info << "Points : " << computePoints() << endl;
+    info << "====================================================" << endl;
+    info << stats.displayString();
+    info << "====================================================" << endl;
+    info << "Available options : " << endl;
 	QList<OptionModel>::iterator i;
 	for(i = options.begin(); i < options.end() ; ++i)
 	{
-		info << "**********" << std::endl;
-		info << (*i)->displayString() << std::endl;
-		info << "**********" << std::endl;
+        info << "**********" << endl;
+        info << i->displayString() << endl;
+        info << "**********" << endl;
 	}
-	return info;
+    return *(info.string());
 }
 
 ModelAbstract *ModelAbstract::setFromUI(const ParamsfromUImodel *params)

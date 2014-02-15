@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QtCore>
 #include <QtWidgets>
+#include <QDataStream>
+#include <QTextStream>
 
 class StatsModel
 {
@@ -19,7 +21,7 @@ public:
 
     StatsModel& operator=(const StatsModel&);
 
-	QString displayStats();
+    QString displayString();
 
     QString getName() const;
     void setName(const QString &value);

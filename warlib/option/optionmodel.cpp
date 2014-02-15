@@ -41,11 +41,11 @@ OptionModel &OptionModel::operator =(const OptionModel & obj)
 
 QString OptionModel::displayString()
 {
-	QString info;
-	info << name << std::endl;
-	info << "Points : " << nbPoints << std::endl;
-	info << "Rules : " << specialRules << std::endl;
-	info << "Selected : " << activated << std::endl;
+    QTextStream info;
+    info << name << endl;
+    info << "Points : " << nbPoints << endl;
+    info << "Rules : " << specialRules << endl;
+    info << "Selected : " << activated << endl;
 }
 
 QString OptionModel::getName() const

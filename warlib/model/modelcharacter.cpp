@@ -114,24 +114,25 @@ void ModelCharacter::save(QString path)
 
 QString ModelCharacter::displayStringInfo()
 {
-	QString info;
-	info << "====================================================" << std::endl;
-	info << "Model Character : " 
-	info << displayBaseInfo();
-	info << "Special Rules : " << std::endl;
-	info << getSpecialRules();
-	info << "====================================================" << std::endl;
-	info << "Is the general : " << isTheGeneral << std::endl;
-	info << "Is a lord : " << isALord << std::endl;
-	info << "Is a mage : " << isAMage << std::endl;
-	info << "Is mounted : " << isMounted << std::endl;
+    QTextStream info;
+    info << "====================================================" << endl;
+    info << "Model Character : " << endl;
+    info << displayBaseInfo();
+    info << "Special Rules : " << endl;
+    info << getSpecialRules();
+    info << "====================================================" << endl;
+    info << "Is the general : " << isTheGeneral << endl;
+    info << "Is a lord : " << isALord << endl;
+    info << "Is a mage : " << isAMage << endl;
+    info << "Is mounted : " << isMounted << endl;
 	if(isMounted)
 	{
-		info << "=============" << std::endl;
-		info << "Mount stats : " << std::endl;
-		info << mount.first().displayStats();
+        info << "=============" << endl;
+        info << "Mount stats : " << endl;
+        info << mount.first().displayString();
 	}
-	info << "====================================================" << std::endl;
+    info << "====================================================" << endl;
+    return *(info.string());
 }
 
 QString ModelCharacter::getSpecialRules() const
