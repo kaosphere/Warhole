@@ -20,6 +20,7 @@
 #include <stats/statsmodel.h>
 
 #include <paramsfromUI/paramsfromuimodel.h>
+#include <Utilities/QLogger/QLogger.h>
 
 #include"defines.h"
 
@@ -61,6 +62,7 @@ private slots:
     void on_pushButtonRmv_clicked();
 
 private:
+    const QString LOG_ID = "ModelWindow";
     Ui::ModelWindow *ui;
     QGraphicsScene* scene;
     QStandardItemModel* options;

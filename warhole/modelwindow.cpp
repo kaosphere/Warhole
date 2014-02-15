@@ -1,10 +1,17 @@
 #include "modelwindow.h"
 #include "ui_modelwindow.h"
 
+using namespace QLogger;
+
 ModelWindow::ModelWindow(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ModelWindow)
 {
+    QLoggerManager *manager = QLoggerManager::getInstance();
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID), QLogger::InfoLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID), QLogger::ErrorLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID), QLogger::WarnLevel);
+
     ui->setupUi(this);
     image = new QPixmap();
     scene = new QGraphicsScene();
@@ -39,6 +46,11 @@ ModelWindow::ModelWindow(QString f, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ModelWindow)
 {
+    QLoggerManager *manager = QLoggerManager::getInstance();
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID), QLogger::InfoLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID), QLogger::ErrorLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID), QLogger::WarnLevel);
+
     ui->setupUi(this);
     image = new QPixmap();
 
@@ -534,14 +546,14 @@ void ModelWindow::load(QString path)
     QStringList l;
     l << CAVALERY_STRING << CHARRIOT_STRING << INFANTERY_STRING << CHARACTER_STRING << WARMACHINE_STRING << MONSTER_STRING;
 
+    QLogger::QLog_Info(LOG_ID, "Loading model with path : " + path);
+
     switch(l.indexOf(s))
     {
     case 0:
         //delete object first to prevent options to stack
         delete cav;
         cav = new ModelCavalry();
-        //load
-        qDebug() << "path in load de model window " << path;
         cav->load(path);
         fillUI(static_cast<ModelAbstract*>(cav), path);
 
@@ -566,12 +578,15 @@ void ModelWindow::load(QString path)
             crew->appendRow(newCrew);
         }
         ui->textEdit->append(cav->getSpecialRules());
+        QLogger::QLog_Info(LOG_ID, "Model loaded : \n");
+        QLogger::QLog_Info(LOG_ID, cav->displayStringInfo());
+        QLogger::QLog_Error(LOG_ID, "test pour l'erreur");
+        QLogger::QLog_Error(LOG_ID, "test 2 pour l'erreur");
         break;
     case 1:
         //delete object first to prevent options to stack
         delete charriot;
         charriot = new ModelCharriot();
-        //load
         charriot->load(path);
         fillUI(static_cast<ModelAbstract*>(charriot), path);
         for(int i = 0 ; i < charriot->getCrew().size() ; i++)
@@ -600,7 +615,6 @@ void ModelWindow::load(QString path)
         //delete object first to prevent options to stack
         delete inf;
         inf = new ModelInfantery();
-        //load
         inf->load(path);
         fillUI(static_cast<ModelAbstract*>(inf), path);
         ui->textEdit->append(inf->getSpecialRules());
@@ -609,7 +623,6 @@ void ModelWindow::load(QString path)
         //delete object first to prevent options to stack
         delete hero;
         hero = new ModelCharacter();
-        //load
         hero->load(path);
         fillUI(static_cast<ModelAbstract*>(hero), path);
         ui->textEdit->append(hero->getSpecialRules());
@@ -642,7 +655,6 @@ void ModelWindow::load(QString path)
         //delete object first to prevent options to stack
         delete machine;
         machine = new ModelWarMachine();
-        //load
         machine->load(path);
         fillUI(static_cast<ModelAbstract*>(machine), path);
         ui->textEdit->append(machine->getSpecialRules());
@@ -651,7 +663,6 @@ void ModelWindow::load(QString path)
         //delete object first to prevent options to stack
         delete monster;
         monster = new ModelMonster();
-        //load
         monster->load(path);
         fillUI(static_cast<ModelAbstract*>(monster), path);
         ui->textEdit->append(monster->getSpecialRules());
