@@ -91,14 +91,16 @@ void ModelInfantery::save(QString path)
 
 QString ModelInfantery::displayStringInfo()
 {
-    QTextStream info;
-    info << "====================================================" << endl;
-    info << "Model Infantery : " << endl;
+    QString s;
+    QTextStream info(&s);
+    info << endl << "====================================================" << endl;
+    info << "Model Cavalry : " << endl;
     info << displayBaseInfo();
-    info << "Special Rules : " << endl;
-    info << getSpecialRules();
     info << "====================================================" << endl;
-    return*(info.string());
+    info << "Special Rules : " << endl;
+    info << specialRules << endl;
+    info << "====================================================" << endl;
+    return s;
 }
 
 QString ModelInfantery::getSpecialRules() const

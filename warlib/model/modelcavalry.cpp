@@ -1,4 +1,5 @@
 #include "modelcavalry.h"
+#include <QDebug>
 
 ModelCavalry::ModelCavalry():
     ModelAbstract()
@@ -144,16 +145,19 @@ QDataStream & operator >> (QDataStream & in, ModelCavalry & obj)
 
 QString ModelCavalry::displayStringInfo()
 {
-    QTextStream info;
-    info << "====================================================" << endl;
+    QString s;
+    QTextStream info(&s);
+    info << endl << "====================================================" << endl;
     info << "Model Cavalry : " << endl;
     info << displayBaseInfo();
+    info << "====================================================" << endl;
     info << "Special Rules : " << endl;
-    info << getSpecialRules();
+    info << specialRules << endl;
     info << "====================================================" << endl;
     info << "Mount stats : " << endl;
     info << mount.first().displayString();
     info << "====================================================" << endl;
+    return s;
 }
 
 QList<StatsModel> ModelCavalry::getMount() const

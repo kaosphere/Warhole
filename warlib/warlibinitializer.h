@@ -10,6 +10,8 @@
 #include "model/modelmonster.h"
 #include "model/modelwarmachine.h"
 
+#include "Utilities/QLogger/QLogger.h"
+
 #include "defines.h"
 
 class WarlibInit

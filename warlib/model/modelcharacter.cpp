@@ -114,12 +114,14 @@ void ModelCharacter::save(QString path)
 
 QString ModelCharacter::displayStringInfo()
 {
-    QTextStream info;
-    info << "====================================================" << endl;
-    info << "Model Character : " << endl;
+    QString s;
+    QTextStream info(&s);
+    info << endl << "====================================================" << endl;
+    info << "Model Cavalry : " << endl;
     info << displayBaseInfo();
+    info << "====================================================" << endl;
     info << "Special Rules : " << endl;
-    info << getSpecialRules();
+    info << specialRules << endl;
     info << "====================================================" << endl;
     info << "Is the general : " << isTheGeneral << endl;
     info << "Is a lord : " << isALord << endl;
@@ -132,7 +134,7 @@ QString ModelCharacter::displayStringInfo()
         info << mount.first().displayString();
 	}
     info << "====================================================" << endl;
-    return *(info.string());
+    return s;
 }
 
 QString ModelCharacter::getSpecialRules() const

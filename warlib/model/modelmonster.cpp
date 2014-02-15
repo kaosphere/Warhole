@@ -89,14 +89,16 @@ void ModelMonster::save(QString path)
 
 QString ModelMonster::displayStringInfo()
 {
-    QTextStream info;
-    info << "====================================================" << endl;
-    info << "Model Monster : " << endl;
+    QString s;
+    QTextStream info(&s);
+    info << endl << "====================================================" << endl;
+    info << "Model Cavalry : " << endl;
     info << displayBaseInfo();
-    info << "Special Rules : " << endl;
-    info << getSpecialRules();
     info << "====================================================" << endl;
-    return*(info.string());
+    info << "Special Rules : " << endl;
+    info << specialRules << endl;
+    info << "====================================================" << endl;
+    return s;
 }
 
 QString ModelMonster::getSpecialRules() const

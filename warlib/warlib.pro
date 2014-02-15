@@ -27,7 +27,8 @@ SOURCES += \
     warlibinitializer.cpp \
     paramsfromUI/paramsfromuimodel.cpp \
     regiment/regimentabstract.cpp \
-    regiment/recruitsgroup.cpp
+    regiment/recruitsgroup.cpp \
+    Utilities/QLogger/QLogger.cpp
 
 HEADERS += \
     stats/statsmodel.h \
@@ -45,7 +46,8 @@ HEADERS += \
     defines.h \
     paramsfromUI/paramsfromuimodel.h \
     regiment/regimentabstract.h \
-    regiment/recruitsgroup.h
+    regiment/recruitsgroup.h \
+    Utilities/QLogger/QLogger.h
 
 INSTALLS += target
 

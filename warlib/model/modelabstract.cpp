@@ -74,7 +74,8 @@ QString ModelAbstract::displayStringInfo()
 
 QString ModelAbstract::displayBaseInfo()
 {
-    QTextStream info;
+    QString s;
+    QTextStream info(&s);
     info << stats.getName() << endl;
     info << "Points : " << computePoints() << endl;
     info << "====================================================" << endl;
@@ -84,11 +85,10 @@ QString ModelAbstract::displayBaseInfo()
 	QList<OptionModel>::iterator i;
 	for(i = options.begin(); i < options.end() ; ++i)
 	{
-        info << "**********" << endl;
+        info << "----------------------------" << endl;
         info << i->displayString() << endl;
-        info << "**********" << endl;
 	}
-    return *(info.string());
+    return s;
 }
 
 ModelAbstract *ModelAbstract::setFromUI(const ParamsfromUImodel *params)
