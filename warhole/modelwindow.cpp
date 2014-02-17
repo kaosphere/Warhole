@@ -378,6 +378,60 @@ void ModelWindow::fillUI(ModelAbstract* m, QString path)
 
         options->appendRow(newOption);
     }
+    ui->textEdit->append(m->getSpecialRules());
+    //fill specifi UI data depending on model type
+    if(type == CAVALERY_STRING || type == CHARACTER_TYPE)
+    {
+    	for(int i = 0 ; i < m->getMount().size() ; i++)
+
+    	{
+    	    QList<QStandardItem *> newCrew;
+    	    newCrew<<new QStandardItem(m->getMount()[i].getName())
+    	            <<new QStandardItem(QString::number(m->getMount()[i].getPoints()))
+    	            <<new QStandardItem(m->getMount()[i].getM())
+    	            <<new QStandardItem(m->getMount()[i].getWs())
+    	            <<new QStandardItem(m->getMount()[i].getBs())
+    	            <<new QStandardItem(m->getMount()[i].getS())
+    	            <<new QStandardItem(m->getMount()[i].getT())
+    	            <<new QStandardItem(m->getMount()[i].getW())
+    	            <<new QStandardItem(m->getMount()[i].getI())
+    	            <<new QStandardItem(m->getMount()[i].getA())
+    	            <<new QStandardItem(m->getMount()[i].getLd())
+    	            <<new QStandardItem(m->getMount()[i].getSvg())
+    	            <<new QStandardItem(m->getMount()[i].getSvgInv());
+    	    crew->appendRow(newCrew);
+    	}
+    	if(type == CHARACTER_TYPE)
+    	{
+    		ui->checkLord->setChecked(m->getIsALord());
+    		ui->checkMage->setChecked(m->getIsAMage());
+    		ui->checkGeneral->setChecked(m->getIsTheGeneral());
+    		ui->checkMounted->setChecked(m->getIsMounted());
+    	}
+    }
+    else if(type == CHARRIOT_TYPE)
+    {
+    	for(int i = 0 ; i < m->getCrew().size() ; i++)
+
+    	{
+    	    QList<QStandardItem *> newCrew;
+    	    newCrew<<new QStandardItem(m->getCrew()[i].getName())
+    	            <<new QStandardItem(QString::number(m->getCrew()[i].getPoints()))
+    	            <<new QStandardItem(m->getCrew()[i].getM())
+    	            <<new QStandardItem(m->getCrew()[i].getWs())
+    	            <<new QStandardItem(m->getCrew()[i].getBs())
+    	            <<new QStandardItem(m->getCrew()[i].getS())
+    	            <<new QStandardItem(m->getCrew()[i].getT())
+    	            <<new QStandardItem(m->getCrew()[i].getW())
+    	            <<new QStandardItem(m->getCrew()[i].getI())
+    	            <<new QStandardItem(m->getCrew()[i].getA())
+    	            <<new QStandardItem(m->getCrew()[i].getLd())
+    	            <<new QStandardItem(m->getCrew()[i].getSvg())
+    	            <<new QStandardItem(m->getCrew()[i].getSvgInv());
+    	    crew->appendRow(newCrew);
+    	}
+    }
+
 }
 
 void ModelWindow::setModelProperties(ParamsfromUImodel *p)
