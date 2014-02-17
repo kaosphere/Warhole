@@ -31,14 +31,6 @@ ModelWindow::ModelWindow(QWidget *parent) :
     ui->viewModelCrew->setModel(crew);
     ui->viewModelCrew->header()->hide();
 
-
-    cav = new ModelCavalry();
-    hero = new ModelCharacter();
-    charriot = new ModelCharriot();
-    inf = new ModelInfantery();
-    monster = new ModelMonster();
-    machine = new ModelWarMachine();
-
     loadInfanteryWidget();
 }
 
@@ -71,13 +63,6 @@ ModelWindow::ModelWindow(QString f, QWidget *parent) :
     ui->viewModelCrew->setModel(crew);
     ui->viewModelCrew->header()->hide();
 
-    cav = new ModelCavalry();
-    hero = new ModelCharacter();
-    charriot = new ModelCharriot();
-    inf = new ModelInfantery();
-    monster = new ModelMonster();
-    machine = new ModelWarMachine();
-
     loadInfanteryWidget();
 
     load(f);
@@ -85,12 +70,7 @@ ModelWindow::ModelWindow(QString f, QWidget *parent) :
 
 ModelWindow::~ModelWindow()
 {
-    delete cav;
-    delete hero;
-    delete charriot;
-    delete inf;
-    delete monster;
-    delete machine;
+    delete poupik;
 
     delete crew;
     delete options;
@@ -542,134 +522,10 @@ void ModelWindow::save(QString path)
 
 void ModelWindow::load(QString path)
 {
-    QString s = path.section('/',-2,-2);
-    QStringList l;
-    l << CAVALERY_STRING << CHARRIOT_STRING << INFANTERY_STRING << CHARACTER_STRING << WARMACHINE_STRING << MONSTER_STRING;
-
     QLogger::QLog_Info(LOG_ID, "Loading model with path : " + path);
-
-    switch(l.indexOf(s))
-    {
-    case 0:
-        //delete object first to prevent options to stack
-        delete cav;
-        cav = new ModelCavalry();
-        cav->load(path);
-        fillUI(static_cast<ModelAbstract*>(cav), path);
-
-        for(int i = 0 ; i < cav->getMount().size() ; i++)
-        {
-            QList<QStandardItem *> newCrew;
-
-            newCrew<<new QStandardItem(cav->getMount()[i].getName())
-                    <<new QStandardItem(QString::number(cav->getMount()[i].getPoints()))
-                    <<new QStandardItem(cav->getMount()[i].getM())
-                    <<new QStandardItem(cav->getMount()[i].getWs())
-                    <<new QStandardItem(cav->getMount()[i].getBs())
-                    <<new QStandardItem(cav->getMount()[i].getS())
-                    <<new QStandardItem(cav->getMount()[i].getT())
-                    <<new QStandardItem(cav->getMount()[i].getW())
-                    <<new QStandardItem(cav->getMount()[i].getI())
-                    <<new QStandardItem(cav->getMount()[i].getA())
-                    <<new QStandardItem(cav->getMount()[i].getLd())
-                    <<new QStandardItem(cav->getMount()[i].getSvg())
-                    <<new QStandardItem(cav->getMount()[i].getSvgInv());
-
-            crew->appendRow(newCrew);
-        }
-        ui->textEdit->append(cav->getSpecialRules());
-        QLogger::QLog_Info(LOG_ID, "Model loaded : \n");
-        QLogger::QLog_Info(LOG_ID, cav->displayStringInfo());
-        QLogger::QLog_Error(LOG_ID, "test pour l'erreur");
-        QLogger::QLog_Error(LOG_ID, "test 2 pour l'erreur");
-        break;
-    case 1:
-        //delete object first to prevent options to stack
-        delete charriot;
-        charriot = new ModelCharriot();
-        charriot->load(path);
-        fillUI(static_cast<ModelAbstract*>(charriot), path);
-        for(int i = 0 ; i < charriot->getCrew().size() ; i++)
-        {
-            QList<QStandardItem *> newCrew;
-
-            newCrew<<new QStandardItem(charriot->getCrew()[i].getName())
-                    <<new QStandardItem(QString::number(charriot->getCrew()[i].getPoints()))
-                    <<new QStandardItem(charriot->getCrew()[i].getM())
-                    <<new QStandardItem(charriot->getCrew()[i].getWs())
-                    <<new QStandardItem(charriot->getCrew()[i].getBs())
-                    <<new QStandardItem(charriot->getCrew()[i].getS())
-                    <<new QStandardItem(charriot->getCrew()[i].getT())
-                    <<new QStandardItem(charriot->getCrew()[i].getW())
-                    <<new QStandardItem(charriot->getCrew()[i].getI())
-                    <<new QStandardItem(charriot->getCrew()[i].getA())
-                    <<new QStandardItem(charriot->getCrew()[i].getLd())
-                    <<new QStandardItem(charriot->getCrew()[i].getSvg())
-                    <<new QStandardItem(charriot->getCrew()[i].getSvgInv());
-
-            crew->appendRow(newCrew);
-        }
-        ui->textEdit->append(charriot->getSpecialRules());
-        break;
-    case 2:
-        //delete object first to prevent options to stack
-        delete inf;
-        inf = new ModelInfantery();
-        inf->load(path);
-        fillUI(static_cast<ModelAbstract*>(inf), path);
-        ui->textEdit->append(inf->getSpecialRules());
-        break;
-    case 3:
-        //delete object first to prevent options to stack
-        delete hero;
-        hero = new ModelCharacter();
-        hero->load(path);
-        fillUI(static_cast<ModelAbstract*>(hero), path);
-        ui->textEdit->append(hero->getSpecialRules());
-        ui->checkLord->setChecked(hero->getIsALord());
-        ui->checkMage->setChecked(hero->getIsAMage());
-        ui->checkGeneral->setChecked(hero->getIsTheGeneral());
-        ui->checkMounted->setChecked(hero->getIsMounted());
-        for(int i = 0 ; i < hero->getMount().size() ; i++)
-        {
-            QList<QStandardItem *> newCrew;
-
-            newCrew<<new QStandardItem(hero->getMount()[i].getName())
-                    <<new QStandardItem(QString::number(hero->getMount()[i].getPoints()))
-                    <<new QStandardItem(hero->getMount()[i].getM())
-                    <<new QStandardItem(hero->getMount()[i].getWs())
-                    <<new QStandardItem(hero->getMount()[i].getBs())
-                    <<new QStandardItem(hero->getMount()[i].getS())
-                    <<new QStandardItem(hero->getMount()[i].getT())
-                    <<new QStandardItem(hero->getMount()[i].getW())
-                    <<new QStandardItem(hero->getMount()[i].getI())
-                    <<new QStandardItem(hero->getMount()[i].getA())
-                    <<new QStandardItem(hero->getMount()[i].getLd())
-                    <<new QStandardItem(hero->getMount()[i].getSvg())
-                    <<new QStandardItem(hero->getMount()[i].getSvgInv());
-
-            crew->appendRow(newCrew);
-        }
-        break;
-    case 4:
-        //delete object first to prevent options to stack
-        delete machine;
-        machine = new ModelWarMachine();
-        machine->load(path);
-        fillUI(static_cast<ModelAbstract*>(machine), path);
-        ui->textEdit->append(machine->getSpecialRules());
-        break;
-    case 5:
-        //delete object first to prevent options to stack
-        delete monster;
-        monster = new ModelMonster();
-        monster->load(path);
-        fillUI(static_cast<ModelAbstract*>(monster), path);
-        ui->textEdit->append(monster->getSpecialRules());
-        break;
-    default:
-        break;
-    }
+    delete poupik;
+    poupik = fac.createFromFile(path);
+    fillUI(poupik, path);
 }
 
 void ModelWindow::on_pushButtonLoad_clicked()
