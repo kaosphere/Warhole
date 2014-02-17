@@ -13,40 +13,7 @@ RecruitsGroup::RecruitsGroup(const int &n, const int &c, const QString& p)
     casualties = c;
     nb = n;
     path = p;
-
-    // Allocate the right model type depending on the path
-    QString s = path.section('/',-2,-2);
-    QStringList l;
-    l << CAVALERY_STRING << CHARACTER_STRING << CHARRIOT_STRING << INFANTERY_STRING << MONSTER_STRING << WARMACHINE_STRING;
-
-
-    // TODO : change and do that with de model factory (should permit
-    // to remove the switch)
-    switch(l.indexOf(s))
-    {
-    case CAVALERY_TYPE:
-        model = new ModelCavalry();
-        break;
-    case CHARACTER_TYPE:
-        model = new ModelCharacter();
-        break;
-    case CHARRIOT_TYPE:
-        model = new ModelCharriot();
-        break;
-    case INFANTERY_TYPE:
-        model = new ModelInfantery();
-        break;
-    case MONSTER_TYPE:
-        model = new ModelMonster();
-        break;
-    case WARMACHINE_TYPE:
-        model = new ModelWarMachine();
-        break;
-    default:
-        break;
-    }
-    // Then load data directly from the file
-    model->load(path);
+    model = fac.createFromFile(path);
 }
 
 RecruitsGroup::~RecruitsGroup()

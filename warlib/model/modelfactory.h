@@ -13,12 +13,13 @@ class ModelFactory
 public:
     ModelFactory();
     static void associateKeyToClass(const QString &key, ModelAbstract* mod);
-    ModelAbstract* createFromFile(const QString& key, const QString path) const;
+    ModelAbstract* createFromFile(const QString& path) const;
     ModelAbstract* createFromUI(const QString& key, const ParamsfromUImodel *params) const;
+	
 
 public:
     static QMap<QString,ModelAbstract*> factory_model_map;
-
+    
 };
 
 #endif // MODELFACTORY_H

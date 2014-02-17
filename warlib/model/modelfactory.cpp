@@ -4,7 +4,6 @@ using namespace std;
 
 ModelFactory::ModelFactory()
 {
-
 }
 
 QMap<QString, ModelAbstract*> ModelFactory::factory_model_map = QMap<QString, ModelAbstract*>();
@@ -17,10 +16,13 @@ void ModelFactory::associateKeyToClass(const QString &key, ModelAbstract *mod)
     }
 }
 
-ModelAbstract *ModelFactory::createFromFile(const QString &key, const QString path) const
+//create the corresponding model type depending on the path
+ModelAbstract *ModelFactory::createFromFile(const QString& path) const
 {
-    ModelAbstract* tmp = 0;
-    QMap<QString, ModelAbstract*>::const_iterator it = factory_model_map.find(key);
+	ModelAbstract* tmp = 0;
+	//extracting type directly in the path
+    QString s = path.section('/',-2,-2);        
+    QMap<QString, ModelAbstract*>::const_iterator it = factory_model_map.find(s);
 
     if(it != factory_model_map.end()) // key was found in map
     {
