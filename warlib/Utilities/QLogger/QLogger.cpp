@@ -1,6 +1,7 @@
 #include <QDir>
 #include <QDateTime>
 #include <QTextStream>
+#include <QDebug>
 #include "QLogger.h"
 
 /****************************************************************************************
@@ -174,6 +175,7 @@ namespace QLogger
 
             QString logLevel = QLoggerManager::levelToText(m_level);
             QString text = QString("[%1] [%2] {%3} %4\n").arg(dtFormat).arg(module).arg(logLevel).arg(message);
+            qDebug() << text;
             out << text;
             file.close();
         }
