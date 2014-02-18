@@ -94,7 +94,7 @@ QString ModelInfantery::displayStringInfo()
     QString s;
     QTextStream info(&s);
     info << endl << "====================================================" << endl;
-    info << "Model Cavalry : " << endl;
+    info << "Model Infantery : " << endl;
     info << displayBaseInfo();
     info << "====================================================" << endl;
     info << "Special Rules : " << endl;
