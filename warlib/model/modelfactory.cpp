@@ -29,7 +29,7 @@ ModelAbstract *ModelFactory::createFromFile(const QString& path) const
         tmp = *it;
         tmp = tmp->setFromFile(path);
 
-        qDebug() << "key found in map " << key;
+        qDebug() << "key found in map " << s;
         qDebug() << "name " << tmp->getStats().getName();
     }
 
