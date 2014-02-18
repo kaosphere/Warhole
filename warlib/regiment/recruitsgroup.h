@@ -12,6 +12,7 @@
 #include <model/modelfactory.h>
 #include <QString>
 #include <QDataStream>
+#include <Utilities/QLogger/QLogger.h>
 
 // The RecruitsGroup represents a group of same type models inside a regiment
 // The class prevents to have to instanciate several exact same models for
@@ -46,6 +47,11 @@ public:
     friend QDataStream & operator >> (QDataStream &, RecruitsGroup &);
 
 private:
+    static const QString LOG_ID_INFO;
+    static const QString LOG_ID_TRACE;
+    static const QString LOG_ID_WARN;
+    static const QString LOG_ID_ERR;
+
     ModelAbstract* model;
     int nb;
     int casualties;

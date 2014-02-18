@@ -1,11 +1,24 @@
 #include "recruitsgroup.h"
 
+using namespace QLogger;
+
+const QString RecruitsGroup::LOG_ID_INFO = "RecruitsGroup_info";
+const QString RecruitsGroup::LOG_ID_TRACE = "RecruitsGroup_trace";
+const QString RecruitsGroup::LOG_ID_WARN = "RecruitsGroup_warm";
+const QString RecruitsGroup::LOG_ID_ERR = "RecruitsGroup_err";
+
 RecruitsGroup::RecruitsGroup()
 {
     model = new ModelAbstract();
     casualties = 0;
     nb = 0;
     path = "";
+
+    QLoggerManager *manager = QLoggerManager::getInstance();
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_INFO), QLogger::InfoLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_ERR), QLogger::ErrorLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_WARN), QLogger::WarnLevel);
 }
 
 RecruitsGroup::RecruitsGroup(const int &n, const int &c, const QString& p)
@@ -14,6 +27,15 @@ RecruitsGroup::RecruitsGroup(const int &n, const int &c, const QString& p)
     nb = n;
     path = p;
     model = fac.createFromFile(path);
+
+    QLoggerManager *manager = QLoggerManager::getInstance();
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_INFO), QLogger::InfoLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_ERR), QLogger::ErrorLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_WARN), QLogger::WarnLevel);
+
+    QLog_Info(LOG_ID_INFO, "RecruitsGroup created with following model : ");
+    QLog_Info(LOG_ID_INFO, model->displayStringInfo());
 }
 
 RecruitsGroup::~RecruitsGroup()
