@@ -187,12 +187,12 @@ int ModelCharriot::computePoints()
     QList<OptionModel>::iterator i;
     for (i = options.begin(); i != options.end(); ++i)
     {
-        if(i->isActivated())
-            points += i->getNbPoints();
+        points += i->getNbPoints();
     }
     QList<StatsModel>::Iterator j;
     for(j = crew.begin(); j < crew.end(); ++j)
     {
         points += j->getPoints();
     }
+    return points;
 }

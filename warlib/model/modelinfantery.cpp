@@ -120,9 +120,9 @@ int ModelInfantery::computePoints()
     QList<OptionModel>::iterator i;
     for (i = options.begin(); i != options.end(); ++i)
     {
-        if(i->isActivated())
-            points += i->getNbPoints();
+        points += i->getNbPoints();
     }
+    return points;
 }
 
 QDataStream & operator <<(QDataStream & out, const ModelInfantery & obj)
