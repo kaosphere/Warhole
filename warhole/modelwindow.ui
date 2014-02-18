@@ -678,32 +678,6 @@
    <property name="geometry">
     <rect>
      <x>190</x>
-     <y>340</y>
-     <width>401</width>
-     <height>231</height>
-    </rect>
-   </property>
-   <layout class="QVBoxLayout" name="verticalLayout_20">
-    <item>
-     <layout class="QVBoxLayout" name="verticalLayout_16">
-      <item>
-       <widget class="QLabel" name="label_28">
-        <property name="text">
-         <string>Statistiques des montures et conducteurs de chars</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QTreeView" name="viewModelCrew"/>
-      </item>
-     </layout>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QWidget" name="layoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>190</x>
      <y>130</y>
      <width>401</width>
      <height>235</height>
@@ -911,6 +885,18 @@
       </item>
      </layout>
     </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="">
+   <property name="geometry">
+    <rect>
+     <x>190</x>
+     <y>370</y>
+     <width>401</width>
+     <height>231</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout_15">
     <item>
      <widget class="QPushButton" name="pushButtonAdd">
       <property name="text">
@@ -925,8 +911,35 @@
       </property>
      </widget>
     </item>
+    <item>
+     <widget class="QLabel" name="label_28">
+      <property name="text">
+       <string>Statistiques des montures et conducteurs de chars</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QTreeView" name="viewModelCrew"/>
+    </item>
    </layout>
   </widget>
+  <zorder>layoutWidget</zorder>
+  <zorder>layoutWidget</zorder>
+  <zorder>layoutWidget</zorder>
+  <zorder>layoutWidget</zorder>
+  <zorder>layoutWidget</zorder>
+  <zorder>pushButtonLoad</zorder>
+  <zorder>graphicsView</zorder>
+  <zorder>layoutWidget</zorder>
+  <zorder>layoutWidget</zorder>
+  <zorder>layoutWidget</zorder>
+  <zorder>layoutWidget</zorder>
+  <zorder>pushButtonAdd</zorder>
+  <zorder>pushButtonRmv</zorder>
+  <zorder>pushButtonAdd</zorder>
+  <zorder>pushButtonRmv</zorder>
+  <zorder>viewModelCrew</zorder>
+  <zorder>label_28</zorder>
  </widget>
  <resources/>
  <connections/>

@@ -8,9 +8,9 @@ ModelWindow::ModelWindow(QWidget *parent) :
     ui(new Ui::ModelWindow)
 {
     QLoggerManager *manager = QLoggerManager::getInstance();
-    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID), QLogger::InfoLevel);
-    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID), QLogger::ErrorLevel);
-    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID), QLogger::WarnLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_INFO), QLogger::InfoLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_ERR), QLogger::ErrorLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_WARN), QLogger::WarnLevel);
 
     ui->setupUi(this);
     image = new QPixmap();
@@ -39,9 +39,9 @@ ModelWindow::ModelWindow(QString f, QWidget *parent) :
     ui(new Ui::ModelWindow)
 {
     QLoggerManager *manager = QLoggerManager::getInstance();
-    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID), QLogger::InfoLevel);
-    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID), QLogger::ErrorLevel);
-    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID), QLogger::WarnLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_INFO), QLogger::InfoLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_ERR), QLogger::ErrorLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_WARN), QLogger::WarnLevel);
 
     ui->setupUi(this);
     image = new QPixmap();
@@ -378,60 +378,125 @@ void ModelWindow::fillUI(ModelAbstract* m, QString path)
 
         options->appendRow(newOption);
     }
-    ui->textEdit->append(m->getSpecialRules());
     //fill specifi UI data depending on model type
-    if(type == CAVALERY_STRING || type == CHARACTER_TYPE)
+    if(type == CAVALERY_STRING)
     {
-    	for(int i = 0 ; i < m->getMount().size() ; i++)
-
-    	{
-    	    QList<QStandardItem *> newCrew;
-    	    newCrew<<new QStandardItem(m->getMount()[i].getName())
-    	            <<new QStandardItem(QString::number(m->getMount()[i].getPoints()))
-    	            <<new QStandardItem(m->getMount()[i].getM())
-    	            <<new QStandardItem(m->getMount()[i].getWs())
-    	            <<new QStandardItem(m->getMount()[i].getBs())
-    	            <<new QStandardItem(m->getMount()[i].getS())
-    	            <<new QStandardItem(m->getMount()[i].getT())
-    	            <<new QStandardItem(m->getMount()[i].getW())
-    	            <<new QStandardItem(m->getMount()[i].getI())
-    	            <<new QStandardItem(m->getMount()[i].getA())
-    	            <<new QStandardItem(m->getMount()[i].getLd())
-    	            <<new QStandardItem(m->getMount()[i].getSvg())
-    	            <<new QStandardItem(m->getMount()[i].getSvgInv());
-    	    crew->appendRow(newCrew);
-    	}
-    	if(type == CHARACTER_TYPE)
-    	{
-    		ui->checkLord->setChecked(m->getIsALord());
-    		ui->checkMage->setChecked(m->getIsAMage());
-    		ui->checkGeneral->setChecked(m->getIsTheGeneral());
-    		ui->checkMounted->setChecked(m->getIsMounted());
-    	}
+        ModelCavalry* cav = dynamic_cast<ModelCavalry*>(m);
+        if (cav){
+            for(int i = 0 ; i < cav->getMount().size() ; i++)
+            {
+                QList<QStandardItem *> newCrew;
+                newCrew<<new QStandardItem(cav->getMount()[i].getName())
+                        <<new QStandardItem(QString::number(cav->getMount()[i].getPoints()))
+                        <<new QStandardItem(cav->getMount()[i].getM())
+                        <<new QStandardItem(cav->getMount()[i].getWs())
+                        <<new QStandardItem(cav->getMount()[i].getBs())
+                        <<new QStandardItem(cav->getMount()[i].getS())
+                        <<new QStandardItem(cav->getMount()[i].getT())
+                        <<new QStandardItem(cav->getMount()[i].getW())
+                        <<new QStandardItem(cav->getMount()[i].getI())
+                        <<new QStandardItem(cav->getMount()[i].getA())
+                        <<new QStandardItem(cav->getMount()[i].getLd())
+                        <<new QStandardItem(cav->getMount()[i].getSvg())
+                        <<new QStandardItem(cav->getMount()[i].getSvgInv());
+                crew->appendRow(newCrew);
+            }
+            ui->textEdit->append(cav->getSpecialRules());
+        }
+        else
+            QLog_Error(LOG_ID_ERR, "FillUI : DYNAMIC_CAST ERROR : Can't cast to ModelCavalry.");
     }
-    else if(type == CHARRIOT_TYPE)
+    else if(type == CHARACTER_STRING)
     {
-    	for(int i = 0 ; i < m->getCrew().size() ; i++)
-
-    	{
-    	    QList<QStandardItem *> newCrew;
-    	    newCrew<<new QStandardItem(m->getCrew()[i].getName())
-    	            <<new QStandardItem(QString::number(m->getCrew()[i].getPoints()))
-    	            <<new QStandardItem(m->getCrew()[i].getM())
-    	            <<new QStandardItem(m->getCrew()[i].getWs())
-    	            <<new QStandardItem(m->getCrew()[i].getBs())
-    	            <<new QStandardItem(m->getCrew()[i].getS())
-    	            <<new QStandardItem(m->getCrew()[i].getT())
-    	            <<new QStandardItem(m->getCrew()[i].getW())
-    	            <<new QStandardItem(m->getCrew()[i].getI())
-    	            <<new QStandardItem(m->getCrew()[i].getA())
-    	            <<new QStandardItem(m->getCrew()[i].getLd())
-    	            <<new QStandardItem(m->getCrew()[i].getSvg())
-    	            <<new QStandardItem(m->getCrew()[i].getSvgInv());
-    	    crew->appendRow(newCrew);
-    	}
+        ModelCharacter * ch = dynamic_cast<ModelCharacter*>(m);
+        if (ch)
+        {
+            for(int i = 0 ; i < ch->getMount().size() ; i++)
+            {
+                QList<QStandardItem *> newCrew;
+                newCrew<<new QStandardItem(ch->getMount()[i].getName())
+                        <<new QStandardItem(QString::number(ch->getMount()[i].getPoints()))
+                        <<new QStandardItem(ch->getMount()[i].getM())
+                        <<new QStandardItem(ch->getMount()[i].getWs())
+                        <<new QStandardItem(ch->getMount()[i].getBs())
+                        <<new QStandardItem(ch->getMount()[i].getS())
+                        <<new QStandardItem(ch->getMount()[i].getT())
+                        <<new QStandardItem(ch->getMount()[i].getW())
+                        <<new QStandardItem(ch->getMount()[i].getI())
+                        <<new QStandardItem(ch->getMount()[i].getA())
+                        <<new QStandardItem(ch->getMount()[i].getLd())
+                        <<new QStandardItem(ch->getMount()[i].getSvg())
+                        <<new QStandardItem(ch->getMount()[i].getSvgInv());
+                crew->appendRow(newCrew);
+            }
+            ui->textEdit->append(ch->getSpecialRules());
+            ui->checkLord->setChecked(ch->getIsALord());
+            ui->checkMage->setChecked(ch->getIsAMage());
+            ui->checkGeneral->setChecked(ch->getIsTheGeneral());
+            ui->checkMounted->setChecked(ch->getIsMounted());
+        }
+        else
+            QLog_Error(LOG_ID_ERR, "FillUI : DYNAMIC_CAST ERROR : Can't cast to ModelCharacter.");
     }
+    else if(type == CHARRIOT_STRING)
+    {
+        ModelCharriot* ch = dynamic_cast<ModelCharriot*>(m);
+        if (ch)
+        {
+            for(int i = 0 ; i < ch->getCrew().size() ; i++)
 
+            {
+                QList<QStandardItem *> newCrew;
+                newCrew<<new QStandardItem(ch->getCrew()[i].getName())
+                        <<new QStandardItem(QString::number(ch->getCrew()[i].getPoints()))
+                        <<new QStandardItem(ch->getCrew()[i].getM())
+                        <<new QStandardItem(ch->getCrew()[i].getWs())
+                        <<new QStandardItem(ch->getCrew()[i].getBs())
+                        <<new QStandardItem(ch->getCrew()[i].getS())
+                        <<new QStandardItem(ch->getCrew()[i].getT())
+                        <<new QStandardItem(ch->getCrew()[i].getW())
+                        <<new QStandardItem(ch->getCrew()[i].getI())
+                        <<new QStandardItem(ch->getCrew()[i].getA())
+                        <<new QStandardItem(ch->getCrew()[i].getLd())
+                        <<new QStandardItem(ch->getCrew()[i].getSvg())
+                        <<new QStandardItem(ch->getCrew()[i].getSvgInv());
+                crew->appendRow(newCrew);
+            }
+            ui->textEdit->append(ch->getSpecialRules());
+        }
+        else
+            QLog_Error(LOG_ID_ERR, "FillUI : DYNAMIC_CAST ERROR : Can't cast to ModelCharriot.");
+    }
+    else if(type == INFANTERY_STRING)
+    {
+        ModelInfantery* inf = dynamic_cast<ModelInfantery*>(m);
+        if (inf)
+        {
+            ui->textEdit->append(inf->getSpecialRules());
+        }
+        else
+            QLog_Error(LOG_ID_ERR, "FillUI : DYNAMIC_CAST ERROR : Can't cast to ModelInfantery.");
+    }
+    else if(type == MONSTER_STRING)
+    {
+        ModelMonster* mon = dynamic_cast<ModelMonster*>(m);
+        if (mon)
+        {
+            ui->textEdit->append(mon->getSpecialRules());
+        }
+        else
+            QLog_Error(LOG_ID_ERR, "FillUI : DYNAMIC_CAST ERROR : Can't cast to ModelMonster.");
+    }
+    else if(type == WARMACHINE_STRING)
+    {
+        ModelWarMachine* war = dynamic_cast<ModelWarMachine*>(m);
+        if (war)
+        {
+            ui->textEdit->append(war->getSpecialRules());
+        }
+        else
+            QLog_Error(LOG_ID_ERR, "FillUI : DYNAMIC_CAST ERROR : Can't cast to ModelWarMachine.");
+    }
 }
 
 void ModelWindow::setModelProperties(ParamsfromUImodel *p)
@@ -576,7 +641,7 @@ void ModelWindow::save(QString path)
 
 void ModelWindow::load(QString path)
 {
-    QLogger::QLog_Info(LOG_ID, "Loading model with path : " + path);
+    QLogger::QLog_Info(LOG_ID_INFO, "Loading model with path : " + path);
     delete poupik;
     poupik = fac.createFromFile(path);
     fillUI(poupik, path);
