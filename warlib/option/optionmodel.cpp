@@ -26,7 +26,7 @@ OptionModel::~OptionModel()
 
 bool OptionModel::operator ==(const OptionModel &o)
 {
-    if(name == o.name && nbPoints == o.nbPoints && activated == o.activated && specialRules == o.specialRules)
+    if(name == o.name && nbPoints == o.nbPoints && specialRules == o.specialRules)
         return true;
     else return false;
 }
