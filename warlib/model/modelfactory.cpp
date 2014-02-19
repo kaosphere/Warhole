@@ -1,9 +1,20 @@
 #include "modelfactory.h"
 
 using namespace std;
+using namespace QLogger;
+
+const QString ModelFactory::LOG_ID_INFO = "ModelFactory_info";
+const QString ModelFactory::LOG_ID_TRACE = "ModelFactory_trace";
+const QString ModelFactory::LOG_ID_WARN = "ModelFactory_warm";
+const QString ModelFactory::LOG_ID_ERR = "ModelFactory_err";
 
 ModelFactory::ModelFactory()
 {
+    QLoggerManager *manager = QLoggerManager::getInstance();
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_INFO), QLogger::InfoLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_ERR), QLogger::ErrorLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_WARN), QLogger::WarnLevel);
 }
 
 QMap<QString, ModelAbstract*> ModelFactory::factory_model_map = QMap<QString, ModelAbstract*>();
@@ -29,9 +40,10 @@ ModelAbstract *ModelFactory::createFromFile(const QString& path) const
         tmp = *it;
         tmp = tmp->setFromFile(path);
 
-        qDebug() << "key found in map " << s;
-        qDebug() << "name " << tmp->getStats().getName();
+        QLog_Info(LOG_ID_INFO, "Key found in map : " + s);
     }
+    else
+        QLog_Error(LOG_ID_ERR, "Can't find key in path : " + path);
 
     return tmp;
 }

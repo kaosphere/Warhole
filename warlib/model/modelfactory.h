@@ -5,6 +5,7 @@
 #include <QString>
 #include "modelabstract.h"
 #include "paramsfromUI/paramsfromuimodel.h"
+#include "Utilities/QLogger/QLogger.h"
 
 #include<QDebug>
 
@@ -19,7 +20,12 @@ public:
 
 public:
     static QMap<QString,ModelAbstract*> factory_model_map;
-    
+
+private:
+    static const QString LOG_ID_INFO;
+    static const QString LOG_ID_TRACE;
+    static const QString LOG_ID_WARN;
+    static const QString LOG_ID_ERR;
 };
 
 #endif // MODELFACTORY_H
