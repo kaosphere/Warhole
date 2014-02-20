@@ -33,25 +33,15 @@ void Army::addUnit(const RegimentAbstract &u)
 
 void Army::removeUnit(const RegimentAbstract &u)
 {
-    //TODO to be changed because operator== has been removed from regiment
-    // new way to do that => map or set (see google drive)
-    //units.removeOne(u);
+	// Since Army will not be used as a game descriptor, we don't care 
+	// removing one or the other if two regiments are identical
+    units.removeOne(u);
 }
 
-unsigned int Army::getPoints() const
-{
-    return points;
-}
-
-void Army::setPoints(unsigned int value)
-{
-    points = value;
-}
 
 QDataStream &operator <<(QDataStream & out, const Army & obj)
 {
     out << obj.name
-        << obj.points
         << obj.units.size();
     for(int i = 0; i < obj.units.size(); i++)
     {
@@ -66,7 +56,6 @@ QDataStream &operator >>(QDataStream & in, Army & obj)
     int nb;
 
     in >> obj.name;
-    in >> obj.points;
     in >> nb;
 
     for(int i = 0 ; i < nb ; i++)

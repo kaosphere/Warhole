@@ -27,7 +27,6 @@ public:
 private:
     QString name;
     QList<RegimentAbstract> units;
-    unsigned int points;
 };
 
 #endif // Army_H
