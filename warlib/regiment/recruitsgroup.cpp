@@ -50,7 +50,7 @@ QDataStream & operator <<(QDataStream& out, const RecruitsGroup& obj)
     // a .unit file which is susceptible to change over time
     out << obj.nb
         << obj.casualties
-        << obj.path;
+        << obj.model;
 
     return out;
 }
@@ -60,9 +60,7 @@ QDataStream & operator >>(QDataStream& in, RecruitsGroup& obj)
     // Same comment that for other stream operator
     in >> obj.nb;
     in >> obj.casualties;
-    in >> obj.path;
-	
-	model = fac.createFromFile(path);
+    in >> obj.model;
 	
     return in;
 }
