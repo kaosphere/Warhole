@@ -4,37 +4,49 @@ RegimentAbstract::RegimentAbstract()
 {
     name = "";
     musician = false;
+    musicianPoints = 0;
     champion = false;
     skirmishers = false;
     banner = false;
+    points = 0;
+    startingCount = 0;
 }
 
 RegimentAbstract::RegimentAbstract(const QString &n,
                                    const bool &m,
+                                   const int & mp,
                                    const bool &s,
                                    const bool &c,
                                    const bool &b,
                                    const StatsModel& st,
-                                   const QList<RecruitsGroup> g)
+                                   const QMap<RecruitsGroup> g,
+                                   const int& p,
+                                   const int& sc)
 {
     name = n;
     musician = m;
+    musicianPoints = mp;
     skirmishers = s;
     champion = c;
     banner = b;
     championStats = st;
     groups = g;
+    points = p;
+    startingCount = sc;
 }
 
 RegimentAbstract::RegimentAbstract(const RegimentAbstract &u)
 {
     name = u.name;
     musician = u.musician;
+    musicianPoints = u.musiciantPoints;
     skirmishers = u.skirmishers;
     champion = u.champion;
     banner = u.banner;
     championStats = u.championStats;
     groups = u.groups;
+    points = u.points;
+    startingCount = u.startingCount;
 }
 
 
@@ -78,24 +90,24 @@ void RegimentAbstract::setName(const QString &value)
     name = value;
 }
 
-QList<RecruitsGroup> RegimentAbstract::getGroups() const
+QMap<QString, RecruitsGroup> RegimentAbstract::getGroups() const
 {
     return groups;
 }
 
-void RegimentAbstract::setGroups(const QList<RecruitsGroup> &value)
+void RegimentAbstract::setGroups(const QMap<QString, RecruitsGroup> &value)
 {
     groups = value;
 }
 
-void RegimentAbstract::addGroup(RecruitsGroup r)
+void RegimentAbstract::addGroup(const RecruitsGroup& r)
 {
-    groups.append(r);
+	groups.insert(r.getModel()->getStats().getName(), r);
 }
 
-void RegimentAbstract::removeGroup(RecruitsGroup r)
+void RegimentAbstract::removeGroup(const RecruitsGroup& r)
 {
-    groups.removeOne(r);
+    groups.remove(r.getModel()->getStats().getName());
 }
 
 bool RegimentAbstract::getBanner() const
@@ -128,6 +140,16 @@ void RegimentAbstract::setPoints(int value)
     points = value;
 }
 
+int RegimentAbstract::getMusicianPoints() const
+{
+	return musicianPoints;
+}
+
+void RegimentAbstract::setMusicianPoints(const int& value)
+{
+	musicianPoints = value;
+}
+
 int RegimentAbstract::getStartingCount() const
 {
     return startingCount;
@@ -141,11 +163,20 @@ void RegimentAbstract::setStartingCount(int value)
 int RegimentAbstract::computePoints()
 {
     int points = 0;
-    QList<RecruitsGroup>::Iterator i;
-    for(i=groups.begin();i<groups.end();++i)
-    {
-        points += (i->getNb() * i->getModel()->computePoints());
-    }
+    QMap<QString, RecruitsGroup>::const_iterator i = map.constBegin();
+	while (i != map.constEnd()) {
+		points += i.value().computePoints();
+		++i;
+	}
+	if(musician)
+	{
+		points += musicianPoints;
+	}
+	if(champion)
+	{
+		points += championStats.getPoints();
+	}
+	return points;
 }
 
 QDataStream &operator <<(QDataStream & out, const RegimentAbstract & obj)
@@ -160,10 +191,12 @@ QDataStream &operator <<(QDataStream & out, const RegimentAbstract & obj)
         << obj.startingCount
         << obj.groups.size();
 
-    for(int i; i<obj.groups.size();++i)
-    {
-        out << obj.groups[i];
-    }
+    QMap<QString, RecruitsGroup>::const_iterator i = map.constBegin();
+	while (i != map.constEnd()) {
+		out << i.value();
+		++i;
+	}
+}
 
     return out;
 }
@@ -190,4 +223,22 @@ QDataStream &operator >>(QDataStream & in, RegimentAbstract & obj)
     }
 
     return in;
+}
+
+bool RegimentAbstract::operator==(const RegimentAbstract& obj)
+{
+	if(name == obj.name &&
+		musician == obj.musician &&
+		musicianPoints == obj.musiciantPoints &&
+		skirmishers == obj.skirmishers &&
+		champion == obj.champion &&
+		banner == obj.banner &&
+		championStats == obj.championStats &&
+		groups == obj.groups &&
+		points == obj.points &&
+		startingCount == obj.startingCount)
+	{
+		return true;
+	}
+	else return false;
 }

@@ -32,10 +32,10 @@ public:
     bool getBanner() const;
     void setBanner(bool value);
 
-    QList<RecruitsGroup> getGroups() const;
-    void setGroups(const QList<RecruitsGroup> &value);
-    void addGroup(RecruitsGroup r);
-    void removeGroup(RecruitsGroup r);
+    QMap<QString, RecruitsGroup> getGroups() const;
+    void setGroups(const QMap<QString, RecruitsGroup> &value);
+    void addGroup(const RecruitsGroup& r);
+    void removeGroup(const RecruitsGroup& r);
 
     QString getName() const;
     void setName(const QString &value);
@@ -51,11 +51,16 @@ public:
 
     friend QDataStream & operator << (QDataStream &, const RegimentAbstract &);
     friend QDataStream & operator >> (QDataStream &, RegimentAbstract &);
+    
+    bool operator==(const RegimentAbstract&);
 
     void loadAllModels();
 
     int getPoints() const;
-    void setPoints(int value);
+    void setPoints(const int& value);
+    
+    int getMusicianPoints() const;
+    void setMusicianPoints(const int& value);
 
     int getStartingCount() const;
     void setStartingCount(int value);
@@ -64,9 +69,10 @@ public:
 
 private:
     QString name;
-    QList<RecruitsGroup> groups;
+    QMap<QString, RecruitsGroup> groups; //using a map permits not to have doubles
     bool banner;
     bool musician;
+    int musicianPoints;
     bool champion;
     bool skirmishers;
     StatsModel championStats;
