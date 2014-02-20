@@ -4,6 +4,12 @@ Army::Army()
 {
 }
 
+void Army::initArmySystem()
+{
+    qRegisterMetaTypeStreamOperators<Army>("Army");
+    qMetaTypeId<Army>();
+}
+
 QString Army::getName() const
 {
     return name;
@@ -38,6 +44,24 @@ void Army::removeUnit(const RegimentAbstract &u)
     units.removeOne(u);
 }
 
+void Army::save(const QString& path)
+{
+	QFile::remove(path);
+    QSettings savedFile(path, QSettings::IniFormat);
+    savedFile.setValue("Army", qVariantFromValue(*this));
+    savedFile.sync();
+}
+
+void Army::load(const QString& path)
+{
+	Army temp;
+
+    QSettings readFile(path, QSettings::IniFormat);
+    temp = readFile.value("Army", qVariantFromValue(Army())).value< Army>();
+
+    name = temp.name;
+    units = temo.units;
+}
 
 QDataStream &operator <<(QDataStream & out, const Army & obj)
 {

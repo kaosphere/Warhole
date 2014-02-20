@@ -10,6 +10,8 @@ class Army
 public:
     Army();
 
+	static void initArmySystem();
+
     QString getName() const;
     void setName(const QString &value);
 
@@ -17,6 +19,9 @@ public:
     void setUnits(const QList<RegimentAbstract> &value);
     void addUnit(const RegimentAbstract& u);
     void removeUnit(const RegimentAbstract& u);
+    
+    void save(const QString& path);
+    void load(const QString& path);
 
     unsigned int getPoints() const;
     void setPoints(unsigned int value);
@@ -27,6 +32,13 @@ public:
 private:
     QString name;
     QList<RegimentAbstract> units;
+    
+    friend QDataStream & operator << (QDataStream &, const Army &);
+    friend QDataStream & operator >> (QDataStream &, Army &);
 };
+
+Q_DECLARE_METATYPE(Army)
+QDataStream & operator << (QDataStream & out, const Army &);
+QDataStream & operator >> (QDataStream & in, Army &);
 
 #endif // Army_H

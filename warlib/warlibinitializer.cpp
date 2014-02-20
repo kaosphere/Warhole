@@ -19,6 +19,7 @@ void WarlibInit::initModelSerialization()
     ModelInfantery::initModelInfanterySystem();
     ModelMonster::initModelMonsterSystem();
     ModelWarMachine::initModelWarMachine();
+    Army::initArmySystem();
 }
 
 void WarlibInit::initModelFactory()
