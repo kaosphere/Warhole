@@ -40,7 +40,7 @@ public:
     void setPath(const QString &value);
 
     bool operator==(const RecruitsGroup&);
-
+    
     int computePoints();
 
     friend QDataStream & operator << (QDataStream &, const RecruitsGroup &);

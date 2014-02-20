@@ -13,6 +13,7 @@ RecruitsGroup::RecruitsGroup()
     casualties = 0;
     nb = 0;
     path = "";
+    model = NULL;
 
     QLoggerManager *manager = QLoggerManager::getInstance();
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
@@ -40,7 +41,7 @@ RecruitsGroup::RecruitsGroup(const int &n, const int &c, const QString& p)
 
 RecruitsGroup::~RecruitsGroup()
 {
-    delete model;
+    if(model) delete model;
 }
 
 QDataStream & operator <<(QDataStream& out, const RecruitsGroup& obj)
@@ -60,7 +61,9 @@ QDataStream & operator >>(QDataStream& in, RecruitsGroup& obj)
     in >> obj.nb;
     in >> obj.casualties;
     in >> obj.path;
-
+	
+	model = fac.createFromFile(path);
+	
     return in;
 }
 
@@ -97,7 +100,15 @@ bool RecruitsGroup::operator==(const RecruitsGroup &obj)
 
 int RecruitsGroup::computePoints()
 {
-
+	if(model)
+	{
+		return (nb * model->computePoints());
+	}
+	else
+	{
+		QLog_Error(LOG_ID_ERR, "Model is not instanciated, can't compute points.")
+		return 0;
+	}
 }
 
 int RecruitsGroup::getCasualties() const
