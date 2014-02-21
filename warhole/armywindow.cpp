@@ -23,6 +23,8 @@ ArmyWindow::ArmyWindow(QWidget *parent) :
     existingRaces.removeOne(".");
     existingRaces.removeOne("..");
 
+    currentSelectedPath = "";
+
     ui->comboBoxRace->addItems(existingRaces);
 
     // Associate model to view
@@ -36,12 +38,10 @@ ArmyWindow::ArmyWindow(QWidget *parent) :
 
     reg = new QStandardItemModel();
 
-    ui->viewRegiments->setModel(reg);
-    ui->viewRegiments->header()->hide();
+    ui->armyView->setModel(reg);
 
-    scene = new QGraphicsScene();
-
-    ui->graphicsView->setScene(scene);
+    models = new QStandardItemModel();
+    ui->regimentView->setModel(models);
 
     setEnableChampionStats(false);
 }
@@ -69,7 +69,6 @@ void ArmyWindow::on_comboBoxRace_currentIndexChanged(const QString &raceDir)
         existingModels = modelDir->entryList();
     }
 
-
     if(existingModels.isEmpty())
     {
          QMessageBox::warning(this, "Erreur", "Aucune race existante ; commencez par créer des figurines");
@@ -93,9 +92,9 @@ void ArmyWindow::on_comboBoxRace_currentIndexChanged(const QString &raceDir)
 
 void ArmyWindow::on_treeViewExistingModels_clicked(const QModelIndex &index)
 {
-    scene->clear();
     options->clear();
     selectedModel = index;
+    currentSelectedPath = model->filePath(index);
 
     QString name = index.data().toString();
     QStringList pieces = name.split(".");
@@ -103,46 +102,21 @@ void ArmyWindow::on_treeViewExistingModels_clicked(const QModelIndex &index)
     if(pieces.last() == "unit")
     {
         QString path(model->filePath(index));
-        ma = fac.createFromFile(index.parent().data().toString(), path);
+        ma = fac.createFromFile(path);
+
+        for(int i = 0 ; i < ma->getOptions().length() ; i++)
+        {
+            QList<QStandardItem *> newOption;
+
+            newOption<<new QStandardItem(ma->getOptions()[i].getName())
+                    <<new QStandardItem(QString::number(ma->getOptions()[i].getNbPoints()))
+                   <<new QStandardItem(ma->getOptions()[i].getSpecialRules());
+
+            options->appendRow(newOption);
+        }
+        ui->textInfo->clear();
+        ui->textInfo->append(ma->displayStringInfo());
     }
-
-    for(int i = 0 ; i < ma->getOptions().length() ; i++)
-    {
-        QList<QStandardItem *> newOption;
-
-        newOption<<new QStandardItem(ma->getOptions()[i].getName())
-                <<new QStandardItem(QString::number(ma->getOptions()[i].getNbPoints()))
-               <<new QStandardItem(ma->getOptions()[i].getSpecialRules());
-
-        options->appendRow(newOption);
-    }
-    QPixmap p(ma->getUrlImage());
-    scene->addPixmap(p);
-
-}
-
-void ArmyWindow::on_pushButton_clicked()
-{
-    //add the regiment to the army list
-    QList<ModelAbstract*> l;
-    StatsModel m;
-    /*RegimentAbstract* u = new RegimentAbstract(ma->getStats().getName(),
-                                       model->filePath(selectedModel),
-                                       l,
-                                       0,
-                                       ui->checkBoxMusician->isChecked(),
-                                       ui->checkBoxSkirmish->isChecked(),
-                                       ui->checkBoxChampion->isChecked(),
-                                       ui->checkBoxBanner->isChecked(),
-                                       m,
-                                       ui->spinBoxNB->value());
-
-    QList<QStandardItem *> newRegiment;
-
-    newRegiment<<new QStandardItem(QString::number(ui->spinBoxNB->value()))
-            <<new QStandardItem(u->getName());
-
-    reg->appendRow(newRegiment);*/
 }
 
 void ArmyWindow::on_checkBoxChampion_toggled(bool checked)
@@ -164,4 +138,103 @@ void ArmyWindow::setEnableChampionStats(bool checked)
     ui->lineEditSvg->setEnabled(checked);
     ui->lineEditSvgInv->setEnabled(checked);
     ui->spinPoints->setEnabled(checked);
+}
+
+void ArmyWindow::clearRegimentDisplay()
+{
+    ui->checkBoxBanner->setChecked(false);
+    ui->checkBoxChampion->setChecked(false);
+    ui->checkBoxMusician->setChecked(false);
+    ui->checkBoxSkirmish->setChecked(false);
+
+    ui->lineEditA->clear();
+    ui->lineEditCC->clear();
+    ui->lineEditCdt->clear();
+    ui->lineEditCT->clear();
+    ui->lineEditE->clear();
+    ui->lineEditF->clear();
+    ui->lineEditI->clear();
+    ui->lineEditM->clear();
+    ui->lineEditPV->clear();
+    ui->lineEditSvg->clear();
+    ui->lineEditSvgInv->clear();
+    ui->spinPoints->clear();
+}
+
+void ArmyWindow::on_addGroupButton_clicked()
+{
+    if(ui->spinBoxNB->value() != 0)
+    {
+        clearRegimentDisplay();
+        RecruitsGroup rg(ui->spinBoxNB->value(),0,currentSelectedPath);
+
+        //add group in the group list
+        QList<QStandardItem *> newGroup;
+        newGroup<<new QStandardItem(QString::number(rg.getNb()))
+                <<new QStandardItem(rg.getModel()->getStats().getName())
+                <<new QStandardItem(QString::number(rg.computePoints()))
+               <<new QStandardItem(rg.getPath());
+        models->appendRow(newGroup);
+    }
+    else
+    {
+        QMessageBox::warning(this, "Info", "Le nombre de modèles ajoutés doit être suppérieur à 0.");
+    }
+}
+
+void ArmyWindow::on_addRegButton_clicked()
+{
+    RegimentAbstract ra;
+    QString modelName;
+    int sp = 0;
+
+    QMap<QString, RecruitsGroup> groupMap;
+    for(int i = 0; i< models->rowCount(); i++)
+    {
+        RecruitsGroup o;
+        for(int j = 0; j < models->columnCount(); j++)
+        {
+            QStandardItem* item = models->item(i,j);
+            switch(j)
+            {
+                case 0:
+                    o.setNb(item->text().toUInt());
+                    qDebug() << "nombre dans le groupe : " << item->text().toUInt();
+                    sp += o.getNb();
+                    break;
+                case 1:
+                    modelName = item->text();
+                    break;
+                case 3:
+                    o.setPath(item->text());
+                    break;
+                default:
+                    break;
+            }
+        }
+        o.setCasualties(0);
+        o.loadPath();
+        groupMap.insert(modelName,o);
+    }
+    ra.setGroups(groupMap);
+    ra.setBanner(ui->checkBoxBanner->isChecked());
+    ra.setChampion(ui->checkBoxChampion->isChecked());
+    ra.setSkirmishers(ui->checkBoxSkirmish->isChecked());
+    ra.setStartingCount(sp);
+    qDebug() << "on se rend tu fucking jusque la ??";
+    ra.setName(ui->regName->text());
+    qDebug() << "test a la con";
+    qDebug() << ra.displayInfo();
+
+    currentArmy.addUnit(ra);
+
+    QList<QStandardItem *> newRegiment;
+    newRegiment<<new QStandardItem(QString::number(ra.getStartingCount()))
+            <<new QStandardItem(ra.getName())
+            <<new QStandardItem(QString::number(ra.computePoints()));
+    reg->appendRow(newRegiment);
+
+    models->clear();
+    ui->regName->clear();
+    clearRegimentDisplay();
 }

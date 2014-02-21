@@ -8,6 +8,7 @@ ModelWindow::ModelWindow(QWidget *parent) :
     ui(new Ui::ModelWindow)
 {
     QLoggerManager *manager = QLoggerManager::getInstance();
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_INFO), QLogger::InfoLevel);
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_ERR), QLogger::ErrorLevel);
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_WARN), QLogger::WarnLevel);
@@ -39,6 +40,7 @@ ModelWindow::ModelWindow(QString f, QWidget *parent) :
     ui(new Ui::ModelWindow)
 {
     QLoggerManager *manager = QLoggerManager::getInstance();
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_INFO), QLogger::InfoLevel);
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_ERR), QLogger::ErrorLevel);
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_WARN), QLogger::WarnLevel);

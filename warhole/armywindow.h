@@ -10,6 +10,7 @@
 #include <model/modelfactory.h>
 #include <option/optionmodel.h>
 #include <regiment/regimentabstract.h>
+#include <army/army.h>
 
 #include <QDebug>
 
@@ -27,16 +28,13 @@ public:
     ~ArmyWindow();
     
     void setEnableChampionStats(bool checked);
+    void clearRegimentDisplay();
 private slots:
-
     void on_comboBoxRace_currentIndexChanged(const QString &raceDir);
-
-
     void on_treeViewExistingModels_clicked(const QModelIndex &index);
-
-    void on_pushButton_clicked();
-
     void on_checkBoxChampion_toggled(bool checked);
+    void on_addGroupButton_clicked();
+    void on_addRegButton_clicked();
 
 private:
     Ui::ArmyWindow *ui;
@@ -45,10 +43,12 @@ private:
     ModelFactory fac;
     ModelAbstract* ma;
     QStandardItemModel* options;
-    QGraphicsScene* scene;
     QStandardItemModel* reg;
+    QStandardItemModel* models;
     QList<RegimentAbstract*> regiments;
     QModelIndex selectedModel;
+    QString currentSelectedPath;
+    Army currentArmy;
 };
 
 #endif // ARMYWINDOW_H
