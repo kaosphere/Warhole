@@ -183,11 +183,14 @@ void ModelCavalry::clearMount()
 int ModelCavalry::computePoints()
 {
     //compute whole points of the model
+    qDebug() << "on arrive la...";
     int points = stats.getPoints();
     QList<OptionModel>::iterator i;
     for (i = options.begin(); i != options.end(); ++i)
     {
+        qDebug() << "je soupconne que ca chie pas loin d'ici";
         points += i->getNbPoints();
+        qDebug() << "ah en fait nan...";
     }
     points += mount.first().getPoints();
     return points;

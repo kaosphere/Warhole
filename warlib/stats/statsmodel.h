@@ -21,6 +21,8 @@ public:
 
     StatsModel& operator=(const StatsModel&);
 
+    bool operator==(const StatsModel&);
+
     QString displayString();
 
     QString getName() const;

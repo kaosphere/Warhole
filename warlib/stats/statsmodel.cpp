@@ -59,6 +59,27 @@ StatsModel & StatsModel::operator =(const StatsModel &stat)
     points = stat.points;
 }
 
+bool StatsModel::operator ==(const StatsModel & stat)
+{
+    if(name == stat.name &&
+        m == stat.m &&
+        ws == stat.ws &&
+        bs == stat.bs &&
+        s == stat.s &&
+        t == stat.t &&
+        w == stat.w &&
+        i == stat.i &&
+        a == stat.a &&
+        ld == stat.ld &&
+        svg == stat.svg &&
+        svgInv == stat.svgInv &&
+        points == stat.points)
+    {
+        return true;
+    }
+    else return false;
+}
+
 // Overloading of << operator
 QDataStream & operator << (QDataStream & out, const StatsModel & obj)
 {

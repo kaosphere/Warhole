@@ -21,9 +21,13 @@ class RegimentAbstract
 public:
     RegimentAbstract();
     RegimentAbstract(const QString& n,
-                     const bool& m, const bool& s,
+                     const bool& m, const int& mp,
+                     const bool& s,
                      const bool& c, const bool& b,
-                     const StatsModel& st, const QList<RecruitsGroup> g);
+                     const StatsModel& st,
+                     const QMap<QString, RecruitsGroup> g,
+                     const int& p,
+                     const int& sc);
     RegimentAbstract(const RegimentAbstract& u);
 
     bool getMusician() const;

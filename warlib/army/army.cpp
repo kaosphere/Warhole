@@ -60,7 +60,7 @@ void Army::load(const QString& path)
     temp = readFile.value("Army", qVariantFromValue(Army())).value< Army>();
 
     name = temp.name;
-    units = temo.units;
+    units = temp.units;
 }
 
 QDataStream &operator <<(QDataStream & out, const Army & obj)

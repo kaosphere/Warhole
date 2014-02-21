@@ -50,7 +50,7 @@ QDataStream & operator <<(QDataStream& out, const RecruitsGroup& obj)
     // a .unit file which is susceptible to change over time
     out << obj.nb
         << obj.casualties
-        << obj.model;
+        << obj.path;
 
     return out;
 }
@@ -60,8 +60,10 @@ QDataStream & operator >>(QDataStream& in, RecruitsGroup& obj)
     // Same comment that for other stream operator
     in >> obj.nb;
     in >> obj.casualties;
-    in >> obj.model;
+    in >> obj.path;
 	
+    obj.model = obj.fac.createFromFile(obj.path);
+
     return in;
 }
 
@@ -85,7 +87,7 @@ void RecruitsGroup::setPath(const QString &value)
     path = value;
 }
 
-bool RecruitsGroup::operator==(const RecruitsGroup &obj)
+bool RecruitsGroup::operator==(const RecruitsGroup& obj) const
 {
     if(nb == obj.nb &&
        casualties == obj.casualties &&
@@ -96,7 +98,7 @@ bool RecruitsGroup::operator==(const RecruitsGroup &obj)
     else return false;
 }
 
-int RecruitsGroup::computePoints()
+int RecruitsGroup::computePoints() const
 {
 	if(model)
 	{
@@ -104,7 +106,7 @@ int RecruitsGroup::computePoints()
 	}
 	else
 	{
-		QLog_Error(LOG_ID_ERR, "Model is not instanciated, can't compute points.")
+        QLog_Error(LOG_ID_ERR, "Model is not instanciated, can't compute points.");
 		return 0;
 	}
 }

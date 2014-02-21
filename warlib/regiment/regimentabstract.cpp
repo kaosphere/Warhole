@@ -19,7 +19,7 @@ RegimentAbstract::RegimentAbstract(const QString &n,
                                    const bool &c,
                                    const bool &b,
                                    const StatsModel& st,
-                                   const QMap<RecruitsGroup> g,
+                                   const QMap<QString, RecruitsGroup> g,
                                    const int& p,
                                    const int& sc)
 {
@@ -39,7 +39,7 @@ RegimentAbstract::RegimentAbstract(const RegimentAbstract &u)
 {
     name = u.name;
     musician = u.musician;
-    musicianPoints = u.musiciantPoints;
+    musicianPoints = u.musicianPoints;
     skirmishers = u.skirmishers;
     champion = u.champion;
     banner = u.banner;
@@ -135,7 +135,7 @@ int RegimentAbstract::getPoints() const
     return points;
 }
 
-void RegimentAbstract::setPoints(int value)
+void RegimentAbstract::setPoints(const int& value)
 {
     points = value;
 }
@@ -163,9 +163,9 @@ void RegimentAbstract::setStartingCount(int value)
 int RegimentAbstract::computePoints()
 {
     int points = 0;
-    QMap<QString, RecruitsGroup>::const_iterator i = map.constBegin();
-	while (i != map.constEnd()) {
-		points += i.value().computePoints();
+    QMap<QString, RecruitsGroup>::const_iterator i = groups.constBegin();
+    while (i != groups.constEnd()) {
+        points += i->computePoints();
 		++i;
 	}
 	if(musician)
@@ -191,13 +191,11 @@ QDataStream &operator <<(QDataStream & out, const RegimentAbstract & obj)
         << obj.startingCount
         << obj.groups.size();
 
-    QMap<QString, RecruitsGroup>::const_iterator i = map.constBegin();
-	while (i != map.constEnd()) {
+    QMap<QString, RecruitsGroup>::const_iterator i = obj.groups.constBegin();
+    while (i != obj.groups.constEnd()) {
 		out << i.value();
 		++i;
 	}
-}
-
     return out;
 }
 
@@ -229,7 +227,7 @@ bool RegimentAbstract::operator==(const RegimentAbstract& obj)
 {
 	if(name == obj.name &&
 		musician == obj.musician &&
-		musicianPoints == obj.musiciantPoints &&
+        musicianPoints == obj.musicianPoints &&
 		skirmishers == obj.skirmishers &&
 		champion == obj.champion &&
 		banner == obj.banner &&

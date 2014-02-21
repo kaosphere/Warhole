@@ -39,9 +39,9 @@ public:
     QString getPath() const;
     void setPath(const QString &value);
 
-    bool operator==(const RecruitsGroup&);
+    bool operator==(const RecruitsGroup& obj) const;
     
-    int computePoints();
+    int computePoints() const;
 
     friend QDataStream & operator << (QDataStream &, const RecruitsGroup &);
     friend QDataStream & operator >> (QDataStream &, RecruitsGroup &);
