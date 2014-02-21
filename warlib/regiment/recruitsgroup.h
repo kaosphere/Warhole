@@ -25,6 +25,7 @@ class RecruitsGroup
 public:
     RecruitsGroup();
     RecruitsGroup(const int &n, const int &c, const QString& p);
+    RecruitsGroup(const RecruitsGroup &copy);
     ~RecruitsGroup();
 
     ModelAbstract *getModel() const;
@@ -45,6 +46,8 @@ public:
 
     friend QDataStream & operator << (QDataStream &, const RecruitsGroup &);
     friend QDataStream & operator >> (QDataStream &, RecruitsGroup &);
+
+    void loadPath();
 
 private:
     static const QString LOG_ID_INFO;

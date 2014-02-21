@@ -39,6 +39,14 @@ RecruitsGroup::RecruitsGroup(const int &n, const int &c, const QString& p)
     QLog_Info(LOG_ID_INFO, model->displayStringInfo());
 }
 
+RecruitsGroup::RecruitsGroup(const RecruitsGroup& copy)
+{
+    casualties = copy.casualties;
+    nb = copy.nb;
+    path = copy.path;
+    model = copy.model;
+}
+
 RecruitsGroup::~RecruitsGroup()
 {
     if(model) delete model;
@@ -85,6 +93,14 @@ QString RecruitsGroup::getPath() const
 void RecruitsGroup::setPath(const QString &value)
 {
     path = value;
+}
+
+void RecruitsGroup::loadPath()
+{
+    if(!path.isEmpty())
+        model = fac.createFromFile(path);
+    else
+        QLog_Error(LOG_ID_ERR, "loadPath() - Path is Empty.");
 }
 
 bool RecruitsGroup::operator==(const RecruitsGroup& obj) const
