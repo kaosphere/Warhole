@@ -71,6 +71,8 @@ public:
 
     int computePoints();
 
+    QString displayInfo() const;
+
 private:
     QString name;
     QMap<QString, RecruitsGroup> groups; //using a map permits not to have doubles

@@ -176,7 +176,29 @@ int RegimentAbstract::computePoints()
 	{
 		points += championStats.getPoints();
 	}
-	return points;
+    return points;
+}
+
+QString RegimentAbstract::displayInfo() const
+{
+    QString s;
+    QTextStream info(&s);
+    info << "********************************************************" << endl;
+    info << "******                  Regiment                  ******" << endl;
+    info << "********************************************************" << endl;
+    info << "Name : " << name << endl;
+    info << "Contains " << groups.size() << " groups : " << endl;
+    QMap<QString, RecruitsGroup>::const_iterator i = groups.constBegin();
+    while (i != groups.constEnd()) {
+        info << "*******************************************************" << endl;
+        info << i->getNb() << " X :" << endl;
+        info << i->getModel()->displayStringInfo() << endl;
+        info << i->getPath() << endl;
+        ++i;
+    }
+    info << "********************************************************" << endl;
+    info << "********************************************************" << endl;
+    return s;
 }
 
 QDataStream &operator <<(QDataStream & out, const RegimentAbstract & obj)
