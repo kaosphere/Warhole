@@ -9,6 +9,7 @@ void WarlibInit::initWarlib()
 {
     initModelSerialization();
     initModelFactory();
+    DiceRoller::initDiceRoller();
 }
 
 void WarlibInit::initModelSerialization()

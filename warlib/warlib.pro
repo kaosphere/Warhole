@@ -28,7 +28,8 @@ SOURCES += \
     paramsfromUI/paramsfromuimodel.cpp \
     regiment/regimentabstract.cpp \
     regiment/recruitsgroup.cpp \
-    Utilities/QLogger/QLogger.cpp
+    Utilities/QLogger/QLogger.cpp \
+    Utilities/DiceRoller/DiceRoller.cpp 
 
 HEADERS += \
     stats/statsmodel.h \
@@ -47,7 +48,8 @@ HEADERS += \
     paramsfromUI/paramsfromuimodel.h \
     regiment/regimentabstract.h \
     regiment/recruitsgroup.h \
-    Utilities/QLogger/QLogger.h
+    Utilities/QLogger/QLogger.h \
+    Utilities/DiceRoller/DiceRoller.h 
 
 INSTALLS += target
 

@@ -13,6 +13,7 @@
 #include "army/army.h"
 
 #include "Utilities/QLogger/QLogger.h"
+#include "Utilities/DiceRoller/DiceRoller.h"
 
 #include "defines.h"
 
