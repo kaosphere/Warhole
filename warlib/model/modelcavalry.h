@@ -6,6 +6,7 @@
 #include <QtWidgets>
 
 #include "modelabstract.h"
+#include "Utilities/QLogger/QLogger.h"
 
 class ModelCavalry : public ModelAbstract
 {
@@ -41,6 +42,11 @@ public:
     virtual int computePoints();
 
 private:
+	static const QString LOG_ID_INFO;
+    static const QString LOG_ID_TRACE;
+    static const QString LOG_ID_WARN;
+    static const QString LOG_ID_ERR;
+
     QString specialRules;
     QList<StatsModel> mount;
 

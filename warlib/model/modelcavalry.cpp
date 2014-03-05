@@ -1,9 +1,21 @@
 #include "modelcavalry.h"
 #include <QDebug>
 
+using namespace QLogger;
+
+const QString ModelCavalry::LOG_ID_INFO = "ModelCavalry_info";
+const QString ModelCavalry::LOG_ID_TRACE = "ModelCavalry_trace";
+const QString ModelCavalry::LOG_ID_WARN = "ModelCavalry_warn";
+const QString ModelCavalry::LOG_ID_ERR = "ModelCavalry_err";
+
 ModelCavalry::ModelCavalry():
     ModelAbstract()
 {
+	manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_INFO), QLogger::InfoLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_ERR), QLogger::ErrorLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_WARN), QLogger::WarnLevel);
+
 }
 
 ModelCavalry::ModelCavalry(const QString &n, const QString &move, const QString &weaponS,
@@ -15,12 +27,23 @@ ModelCavalry::ModelCavalry(const QString &n, const QString &move, const QString 
     ModelAbstract(n,move,weaponS,balisticS, strength, toughness, wounds, init, attacks, leadership, save,
                   invSave, points, widthBase, lengthBase, unitP, urlImage, figSup)
 {
+	manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_INFO), QLogger::InfoLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_ERR), QLogger::ErrorLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_WARN), QLogger::WarnLevel);
+    
     specialRules = specRules;
 }
 
 // Copy constructor
 ModelCavalry::ModelCavalry(const ModelCavalry &copy) : ModelAbstract(copy)
 {
+	manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_INFO), QLogger::InfoLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_ERR), QLogger::ErrorLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_WARN), QLogger::WarnLevel);
+
+	
     specialRules = copy.specialRules;
     mount = copy.mount;
 }

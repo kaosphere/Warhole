@@ -1,7 +1,20 @@
 #include "regimentabstract.h"
 
+using namespace QLogger;
+
+const QString RegimentAbstract::LOG_ID_INFO = "RegimentAbstract_info";
+const QString RegimentAbstract::LOG_ID_TRACE = "RegimentAbstract_trace";
+const QString RegimentAbstract::LOG_ID_WARN = "RegimentAbstract_warn";
+const QString RegimentAbstract::LOG_ID_ERR = "RegimentAbstract_err";
+
 RegimentAbstract::RegimentAbstract()
 {
+	manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_INFO), QLogger::InfoLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_ERR), QLogger::ErrorLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_WARN), QLogger::WarnLevel);
+
+	
     name = "";
     musician = false;
     musicianPoints = 0;
@@ -23,6 +36,12 @@ RegimentAbstract::RegimentAbstract(const QString &n,
                                    const int& p,
                                    const int& sc)
 {
+	manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_INFO), QLogger::InfoLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_ERR), QLogger::ErrorLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_WARN), QLogger::WarnLevel);
+
+	
     name = n;
     musician = m;
     musicianPoints = mp;
@@ -37,6 +56,12 @@ RegimentAbstract::RegimentAbstract(const QString &n,
 
 RegimentAbstract::RegimentAbstract(const RegimentAbstract &u)
 {
+	manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_INFO), QLogger::InfoLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_ERR), QLogger::ErrorLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_WARN), QLogger::WarnLevel);
+
+	
     name = u.name;
     musician = u.musician;
     musicianPoints = u.musicianPoints;
@@ -191,7 +216,7 @@ QString RegimentAbstract::displayInfo() const
     QMap<QString, RecruitsGroup>::const_iterator i = groups.constBegin();
     while (i != groups.constEnd()) {
         info << "*******************************************************" << endl;
-        info << i->getNb() << " X :" << endl;
+        info << i->getNb() << " Number of models in the group :" << endl;
         info << i->getModel()->displayStringInfo() << endl;
         info << i->getPath() << endl;
         ++i;

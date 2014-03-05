@@ -11,6 +11,7 @@
 #include "stats/statsmodel.h"
 #include "option/optionmodel.h"
 #include "recruitsgroup.h"
+#include "Utilities/QLogger/QLogger.h"
 
 #include <QString>
 #include <QList>
@@ -74,6 +75,11 @@ public:
     QString displayInfo() const;
 
 private:
+	static const QString LOG_ID_INFO;
+    static const QString LOG_ID_TRACE;
+    static const QString LOG_ID_WARN;
+    static const QString LOG_ID_ERR;
+
     QString name;
     QMap<QString, RecruitsGroup> groups; //using a map permits not to have doubles
     bool banner;
