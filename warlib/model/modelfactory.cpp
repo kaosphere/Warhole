@@ -5,7 +5,7 @@ using namespace QLogger;
 
 const QString ModelFactory::LOG_ID_INFO = "ModelFactory_info";
 const QString ModelFactory::LOG_ID_TRACE = "ModelFactory_trace";
-const QString ModelFactory::LOG_ID_WARN = "ModelFactory_warm";
+const QString ModelFactory::LOG_ID_WARN = "ModelFactory_warn";
 const QString ModelFactory::LOG_ID_ERR = "ModelFactory_err";
 
 ModelFactory::ModelFactory()
