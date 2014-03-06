@@ -1,10 +1,5 @@
 #include "DiceRoller.h"
 
-DiceRoller::DiceRoller()
-{
-	
-}
-
 void DiceRoller::initDiceRoller()
 {
 	//init random generator
@@ -41,12 +36,7 @@ QString DiceRoller::rollDiceString(Dice die, int nbDice)
 
 int DiceRoller::computeDiceOutput(Dice d)
 {
-	if(d != Dispersion)
-	{
-		return rand() % d + 1;
-	}
-	else
-		return 0;
+    return rand() % d + 1;
 }
 
 QPair<QPair<int, QString>, QString> DiceRoller::computeDispersionDice()
@@ -59,9 +49,9 @@ QPair<QPair<int, QString>, QString> DiceRoller::computeDispersionDice()
 	else disp.second = "miss";
 	// Deviation
 	QPair<QPair<int, QString>, QString> artillery;
-	int dev = rand() % 6 + 1
+    int dev = rand() % 6 + 1;
 	if(dev == 6) artillery.second = "Incident de tir";
-	else artillery = QString::number(dev * 2);
+    else artillery.second = QString::number(dev * 2);
 	
 	artillery.first = disp;
 	

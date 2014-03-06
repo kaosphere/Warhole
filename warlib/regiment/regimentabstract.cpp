@@ -9,6 +9,7 @@ const QString RegimentAbstract::LOG_ID_ERR = "RegimentAbstract_err";
 
 RegimentAbstract::RegimentAbstract()
 {
+    QLoggerManager *manager = QLoggerManager::getInstance();
 	manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_INFO), QLogger::InfoLevel);
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_ERR), QLogger::ErrorLevel);
@@ -36,6 +37,7 @@ RegimentAbstract::RegimentAbstract(const QString &n,
                                    const int& p,
                                    const int& sc)
 {
+    QLoggerManager *manager = QLoggerManager::getInstance();
 	manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_INFO), QLogger::InfoLevel);
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_ERR), QLogger::ErrorLevel);
@@ -56,6 +58,7 @@ RegimentAbstract::RegimentAbstract(const QString &n,
 
 RegimentAbstract::RegimentAbstract(const RegimentAbstract &u)
 {
+    QLoggerManager *manager = QLoggerManager::getInstance();
 	manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_INFO), QLogger::InfoLevel);
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_ERR), QLogger::ErrorLevel);

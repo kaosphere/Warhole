@@ -11,6 +11,7 @@ const QString ModelCavalry::LOG_ID_ERR = "ModelCavalry_err";
 ModelCavalry::ModelCavalry():
     ModelAbstract()
 {
+    QLoggerManager *manager = QLoggerManager::getInstance();
 	manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_INFO), QLogger::InfoLevel);
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_ERR), QLogger::ErrorLevel);
@@ -27,6 +28,7 @@ ModelCavalry::ModelCavalry(const QString &n, const QString &move, const QString 
     ModelAbstract(n,move,weaponS,balisticS, strength, toughness, wounds, init, attacks, leadership, save,
                   invSave, points, widthBase, lengthBase, unitP, urlImage, figSup)
 {
+    QLoggerManager *manager = QLoggerManager::getInstance();
 	manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_INFO), QLogger::InfoLevel);
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_ERR), QLogger::ErrorLevel);
@@ -38,6 +40,7 @@ ModelCavalry::ModelCavalry(const QString &n, const QString &move, const QString 
 // Copy constructor
 ModelCavalry::ModelCavalry(const ModelCavalry &copy) : ModelAbstract(copy)
 {
+    QLoggerManager *manager = QLoggerManager::getInstance();
 	manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_INFO), QLogger::InfoLevel);
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_ERR), QLogger::ErrorLevel);
@@ -206,14 +209,11 @@ void ModelCavalry::clearMount()
 int ModelCavalry::computePoints()
 {
     //compute whole points of the model
-    qDebug() << "on arrive la...";
     int points = stats.getPoints();
     QList<OptionModel>::iterator i;
     for (i = options.begin(); i != options.end(); ++i)
     {
-        qDebug() << "je soupconne que ca chie pas loin d'ici";
         points += i->getNbPoints();
-        qDebug() << "ah en fait nan...";
     }
     points += mount.first().getPoints();
     return points;
