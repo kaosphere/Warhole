@@ -25,6 +25,7 @@ public:
                      const bool& m, const int& mp,
                      const bool& s,
                      const bool& c, const bool& b,
+                     const int& bp,
                      const StatsModel& st,
                      const QMap<QString, RecruitsGroup> g,
                      const int& p,
@@ -66,7 +67,10 @@ public:
     
     int getMusicianPoints() const;
     void setMusicianPoints(const int& value);
-
+	
+	int getBannerPoints() const;
+    void setBannerPoints(const int& value);
+	
     int getStartingCount() const;
     void setStartingCount(int value);
 
@@ -83,6 +87,7 @@ private:
     QString name;
     QMap<QString, RecruitsGroup> groups; //using a map permits not to have doubles
     bool banner;
+    int bannerPoints;
     bool musician;
     int musicianPoints;
     bool champion;

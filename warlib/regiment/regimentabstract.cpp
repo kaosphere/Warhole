@@ -32,6 +32,7 @@ RegimentAbstract::RegimentAbstract(const QString &n,
                                    const bool &s,
                                    const bool &c,
                                    const bool &b,
+                                   const int &bp,
                                    const StatsModel& st,
                                    const QMap<QString, RecruitsGroup> g,
                                    const int& p,
@@ -50,6 +51,7 @@ RegimentAbstract::RegimentAbstract(const QString &n,
     skirmishers = s;
     champion = c;
     banner = b;
+    bannerPoints = bp;
     championStats = st;
     groups = g;
     points = p;
@@ -71,6 +73,7 @@ RegimentAbstract::RegimentAbstract(const RegimentAbstract &u)
     skirmishers = u.skirmishers;
     champion = u.champion;
     banner = u.banner;
+    bannerPoints = u.bannerPoints;
     championStats = u.championStats;
     groups = u.groups;
     points = u.points;
@@ -178,6 +181,16 @@ void RegimentAbstract::setMusicianPoints(const int& value)
 	musicianPoints = value;
 }
 
+int RegimentAbstract::getBannerPoints() const
+{
+	return bannerPoints;
+}
+
+void RegimentAbstract::setBannerPoints(const int& value)
+{
+	bannerPoints = value;
+}
+
 int RegimentAbstract::getStartingCount() const
 {
     return startingCount;
@@ -204,6 +217,10 @@ int RegimentAbstract::computePoints()
 	{
 		points += championStats.getPoints();
 	}
+	if(banner)
+	{
+		points += bannerPoints;
+	}
     return points;
 }
 
@@ -215,6 +232,22 @@ QString RegimentAbstract::displayInfo() const
     info << "******                  Regiment                  ******" << endl;
     info << "********************************************************" << endl;
     info << "Name : " << name << endl;
+    if(musician)
+    {
+		info << "Has a musician for " << musicaianPoints << " points." << endl;
+	}
+	else info << "Has no musician." << endl;
+    if(banner)
+    {
+		info << "Has a banner for " << bannerPoints << " points." << endl;
+	}
+	else info << "Has no banner." << endl;
+	if(champion)
+    {
+		info << "Has a champion : " << endl;
+		info << championStats.displayString();
+	}
+	else info << "Has no musician." << endl;
     info << "Contains " << groups.size() << " groups : " << endl;
     QMap<QString, RecruitsGroup>::const_iterator i = groups.constBegin();
     while (i != groups.constEnd()) {
