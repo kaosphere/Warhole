@@ -293,7 +293,6 @@ void ModelWindow::on_deleteOption_clicked()
 {
     QItemSelectionModel *selection = ui->viewOptions->selectionModel();
     QModelIndex indexElementSelectionne = selection->currentIndex();
-
     options->removeRow(indexElementSelectionne.row());
 }
 
@@ -307,6 +306,11 @@ void ModelWindow::on_pushButtonSave_clicked()
     {
         QMessageBox::warning(this, "Info", "Vous devez obligatoirement choisir une race, un type d'unité et remplir un nom et une image.");
         return;
+    }
+    if(ui->comboUnitType->itemText(ui->comboUnitType->currentIndex()) == CAVALERY_STRING || ui->comboUnitType->itemText(ui->comboUnitType->currentIndex()) == CHARACTER_STRING)
+    {
+    	QMessageBox::warning(this, "Info", "La figure ne peut posseder qu'une monture.");
+    	return;
     }
 
     QString path = "models/" + ui->comboRace->itemText(ui->comboRace->currentIndex()) + "/" + ui->comboUnitType->itemText(ui->comboUnitType->currentIndex()) + "/" + ui->lineEditName->text() +".unit";
@@ -561,7 +565,6 @@ void ModelWindow::save(QString path)
 
     if(crew->rowCount() > 0)
     {
-
         QList<StatsModel> mOrCList;
         for(int i = 0; i< crew->rowCount(); i++)
         {
