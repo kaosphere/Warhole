@@ -6,7 +6,7 @@
 #include <QtWidgets>
 
 #include "modelabstract.h"
-
+#include "Utilities/QLogger/QLogger.h"
 
 class ModelCharacter : public ModelAbstract
 {
@@ -45,21 +45,24 @@ public:
     bool getIsMounted() const;
     void setIsMounted(bool value);
 
-    QList<StatsModel> getMount() const;
-    void setMount(const QList<StatsModel> &value);
-    void addMount(StatsModel m);
-    void clearMount();
+    StatsModel getMount() const;
+    void setMount(const StatsModel &value);
 
     virtual int computePoints();
 
 private:
+    static const QString LOG_ID_INFO;
+	static const QString LOG_ID_TRACE;
+	static const QString LOG_ID_WARN;
+	static const QString LOG_ID_ERR;
+
     QString specialRules;
     bool isALord;
     bool isTheGeneral;
     bool isAMage;
     bool isMounted;
 
-    QList<StatsModel> mount;
+    StatsModel mount;
 
     friend QDataStream & operator << (QDataStream &, const ModelCharacter &);
     friend QDataStream & operator >> (QDataStream &, ModelCharacter &);

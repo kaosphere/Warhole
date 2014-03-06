@@ -1,9 +1,20 @@
 #include "modelcharacter.h"
 
+using namespace QLogger;
+
+const QString ModelCavalry::LOG_ID_INFO = "ModelCharacter_info";
+const QString ModelCavalry::LOG_ID_TRACE = "ModelCharacter_trace";
+const QString ModelCavalry::LOG_ID_WARN = "ModelCharacter_warn";
+const QString ModelCavalry::LOG_ID_ERR = "ModelCharacter_err";
 
 ModelCharacter::ModelCharacter():
     ModelAbstract()
 {
+	QLoggerManager *manager = QLoggerManager::getInstance();
+	manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
+	manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_INFO), QLogger::InfoLevel);
+	manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_ERR), QLogger::ErrorLevel);
+	manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_WARN), QLogger::WarnLevel);
 }
 
 ModelCharacter::ModelCharacter(const QString &n, const QString &move, const QString &weaponS,
@@ -16,6 +27,12 @@ ModelCharacter::ModelCharacter(const QString &n, const QString &move, const QStr
     ModelAbstract(n,move,weaponS,balisticS, strength, toughness, wounds, init, attacks, leadership, save,
                   invSave, points, widthBase, lengthBase, unitP, urlImage, figSup)
 {
+	QLoggerManager *manager = QLoggerManager::getInstance();
+	manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
+	manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_INFO), QLogger::InfoLevel);
+	manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_ERR), QLogger::ErrorLevel);
+	manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_WARN), QLogger::WarnLevel);
+
     specialRules = specRules;
     isALord = lord;
     isTheGeneral = general;
@@ -25,12 +42,16 @@ ModelCharacter::ModelCharacter(const QString &n, const QString &move, const QStr
 
 ModelCharacter::ModelCharacter(const ModelCharacter &copy) : ModelAbstract(copy)
 {
+	QLoggerManager *manager = QLoggerManager::getInstance();
+	manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
+	manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_INFO), QLogger::InfoLevel);
+	manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_ERR), QLogger::ErrorLevel);
+	manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_WARN), QLogger::WarnLevel);
     specialRules = copy.specialRules;
     isALord = copy.isALord;
     isTheGeneral = copy.isTheGeneral;
     isAMage = copy.isAMage;
     isMounted = copy.isMounted;
-
     mount = copy.mount;
 }
 
@@ -68,7 +89,10 @@ ModelCharacter *ModelCharacter::setFromUI(const ParamsfromUImodel *params)
 
     // ModelCharacter params
     tmp->setSpecialRules(params->getSpecRules());
-    tmp->setMount(params->getMorC());
+    if(!params->getMorC().isEmpty())
+    	tmp->setMount(params->getMorC().first());
+    else
+    	QLog_Error(LOG_ID_ERR, "setFromUI : mOrC list is empty, can't load mount.");
     tmp->setIsALord(params->getLord());
     tmp->setIsAMage(params->getMage());
     tmp->setIsTheGeneral(params->getGeneral());
@@ -131,7 +155,7 @@ QString ModelCharacter::displayStringInfo()
 	{
         info << "=============" << endl;
         info << "Mount stats : " << endl;
-        info << mount.first().displayString();
+        info << mount.displayString();
 	}
     info << "====================================================" << endl;
     return s;
@@ -189,66 +213,38 @@ void ModelCharacter::setIsMounted(bool value)
 
 QDataStream & operator <<(QDataStream & out, const ModelCharacter & obj)
 {
-    int nb;
-    nb = obj.mount.size();
-
-    //out << obj.streamOut();
     out << static_cast<ModelAbstract>(obj)
         << obj.specialRules
         << obj.isALord
         << obj.isTheGeneral
         << obj.isAMage
         << obj.isMounted
-        << nb;
+        << obj.mount;
 
-    for(int i = 0 ; i < obj.mount.size() ; i++)
-    {
-        out << obj.mount[i];
-    }
     return out;
 }
 
 QDataStream & operator >>(QDataStream & in, ModelCharacter & obj)
 {
-    int nb;
-
     in >> static_cast<ModelAbstract&>(obj);
     in >> obj.specialRules;
     in >> obj.isALord;
     in >> obj.isTheGeneral;
     in >> obj.isAMage;
     in >> obj.isMounted;
+    in >> obj.mount;
 
-    in >> nb;
-
-    for(int i = 0 ; i < nb ; i++)
-    {
-        StatsModel s;
-        in >> s;
-        obj.addMount(s);
-    }
-    
     return in;
 }
 
-QList<StatsModel> ModelCharacter::getMount() const
+StatsModel ModelCharacter::getMount() const
 {
     return mount;
 }
 
-void ModelCharacter::setMount(const QList<StatsModel> &value)
+void ModelCharacter::setMount(const StatsModel &value)
 {
     mount = value;
-}
-
-void ModelCharacter::addMount(StatsModel m)
-{
-    mount << m;
-}
-
-void ModelCharacter::clearMount()
-{
-    mount.clear();
 }
 
 int ModelCharacter::computePoints()
@@ -260,6 +256,6 @@ int ModelCharacter::computePoints()
     {
         points += i->getNbPoints();
     }
-    points += mount.first().getPoints();
+    points += mount.getPoints();
     return points;
 }
