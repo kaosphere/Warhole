@@ -96,7 +96,14 @@ ModelCavalry *ModelCavalry::setFromUI(const ParamsfromUImodel *params)
 
     // modelcavalery params
     tmp->setSpecialRules(params->getSpecRules());
-    tmp->setMount(params->getMorC());
+    if(!params->getMorC().isEmpty())
+    {
+    	tmp->setMount(params->getMorC().first());
+    }
+    else
+    {
+    	QLog_Error(LOG_ID_ERR, "setFromUI : mOrC is empty, can't set mount.");
+    }
 
     return tmp;
 }
@@ -136,35 +143,19 @@ void ModelCavalry::save(QString path)
 // Overloading of << operator
 QDataStream & operator << (QDataStream & out, const ModelCavalry & obj)
 {
-    int nb;
-    nb = obj.mount.size();
-
     out << static_cast<ModelAbstract>(obj)
         << obj.specialRules
-        << nb;
+        << obj.mount;
 
-    for(int i = 0 ; i < obj.mount.size() ; i++)
-    {
-        out << obj.mount[i];
-    }
     return out;
 }
 
 // Overloading of >> operator
 QDataStream & operator >> (QDataStream & in, ModelCavalry & obj)
 {
-    int nb;
-
     in >> static_cast<ModelAbstract&>(obj);
     in >> obj.specialRules;
-    in >> nb;
-
-    for(int i = 0 ; i < nb ; i++)
-    {
-        StatsModel s;
-        in >> s;
-        obj.addMount(s);
-    }
+    in >> obj.mount;
 
     return in;
 }
@@ -181,29 +172,19 @@ QString ModelCavalry::displayStringInfo()
     info << specialRules << endl;
     info << "====================================================" << endl;
     info << "Mount stats : " << endl;
-    info << mount.first().displayString();
+    info << mount.displayString();
     info << "====================================================" << endl;
     return s;
 }
 
-QList<StatsModel> ModelCavalry::getMount() const
+StatsModel ModelCavalry::getMount() const
 {
     return mount;
 }
 
-void ModelCavalry::setMount(const QList<StatsModel> &value)
+void ModelCavalry::setMount(const StatsModel &value)
 {
     mount = value;
-}
-
-void ModelCavalry::addMount(StatsModel m)
-{
-    mount << m;
-}
-
-void ModelCavalry::clearMount()
-{
-    mount.clear();
 }
 
 int ModelCavalry::computePoints()

@@ -33,8 +33,8 @@ public:
     
     virtual QString displayStringInfo();
 
-    QList<StatsModel> getMount() const;
-    void setMount(const QList<StatsModel> &value);
+    StatsModel getMount() const;
+    void setMount(const StatsModel &value);
 
     void addMount(StatsModel m);
     void clearMount();
@@ -48,7 +48,7 @@ private:
     static const QString LOG_ID_ERR;
 
     QString specialRules;
-    QList<StatsModel> mount;
+    StatsModel mount;
 
     //ModelAbstract* mount;
     friend QDataStream & operator << (QDataStream &, const ModelCavalry &);
