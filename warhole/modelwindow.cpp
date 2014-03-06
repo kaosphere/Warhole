@@ -23,7 +23,8 @@ ModelWindow::ModelWindow(QWidget *parent) :
     crew = new QStandardItemModel();
 
     QStringList modelList;
-    modelList << CAVALERY_STRING << CHARACTER_STRING << CHARRIOT_STRING << INFANTERY_STRING << MONSTER_STRING << WARMACHINE_STRING;
+    modelList << CAVALERY_STRING << CHARACTER_STRING << CHARRIOT_STRING <<
+    		     INFANTERY_STRING << MONSTER_STRING << WARMACHINE_STRING;
     ui->comboUnitType->addItems(modelList);
 
     ui->viewOptions->setModel(options);
@@ -56,7 +57,8 @@ ModelWindow::ModelWindow(QString f, QWidget *parent) :
     crew = new QStandardItemModel();
 
     QStringList modelList;
-    modelList << CAVALERY_STRING << CHARACTER_STRING << CHARRIOT_STRING << INFANTERY_STRING << MONSTER_STRING << WARMACHINE_STRING;
+    modelList << CAVALERY_STRING << CHARACTER_STRING << CHARRIOT_STRING <<
+    		     INFANTERY_STRING << MONSTER_STRING << WARMACHINE_STRING;
     ui->comboUnitType->addItems(modelList);
 
     ui->viewOptions->setModel(options);
@@ -243,7 +245,8 @@ void ModelWindow::on_toolButtonImage_pressed()
 {
     QString fileName;
 
-    fileName = QFileDialog::getOpenFileName(this, tr("Open Image"), ".", tr("Image Files (*.png *.jpg *.bmp)"));
+    fileName = QFileDialog::getOpenFileName(this, tr("Open Image"),
+    			".", tr("Image Files (*.png *.jpg *.bmp)"));
     ui->lineEditImage->setText(fileName);
 
     if(image->load(fileName))
@@ -302,24 +305,33 @@ void ModelWindow::on_pushButtonSave_clicked()
     //Create a Model depending on the type of model chosen
     //begin to check if everything is ok
 
-    if(ui->lineEditName->text().isEmpty() || ui->lineEditImage->text().isEmpty() || ui->comboRace->currentIndex() == 0 || ui->comboUnitType->currentIndex() == 0 )
+    if(ui->lineEditName->text().isEmpty() ||
+       ui->lineEditImage->text().isEmpty() ||
+       ui->comboRace->currentIndex() == 0 ||
+       ui->comboUnitType->currentIndex() == 0 )
     {
-        QMessageBox::warning(this, "Info", "Vous devez obligatoirement choisir une race, un type d'unité et remplir un nom et une image.");
+        QMessageBox::warning(this, "Info",
+        		"Vous devez obligatoirement choisir une race, un type d'unité et remplir un nom et une image.");
         return;
     }
-    if(ui->comboUnitType->itemText(ui->comboUnitType->currentIndex()) == CAVALERY_STRING || ui->comboUnitType->itemText(ui->comboUnitType->currentIndex()) == CHARACTER_STRING)
+    if(ui->comboUnitType->itemText(ui->comboUnitType->currentIndex()) == CAVALERY_STRING ||
+       ui->comboUnitType->itemText(ui->comboUnitType->currentIndex()) == CHARACTER_STRING)
     {
     	QMessageBox::warning(this, "Info", "La figure ne peut posseder qu'une monture.");
     	return;
     }
 
-    QString path = "models/" + ui->comboRace->itemText(ui->comboRace->currentIndex()) + "/" + ui->comboUnitType->itemText(ui->comboUnitType->currentIndex()) + "/" + ui->lineEditName->text() +".unit";
+    QString path = "models/" + ui->comboRace->itemText(ui->comboRace->currentIndex()) +
+    		"/" + ui->comboUnitType->itemText(ui->comboUnitType->currentIndex()) +
+    		"/" + ui->lineEditName->text() +".unit";
+
     QFile f;
     f.setFileName(path);
 
     if(f.exists())
     {
-        int rep = QMessageBox::question(this,"Ecraser", "La figurine existe déjà, voulez vous l'écraser?", QMessageBox::Yes | QMessageBox::No);
+        int rep = QMessageBox::question(this,"Ecraser",
+        		"La figurine existe déjà, voulez vous l'écraser?", QMessageBox::Yes | QMessageBox::No);
         if (rep == QMessageBox::Yes)
         {
             save(path);
@@ -511,7 +523,8 @@ void ModelWindow::setModelProperties(ParamsfromUImodel *p)
     StatsModel s(ui->lineEditName->text(), ui->lineEditM->text(),ui->lineEditCC->text(),
                  ui->lineEditCT->text(), ui->lineEditF->text(),ui->lineEditE->text(),
                  ui->lineEditPV->text(), ui->lineEditI->text(), ui->lineEditA->text(),
-                 ui->lineEditCdt->text(), ui->lineEditSvg->text(), ui->lineEditSvgInv->text(),ui->spinPoints->value());
+                 ui->lineEditCdt->text(), ui->lineEditSvg->text(), ui->lineEditSvgInv->text(),
+                 ui->spinPoints->value());
     p->setStats(s);
     p->setWidthBase(ui->spinWidth->value());
     p->setLengthBase(ui->spinLength->value());
@@ -654,7 +667,8 @@ void ModelWindow::load(QString path)
 
 void ModelWindow::on_pushButtonLoad_clicked()
 {
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Open Model"), "./models", tr("Model files (*.unit)"));
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open Model"),
+    		"./models", tr("Model files (*.unit)"));
 
     //clean all ui
     ui->comboRace->setCurrentIndex(0);
