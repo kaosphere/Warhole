@@ -36,9 +36,6 @@ public:
     StatsModel getMount() const;
     void setMount(const StatsModel &value);
 
-    void addMount(StatsModel m);
-    void clearMount();
-
     virtual int computePoints();
 
 private:

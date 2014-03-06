@@ -196,6 +196,6 @@ int ModelCavalry::computePoints()
     {
         points += i->getNbPoints();
     }
-    points += mount.first().getPoints();
+    points += mount.getPoints();
     return points;
 }
