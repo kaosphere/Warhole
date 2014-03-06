@@ -24,14 +24,18 @@ QList<int> DiceRoller::rollDiceInt(Dice die, int nbDice)
 
 QString DiceRoller::rollDiceString(Dice die, int nbDice)
 {
-	QList<QString> l;
+	QStringList l;
 	for(int i = 0; i < nbDice; ++i)
 	{
-		l.append(QString::number(computeDiceOutput(die)));
+		l << QString::number(computeDiceOutput(die));
 	}
-	QString out = "Launched " + QString::number(nbDice) + " dice : ";
-	
-	return out;
+	QString str;
+	QTextStream info(&str);
+	info << "Launched " << QString::number(nbDice) << " dice : ";
+	for (int i = 0; i < l.size(); ++i)
+          info << l.at(i).toLocal8Bit().constData() << ", ";
+    out << endl;
+	return str;
 }
 
 int DiceRoller::computeDiceOutput(Dice d)

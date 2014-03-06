@@ -4,7 +4,7 @@
 #include "Utilities/QLogger/QLogger.h"
 
 #include <QList>
-#include <QString>
+#include <QStringList>
 #include <QPair>
 #include <time.h>
 #include <stdlib.h>
