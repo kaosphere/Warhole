@@ -317,8 +317,11 @@ void ModelWindow::on_pushButtonSave_clicked()
     if(ui->comboUnitType->itemText(ui->comboUnitType->currentIndex()) == CAVALERY_STRING ||
        ui->comboUnitType->itemText(ui->comboUnitType->currentIndex()) == CHARACTER_STRING)
     {
-    	QMessageBox::warning(this, "Info", "La figure ne peut posseder qu'une monture.");
-    	return;
+        if(crew->rowCount() > 1)
+        {
+            QMessageBox::warning(this, "Info", "La figurine doit posséder une monture unique.");
+            return;
+        }
     }
 
     QString path = "models/" + ui->comboRace->itemText(ui->comboRace->currentIndex()) +
@@ -401,24 +404,21 @@ void ModelWindow::fillUI(ModelAbstract* m, QString path)
     {
         ModelCavalry* cav = dynamic_cast<ModelCavalry*>(m);
         if (cav){
-            for(int i = 0 ; i < cav->getMount().size() ; i++)
-            {
-                QList<QStandardItem *> newCrew;
-                newCrew<<new QStandardItem(cav->getMount()[i].getName())
-                        <<new QStandardItem(QString::number(cav->getMount()[i].getPoints()))
-                        <<new QStandardItem(cav->getMount()[i].getM())
-                        <<new QStandardItem(cav->getMount()[i].getWs())
-                        <<new QStandardItem(cav->getMount()[i].getBs())
-                        <<new QStandardItem(cav->getMount()[i].getS())
-                        <<new QStandardItem(cav->getMount()[i].getT())
-                        <<new QStandardItem(cav->getMount()[i].getW())
-                        <<new QStandardItem(cav->getMount()[i].getI())
-                        <<new QStandardItem(cav->getMount()[i].getA())
-                        <<new QStandardItem(cav->getMount()[i].getLd())
-                        <<new QStandardItem(cav->getMount()[i].getSvg())
-                        <<new QStandardItem(cav->getMount()[i].getSvgInv());
-                crew->appendRow(newCrew);
-            }
+            QList<QStandardItem *> newCrew;
+            newCrew<<new QStandardItem(cav->getMount().getName())
+                    <<new QStandardItem(QString::number(cav->getMount().getPoints()))
+                    <<new QStandardItem(cav->getMount().getM())
+                    <<new QStandardItem(cav->getMount().getWs())
+                    <<new QStandardItem(cav->getMount().getBs())
+                    <<new QStandardItem(cav->getMount().getS())
+                    <<new QStandardItem(cav->getMount().getT())
+                    <<new QStandardItem(cav->getMount().getW())
+                    <<new QStandardItem(cav->getMount().getI())
+                    <<new QStandardItem(cav->getMount().getA())
+                    <<new QStandardItem(cav->getMount().getLd())
+                    <<new QStandardItem(cav->getMount().getSvg())
+                    <<new QStandardItem(cav->getMount().getSvgInv());
+            crew->appendRow(newCrew);
             ui->textEdit->append(cav->getSpecialRules());
         }
         else
@@ -429,24 +429,22 @@ void ModelWindow::fillUI(ModelAbstract* m, QString path)
         ModelCharacter * ch = dynamic_cast<ModelCharacter*>(m);
         if (ch)
         {
-            for(int i = 0 ; i < ch->getMount().size() ; i++)
-            {
-                QList<QStandardItem *> newCrew;
-                newCrew<<new QStandardItem(ch->getMount()[i].getName())
-                        <<new QStandardItem(QString::number(ch->getMount()[i].getPoints()))
-                        <<new QStandardItem(ch->getMount()[i].getM())
-                        <<new QStandardItem(ch->getMount()[i].getWs())
-                        <<new QStandardItem(ch->getMount()[i].getBs())
-                        <<new QStandardItem(ch->getMount()[i].getS())
-                        <<new QStandardItem(ch->getMount()[i].getT())
-                        <<new QStandardItem(ch->getMount()[i].getW())
-                        <<new QStandardItem(ch->getMount()[i].getI())
-                        <<new QStandardItem(ch->getMount()[i].getA())
-                        <<new QStandardItem(ch->getMount()[i].getLd())
-                        <<new QStandardItem(ch->getMount()[i].getSvg())
-                        <<new QStandardItem(ch->getMount()[i].getSvgInv());
-                crew->appendRow(newCrew);
-            }
+            QList<QStandardItem *> newCrew;
+            newCrew<<new QStandardItem(ch->getMount().getName())
+                    <<new QStandardItem(QString::number(ch->getMount().getPoints()))
+                    <<new QStandardItem(ch->getMount().getM())
+                    <<new QStandardItem(ch->getMount().getWs())
+                    <<new QStandardItem(ch->getMount().getBs())
+                    <<new QStandardItem(ch->getMount().getS())
+                    <<new QStandardItem(ch->getMount().getT())
+                    <<new QStandardItem(ch->getMount().getW())
+                    <<new QStandardItem(ch->getMount().getI())
+                    <<new QStandardItem(ch->getMount().getA())
+                    <<new QStandardItem(ch->getMount().getLd())
+                    <<new QStandardItem(ch->getMount().getSvg())
+                    <<new QStandardItem(ch->getMount().getSvgInv());
+            crew->appendRow(newCrew);
+
             ui->textEdit->append(ch->getSpecialRules());
             ui->checkLord->setChecked(ch->getIsALord());
             ui->checkMage->setChecked(ch->getIsAMage());
@@ -702,7 +700,23 @@ void ModelWindow::on_pushButtonAdd_clicked()
 {
     bool ok;
     ui->lineEditPts2->text().toUInt(&ok);
-
+    if(ui->comboUnitType->itemText(ui->comboUnitType->currentIndex()) == CAVALERY_STRING ||
+       ui->comboUnitType->itemText(ui->comboUnitType->currentIndex()) == CHARACTER_STRING)
+    {
+        if(crew->rowCount()!=0)
+        {
+            int rep = QMessageBox::question(this,"Monture",
+                    "Le personnage, ou le cavalier ne peut avoir qu'une seule monture. Voulez-vous remplacer la monture actuelle ?", QMessageBox::Yes | QMessageBox::No);
+            if (rep == QMessageBox::No)
+            {
+                ok = false;
+            }
+            else if(rep == QMessageBox::Yes)
+            {
+                crew->clear();
+            }
+        }
+    }
     if(ok)
     {
         QList<QStandardItem *> newStat;
