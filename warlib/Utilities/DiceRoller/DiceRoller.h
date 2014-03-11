@@ -8,6 +8,7 @@
 #include <QPair>
 #include <time.h>
 #include <stdlib.h>
+#include <QTextStream>
 
 class DiceRoller
 {

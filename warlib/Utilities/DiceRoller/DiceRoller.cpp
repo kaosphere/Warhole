@@ -34,7 +34,7 @@ QString DiceRoller::rollDiceString(Dice die, int nbDice)
 	info << "Launched " << QString::number(nbDice) << " dice : ";
 	for (int i = 0; i < l.size(); ++i)
           info << l.at(i).toLocal8Bit().constData() << ", ";
-    out << endl;
+    info << endl;
 	return str;
 }
 

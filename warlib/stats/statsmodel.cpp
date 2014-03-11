@@ -122,7 +122,7 @@ QDataStream & operator >> (QDataStream & in, StatsModel & obj)
     return in;
 }
 
-QString StatsModel::displayString()
+QString StatsModel::displayString() const
 {
     QString str;
     QTextStream info(&str);

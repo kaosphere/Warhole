@@ -234,7 +234,7 @@ QString RegimentAbstract::displayInfo() const
     info << "Name : " << name << endl;
     if(musician)
     {
-		info << "Has a musician for " << musicaianPoints << " points." << endl;
+        info << "Has a musician for " << musicianPoints << " points." << endl;
 	}
 	else info << "Has no musician." << endl;
     if(banner)

@@ -2,10 +2,10 @@
 
 using namespace QLogger;
 
-const QString ModelCavalry::LOG_ID_INFO = "ModelCharacter_info";
-const QString ModelCavalry::LOG_ID_TRACE = "ModelCharacter_trace";
-const QString ModelCavalry::LOG_ID_WARN = "ModelCharacter_warn";
-const QString ModelCavalry::LOG_ID_ERR = "ModelCharacter_err";
+const QString ModelCharacter::LOG_ID_INFO = "ModelCharacter_info";
+const QString ModelCharacter::LOG_ID_TRACE = "ModelCharacter_trace";
+const QString ModelCharacter::LOG_ID_WARN = "ModelCharacter_warn";
+const QString ModelCharacter::LOG_ID_ERR = "ModelCharacter_err";
 
 ModelCharacter::ModelCharacter():
     ModelAbstract()

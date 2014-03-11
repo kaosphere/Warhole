@@ -23,7 +23,7 @@ public:
 
     bool operator==(const StatsModel&);
 
-    QString displayString();
+    QString displayString() const;
 
     QString getName() const;
     void setName(const QString &value);
