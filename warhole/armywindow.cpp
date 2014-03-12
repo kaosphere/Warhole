@@ -188,7 +188,7 @@ void ArmyWindow::on_addRegButton_clicked()
     QString modelName;
     int sp = 0;
 
-    QMap<QString, RecruitsGroup> groupMap;
+    QList<RecruitsGroup> group;
     for(int i = 0; i< models->rowCount(); i++)
     {
         RecruitsGroup o;
@@ -214,9 +214,9 @@ void ArmyWindow::on_addRegButton_clicked()
         }
         o.setCasualties(0);
         o.loadPath();
-        groupMap.insert(modelName,o);
+        group.append(o);
     }
-    ra.setGroups(groupMap);
+    ra.setGroups(group);
     ra.setBanner(ui->checkBoxBanner->isChecked());
     ra.setChampion(ui->checkBoxChampion->isChecked());
     ra.setSkirmishers(ui->checkBoxSkirmish->isChecked());
