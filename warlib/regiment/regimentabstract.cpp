@@ -34,7 +34,7 @@ RegimentAbstract::RegimentAbstract(const QString &n,
                                    const bool &b,
                                    const int &bp,
                                    const StatsModel& st,
-                                   const QMap<QString, RecruitsGroup> g,
+                                   const QList<RecruitsGroup> g,
                                    const int& p,
                                    const int& sc)
 {
@@ -121,24 +121,25 @@ void RegimentAbstract::setName(const QString &value)
     name = value;
 }
 
-QMap<QString, RecruitsGroup> RegimentAbstract::getGroups() const
+QList<RecruitsGroup> RegimentAbstract::getGroups() const
 {
     return groups;
 }
 
-void RegimentAbstract::setGroups(const QMap<QString, RecruitsGroup> &value)
+void RegimentAbstract::setGroups(const QList<RecruitsGroup> &value)
 {
     groups = value;
 }
 
 void RegimentAbstract::addGroup(const RecruitsGroup& r)
 {
-	groups.insert(r.getModel()->getStats().getName(), r);
+	//TODO : Check if there is already a group with the same model before inserting it
+	groups.append(r);
 }
 
 void RegimentAbstract::removeGroup(const RecruitsGroup& r)
 {
-    groups.remove(r.getModel()->getStats().getName());
+    groups.removeOne(r);
 }
 
 bool RegimentAbstract::getBanner() const
@@ -249,13 +250,13 @@ QString RegimentAbstract::displayInfo() const
 	}
 	else info << "Has no musician." << endl;
     info << "Contains " << groups.size() << " groups : " << endl;
-    QMap<QString, RecruitsGroup>::const_iterator i = groups.constBegin();
-    while (i != groups.constEnd()) {
+    QList<RecruitsGroup>::iterator i;
+    for(i = groups.begin(); i < groups.end() ; ++i)
+	{
         info << "*******************************************************" << endl;
         info << i->getNb() << " Number of models in the group :" << endl;
         info << i->getModel()->displayStringInfo() << endl;
         info << i->getPath() << endl;
-        ++i;
     }
     info << "********************************************************" << endl;
     info << "********************************************************" << endl;
@@ -274,10 +275,10 @@ QDataStream &operator <<(QDataStream & out, const RegimentAbstract & obj)
         << obj.startingCount
         << obj.groups.size();
 
-    QMap<QString, RecruitsGroup>::const_iterator i = obj.groups.constBegin();
-    while (i != obj.groups.constEnd()) {
+    QList<RecruitsGroup>::iterator i;
+    for(i = groups.begin(); i < groups.end() ; ++i)
+	{
 		out << i.value();
-		++i;
 	}
     return out;
 }

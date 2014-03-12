@@ -38,8 +38,8 @@ public:
     bool getBanner() const;
     void setBanner(bool value);
 
-    QMap<QString, RecruitsGroup> getGroups() const;
-    void setGroups(const QMap<QString, RecruitsGroup> &value);
+    QList<RecruitsGroup> getGroups() const;
+    void setGroups(const QList<RecruitsGroup> &value);
     void addGroup(const RecruitsGroup& r);
     void removeGroup(const RecruitsGroup& r);
 
@@ -85,7 +85,7 @@ private:
     static const QString LOG_ID_ERR;
 
     QString name;
-    QMap<QString, RecruitsGroup> groups; //using a map permits not to have doubles
+    QList<RecruitsGroup> groups; //using a map permits not to have doubles
     bool banner;
     int bannerPoints;
     bool musician;
