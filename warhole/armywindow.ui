@@ -193,7 +193,7 @@
               </font>
              </property>
              <property name="text">
-              <string>Régiment : </string>
+              <string>5 - Construisez un régiment : </string>
              </property>
             </widget>
            </item>
@@ -258,7 +258,7 @@
                 </font>
                </property>
                <property name="text">
-                <string>Nom du régiment</string>
+                <string>6 - Nom du régiment</string>
                </property>
               </widget>
              </item>
