@@ -36,6 +36,8 @@ private slots:
     void on_addGroupButton_clicked();
     void on_addRegButton_clicked();
 
+    void on_removeRegButton_clicked();
+
 private:
     Ui::ArmyWindow *ui;
     QDirModel *model;
@@ -45,7 +47,6 @@ private:
     QStandardItemModel* options;
     QStandardItemModel* reg;
     QStandardItemModel* models;
-    QList<RegimentAbstract*> regiments;
     QModelIndex selectedModel;
     QString currentSelectedPath;
     Army currentArmy;

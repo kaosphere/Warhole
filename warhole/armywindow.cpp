@@ -188,53 +188,75 @@ void ArmyWindow::on_addRegButton_clicked()
     QString modelName;
     int sp = 0;
 
-    QList<RecruitsGroup> group;
-    for(int i = 0; i< models->rowCount(); i++)
+    if(!models->rowCount())
     {
-        RecruitsGroup o;
-        for(int j = 0; j < models->columnCount(); j++)
-        {
-            QStandardItem* item = models->item(i,j);
-            switch(j)
-            {
-                case 0:
-                    o.setNb(item->text().toUInt());
-                    qDebug() << "nombre dans le groupe : " << item->text().toUInt();
-                    sp += o.getNb();
-                    break;
-                case 1:
-                    modelName = item->text();
-                    break;
-                case 3:
-                    o.setPath(item->text());
-                    break;
-                default:
-                    break;
-            }
-        }
-        o.setCasualties(0);
-        o.loadPath();
-        group.append(o);
+        QMessageBox::warning(this, "Info", "Le régiment est vide, veuillez ajouter des modèles.");
     }
-    ra.setGroups(group);
-    ra.setBanner(ui->checkBoxBanner->isChecked());
-    ra.setChampion(ui->checkBoxChampion->isChecked());
-    ra.setSkirmishers(ui->checkBoxSkirmish->isChecked());
-    ra.setStartingCount(sp);
-    qDebug() << "on se rend tu fucking jusque la ??";
-    ra.setName(ui->regName->text());
-    qDebug() << "test a la con";
-    qDebug() << ra.displayInfo();
+    else
+    {
+        QList<RecruitsGroup> group;
+        for(int i = 0; i< models->rowCount(); i++)
+        {
+            RecruitsGroup o;
+            for(int j = 0; j < models->columnCount(); j++)
+            {
+                QStandardItem* item = models->item(i,j);
+                switch(j)
+                {
+                    case 0:
+                        o.setNb(item->text().toUInt());
+                        qDebug() << "nombre dans le groupe : " << item->text().toUInt();
+                        sp += o.getNb();
+                        break;
+                    case 1:
+                        modelName = item->text();
+                        break;
+                    case 3:
+                        o.setPath(item->text());
+                        break;
+                    default:
+                        break;
+                }
+            }
+            o.setCasualties(0);
+            o.loadPath();
+            group.append(o);
+        }
+        ra.setGroups(group);
+        ra.setBanner(ui->checkBoxBanner->isChecked());
+        ra.setChampion(ui->checkBoxChampion->isChecked());
+        ra.setSkirmishers(ui->checkBoxSkirmish->isChecked());
+        ra.setStartingCount(sp);
+        ra.setName(ui->regName->text());
 
-    currentArmy.addUnit(ra);
+        currentArmy.addUnit(ra);
 
-    QList<QStandardItem *> newRegiment;
-    newRegiment<<new QStandardItem(QString::number(ra.getStartingCount()))
-            <<new QStandardItem(ra.getName())
-            <<new QStandardItem(QString::number(ra.computePoints()));
-    reg->appendRow(newRegiment);
+        QList<QStandardItem *> newRegiment;
+        newRegiment<<new QStandardItem(QString::number(ra.getStartingCount()))
+                <<new QStandardItem(ra.getName())
+                <<new QStandardItem(QString::number(ra.computePoints()));
+        reg->appendRow(newRegiment);
 
-    models->clear();
-    ui->regName->clear();
-    clearRegimentDisplay();
+        models->clear();
+        ui->regName->clear();
+        clearRegimentDisplay();
+    }
+}
+
+void ArmyWindow::on_removeRegButton_clicked()
+{
+    bool ok;
+    int rep = QMessageBox::question(this,"Monture",
+                                    "Voulez-vous supprimer le régiment de l'armée ?",
+                                    QMessageBox::Yes | QMessageBox::No);
+    if (rep == QMessageBox::No)
+    {
+        ok = false;
+    }
+    else if(rep == QMessageBox::Yes)
+    {
+        QItemSelectionModel *selection = ui->armyView->selectionModel();
+        QModelIndex indexElementSelectionne = selection->currentIndex();
+        reg->removeRow(indexElementSelectionne.row());
+    }
 }
