@@ -1,6 +1,10 @@
 #ifndef REGIMENTABSTRACT_H
 #define REGIMENTABSTRACT_H
 
+#include <QObject>
+#include <QtCore>
+#include <QtWidgets>
+
 #include "model/modelabstract.h"
 #include "model/modelcavalry.h"
 #include "model/modelcharacter.h"
@@ -13,8 +17,6 @@
 #include "recruitsgroup.h"
 #include "Utilities/QLogger/QLogger.h"
 
-#include <QString>
-#include <QList>
 
 
 class RegimentAbstract
@@ -27,7 +29,7 @@ public:
                      const bool& c, const bool& b,
                      const int& bp,
                      const StatsModel& st,
-                     const QMap<QString, RecruitsGroup> g,
+                     const QList<RecruitsGroup> g,
                      const int& p,
                      const int& sc);
     RegimentAbstract(const RegimentAbstract& u);
