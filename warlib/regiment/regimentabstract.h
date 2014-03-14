@@ -79,6 +79,7 @@ public:
     int computePoints();
 
     QString displayInfo() const;
+    QString displayShortInfo() const;
 
 private:
 	static const QString LOG_ID_INFO;

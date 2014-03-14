@@ -225,6 +225,29 @@ int RegimentAbstract::computePoints()
     return points;
 }
 
+
+QString RegimentAbstract::displayShortInfo() const
+{
+    QString s;
+    QTextStream info(&s);
+    info << "********************************************************" << endl;
+    info << "******                  Regiment                  ******" << endl;
+    info << "********************************************************" << endl;
+    info << "Name : " << name << endl;
+
+    info << "Contains " << groups.size() << " groups : " << endl;
+    for(int i = 0; i < groups.size() ; ++i)
+	{
+        info << "*******************************************************" << endl;
+        info << groups[i].getNb() << " Number of models in the group :" << endl;
+        info << groups[i].getModel()->getStats().getName() << endl;
+        info << groups[i].getPath() << endl;
+    }
+    info << "********************************************************" << endl;
+    info << "********************************************************" << endl;
+    return s;
+}
+
 QString RegimentAbstract::displayInfo() const
 {
     QString s;

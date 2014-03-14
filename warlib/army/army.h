@@ -28,6 +28,9 @@ public:
 
     friend QDataStream & operator << (QDataStream &, const Army &);
     friend QDataStream & operator >> (QDataStream &, Army &);
+    
+    QString displayInfo() const;
+    QString displayShortInfo() const;
 
 private:
     QString name;
