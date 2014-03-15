@@ -21,7 +21,7 @@ void Army::setName(const QString &value)
 }
 
 
-QList<RegimentAbstract> Army::getUnits() const
+QList<RegimentAbstract>& Army::getUnits()
 {
     return units;
 }
@@ -109,7 +109,17 @@ QString Army::displayShortInfo() const
 	}
 	info << "////////////////////////////////////////////////////////" << endl;
 	info << "////////////////////////////////////////////////////////" << endl;
-	return s;
+    return s;
+}
+
+int Army::computePoints()
+{
+    int p = 0;
+    for(int i = 0; i < units.size() ; ++i)
+    {
+        p += units[i].computePoints();
+    }
+    return p;
 }
 
 QString Army::displayInfo() const

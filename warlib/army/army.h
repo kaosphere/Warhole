@@ -15,7 +15,7 @@ public:
     QString getName() const;
     void setName(const QString &value);
 
-    QList<RegimentAbstract> getUnits() const;
+    QList<RegimentAbstract> &getUnits();
     void setUnits(const QList<RegimentAbstract> &value);
     void addUnit(const RegimentAbstract& u);
     void removeUnit(const RegimentAbstract& u);
@@ -31,6 +31,8 @@ public:
     
     QString displayInfo() const;
     QString displayShortInfo() const;
+
+    int computePoints();
 
 private:
     QString name;
