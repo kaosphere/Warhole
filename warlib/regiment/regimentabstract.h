@@ -54,7 +54,7 @@ public:
     bool getSkirmishers() const;
     void setSkirmishers(bool value);
 
-    StatsModel getChampionStats() const;
+    StatsModel& getChampionStats();
     void setChampionStats(const StatsModel &value);
 
     friend QDataStream & operator << (QDataStream &, const RegimentAbstract &);

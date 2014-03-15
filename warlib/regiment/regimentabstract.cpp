@@ -152,7 +152,7 @@ void RegimentAbstract::setBanner(bool value)
     banner = value;
 }
 
-StatsModel RegimentAbstract::getChampionStats() const
+StatsModel &RegimentAbstract::getChampionStats()
 {
     return championStats;
 }
@@ -289,7 +289,9 @@ QDataStream &operator <<(QDataStream & out, const RegimentAbstract & obj)
 {
     out << obj.name
         << obj.banner
+        << obj.bannerPoints
         << obj.musician
+        << obj.musicianPoints
         << obj.champion
         << obj.skirmishers
         << obj.championStats
@@ -310,7 +312,9 @@ QDataStream &operator >>(QDataStream & in, RegimentAbstract & obj)
 
     in >> obj.name;
     in >> obj.banner;
+    in >> obj.bannerPoints;
     in >> obj.musician;
+    in >> obj.musicianPoints;
     in >> obj.champion;
     in >> obj.skirmishers;
     in >> obj.championStats;
