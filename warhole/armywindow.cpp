@@ -1,10 +1,24 @@
 #include "armywindow.h"
 #include "ui_armywindow.h"
 
+using namespace QLogger;
+
+const QString ArmyWindow::LOG_ID_INFO = "ArmyWindow_info";
+const QString ArmyWindow::LOG_ID_TRACE = "ArmyWindow_trace";
+const QString ArmyWindow::LOG_ID_WARN = "ArmyWindow_warm";
+const QString ArmyWindow::LOG_ID_ERR = "ArmyWindow_err";
+
 ArmyWindow::ArmyWindow(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ArmyWindow)
 {
+
+    QLoggerManager *manager = QLoggerManager::getInstance();
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_INFO), QLogger::InfoLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_ERR), QLogger::ErrorLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_WARN), QLogger::WarnLevel);
+
     // Put list of existing races in comboBox
     ui->setupUi(this);
     // get list of existing races
@@ -43,12 +57,71 @@ ArmyWindow::ArmyWindow(QWidget *parent) :
     models = new QStandardItemModel();
     ui->regimentView->setModel(models);
 
+    ui->labelPointsArmy->setText("0");
+    ui->spinBoxPtsBanner->setEnabled(false);
+    ui->spinBoxPtsMusician->setEnabled(false);
+
+    changeRace = true;
+
     setEnableChampionStats(false);
 }
 
-ArmyWindow::ArmyWindow(QString fileName)
+ArmyWindow::ArmyWindow(QString fileName, QWidget *parent) :
+    QWidget(parent),
+    ui(new Ui::ArmyWindow)
 {
+    QLoggerManager *manager = QLoggerManager::getInstance();
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_INFO), QLogger::InfoLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_ERR), QLogger::ErrorLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_WARN), QLogger::WarnLevel);
 
+    // Put list of existing races in comboBox
+    ui->setupUi(this);
+    // get list of existing races
+    QDir* modelDir = new QDir(MODEL_PATH);
+
+    if (modelDir->exists())
+    {
+        existingRaces = modelDir->entryList();
+    }
+
+    if(existingRaces.isEmpty())
+    {
+         QMessageBox::warning(this, "Erreur", "Aucune race existante ; commencez par créer des figurines");
+    }
+
+    existingRaces.removeOne(".");
+    existingRaces.removeOne("..");
+
+    currentSelectedPath = "";
+
+    ui->comboBoxRace->addItems(existingRaces);
+
+    // Associate model to view
+    model = new QDirModel();
+
+
+    options = new QStandardItemModel();
+
+    ui->viewOptions->setModel(options);
+    ui->viewOptions->header()->hide();
+
+    reg = new QStandardItemModel();
+
+    ui->armyView->setModel(reg);
+
+    models = new QStandardItemModel();
+    ui->regimentView->setModel(models);
+
+    ui->labelPointsArmy->setText("0");
+    ui->spinBoxPtsBanner->setEnabled(false);
+    ui->spinBoxPtsMusician->setEnabled(false);
+
+    changeRace = false;
+
+    setEnableChampionStats(false);
+    load(fileName);
 }
 
 ArmyWindow::~ArmyWindow()
@@ -61,32 +134,60 @@ ArmyWindow::~ArmyWindow()
 
 void ArmyWindow::on_comboBoxRace_currentIndexChanged(const QString &raceDir)
 {
-    // get list of existing models
-    QDir* modelDir = new QDir(MODEL_PATH + "/" + raceDir);
-    QStringList existingModels;
-    if (modelDir->exists())
+    bool updateDir = true;
+    if(reg->rowCount() > 0)
     {
-        existingModels = modelDir->entryList();
+        if(!changeRace)
+        {
+            changeRace = true;
+            updateDir = true;
+        }
+        else
+        {
+            int rep = QMessageBox::question(this,"Race",
+                                        "Une armée ne peut se composer que d'une seule race. Voulez-vous changer de race ? (Attention, cela supprimera les régiments déjà ajoutés.)",
+                                        QMessageBox::Yes | QMessageBox::No);
+            if (rep == QMessageBox::No)
+            {
+                QString s = currentArmy.getUnits().first().getGroups().first().getPath().section('/',-3,-3);
+                changeRace = false;
+                ui->comboBoxRace->setCurrentText(s);
+                updateDir = false;
+            }
+            else if(rep == QMessageBox::Yes)
+            {
+                currentArmy.getUnits().clear();
+                updateRegModel();
+            }
+        }
     }
-
-    if(existingModels.isEmpty())
+    if(changeRace && updateDir)
     {
-         QMessageBox::warning(this, "Erreur", "Aucune race existante ; commencez par créer des figurines");
+        // get list of existing models
+        QDir* modelDir = new QDir(MODEL_PATH + "/" + raceDir);
+        QStringList existingModels;
+        if (modelDir->exists())
+        {
+            existingModels = modelDir->entryList();
+        }
+
+        if(existingModels.isEmpty())
+        {
+             QMessageBox::warning(this, "Erreur", "Aucune race existante ; commencez par créer des figurines");
+        }
+
+        existingModels.removeOne(".");
+        existingModels.removeOne("..");
+
+        int i;
+        for (i=4;i==model->columnCount();i++)
+        {
+             ui->treeViewExistingModels->hideColumn(i);
+        }
+
+        ui->treeViewExistingModels->setModel(model);
+        ui->treeViewExistingModels->setRootIndex(model->index(MODEL_PATH + "/" + raceDir));
     }
-
-    existingModels.removeOne(".");
-    existingModels.removeOne("..");
-
-    qDebug() << existingModels;
-
-    int i;
-    for (i=4;i==model->columnCount();i++)
-    {
-         ui->treeViewExistingModels->hideColumn(i);
-    }
-
-    ui->treeViewExistingModels->setModel(model);
-    ui->treeViewExistingModels->setRootIndex(model->index(MODEL_PATH + "/" + raceDir));
 }
 
 
@@ -182,6 +283,25 @@ void ArmyWindow::on_addGroupButton_clicked()
     }
 }
 
+void ArmyWindow::updateGlobalArmyPoints()
+{
+    ui->labelPointsArmy->setText(QString::number(currentArmy.computePoints()));
+}
+
+void ArmyWindow::updateRegModel()
+{
+    reg->clear();
+    for(int i=0; i<currentArmy.getUnits().size(); ++i)
+    {
+        QList<QStandardItem *> newRegiment;
+        newRegiment<<new QStandardItem(QString::number(currentArmy.getUnits()[i].getStartingCount()))
+                <<new QStandardItem(currentArmy.getUnits()[i].getName())
+                <<new QStandardItem(QString::number(currentArmy.getUnits()[i].computePoints()));
+        reg->appendRow(newRegiment);
+    }
+    updateGlobalArmyPoints();
+}
+
 void ArmyWindow::on_addRegButton_clicked()
 {
     RegimentAbstract ra;
@@ -224,18 +344,35 @@ void ArmyWindow::on_addRegButton_clicked()
         }
         ra.setGroups(group);
         ra.setBanner(ui->checkBoxBanner->isChecked());
+        if(ui->checkBoxBanner->isChecked())
+            ra.setBannerPoints(ui->spinBoxPtsBanner->value());
         ra.setChampion(ui->checkBoxChampion->isChecked());
+        ra.setMusician(ui->checkBoxMusician->isChecked());
+        if(ui->checkBoxMusician->isChecked())
+            ra.setMusicianPoints(ui->spinBoxPtsMusician->value());
+        if(ui->checkBoxChampion->isChecked())
+        {
+            // Load champion stats
+            ra.getChampionStats().setPoints(ui->spinPoints->value());
+            ra.getChampionStats().setM(ui->lineEditM->text());
+            ra.getChampionStats().setWs(ui->lineEditCC->text());
+            ra.getChampionStats().setBs(ui->lineEditCT->text());
+            ra.getChampionStats().setS(ui->lineEditF->text());
+            ra.getChampionStats().setT(ui->lineEditE->text());
+            ra.getChampionStats().setI(ui->lineEditI->text());
+            ra.getChampionStats().setA(ui->lineEditA->text());
+            ra.getChampionStats().setW(ui->lineEditPV->text());
+            ra.getChampionStats().setLd(ui->lineEditCdt->text());
+            ra.getChampionStats().setSvg(ui->lineEditSvg->text());
+            ra.getChampionStats().setSvgInv(ui->lineEditSvgInv->text());
+        }
         ra.setSkirmishers(ui->checkBoxSkirmish->isChecked());
         ra.setStartingCount(sp);
         ra.setName(ui->regName->text());
 
         currentArmy.addUnit(ra);
 
-        QList<QStandardItem *> newRegiment;
-        newRegiment<<new QStandardItem(QString::number(ra.getStartingCount()))
-                <<new QStandardItem(ra.getName())
-                <<new QStandardItem(QString::number(ra.computePoints()));
-        reg->appendRow(newRegiment);
+        updateRegModel();
 
         models->clear();
         ui->regName->clear();
@@ -245,18 +382,181 @@ void ArmyWindow::on_addRegButton_clicked()
 
 void ArmyWindow::on_removeRegButton_clicked()
 {
-    bool ok;
-    int rep = QMessageBox::question(this,"Monture",
-                                    "Voulez-vous supprimer le régiment de l'armée ?",
-                                    QMessageBox::Yes | QMessageBox::No);
-    if (rep == QMessageBox::No)
+    QItemSelectionModel *selection = ui->armyView->selectionModel();
+    QModelIndex indexElementSelectionne = selection->currentIndex();
+    if(indexElementSelectionne.isValid())
     {
-        ok = false;
+        int rep = QMessageBox::question(this,"Monture",
+                                        "Voulez-vous supprimer le régiment de l'armée ?",
+                                        QMessageBox::Yes | QMessageBox::No);
+        if (rep == QMessageBox::No)
+        {
+        }
+        else if(rep == QMessageBox::Yes)
+        {
+            currentArmy.getUnits().removeAt(indexElementSelectionne.row());
+            updateRegModel();
+        }
     }
-    else if(rep == QMessageBox::Yes)
+    else
     {
-        QItemSelectionModel *selection = ui->armyView->selectionModel();
-        QModelIndex indexElementSelectionne = selection->currentIndex();
-        reg->removeRow(indexElementSelectionne.row());
+        QMessageBox::warning(this, "Info", "Veuillez sélectionner un régiment a supprimer.");
     }
+}
+
+void ArmyWindow::loadRegimentInUI(RegimentAbstract r)
+{
+    ui->spinBoxNB->setValue(0);
+    ui->regName->setText(r.getName());
+    ui->checkBoxBanner->setChecked(r.getBanner());
+    ui->checkBoxChampion->setChecked(r.getChampion());
+    ui->checkBoxMusician->setChecked(r.getMusician());
+    if(r.getMusician())
+        ui->spinBoxPtsMusician->setValue(r.getMusicianPoints());
+    if(r.getBanner())
+        ui->spinBoxPtsBanner->setValue(r.getBannerPoints());
+    ui->checkBoxSkirmish->setChecked(r.getSkirmishers());
+
+    for(int i=0; i<r.getGroups().size(); ++i)
+    {
+        //add group in the group list
+        QList<QStandardItem *> newGroup;
+        newGroup<<new QStandardItem(QString::number(r.getGroups()[i].getNb()))
+                <<new QStandardItem(r.getGroups()[i].getModel()->getStats().getName())
+                <<new QStandardItem(QString::number(r.getGroups()[i].computePoints()))
+               <<new QStandardItem(r.getGroups()[i].getPath());
+        models->appendRow(newGroup);
+    }
+
+    if(r.getChampion())
+    {
+        ui->lineEditA->setText(r.getChampionStats().getA());
+        ui->lineEditCC->setText(r.getChampionStats().getWs());
+        ui->lineEditCdt->setText(r.getChampionStats().getLd());
+        ui->lineEditCT->setText(r.getChampionStats().getBs());
+        ui->lineEditE->setText(r.getChampionStats().getT());
+        ui->lineEditF->setText(r.getChampionStats().getS());
+        ui->lineEditI->setText(r.getChampionStats().getI());
+        ui->lineEditM->setText(r.getChampionStats().getM());
+        ui->lineEditPV->setText(r.getChampionStats().getW());
+        ui->lineEditSvg->setText(r.getChampionStats().getSvg());
+        ui->lineEditSvgInv->setText(r.getChampionStats().getSvgInv());
+        ui->spinPoints->setValue(r.getChampionStats().getPoints());
+    }
+}
+
+void ArmyWindow::on_editRegButton_clicked()
+{
+    RegimentAbstract ra;
+    QItemSelectionModel *selection = ui->armyView->selectionModel();
+    QModelIndex indexElementSelectionne = selection->currentIndex();
+
+    if(indexElementSelectionne.isValid())
+    {
+        ra = currentArmy.getUnits()[indexElementSelectionne.row()];
+        currentArmy.getUnits().removeAt(indexElementSelectionne.row());
+        updateRegModel();
+
+        loadRegimentInUI(ra);
+    }
+    else
+    {
+        QMessageBox::warning(this, "Info", "Veuillez sélectionner un régiment a éditer.");
+    }
+}
+
+void ArmyWindow::on_checkBoxBanner_toggled(bool checked)
+{
+    ui->spinBoxPtsBanner->setEnabled(checked);
+}
+
+void ArmyWindow::on_checkBoxMusician_toggled(bool checked)
+{
+    ui->spinBoxPtsMusician->setEnabled(checked);
+}
+
+void ArmyWindow::on_pushButtonDuplicate_clicked()
+{
+    RegimentAbstract ra;
+    QItemSelectionModel *selection = ui->armyView->selectionModel();
+    QModelIndex indexElementSelectionne = selection->currentIndex();
+
+    if(indexElementSelectionne.isValid())
+    {
+        ra = currentArmy.getUnits()[indexElementSelectionne.row()];
+        currentArmy.addUnit(ra);
+        updateRegModel();
+    }
+    else
+    {
+        QMessageBox::warning(this, "Info", "Veuillez sélectionner un régiment a dupliquer.");
+    }
+}
+
+void ArmyWindow::on_pushButtonQuit_clicked()
+{
+    this->close();
+    this->deleteLater();
+}
+
+void ArmyWindow::on_pushButtonSave_clicked()
+{
+    if(ui->lineEditName->text().isEmpty() ||
+       reg->rowCount() == 0)
+    {
+        QMessageBox::warning(this, "Info",
+                "Vous devez donner un nom à l'armée et y ajouter des régiments.");
+        return;
+    }
+
+    currentArmy.setName(ui->lineEditName->text());
+
+    QString path = "armies/" + ui->comboBoxRace->itemText(ui->comboBoxRace->currentIndex()) +
+            "/" + ui->lineEditName->text() +".army";
+
+    QFile f;
+    f.setFileName(path);
+
+    if(f.exists())
+    {
+        int rep = QMessageBox::question(this,"Ecraser",
+                                        "Une armée avec le même nom existe déjà, voulez vous l'écraser?",
+                                        QMessageBox::Yes | QMessageBox::No);
+        if (rep == QMessageBox::Yes)
+        {
+            currentArmy.save(path);
+            QMessageBox::information(this, "Info", "Armée sauvegardée avec succès.");
+        }
+        else if (rep == QMessageBox::No)
+        {
+            QMessageBox::critical(this, "Annulation", "Sauvegarde annulée");
+        }
+    }
+    else{
+        currentArmy.save(path);
+        QMessageBox::information(this, "Info", "Armée sauvegardée avec succès.");
+    }
+}
+
+void ArmyWindow::load(QString path)
+{
+    if(!path.isEmpty())
+    {
+        currentArmy.load(path);
+        QLog_Info(LOG_ID_INFO, "Army loaded : ");
+        QLog_Info(LOG_ID_INFO, currentArmy.displayInfo());
+        updateRegModel();
+
+        QString s = path.section('/',-2,-2);
+        ui->comboBoxRace->setCurrentText(s);
+        ui->lineEditName->setText(currentArmy.getName());
+    }
+}
+
+void ArmyWindow::on_pushButtonLoad_clicked()
+{
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open Model"),
+            "./armies", tr("Model files (*.army)"));
+
+    load(fileName);
 }
