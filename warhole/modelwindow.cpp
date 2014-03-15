@@ -349,9 +349,6 @@ void ModelWindow::on_pushButtonSave_clicked()
         save(path);
         QMessageBox::information(this, "Info", "Figurine sauvegardée avec succès.");
     }
-    this->close();
-    this->deleteLater();
-
 }
 
 void ModelWindow::fillUI(ModelAbstract* m, QString path)
@@ -657,10 +654,13 @@ void ModelWindow::save(QString path)
 
 void ModelWindow::load(QString path)
 {
-    QLogger::QLog_Info(LOG_ID_INFO, "Loading model with path : " + path);
-    delete poupik;
-    poupik = fac.createFromFile(path);
-    fillUI(poupik, path);
+    if(!path.isEmpty())
+    {
+        QLogger::QLog_Info(LOG_ID_INFO, "Loading model with path : " + path);
+        delete poupik;
+        poupik = fac.createFromFile(path);
+        fillUI(poupik, path);
+    }
 }
 
 void ModelWindow::on_pushButtonLoad_clicked()
