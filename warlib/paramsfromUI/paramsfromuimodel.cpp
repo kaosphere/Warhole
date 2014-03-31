@@ -2,47 +2,36 @@
 
 ParamsfromUImodel::ParamsfromUImodel()
 {
-    name = "";
-    move = "";
-     weaponS = "";
-     balisticS = "";
-     strength = "";
-     toughness = "";
-     wounds = "";
-     init = "";
-     attacks = "";
-     leadership = "";
-     save = "";
-     invSave = "";
-     points = 0;
-     widthBase = 0;
-     lengthBase = 0;
-     unitP = 0;
-     urlImage = "";
-     figSup = false;
+    points = 0;
+    widthBase = 0;
+    lengthBase = 0;
+    unitP = 0;
+    urlImage = "";
+    figSup = false;
     // warMachine, monster, infantery, charriot, character, cavalery params
-     specRules = "";
+    specRules = "";
     // character params
-     lord = false;
-     general = false;
-     mage = false;
-     mounted = false;
+    lord = false;
+    general = false;
+    mage = false;
+    mounted = false;
+    hasGB = false;
     // monster params
-     hasCrew = false;
+    hasCrew = false;
 }
 
 ParamsfromUImodel::~ParamsfromUImodel()
 {
 }
 
-QString ParamsfromUImodel::getName() const
+bool ParamsfromUImodel::getHasGB() const
 {
-    return name;
+    return hasGB;
 }
 
-void ParamsfromUImodel::setName(const QString &value)
+void ParamsfromUImodel::setHasGB(bool value)
 {
-    name = value;
+    hasGB = value;
 }
 
 QList<OptionModel> ParamsfromUImodel::getOptions() const
@@ -185,116 +174,6 @@ void ParamsfromUImodel::setPoints(int value)
     points = value;
 }
 
-QString ParamsfromUImodel::getInvSave() const
-{
-    return invSave;
-}
-
-void ParamsfromUImodel::setInvSave(const QString &value)
-{
-    invSave = value;
-}
-
-QString ParamsfromUImodel::getSave() const
-{
-    return save;
-}
-
-void ParamsfromUImodel::setSave(const QString &value)
-{
-    save = value;
-}
-
-QString ParamsfromUImodel::getLeadership() const
-{
-    return leadership;
-}
-
-void ParamsfromUImodel::setLeadership(const QString &value)
-{
-    leadership = value;
-}
-
-QString ParamsfromUImodel::getAttacks() const
-{
-    return attacks;
-}
-
-void ParamsfromUImodel::setAttacks(const QString &value)
-{
-    attacks = value;
-}
-
-QString ParamsfromUImodel::getInit() const
-{
-    return init;
-}
-
-void ParamsfromUImodel::setInit(const QString &value)
-{
-    init = value;
-}
-
-QString ParamsfromUImodel::getWounds() const
-{
-    return wounds;
-}
-
-void ParamsfromUImodel::setWounds(const QString &value)
-{
-    wounds = value;
-}
-
-QString ParamsfromUImodel::getToughness() const
-{
-    return toughness;
-}
-
-void ParamsfromUImodel::setToughness(const QString &value)
-{
-    toughness = value;
-}
-
-QString ParamsfromUImodel::getStrength() const
-{
-    return strength;
-}
-
-void ParamsfromUImodel::setStrength(const QString &value)
-{
-    strength = value;
-}
-
-QString ParamsfromUImodel::getBalisticS() const
-{
-    return balisticS;
-}
-
-void ParamsfromUImodel::setBalisticS(const QString &value)
-{
-    balisticS = value;
-}
-
-QString ParamsfromUImodel::getWeaponS() const
-{
-    return weaponS;
-}
-
-void ParamsfromUImodel::setWeaponS(const QString &value)
-{
-    weaponS = value;
-}
-
-QString ParamsfromUImodel::getMove() const
-{
-    return move;
-}
-
-void ParamsfromUImodel::setMove(const QString &value)
-{
-    move = value;
-}
-
 QList<StatsModel> ParamsfromUImodel::getMorC() const
 {
     return mOrC;
@@ -303,4 +182,14 @@ QList<StatsModel> ParamsfromUImodel::getMorC() const
 void ParamsfromUImodel::setMorC(const QList<StatsModel> &value)
 {
     mOrC = value;
+}
+
+ModelType ParamsfromUImodel::getType() const
+{
+    return type;
+}
+
+void ParamsfromUImodel::setType(ModelType value)
+{
+    type = value;
 }

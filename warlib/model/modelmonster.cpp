@@ -6,16 +6,24 @@ ModelMonster::ModelMonster():
 }
 
 ModelMonster::ModelMonster(const QString &n, const QString &move, const QString &weaponS,
-                                 const QString &balisticS, const QString &strength, const QString &toughness,
-                                 const QString &wounds, const QString &init, const QString &attacks,
-                                 const QString &leadership, const QString &save, const QString &invSave, const int points,
-                                 const int &widthBase, const int &lengthBase, const int &unitP, const QString &urlImage,
-                                 bool figSup, const QString &specRules, bool hasCrew) :
+      const QString &balisticS, const QString &strength, const QString &toughness,
+      const QString &wounds, const QString &init, const QString &attacks,
+      const QString &leadership, const QString &save, const QString &invSave, const int points,
+      const int &widthBase, const int &lengthBase, const int &unitP, const QString &urlImage,
+      bool figSup, const QString &specRules, bool hasCrew,const ModelType &t) :
     ModelAbstract(n,move,weaponS,balisticS, strength, toughness, wounds, init, attacks, leadership, save,
                   invSave, points, widthBase, lengthBase, unitP, urlImage, figSup)
 {
+    type = t;
     specialRules = specRules;
     hasACrew = hasCrew;
+}
+
+// Copy constructor
+ModelMonster::ModelMonster(const ModelMonster &copy) : ModelAbstract(copy)
+{
+    specialRules = copy.specialRules;
+    type = copy.type;
 }
 
 ModelMonster::~ModelMonster()
@@ -38,10 +46,9 @@ ModelMonster *ModelMonster::setFromFile(QString path)
 
 ModelMonster *ModelMonster::setFromUI(const ParamsfromUImodel *params)
 {
-    qDebug() << "yay this is setfromUI in ModelMonster !";
-
     ModelMonster* tmp = new ModelMonster(*this);
     // ModelAbstract params
+    tmp->setType(params->getType());
     tmp->setStats(params->getStats());
     tmp->setSquareBaseW(params->getWidthBase());
     tmp->setSquareBaseL(params->getLengthBase());
@@ -64,6 +71,7 @@ void ModelMonster::load(QString path)
     QSettings readFile(path, QSettings::IniFormat);
     temp = readFile.value("ModelMonster", qVariantFromValue(ModelMonster())).value<ModelMonster>();
 
+    type = temp.getType();
     stats = temp.getStats();
     squareBaseW = temp.getSquareBaseW();
     squareBaseL = temp.getSquareBaseL();
@@ -92,7 +100,24 @@ QString ModelMonster::displayStringInfo()
     QString s;
     QTextStream info(&s);
     info << endl << "====================================================" << endl;
-    info << "Model Cavalry : " << endl;
+    info << "Unité ";
+    switch(type)
+    {
+    case 0:
+        info << "Base" << endl;
+        break;
+    case 1:
+        info << "Spciale" << endl;
+        break;
+    case 2:
+        info << "Rare" << endl;
+        break;
+    default:
+        info << "ERROR" << endl;
+        break;
+    }
+    info << endl << "====================================================" << endl;
+    info << "Model Monster : " << endl;
     info << displayBaseInfo();
     info << "====================================================" << endl;
     info << "Special Rules : " << endl;
@@ -115,6 +140,7 @@ void ModelMonster::setSpecialRules(const QString &value)
 QDataStream & operator <<(QDataStream & out, const ModelMonster & obj)
 {
     out << static_cast<ModelAbstract>(obj)
+        << obj.type
         << obj.specialRules
         << obj.hasACrew;
     return out;
@@ -122,7 +148,24 @@ QDataStream & operator <<(QDataStream & out, const ModelMonster & obj)
 
 QDataStream & operator >>(QDataStream & in, ModelMonster & obj)
 {
+    int type;
+
     in >> static_cast<ModelAbstract&>(obj);
+    in >> type;
+    switch(type)
+    {
+    case 0:
+        obj.type = BASE;
+        break;
+    case 1:
+        obj.type = SPECIAL;
+        break;
+    case 2:
+        obj.type = RARE;
+        break;
+    default:
+        break;
+    }
     in >> obj.specialRules;
     in >> obj.hasACrew;
 }
@@ -147,6 +190,17 @@ void ModelMonster::setHasACrew(bool value)
 {
     hasACrew = value;
 }
+
+ModelType ModelMonster::getType() const
+{
+    return type;
+}
+
+void ModelMonster::setType(const ModelType &value)
+{
+    type = value;
+}
+
 
 int ModelMonster::computePoints()
 {

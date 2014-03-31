@@ -9,6 +9,8 @@
 #include "option/optionmodel.h"
 #include "stats/statsmodel.h"
 #include "paramsfromUI/paramsfromuimodel.h"
+#include "defines.h"
+
 
 class ModelAbstract
 {
@@ -67,7 +69,6 @@ public:
     virtual int computePoints();
 
 protected:
-
     StatsModel stats;
     //QList<ModelAbstract *> champion; //list of possible champion
 

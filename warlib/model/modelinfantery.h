@@ -17,7 +17,7 @@ public:
                   const QString &init, const QString &attacks, const QString &leadership,
                   const QString &save, const QString &invSave, const int points, const int &widthBase,
                   const int &lengthBase, const int &unitP, const QString& urlImage , bool figSup,
-                  const QString& specRules);
+                  const QString& specRules,const ModelType &t);
     ModelInfantery(const ModelInfantery &copy);
     virtual ~ModelInfantery();
 
@@ -34,7 +34,11 @@ public:
 
     int computePoints();
 
+    ModelType getType() const;
+    void setType(const ModelType &value);
+
 private:
+    ModelType type;
     QString specialRules;
 
     friend QDataStream & operator << (QDataStream &, const ModelInfantery &);

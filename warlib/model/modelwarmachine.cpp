@@ -10,11 +10,18 @@ ModelWarMachine::ModelWarMachine(const QString &n, const QString &move, const QS
                                  const QString &wounds, const QString &init, const QString &attacks,
                                  const QString &leadership, const QString &save, const QString &invSave, const int points,
                                  const int &widthBase, const int &lengthBase, const int &unitP, const QString &urlImage,
-                                 bool figSup, const QString &specRules) :
+                                 bool figSup, const QString &specRules, const ModelType &t) :
     ModelAbstract(n,move,weaponS,balisticS, strength, toughness, wounds, init, attacks, leadership, save,
-                  invSave, points, widthBase, lengthBase, unitP, urlImage, figSup)
+        invSave, points, widthBase, lengthBase, unitP, urlImage, figSup)
 {
+    type = t;
     specialRules = specRules;
+}
+
+ModelWarMachine::ModelWarMachine(const ModelWarMachine &copy) : ModelAbstract(copy)
+{
+    specialRules = copy.specialRules;
+    type = copy.type;
 }
 
 ModelWarMachine::~ModelWarMachine()
@@ -40,6 +47,7 @@ ModelWarMachine *ModelWarMachine::setFromUI(const ParamsfromUImodel *params)
     ModelWarMachine* tmp = new ModelWarMachine(*this);
 
     // modelabstract params
+    tmp->setType(params->getType());
     tmp->setStats(params->getStats());
     tmp->setSquareBaseW(params->getWidthBase());
     tmp->setSquareBaseL(params->getLengthBase());
@@ -61,6 +69,7 @@ void ModelWarMachine::load(QString path)
     QSettings readFile(path, QSettings::IniFormat);
     temp = readFile.value("ModelWarMachine", qVariantFromValue(ModelWarMachine())).value<ModelWarMachine>();
 
+    type = temp.getType();
     stats = temp.getStats();
     squareBaseW = temp.getSquareBaseW();
     squareBaseL = temp.getSquareBaseL();
@@ -101,6 +110,23 @@ QString ModelWarMachine::displayStringInfo()
     QString s;
     QTextStream info(&s);
     info << endl << "====================================================" << endl;
+    info << "Unité ";
+    switch(type)
+    {
+    case 0:
+        info << "Base" << endl;
+        break;
+    case 1:
+        info << "Spciale" << endl;
+        break;
+    case 2:
+        info << "Rare" << endl;
+        break;
+    default:
+        info << "ERROR" << endl;
+        break;
+    }
+    info << endl << "====================================================" << endl;
     info << "Model Cavalry : " << endl;
     info << displayBaseInfo();
     info << "====================================================" << endl;
@@ -120,9 +146,20 @@ void ModelWarMachine::setSpecialRules(const QString &value)
     specialRules = value;
 }
 
+ModelType ModelWarMachine::getType() const
+{
+return type;
+}
+
+void ModelWarMachine::setType(const ModelType &value)
+{
+type = value;
+}
+
 QDataStream & operator <<(QDataStream & out, const ModelWarMachine & obj)
 {
     out << static_cast<ModelAbstract>(obj)
+        << obj.type
         << obj.specialRules;
 
     return out;
@@ -130,7 +167,24 @@ QDataStream & operator <<(QDataStream & out, const ModelWarMachine & obj)
 
 QDataStream & operator >>(QDataStream & in, ModelWarMachine & obj)
 {
+    int type;
+
     in >> static_cast<ModelAbstract&>(obj);
+    in >> type;
+    switch(type)
+    {
+    case 0:
+        obj.type = BASE;
+        break;
+    case 1:
+        obj.type = SPECIAL;
+        break;
+    case 2:
+        obj.type = RARE;
+        break;
+    default:
+        break;
+    }
     in >> obj.specialRules;
 
     return in;

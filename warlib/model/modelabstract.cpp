@@ -5,7 +5,10 @@ ModelAbstract::ModelAbstract()
 }
 
 ModelAbstract::ModelAbstract(const StatsModel &stat,
-                             const int &widthBase, const int &lengthBase, const int &unitP, const QString &url,
+                             const int &widthBase,
+                             const int &lengthBase,
+                             const int &unitP,
+                             const QString &url,
                              bool figSup)
 {
     stats = stat;
@@ -20,7 +23,24 @@ ModelAbstract::ModelAbstract(const StatsModel &stat,
     figSupInd = figSup;
 }
 
-ModelAbstract::ModelAbstract(const QString &n, const QString &move, const QString &weaponS, const QString &balisticS, const QString &strength, const QString &toughness, const QString &wounds, const QString &init, const QString &attacks, const QString &leadership, const QString &save, const QString &invSave, const int points, const int &widthBase, const int &lengthBase, const int &unitP, const QString &url, bool figSup)
+ModelAbstract::ModelAbstract(const QString &n,
+                             const QString &move,
+                             const QString &weaponS,
+                             const QString &balisticS,
+                             const QString &strength,
+                             const QString &toughness,
+                             const QString &wounds,
+                             const QString &init,
+                             const QString &attacks,
+                             const QString &leadership,
+                             const QString &save,
+                             const QString &invSave,
+                             const int points,
+                             const int &widthBase,
+                             const int &lengthBase,
+                             const int &unitP,
+                             const QString &url,
+                             bool figSup)
 {
     stats.setName(n);
     stats.setM(move);
@@ -82,19 +102,17 @@ QString ModelAbstract::displayBaseInfo()
     info << stats.displayString();
     info << "====================================================" << endl;
     info << "Available options : " << endl;
-	QList<OptionModel>::iterator i;
-	for(i = options.begin(); i < options.end() ; ++i)
-	{
+    QList<OptionModel>::iterator i;
+    for(i = options.begin(); i < options.end() ; ++i)
+    {
         info << "----------------------------" << endl;
         info << i->displayString() << endl;
-	}
+    }
     return s;
 }
 
 ModelAbstract *ModelAbstract::setFromUI(const ParamsfromUImodel *params)
 {
-    qDebug() << "damned this is setfromUI of MODELABSTRACT...";
-
 
 }
 
@@ -228,7 +246,6 @@ QDataStream &operator <<(QDataStream & out, const ModelAbstract & obj)
 QDataStream &operator >>(QDataStream & in, ModelAbstract & obj)
 {
     int nb;
-
     in >> obj.stats;
     in >> obj.squareBaseW;
     in >> obj.squareBaseL;

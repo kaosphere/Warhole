@@ -20,5 +20,7 @@ const QString WARMACHINE_STRING("Machine de Guerre");
 #define WARMACHINE_TYPE 5
 #define UNKNOWN 99
 
+enum ModelType { BASE, SPECIAL, RARE };
+
 
 #endif // DEFINES_H

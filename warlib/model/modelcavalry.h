@@ -14,11 +14,11 @@ public:
     ModelCavalry();
 
     ModelCavalry(const QString &n, const QString &move, const QString &weaponS, const QString &balisticS,
-                  const QString &strength, const QString &toughness, const QString &wounds,
-                  const QString &init, const QString &attacks, const QString &leadership,
-                  const QString &save, const QString &invSave, const int points, const int &widthBase,
-                  const int &lengthBase, const int &unitP, const QString& urlImage , bool figSup,
-                  const QString& specRules);
+                 const QString &strength, const QString &toughness, const QString &wounds,
+                 const QString &init, const QString &attacks, const QString &leadership,
+                 const QString &save, const QString &invSave, const int points, const int &widthBase,
+                 const int &lengthBase, const int &unitP, const QString& urlImage , bool figSup,
+                 const QString& specRules, const ModelType &t);
     ModelCavalry(const ModelCavalry &copy);
     virtual ~ModelCavalry();
 
@@ -38,12 +38,16 @@ public:
 
     virtual int computePoints();
 
+    ModelType getType() const;
+    void setType(const ModelType &value);
+
 private:
-	static const QString LOG_ID_INFO;
+    static const QString LOG_ID_INFO;
     static const QString LOG_ID_TRACE;
     static const QString LOG_ID_WARN;
     static const QString LOG_ID_ERR;
 
+    ModelType type;
     QString specialRules;
     StatsModel mount;
 

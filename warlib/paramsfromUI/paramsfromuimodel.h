@@ -4,6 +4,7 @@
 #include <QString>
 #include "stats/statsmodel.h"
 #include "option/optionmodel.h"
+#include "defines.h"
 
 class ParamsfromUImodel
 {
@@ -11,48 +12,11 @@ public:
     ParamsfromUImodel();
     virtual ~ParamsfromUImodel();
 
-
     StatsModel getStats() const;
     void setStats(const StatsModel &value);
 
     QList<OptionModel> getOptions() const;
     void setOptions(const QList<OptionModel> &value);
-
-    QString getName() const;
-    void setName(const QString &value);
-
-    QString getMove() const;
-    void setMove(const QString &value);
-
-    QString getWeaponS() const;
-    void setWeaponS(const QString &value);
-
-    QString getBalisticS() const;
-    void setBalisticS(const QString &value);
-
-    QString getStrength() const;
-    void setStrength(const QString &value);
-
-    QString getToughness() const;
-    void setToughness(const QString &value);
-
-    QString getWounds() const;
-    void setWounds(const QString &value);
-
-    QString getInit() const;
-    void setInit(const QString &value);
-
-    QString getAttacks() const;
-    void setAttacks(const QString &value);
-
-    QString getLeadership() const;
-    void setLeadership(const QString &value);
-
-    QString getSave() const;
-    void setSave(const QString &value);
-
-    QString getInvSave() const;
-    void setInvSave(const QString &value);
 
     int getPoints() const;
     void setPoints(int value);
@@ -93,22 +57,17 @@ public:
     QList<StatsModel> getMorC() const;
     void setMorC(const QList<StatsModel> &value);
 
+    ModelType getType() const;
+    void setType(ModelType value);
+
+    bool getHasGB() const;
+    void setHasGB(bool value);
+
 private:
     // modelabstract params
     StatsModel stats;
     QList<OptionModel> options;
-    QString name;
-    QString move;
-    QString weaponS;
-    QString balisticS;
-    QString strength;
-    QString toughness;
-    QString wounds;
-    QString init;
-    QString attacks;
-    QString leadership;
-    QString save;
-    QString invSave;
+    ModelType type;
     int points;
     int widthBase;
     int lengthBase;
@@ -122,6 +81,7 @@ private:
     bool general;
     bool mage;
     bool mounted;
+    bool hasGB;
     // monster params
     bool hasCrew;
     // mount or crew

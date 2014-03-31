@@ -11,16 +11,18 @@ ModelCharriot::ModelCharriot(const QString &n, const QString &move, const QStrin
                              const QString &wounds, const QString &init, const QString &attacks,
                              const QString &leadership, const QString &save, const QString &invSave, const int points,
                              const int &widthBase, const int &lengthBase, const int &unitP, const QString &urlImage,
-                             bool figSup, const QString &specRules) :
+                             bool figSup, const QString &specRules,const ModelType &t) :
     ModelAbstract(n,move,weaponS,balisticS, strength, toughness, wounds, init, attacks, leadership, save,
                   invSave, points, widthBase, lengthBase, unitP, urlImage, figSup)
 {
     specialRules = specRules;
+    type = t;
 }
 
 // Copy constructor
 ModelCharriot::ModelCharriot(const ModelCharriot &copy) : ModelAbstract(copy)
 {
+    type = copy.type;
     specialRules = copy.specialRules;
     crew = copy.crew;
 }
@@ -45,10 +47,9 @@ ModelCharriot *ModelCharriot::setFromFile(QString path)
 
 ModelCharriot *ModelCharriot::setFromUI(const ParamsfromUImodel *params)
 {
-    qDebug() << "yay this is setfromUI in ModelCharriot !";
-
     ModelCharriot* tmp = new ModelCharriot(*this);
     // ModelAbstract params
+    tmp->setType(params->getType());
     tmp->setStats(params->getStats());
     tmp->setSquareBaseW(params->getWidthBase());
     tmp->setSquareBaseL(params->getLengthBase());
@@ -70,6 +71,7 @@ void ModelCharriot::load(QString path)
     QSettings readFile(path, QSettings::IniFormat);
     temp = readFile.value("ModelCharriot", qVariantFromValue(ModelCharriot())).value<ModelCharriot>();
     
+    type = temp.getType();
     stats = temp.getStats();
     squareBaseW = temp.getSquareBaseW();
     squareBaseL = temp.getSquareBaseL();
@@ -111,6 +113,7 @@ QDataStream & operator <<(QDataStream & out, const ModelCharriot & obj)
     nb = obj.crew.size();
 
     out << static_cast<ModelAbstract>(obj)
+        << obj.type
         << obj.specialRules
         << nb;
 
@@ -124,7 +127,24 @@ QDataStream & operator <<(QDataStream & out, const ModelCharriot & obj)
 QDataStream & operator >>(QDataStream & in, ModelCharriot & obj)
 {
     int nb;
+    int type;
+
     in >> static_cast<ModelAbstract&>(obj);
+    in >> type;
+    switch(type)
+    {
+    case 0:
+        obj.type = BASE;
+        break;
+    case 1:
+        obj.type = SPECIAL;
+        break;
+    case 2:
+        obj.type = RARE;
+        break;
+    default:
+        break;
+    }
     in >> obj.specialRules;
     in >> nb;
 
@@ -143,6 +163,23 @@ QString ModelCharriot::displayStringInfo()
     QString s;
     QTextStream info(&s);
     info << endl << "====================================================" << endl;
+    info << "Unité ";
+    switch(type)
+    {
+    case 0:
+        info << "Base" << endl;
+        break;
+    case 1:
+        info << "Spciale" << endl;
+        break;
+    case 2:
+        info << "Rare" << endl;
+        break;
+    default:
+        info << "ERROR" << endl;
+        break;
+    }
+    info << endl << "====================================================" << endl;
     info << "Model Cavalry : " << endl;
     info << displayBaseInfo();
     info << "====================================================" << endl;
@@ -150,12 +187,12 @@ QString ModelCharriot::displayStringInfo()
     info << specialRules << endl;
     info << "====================================================" << endl;
     info << "Crew stats : " << endl;
-	QList<StatsModel>::iterator i;
+    QList<StatsModel>::iterator i;
     for(i = crew.begin(); i < crew.end() ; ++i)
-	{
+    {
         info << "------------------" << endl;
         info << i->displayString() << endl;;
-	}
+    }
     info << "====================================================" << endl;
     return s;
 }
@@ -178,6 +215,16 @@ void ModelCharriot::addCrew(StatsModel c)
 void ModelCharriot::clearCrew()
 {
     crew.clear();
+}
+
+ModelType ModelCharriot::getType() const
+{
+    return type;
+}
+
+void ModelCharriot::setType(const ModelType &value)
+{
+    type = value;
 }
 
 int ModelCharriot::computePoints()

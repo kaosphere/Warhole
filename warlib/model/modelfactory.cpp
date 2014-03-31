@@ -55,7 +55,6 @@ ModelAbstract* ModelFactory::createFromUI(const QString &key, const ParamsfromUI
     if(it != factory_model_map.end()) // key was found in map
     {
         tmp = *it;
-        qDebug() << "hi from modelfactory createfromUI !";
         tmp = tmp->setFromUI(params);
     }
 

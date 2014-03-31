@@ -18,7 +18,7 @@ public:
                   const QString &init, const QString &attacks, const QString &leadership,
                   const QString &save, const QString &invSave, const int points, const int &widthBase,
                   const int &lengthBase, const int &unitP, const QString& urlImage , bool figSup,
-                  const QString& specRules, bool lord, bool general, bool mage, bool mounted);
+                  const QString& specRules, bool lord, bool general, bool mage, bool mounted, bool gb);
     ModelCharacter(const ModelCharacter &copy);
     virtual ~ModelCharacter();
 
@@ -50,9 +50,12 @@ public:
 
     virtual int computePoints();
 
+    bool getHasGB() const;
+    void setHasGB(bool value);
+
 private:
     static const QString LOG_ID_INFO;
-	static const QString LOG_ID_TRACE;
+    static const QString LOG_ID_TRACE;
 	static const QString LOG_ID_WARN;
 	static const QString LOG_ID_ERR;
 
@@ -61,6 +64,7 @@ private:
     bool isTheGeneral;
     bool isAMage;
     bool isMounted;
+    bool hasGB;
 
     StatsModel mount;
 

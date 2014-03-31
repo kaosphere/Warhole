@@ -12,7 +12,7 @@ ModelCavalry::ModelCavalry():
     ModelAbstract()
 {
     QLoggerManager *manager = QLoggerManager::getInstance();
-	manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_INFO), QLogger::InfoLevel);
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_ERR), QLogger::ErrorLevel);
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_WARN), QLogger::WarnLevel);
@@ -24,31 +24,32 @@ ModelCavalry::ModelCavalry(const QString &n, const QString &move, const QString 
                            const QString &wounds, const QString &init, const QString &attacks,
                            const QString &leadership, const QString &save, const QString &invSave, const int points,
                            const int &widthBase, const int &lengthBase, const int &unitP, const QString &urlImage,
-                           bool figSup, const QString &specRules) :
+                           bool figSup, const QString &specRules, const ModelType &t) :
     ModelAbstract(n,move,weaponS,balisticS, strength, toughness, wounds, init, attacks, leadership, save,
                   invSave, points, widthBase, lengthBase, unitP, urlImage, figSup)
 {
     QLoggerManager *manager = QLoggerManager::getInstance();
-	manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_INFO), QLogger::InfoLevel);
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_ERR), QLogger::ErrorLevel);
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_WARN), QLogger::WarnLevel);
     
     specialRules = specRules;
+    type = t;
 }
 
 // Copy constructor
 ModelCavalry::ModelCavalry(const ModelCavalry &copy) : ModelAbstract(copy)
 {
     QLoggerManager *manager = QLoggerManager::getInstance();
-	manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_INFO), QLogger::InfoLevel);
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_ERR), QLogger::ErrorLevel);
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_WARN), QLogger::WarnLevel);
 
-	
     specialRules = copy.specialRules;
     mount = copy.mount;
+    type = copy.type;
 }
 
 //Destructor
@@ -86,6 +87,7 @@ ModelCavalry *ModelCavalry::setFromUI(const ParamsfromUImodel *params)
     ModelCavalry* tmp = new ModelCavalry(*this);
 
     // modelabstract params
+    tmp->setType(params->getType());
     tmp->setStats(params->getStats());
     tmp->setSquareBaseW(params->getWidthBase());
     tmp->setSquareBaseL(params->getLengthBase());
@@ -98,11 +100,11 @@ ModelCavalry *ModelCavalry::setFromUI(const ParamsfromUImodel *params)
     tmp->setSpecialRules(params->getSpecRules());
     if(!params->getMorC().isEmpty())
     {
-    	tmp->setMount(params->getMorC().first());
+        tmp->setMount(params->getMorC().first());
     }
     else
     {
-    	QLog_Error(LOG_ID_ERR, "setFromUI : mOrC is empty, can't set mount.");
+        QLog_Error(LOG_ID_ERR, "setFromUI : mOrC is empty, can't set mount.");
     }
 
     return tmp;
@@ -115,6 +117,7 @@ void  ModelCavalry::load(QString path)
     QSettings readFile(path, QSettings::IniFormat);
     temp = readFile.value("ModelCavalry", qVariantFromValue(ModelCavalry())).value< ModelCavalry>();
 
+    type = temp.getType();
     stats = temp.getStats();
     squareBaseW = temp.getSquareBaseW();
     squareBaseL = temp.getSquareBaseL();
@@ -144,6 +147,7 @@ void ModelCavalry::save(QString path)
 QDataStream & operator << (QDataStream & out, const ModelCavalry & obj)
 {
     out << static_cast<ModelAbstract>(obj)
+        << obj.type
         << obj.specialRules
         << obj.mount;
 
@@ -153,7 +157,24 @@ QDataStream & operator << (QDataStream & out, const ModelCavalry & obj)
 // Overloading of >> operator
 QDataStream & operator >> (QDataStream & in, ModelCavalry & obj)
 {
+    int type;
+
     in >> static_cast<ModelAbstract&>(obj);
+    in >> type;
+    switch(type)
+    {
+    case 0:
+        obj.type = BASE;
+        break;
+    case 1:
+        obj.type = SPECIAL;
+        break;
+    case 2:
+        obj.type = RARE;
+        break;
+    default:
+        break;
+    }
     in >> obj.specialRules;
     in >> obj.mount;
 
@@ -165,13 +186,30 @@ QString ModelCavalry::displayStringInfo()
     QString s;
     QTextStream info(&s);
     info << endl << "====================================================" << endl;
+    info << "Unité ";
+    switch(type)
+    {
+    case 0:
+        info << "Base" << endl;
+        break;
+    case 1:
+        info << "Spciale" << endl;
+        break;
+    case 2:
+        info << "Rare" << endl;
+        break;
+    default:
+        info << "ERROR" << endl;
+        break;
+    }
+    info << endl << "====================================================" << endl;
     info << "Model Cavalry : " << endl;
     info << displayBaseInfo();
     info << "====================================================" << endl;
     info << "Special Rules : " << endl;
     info << specialRules << endl;
     info << "====================================================" << endl;
-    info << "Mount stats : " << endl;
+    info << "Mount : " << mount.getName() << endl;
     info << mount.displayString();
     info << "====================================================" << endl;
     return s;
@@ -185,6 +223,16 @@ StatsModel ModelCavalry::getMount() const
 void ModelCavalry::setMount(const StatsModel &value)
 {
     mount = value;
+}
+
+ModelType ModelCavalry::getType() const
+{
+    return type;
+}
+
+void ModelCavalry::setType(const ModelType &value)
+{
+    type = value;
 }
 
 int ModelCavalry::computePoints()

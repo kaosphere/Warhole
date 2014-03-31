@@ -18,7 +18,7 @@ public:
                   const QString &init, const QString &attacks, const QString &leadership,
                   const QString &save, const QString &invSave, const int points, const int &widthBase,
                   const int &lengthBase, const int &unitP, const QString& urlImage , bool figSup,
-                  const QString& specRules);
+                  const QString& specRules, const ModelType &t);
     ModelCharriot(const ModelCharriot &copy);
     virtual ~ModelCharriot();
 
@@ -40,7 +40,11 @@ public:
 
     virtual int computePoints();
 
+    ModelType getType() const;
+    void setType(const ModelType &value);
+
 private:
+    ModelType type;
     QString specialRules;
     QList<StatsModel> crew;
 

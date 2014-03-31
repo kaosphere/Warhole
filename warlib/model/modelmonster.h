@@ -15,11 +15,13 @@ public:
     ModelMonster();
 
     ModelMonster(const QString &n, const QString &move, const QString &weaponS, const QString &balisticS,
-                  const QString &strength, const QString &toughness, const QString &wounds,
-                  const QString &init, const QString &attacks, const QString &leadership,
-                  const QString &save, const QString &invSave, const int points, const int &widthBase,
-                  const int &lengthBase, const int &unitP, const QString& urlImage , bool figSup,
-                  const QString& specRules, bool hasCrew);
+                 const QString &strength, const QString &toughness, const QString &wounds,
+                 const QString &init, const QString &attacks, const QString &leadership,
+                 const QString &save, const QString &invSave, const int points, const int &widthBase,
+                 const int &lengthBase, const int &unitP, const QString& urlImage , bool figSup,
+                 const QString& specRules, bool hasCrew,const ModelType &t);
+    ModelMonster(const ModelMonster &copy);
+
     virtual ~ModelMonster();
 
     static void initModelMonsterSystem();
@@ -41,7 +43,11 @@ public:
     QList<ModelInfantery *> getCrew() const;
     void setCrew(const QList<ModelInfantery *> &value);
 
+    ModelType getType() const;
+    void setType(const ModelType &value);
+
 private:
+    ModelType type;
     QString specialRules;
     QList<ModelInfantery *> crew;
     bool hasACrew;
