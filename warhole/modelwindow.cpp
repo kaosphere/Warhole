@@ -85,41 +85,41 @@ ModelWindow::~ModelWindow()
 
 void ModelWindow::loadWidgets(bool l)
 {
-    ui->lineEditA2->setVisible(l);
-    ui->lineEditCC2->setVisible(l);
-    ui->lineEditCdt2->setVisible(l);
-    ui->lineEditCT2->setVisible(l);
-    ui->lineEditE2->setVisible(l);
-    ui->lineEditF2->setVisible(l);
-    ui->lineEditF2->setVisible(l);
-    ui->lineEditI2->setVisible(l);
-    ui->lineEditPV2->setVisible(l);
-    ui->lineEditSvgInv2->setVisible(l);
-    ui->lineEditSvg2->setVisible(l);
-    ui->lineEditM2->setVisible(l);
-    ui->lineEditName2->setVisible(l);
-    ui->lineEditPts2->setVisible(l);
+    ui->lineEditA2->setEnabled(l);
+    ui->lineEditCC2->setEnabled(l);
+    ui->lineEditCdt2->setEnabled(l);
+    ui->lineEditCT2->setEnabled(l);
+    ui->lineEditE2->setEnabled(l);
+    ui->lineEditF2->setEnabled(l);
+    ui->lineEditF2->setEnabled(l);
+    ui->lineEditI2->setEnabled(l);
+    ui->lineEditPV2->setEnabled(l);
+    ui->lineEditSvgInv2->setEnabled(l);
+    ui->lineEditSvg2->setEnabled(l);
+    ui->lineEditM2->setEnabled(l);
+    ui->lineEditName2->setEnabled(l);
+    ui->lineEditPts2->setEnabled(l);
 
-    ui->label_28->setVisible(l);
-    ui->label_54->setVisible(l);
-    ui->label_55->setVisible(l);
-    ui->label_56->setVisible(l);
-    ui->label_57->setVisible(l);
-    ui->label_58->setVisible(l);
-    ui->label_59->setVisible(l);
-    ui->label_60->setVisible(l);
-    ui->label_61->setVisible(l);
-    ui->label_62->setVisible(l);
-    ui->label_63->setVisible(l);
-    ui->label_64->setVisible(l);
-    ui->label_65->setVisible(l);
-    ui->label_66->setVisible(l);
-    ui->label_67->setVisible(l);
+    ui->label_28->setEnabled(l);
+    ui->label_54->setEnabled(l);
+    ui->label_55->setEnabled(l);
+    ui->label_56->setEnabled(l);
+    ui->label_57->setEnabled(l);
+    ui->label_58->setEnabled(l);
+    ui->label_59->setEnabled(l);
+    ui->label_60->setEnabled(l);
+    ui->label_61->setEnabled(l);
+    ui->label_62->setEnabled(l);
+    ui->label_63->setEnabled(l);
+    ui->label_64->setEnabled(l);
+    ui->label_65->setEnabled(l);
+    ui->label_66->setEnabled(l);
+    ui->label_67->setEnabled(l);
 
-    ui->pushButtonAdd->setVisible(l);
-    ui->pushButtonRmv->setVisible(l);
+    ui->pushButtonAdd->setEnabled(l);
+    ui->pushButtonRmv->setEnabled(l);
 
-    ui->viewModelCrew->setVisible(l);
+    ui->viewModelCrew->setEnabled(l);
 }
 
 void ModelWindow::loadCavaleryWidget()
@@ -130,6 +130,10 @@ void ModelWindow::loadCavaleryWidget()
     ui->checkLord->setEnabled(false);
     ui->checkMage->setEnabled(false);
     ui->checkMounted->setEnabled(false);
+
+    ui->radioBase->setEnabled(true);
+    ui->radioRare->setEnabled(true);
+    ui->radioSpecial->setEnabled(true);
 
     ui->spinWidth->setValue(25);
     ui->spinLength->setValue(50);
@@ -149,6 +153,10 @@ void ModelWindow::loadCharacterWidget()
     ui->spinWidth->setValue(25);
     ui->spinLength->setValue(25);
 
+    ui->radioBase->setEnabled(false);
+    ui->radioRare->setEnabled(false);
+    ui->radioSpecial->setEnabled(false);
+
     loadWidgets(true);
 }
 
@@ -164,6 +172,10 @@ void ModelWindow::loadCharriotWidget()
     ui->spinWidth->setValue(50);
     ui->spinLength->setValue(100);
 
+    ui->radioBase->setEnabled(true);
+    ui->radioRare->setEnabled(true);
+    ui->radioSpecial->setEnabled(true);
+
     loadWidgets(true);
 }
 
@@ -175,6 +187,10 @@ void ModelWindow::loadInfanteryWidget()
     ui->checkLord->setEnabled(false);
     ui->checkMage->setEnabled(false);
     ui->checkMounted->setEnabled(false);
+
+    ui->radioBase->setEnabled(true);
+    ui->radioRare->setEnabled(true);
+    ui->radioSpecial->setEnabled(true);
 
     ui->spinWidth->setValue(25);
     ui->spinLength->setValue(25);
@@ -191,6 +207,10 @@ void ModelWindow::loadMonsterWidget()
     ui->checkMage->setEnabled(false);
     ui->checkMounted->setEnabled(false);
 
+    ui->radioBase->setEnabled(true);
+    ui->radioRare->setEnabled(true);
+    ui->radioSpecial->setEnabled(true);
+
     ui->spinWidth->setValue(50);
     ui->spinLength->setValue(50);
 
@@ -205,6 +225,10 @@ void ModelWindow::loadWarMachineWidget()
     ui->checkLord->setEnabled(false);
     ui->checkMage->setEnabled(false);
     ui->checkMounted->setEnabled(false);
+
+    ui->radioBase->setEnabled(true);
+    ui->radioRare->setEnabled(true);
+    ui->radioSpecial->setEnabled(true);
 
     ui->spinWidth->setValue(25);
     ui->spinLength->setValue(25);
@@ -233,7 +257,7 @@ void ModelWindow::on_comboUnitType_currentIndexChanged(int index)
             loadMonsterWidget();
             break;
         case 6:
-        loadWarMachineWidget();
+            loadWarMachineWidget();
             break;
         default:
             break;
@@ -314,13 +338,40 @@ void ModelWindow::on_pushButtonSave_clicked()
         		"Vous devez obligatoirement choisir une race, un type d'unité et remplir un nom et une image.");
         return;
     }
-    if(ui->comboUnitType->itemText(ui->comboUnitType->currentIndex()) == CAVALERY_STRING ||
-       ui->comboUnitType->itemText(ui->comboUnitType->currentIndex()) == CHARACTER_STRING)
+    // If any type was chosen, abort instead the model is a character because character don't have a type.
+    if(!ui->radioBase->isChecked() &&
+       !ui->radioRare->isChecked() &&
+       !ui->radioSpecial->isChecked() &&
+       ui->comboUnitType->itemText(ui->comboUnitType->currentIndex()) != CHARACTER_STRING)
     {
+        QMessageBox::warning(this, "Info", "Un type (base, special ou rare) doit être choisi.");
+        return;
+    }
+    if(ui->comboUnitType->itemText(ui->comboUnitType->currentIndex()) == CAVALERY_STRING)
+    {
+        if(crew->rowCount() > 1 || crew->rowCount() == 0)
+        {
+            QMessageBox::warning(this, "Info", "La figurine doit posséder obligatoirement une (seule) monture.");
+            return;
+        }
+    }
+
+    if(ui->comboUnitType->itemText(ui->comboUnitType->currentIndex()) == CHARACTER_STRING)
+    {
+        if(ui->checkMounted->isChecked() && crew->rowCount() == 0)
+        {
+            QMessageBox::warning(this, "Info", "Vous avez spécifié que le personnage était monté, veuillez ajouter une monture, ou décocher la case \"Monté\"");
+            return;
+        }
         if(crew->rowCount() > 1)
         {
-            QMessageBox::warning(this, "Info", "La figurine doit posséder une monture unique.");
+            QMessageBox::warning(this, "Info", "La figurine doit posséder obligatoirement une seule monture.");
             return;
+        }
+        if(crew->rowCount()!=0 && !ui->checkMounted->isChecked())
+        {
+            // Check mounted checkbox is forgetten by user
+            ui->checkMounted->setChecked(true);
         }
     }
 
@@ -417,6 +468,21 @@ void ModelWindow::fillUI(ModelAbstract* m, QString path)
                     <<new QStandardItem(cav->getMount().getSvgInv());
             crew->appendRow(newCrew);
             ui->textEdit->append(cav->getSpecialRules());
+            switch(cav->getType())
+            {
+            case BASE:
+                ui->radioBase->setChecked(true);
+                break;
+            case SPECIAL:
+                ui->radioSpecial->setChecked(true);
+                break;
+            case RARE:
+                ui->radioRare->setChecked(true);
+                break;
+            default:
+                QLog_Error(LOG_ID_ERR, "fillUI : can't find a valid type.");
+                break;
+            }
         }
         else
             QLog_Error(LOG_ID_ERR, "FillUI : DYNAMIC_CAST ERROR : Can't cast to ModelCavalry.");
@@ -447,6 +513,7 @@ void ModelWindow::fillUI(ModelAbstract* m, QString path)
             ui->checkMage->setChecked(ch->getIsAMage());
             ui->checkGeneral->setChecked(ch->getIsTheGeneral());
             ui->checkMounted->setChecked(ch->getIsMounted());
+            ui->checkGB->setChecked(ch->getHasGB());
         }
         else
             QLog_Error(LOG_ID_ERR, "FillUI : DYNAMIC_CAST ERROR : Can't cast to ModelCharacter.");
@@ -476,6 +543,21 @@ void ModelWindow::fillUI(ModelAbstract* m, QString path)
                 crew->appendRow(newCrew);
             }
             ui->textEdit->append(ch->getSpecialRules());
+            switch(ch->getType())
+            {
+            case BASE:
+                ui->radioBase->setChecked(true);
+                break;
+            case SPECIAL:
+                ui->radioSpecial->setChecked(true);
+                break;
+            case RARE:
+                ui->radioRare->setChecked(true);
+                break;
+            default:
+                QLog_Error(LOG_ID_ERR, "fillUI : can't find a valid type.");
+                break;
+            }
         }
         else
             QLog_Error(LOG_ID_ERR, "FillUI : DYNAMIC_CAST ERROR : Can't cast to ModelCharriot.");
@@ -486,6 +568,21 @@ void ModelWindow::fillUI(ModelAbstract* m, QString path)
         if (inf)
         {
             ui->textEdit->append(inf->getSpecialRules());
+            switch(inf->getType())
+            {
+            case BASE:
+                ui->radioBase->setChecked(true);
+                break;
+            case SPECIAL:
+                ui->radioSpecial->setChecked(true);
+                break;
+            case RARE:
+                ui->radioRare->setChecked(true);
+                break;
+            default:
+                QLog_Error(LOG_ID_ERR, "fillUI : can't find a valid type.");
+                break;
+            }
         }
         else
             QLog_Error(LOG_ID_ERR, "FillUI : DYNAMIC_CAST ERROR : Can't cast to ModelInfantery.");
@@ -496,6 +593,21 @@ void ModelWindow::fillUI(ModelAbstract* m, QString path)
         if (mon)
         {
             ui->textEdit->append(mon->getSpecialRules());
+            switch(mon->getType())
+            {
+            case BASE:
+                ui->radioBase->setChecked(true);
+                break;
+            case SPECIAL:
+                ui->radioSpecial->setChecked(true);
+                break;
+            case RARE:
+                ui->radioRare->setChecked(true);
+                break;
+            default:
+                QLog_Error(LOG_ID_ERR, "fillUI : can't find a valid type.");
+                break;
+            }
         }
         else
             QLog_Error(LOG_ID_ERR, "FillUI : DYNAMIC_CAST ERROR : Can't cast to ModelMonster.");
@@ -506,6 +618,21 @@ void ModelWindow::fillUI(ModelAbstract* m, QString path)
         if (war)
         {
             ui->textEdit->append(war->getSpecialRules());
+            switch(war->getType())
+            {
+            case BASE:
+                ui->radioBase->setChecked(true);
+                break;
+            case SPECIAL:
+                ui->radioSpecial->setChecked(true);
+                break;
+            case RARE:
+                ui->radioRare->setChecked(true);
+                break;
+            default:
+                QLog_Error(LOG_ID_ERR, "fillUI : can't find a valid type.");
+                break;
+            }
         }
         else
             QLog_Error(LOG_ID_ERR, "FillUI : DYNAMIC_CAST ERROR : Can't cast to ModelWarMachine.");
@@ -514,7 +641,6 @@ void ModelWindow::fillUI(ModelAbstract* m, QString path)
 
 void ModelWindow::setModelProperties(ParamsfromUImodel *p)
 {
-    qDebug() << "enter setModelProperty in modelwindow";
     StatsModel s(ui->lineEditName->text(), ui->lineEditM->text(),ui->lineEditCC->text(),
                  ui->lineEditCT->text(), ui->lineEditF->text(),ui->lineEditE->text(),
                  ui->lineEditPV->text(), ui->lineEditI->text(), ui->lineEditA->text(),
@@ -533,8 +659,6 @@ void ModelWindow::setModelProperties(ParamsfromUImodel *p)
         for(int j = 0; j < options->columnCount(); j++)
         {
             QStandardItem* item = options->item(i,j);
-            //QMessageBox::information(this, "Info", item->text());
-
             switch(j)
             {
                 case 0:
@@ -542,7 +666,6 @@ void ModelWindow::setModelProperties(ParamsfromUImodel *p)
                     break;
                 case 1:
                     o.setNbPoints(item->text().toUInt());
-                    //QMessageBox::information(this, "Info", o.getNbPoints());
                     break;
                 case 2:
                     o.setSpecialRules(item->text());
@@ -555,21 +678,31 @@ void ModelWindow::setModelProperties(ParamsfromUImodel *p)
         optionList.append(o);
     }
     p->setOptions(optionList);
-    qDebug() << "option 1 name : " << p->getOptions().first().getName();
-    qDebug() << "exit setModelProperty in modelwindow";
-
 }
 
 void ModelWindow::save(QString path)
 {
-    qDebug() << "enter modelwindow save";
     ParamsfromUImodel* params = new ParamsfromUImodel();
+    if(ui->radioBase->isChecked())
+    {
+        params->setType(BASE);
+    }
+    else if(ui->radioSpecial->isChecked())
+    {
+        params->setType(SPECIAL);
+    }
+    else if(ui->radioRare->isChecked())
+    {
+        params->setType(RARE);
+    }
+    else
+    {
+        QLog_Error(LOG_ID_ERR, "save : Can't find type parameter.");
+    }
+    qDebug() << "Params type : " << params->getType();
+
     params->setSpecRules(ui->textEdit->toPlainText());
     setModelProperties(params);
-
-    qDebug() << "begin creating statsmodel list";
-    qDebug() << "crew object name : " << crew->objectName();
-    qDebug() << "crew row count : " << crew->rowCount();
 
     if(crew->rowCount() > 0)
     {
@@ -581,8 +714,6 @@ void ModelWindow::save(QString path)
             {
 
                 QStandardItem* item = crew->item(i,j);
-                //QMessageBox::information(this, "Info", item->text());
-
                 switch(j)
                 {
                     case 0:
@@ -631,24 +762,17 @@ void ModelWindow::save(QString path)
             mOrCList.append(s);
         }
         params->setMorC(mOrCList);
-        qDebug() << "stat 1 (MorC) name" << params->getMorC().first().getName();
     }
-
-    qDebug() << "end creating statsmodel list";
-
 
     //TODO : check that this work even if hero was not selected
     params->setLord(ui->checkLord->isChecked());
     params->setMage(ui->checkMage->isChecked());
     params->setMounted(ui->checkMounted->isChecked());
     params->setGeneral(ui->checkGeneral->isChecked());
-    qDebug() << "mage : " << params->getMage();
-    qDebug() << "Name : " << params->getStats().getName();
-    qDebug() << "end set lord/mage etc";
+    params->setHasGB(ui->checkGB->isChecked());
 
     // save in class with factory + save in file
     poupik = fac.createFromUI(ui->comboUnitType->currentText(), params);
-    qDebug() << "from modWin save, poupik name : " << poupik->getStats().getName();
     poupik->save(path);
 }
 
@@ -719,6 +843,8 @@ void ModelWindow::on_pushButtonAdd_clicked()
     }
     if(ok)
     {
+        // If monted isn't checked, then check it automatically
+        ui->checkMounted->setChecked(true);
         QList<QStandardItem *> newStat;
 
         newStat<<new QStandardItem(ui->lineEditName2->text())
