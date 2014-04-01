@@ -142,6 +142,38 @@ QString StatsModel::displayString() const
     return str;
 }
 
+QString StatsModel::getHtml() const
+{
+	QString html("<table cols=11 border=1 cellpadding=10>");
+	html += "<tr>\n";
+	html += "<td width=40 align='center'>M</td>\n";
+	html += "<td width=40 align='center'>CC</td>\n";
+	html += "<td width=40 align='center'>CT</td>\n";
+	html += "<td width=40 align='center'>F</td>\n";
+	html += "<td width=40 align='center'>E</td>\n";
+	html += "<td width=40 align='center'>PV</td>\n";
+	html += "<td width=40 align='center'>I</td>\n";
+	html += "<td width=40 align='center'>A</td>\n";
+	html += "<td width=40 align='center'>Cmd</td>\n";
+	html += "<td width=40 align='center'>Svg</td>\n";
+	html += "<td width=40 align='center'>SvgInv</td>\n";
+	html += "</tr>\n";
+	html += "<tr>\n";
+	html += QString("<td align='center'>%1</td>\n").arg(m);
+	html += QString("<td align='center'>%1</td>\n").arg(ws);
+	html += QString("<td align='center'>%1</td>\n").arg(bs);
+	html += QString("<td align='center'>%1</td>\n").arg(s);
+	html += QString("<td align='center'>%1</td>\n").arg(t);
+	html += QString("<td align='center'>%1</td>\n").arg(w);
+	html += QString("<td align='center'>%1</td>\n").arg(i);
+	html += QString("<td align='center'>%1</td>\n").arg(a);
+	html += QString("<td align='center'>%1</td>\n").arg(ld);
+	html += QString("<td align='center'>%1</td>\n").arg(svg);
+	html += QString("<td align='center'>%1</td>\n").arg(svgInv);
+	html += "</tr>\n";
+	html += "</table>\n";
+}
+
 QString StatsModel::getName() const
 {
     return name;

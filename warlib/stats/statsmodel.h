@@ -24,6 +24,8 @@ public:
     bool operator==(const StatsModel&);
 
     QString displayString() const;
+    
+    QString getHtml() const;
 
     QString getName() const;
     void setName(const QString &value);
