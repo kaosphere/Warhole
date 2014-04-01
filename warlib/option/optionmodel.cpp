@@ -50,6 +50,15 @@ QString OptionModel::displayString()
     return s;
 }
 
+QString OptionModel::getHtml()
+{
+	QString html("%1 : %2. %3 pts.")
+				.arg(name)
+				.arg(Qt::escape(specialRules))
+				.arg(QString::number(nbPoints));
+	return html;
+}
+
 QString OptionModel::getName() const
 {
     return name;

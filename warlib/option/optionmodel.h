@@ -20,6 +20,8 @@ public:
     OptionModel& operator=(const OptionModel&);
     
     QString displayString();
+    
+    QString getHtml();
 
     QString getName() const;
     void setName(const QString &value);
