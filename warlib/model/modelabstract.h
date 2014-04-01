@@ -37,7 +37,10 @@ public:
     virtual void load(const QString path);
     
     virtual QString displayStringInfo();
-    QString displayBaseInfo();
+    QString displayBaseInfo() const;
+    
+    vitual QString getHtml() const;
+    QString getBaseHtml() const;
 
     StatsModel getStats() const;
     void setStats(const StatsModel &value);

@@ -92,7 +92,7 @@ QString ModelAbstract::displayStringInfo()
 {
 }
 
-QString ModelAbstract::displayBaseInfo()
+QString ModelAbstract::displayBaseInfo() const
 {
     QString s;
     QTextStream info(&s);
@@ -109,6 +109,31 @@ QString ModelAbstract::displayBaseInfo()
         info << i->displayString() << endl;
     }
     return s;
+}
+
+QString ModelAbstract::getHtml() const
+{
+}
+
+QString ModelAbstract::getBaseHtml() const
+{
+	QString html(stats.getName);
+	html += QString("Points du model : %1 pts <br/>\n")
+					.arg(QString::number(computePoints()));
+	html += "<br/>\n";
+	html += stats.getHtml();
+	html += "<br/>\n";
+	html += "Options : <br/>\n";
+	QList<OptionModel>::iterator i;
+    for(i = options.begin(); i < options.end() ; ++i)
+    {
+		html += "<li>";
+		html += i->getHtml();
+		html += "</li>\n";
+	}
+	html += "<br/>\n";
+	
+	return html;
 }
 
 ModelAbstract *ModelAbstract::setFromUI(const ParamsfromUImodel *params)
