@@ -81,6 +81,8 @@ public:
     QString displayInfo() const;
     QString displayShortInfo() const;
 
+    QString getHtml();
+
 private:
 	static const QString LOG_ID_INFO;
     static const QString LOG_ID_TRACE;
