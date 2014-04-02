@@ -172,6 +172,8 @@ QString StatsModel::getHtml() const
 	html += QString("<td align='center'>%1</td>\n").arg(svgInv);
 	html += "</tr>\n";
 	html += "</table>\n";
+
+    return html;
 }
 
 QString StatsModel::getName() const
