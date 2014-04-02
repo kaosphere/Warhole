@@ -14,6 +14,7 @@
 
 #include "Utilities/QLogger/QLogger.h"
 #include "Utilities/DiceRoller/DiceRoller.h"
+#include "Utilities/PdfExporter/pdfexporter.h"
 
 #include "defines.h"
 

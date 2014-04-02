@@ -10,6 +10,7 @@ void WarlibInit::initWarlib()
     initModelSerialization();
     initModelFactory();
     DiceRoller::initDiceRoller();
+    PdfExporter::initPdfExporter();
 }
 
 void WarlibInit::initModelSerialization()
