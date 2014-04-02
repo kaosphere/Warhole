@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QtCore>
 #include <QtWidgets>
+#include <Qt>
+#include <QTextDocument>
 
 #include "modelabstract.h"
 #include "Utilities/QLogger/QLogger.h"
@@ -32,6 +34,7 @@ public:
     virtual void save(QString path);
     
     virtual QString displayStringInfo();
+    virtual QString getHtml();
 
     StatsModel getMount() const;
     void setMount(const StatsModel &value);

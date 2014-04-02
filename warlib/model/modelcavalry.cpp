@@ -215,6 +215,19 @@ QString ModelCavalry::displayStringInfo()
     return s;
 }
 
+QString ModelCavalry::getHtml()
+{
+    QString html;
+    html += getBaseHtml();
+    html += "Règles additionnelles : <br/>\n";
+    html += QString(specialRules.toHtmlEscaped() + "<br/>\n");
+    html += "<br/>\n";
+    html += QString("Statistique de la monture (%1)<br/>\n").arg(mount.getName());
+    html += mount.getHtml();
+
+    return html;
+}
+
 StatsModel ModelCavalry::getMount() const
 {
     return mount;
