@@ -92,7 +92,7 @@ QString ModelAbstract::displayStringInfo()
 {
 }
 
-QString ModelAbstract::displayBaseInfo() const
+QString ModelAbstract::displayBaseInfo()
 {
     QString s;
     QTextStream info(&s);
@@ -111,13 +111,14 @@ QString ModelAbstract::displayBaseInfo() const
     return s;
 }
 
-QString ModelAbstract::getHtml() const
+QString ModelAbstract::getHtml()
 {
 }
 
-QString ModelAbstract::getBaseHtml() const
+QString ModelAbstract::getBaseHtml()
 {
-	QString html(stats.getName);
+    QString html;
+    html += QString("%1").arg(stats.getName());
 	html += QString("Points du model : %1 pts <br/>\n")
 					.arg(QString::number(computePoints()));
 	html += "<br/>\n";

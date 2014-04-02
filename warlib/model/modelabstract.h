@@ -5,6 +5,7 @@
 #include <QtCore>
 #include <QtWidgets>
 #include <iostream>
+#include <QTextDocument>
 
 #include "option/optionmodel.h"
 #include "stats/statsmodel.h"
@@ -37,10 +38,10 @@ public:
     virtual void load(const QString path);
     
     virtual QString displayStringInfo();
-    QString displayBaseInfo() const;
+    QString displayBaseInfo();
     
-    vitual QString getHtml() const;
-    QString getBaseHtml() const;
+    virtual QString getHtml();
+    QString getBaseHtml();
 
     StatsModel getStats() const;
     void setStats(const StatsModel &value);
