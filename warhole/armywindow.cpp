@@ -560,3 +560,20 @@ void ArmyWindow::on_pushButtonLoad_clicked()
 
     load(fileName);
 }
+
+void ArmyWindow::on_pushButtonExport_clicked()
+{
+    currentArmy.setName(ui->lineEditName->text());
+    QLog_Info(LOG_ID_INFO, "on_pushButtonExport_clicked : Exporting army to PDF file.");
+    QString fileName = QFileDialog::getSaveFileName(this, "Save file", "./export.pdf", "pdf files(*.pdf)");
+    QLog_Info(LOG_ID_INFO, currentArmy.getHtml());
+
+    if(PdfExporter::exportHtmlToPdfFile(fileName, currentArmy.getHtml()))
+    {
+        QMessageBox::information(this, "Info", "PDF exporté avec succès.");
+    }
+    else
+    {
+        QMessageBox::warning(this, "Info", "L'export du pdf a échoué. Vérifiez le nom du fichier.");
+    }
+}

@@ -775,6 +775,13 @@
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="pushButtonExport">
+       <property name="text">
+        <string>Exporter comme PDF</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="pushButtonQuit">
        <property name="text">
         <string>Quitter</string>

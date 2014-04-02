@@ -12,6 +12,7 @@
 #include <regiment/regimentabstract.h>
 #include <army/army.h>
 #include <Utilities/QLogger/QLogger.h>
+#include <Utilities/PdfExporter/pdfexporter.h>
 
 #include <QDebug>
 
@@ -42,6 +43,8 @@ private slots:
     void on_pushButtonQuit_clicked();
     void on_pushButtonSave_clicked();
     void on_pushButtonLoad_clicked();
+
+    void on_pushButtonExport_clicked();
 
 private:
     static const QString LOG_ID_TRACE;
