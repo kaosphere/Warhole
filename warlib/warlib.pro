@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += widgets network
+QT       += widgets network printsupport
 
 TARGET = warlib
 
@@ -29,7 +29,8 @@ SOURCES += \
     regiment/regimentabstract.cpp \
     regiment/recruitsgroup.cpp \
     Utilities/QLogger/QLogger.cpp \
-    Utilities/DiceRoller/DiceRoller.cpp 
+    Utilities/DiceRoller/DiceRoller.cpp \ 
+    Utilities/PdfExporter/pdfexporter.cpp
 
 HEADERS += \
     stats/statsmodel.h \
@@ -49,7 +50,8 @@ HEADERS += \
     regiment/regimentabstract.h \
     regiment/recruitsgroup.h \
     Utilities/QLogger/QLogger.h \
-    Utilities/DiceRoller/DiceRoller.h 
+    Utilities/DiceRoller/DiceRoller.h \ 
+    Utilities/PdfExporter/pdfexporter.h
 
 INSTALLS += target
 
