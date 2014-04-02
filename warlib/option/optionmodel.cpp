@@ -52,10 +52,11 @@ QString OptionModel::displayString()
 
 QString OptionModel::getHtml()
 {
-	QString html("%1 : %2. %3 pts.")
-				.arg(name)
-				.arg(Qt::escape(specialRules))
-				.arg(QString::number(nbPoints));
+    QString html;
+    html += QString("%1 : %2. %3 pts.")
+            .arg(name)
+            .arg(specialRules.toHtmlEscaped())
+            .arg(QString::number(nbPoints));
 	return html;
 }
 
