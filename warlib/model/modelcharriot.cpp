@@ -197,6 +197,27 @@ QString ModelCharriot::displayStringInfo()
     return s;
 }
 
+QString ModelCharriot::getHtml()
+{
+    QString html;
+    html += getBaseHtml();
+    html += "Règles additionnelles : <br/>\n";
+    html += QString(specialRules.toHtmlEscaped() + "<br/>\n");
+    html += "<br/>\n";
+    html += QString("Liste de l'équipage : <br/>\n");
+    QList<StatsModel>::iterator i;
+    for(i = crew.begin(); i < crew.end() ; ++i)
+    {
+        html += QString("<li>\n");
+        html += QString("%1 : <br/>\n").arg(i->getName());
+        html += i->getHtml();
+        html += QString("</li>\n");
+    }
+    html += "<br/>\n";
+
+    return html;
+}
+
 QList<StatsModel> ModelCharriot::getCrew() const
 {
     return crew;

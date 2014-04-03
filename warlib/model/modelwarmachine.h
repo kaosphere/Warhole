@@ -31,6 +31,7 @@ public:
     virtual void save(QString path);
     
     virtual QString displayStringInfo();
+    virtual QString getHtml();
 
     virtual int computePoints();
 

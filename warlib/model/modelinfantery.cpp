@@ -124,6 +124,17 @@ QString ModelInfantery::displayStringInfo()
     return s;
 }
 
+QString ModelInfantery::getHtml()
+{
+    QString html;
+    html += getBaseHtml();
+    html += "Règles additionnelles : <br/>\n";
+    html += QString(specialRules.toHtmlEscaped() + "<br/>\n");
+    html += "<br/>\n";
+
+    return html;
+}
+
 QString ModelInfantery::getSpecialRules() const
 {
     return specialRules;

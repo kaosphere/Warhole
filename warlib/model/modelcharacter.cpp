@@ -166,6 +166,26 @@ QString ModelCharacter::displayStringInfo()
     return s;
 }
 
+QString ModelCharacter::getHtml()
+{
+    QString html;
+    if(isALord) html += QString("<h2>Seigneur");
+    if(isAMage) html += QString(" Mage</h2>\n");
+    else html += QString("</h2>\n");
+    if(hasGB) html += QString("<i>Porteur de la Grande Bannière.</i>\n");
+    if(isTheGeneral) html += QString("<i>Général de l'armée.</i>\n");
+    html += getBaseHtml();
+    html += "Règles additionnelles : <br/>\n";
+    html += QString(specialRules.toHtmlEscaped() + "<br/>\n");
+    html += "<br/>\n";
+    if(isMounted)
+    {
+        html += QString("Statistique de la monture (%1)<br/>\n").arg(mount.getName());
+        html += mount.getHtml();
+    }
+    return html;
+}
+
 QString ModelCharacter::getSpecialRules() const
 {
     return specialRules;

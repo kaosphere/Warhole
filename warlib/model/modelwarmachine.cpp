@@ -136,6 +136,17 @@ QString ModelWarMachine::displayStringInfo()
     return s;
 }
 
+QString ModelWarMachine::getHtml()
+{
+    QString html;
+    html += getBaseHtml();
+    html += "Règles additionnelles : <br/>\n";
+    html += QString(specialRules.toHtmlEscaped() + "<br/>\n");
+    html += "<br/>\n";
+
+    return html;
+}
+
 QString ModelWarMachine::getSpecialRules() const
 {
     return specialRules;

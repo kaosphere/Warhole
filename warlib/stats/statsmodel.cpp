@@ -144,7 +144,7 @@ QString StatsModel::displayString() const
 
 QString StatsModel::getHtml() const
 {
-	QString html("<table cols=11 border=1 cellpadding=10>");
+    QString html("<table cols=11 border=1 cellpadding=10>\n");
 	html += "<tr>\n";
 	html += "<td width=40 align='center'>M</td>\n";
 	html += "<td width=40 align='center'>CC</td>\n";

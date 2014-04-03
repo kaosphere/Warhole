@@ -32,7 +32,7 @@ public:
     QString displayInfo() const;
     QString displayShortInfo() const;
 
-    QString &getHtml();
+    QString getHtml();
 
     int computePoints();
 

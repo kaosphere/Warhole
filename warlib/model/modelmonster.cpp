@@ -126,6 +126,17 @@ QString ModelMonster::displayStringInfo()
     return s;
 }
 
+QString ModelMonster::getHtml()
+{
+    QString html;
+    html += getBaseHtml();
+    html += "Règles additionnelles : <br/>\n";
+    html += QString(specialRules.toHtmlEscaped() + "<br/>\n");
+    html += "<br/>\n";
+
+    return html;
+}
+
 QString ModelMonster::getSpecialRules() const
 {
     return specialRules;

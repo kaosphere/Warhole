@@ -118,10 +118,9 @@ QString ModelAbstract::getHtml()
 QString ModelAbstract::getBaseHtml()
 {
     QString html;
-    html += QString("%1").arg(stats.getName());
+    html += QString("<h2>%1</h2><br/>\n").arg(stats.getName());
 	html += QString("Points du model : %1 pts <br/>\n")
 					.arg(QString::number(computePoints()));
-	html += "<br/>\n";
 	html += stats.getHtml();
 	html += "<br/>\n";
 	html += "Options : <br/>\n";

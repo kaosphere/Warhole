@@ -11,7 +11,7 @@ class PdfExporter
 public:
     PdfExporter();
 
-    static bool exportHtmlToPdfFile(QString &fileName, QString &html);
+    static bool exportHtmlToPdfFile(QString &fileName, QString html);
     static void initPdfExporter();
 
 private:

@@ -250,17 +250,16 @@ QString RegimentAbstract::displayShortInfo() const
 
 QString RegimentAbstract::getHtml()
 {
-    QString html("<p style=\"font-size:14pt>");
-    html += QString("Régiment de %1 groupes : %2 points.<br/>\n")
-            .arg(groups.size())
-            .arg(computePoints());
-    html += QString("Le régiment est composé de : <br/>\n");
+    QString html("<p style=\"font-size:14pt\">\n");
+    html += QString("<h2>%1 : %2 points</h2>")
+            .arg(name)
+            .arg(QString::number(computePoints()));
     for(int i = 0; i < groups.size() ; ++i)
     {
-        html += QString("Groupe de %1 %2 : %3 points.<br/>\n")
+        /*html += QString("Groupe de %1 %2 : %3 points.<br/>\n")
                 .arg(QString::number(groups[i].getNb()))
                 .arg(groups[i].getModel()->getStats().getName())
-                .arg(groups[i].computePoints());
+                .arg(groups[i].computePoints());*/
         html += groups[i].getModel()->getHtml();
     }
     html += QString("</p>\n");

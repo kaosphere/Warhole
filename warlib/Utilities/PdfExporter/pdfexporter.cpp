@@ -16,10 +16,9 @@ void PdfExporter::initPdfExporter()
 
 }
 
-bool PdfExporter::exportHtmlToPdfFile(QString& fileName, QString& html)
+bool PdfExporter::exportHtmlToPdfFile(QString& fileName, QString html)
 {
     QTextDocument doc;
-    QLog_Info(LOG_ID_INFO, html);
     if (!fileName.endsWith(".pdf"))
     {
         QLog_Error(LOG_ID_ERR, "exportHtmlToPdfFile : File name doesn't end with .pdf");
