@@ -94,6 +94,19 @@ public:
 	* \param path File path of the file to be saved.
 	*/
     virtual void save(const QString path);
+
+    //! SerializeOut
+    /*!
+     * VIRTUAL : Method to serialize unknown modelabstract pointer.
+     */
+    virtual QDataStream &serializeOut(QDataStream &out);
+
+    //! SerializeIn
+    /*!
+     * VIRTUAL : Method to serialize unknown modelabstract pointer.
+     * \param in QDataStream from which the data is read to feed the object.
+     */
+    virtual QDataStream &serializeIn(QDataStream& in);
 	
 	//! setFromFile
 	/*!
@@ -196,6 +209,8 @@ public:
 	* included chosen options.
 	*/
     virtual int computePoints();
+
+    int computeBasePoints();
 
 protected:
 

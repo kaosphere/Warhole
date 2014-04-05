@@ -45,6 +45,18 @@ ModelCharriot *ModelCharriot::setFromFile(QString path)
     return tmp;
 }
 
+QDataStream& ModelCharriot::serializeOut(QDataStream& out)
+{
+    out << (*this);
+    return out;
+}
+
+QDataStream & ModelCharriot::serializeIn(QDataStream &in)
+{
+    in >> (*this);
+    return in;
+}
+
 ModelCharriot *ModelCharriot::setFromUI(const ParamsfromUImodel *params)
 {
     ModelCharriot* tmp = new ModelCharriot(*this);
@@ -251,12 +263,7 @@ void ModelCharriot::setType(const ModelType &value)
 int ModelCharriot::computePoints()
 {
     //compute whole points of the model
-    int points = stats.getPoints();
-    QList<OptionModel>::iterator i;
-    for (i = options.begin(); i != options.end(); ++i)
-    {
-        points += i->getNbPoints();
-    }
+    int points = computeBasePoints();
     QList<StatsModel>::Iterator j;
     for(j = crew.begin(); j < crew.end(); ++j)
     {

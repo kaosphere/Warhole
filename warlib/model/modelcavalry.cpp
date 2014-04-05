@@ -67,6 +67,18 @@ void ModelCavalry::setSpecialRules(const QString &value)
     specialRules = value;
 }
 
+QDataStream& ModelCavalry::serializeOut(QDataStream& out)
+{
+    out << (*this);
+    return out;
+}
+
+QDataStream & ModelCavalry::serializeIn(QDataStream &in)
+{
+    in >> (*this);
+    return in;
+}
+
 // Init for serialization
 void ModelCavalry::initModelCavalrySystem()
 {
@@ -251,12 +263,8 @@ void ModelCavalry::setType(const ModelType &value)
 int ModelCavalry::computePoints()
 {
     //compute whole points of the model
-    int points = stats.getPoints();
-    QList<OptionModel>::iterator i;
-    for (i = options.begin(); i != options.end(); ++i)
-    {
-        points += i->getNbPoints();
-    }
+    int points = computeBasePoints();
+
     points += mount.getPoints();
     return points;
 }

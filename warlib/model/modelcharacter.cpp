@@ -75,6 +75,18 @@ ModelCharacter *ModelCharacter::setFromFile(QString path)
     return tmp;
 }
 
+QDataStream& ModelCharacter::serializeOut(QDataStream& out)
+{
+    out << (*this);
+    return out;
+}
+
+QDataStream & ModelCharacter::serializeIn(QDataStream &in)
+{
+    in >> (*this);
+    return in;
+}
+
 ModelCharacter *ModelCharacter::setFromUI(const ParamsfromUImodel *params)
 {
     qDebug() << "yay this is setfromUI in modelCHARACTER !";
@@ -287,12 +299,7 @@ void ModelCharacter::setMount(const StatsModel &value)
 int ModelCharacter::computePoints()
 {
     //compute whole points of the model
-    int points = stats.getPoints();
-    QList<OptionModel>::iterator i;
-    for (i = options.begin(); i != options.end(); ++i)
-    {
-        points += i->getNbPoints();
-    }
+    int points = computeBasePoints();
     points += mount.getPoints();
     return points;
 }

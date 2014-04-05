@@ -44,6 +44,18 @@ ModelMonster *ModelMonster::setFromFile(QString path)
     return tmp;
 }
 
+QDataStream& ModelMonster::serializeOut(QDataStream& out)
+{
+    out << (*this);
+    return out;
+}
+
+QDataStream & ModelMonster::serializeIn(QDataStream &in)
+{
+    in >> (*this);
+    return in;
+}
+
 ModelMonster *ModelMonster::setFromUI(const ParamsfromUImodel *params)
 {
     ModelMonster* tmp = new ModelMonster(*this);
@@ -216,12 +228,7 @@ void ModelMonster::setType(const ModelType &value)
 int ModelMonster::computePoints()
 {
     //compute whole points of the model
-    int points = stats.getPoints();
-    QList<OptionModel>::iterator i;
-    for (i = options.begin(); i != options.end(); ++i)
-    {
-        points += i->getNbPoints();
-    }
+    int points = computeBasePoints();
     return points;
 }
 

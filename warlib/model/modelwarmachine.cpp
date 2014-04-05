@@ -42,6 +42,18 @@ ModelWarMachine *ModelWarMachine::setFromFile(QString path)
     return tmp;
 }
 
+QDataStream &ModelWarMachine::serializeOut(QDataStream& out)
+{
+    out << (*this);
+    return out;
+}
+
+QDataStream & ModelWarMachine::serializeIn(QDataStream &in)
+{
+    in >> (*this);
+    return in;
+}
+
 ModelWarMachine *ModelWarMachine::setFromUI(const ParamsfromUImodel *params)
 {
     ModelWarMachine* tmp = new ModelWarMachine(*this);
@@ -96,12 +108,7 @@ void ModelWarMachine::save(QString path)
 int ModelWarMachine::computePoints()
 {
     //compute whole points of the model
-    int points = stats.getPoints();
-    QList<OptionModel>::iterator i;
-    for (i = options.begin(); i != options.end(); ++i)
-    {
-        points += i->getNbPoints();
-    }
+    int points = computeBasePoints();
     return points;
 }
 

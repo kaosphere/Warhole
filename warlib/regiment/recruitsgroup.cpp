@@ -59,6 +59,7 @@ QDataStream & operator <<(QDataStream& out, const RecruitsGroup& obj)
     out << obj.nb
         << obj.casualties
         << obj.path;
+        obj.model->serializeOut(out);
 
     return out;
 }
@@ -69,8 +70,10 @@ QDataStream & operator >>(QDataStream& in, RecruitsGroup& obj)
     in >> obj.nb;
     in >> obj.casualties;
     in >> obj.path;
-	
-    obj.model = obj.fac.createFromFile(obj.path);
+
+    obj.model = obj.fac.createEmptyModel(obj.path.section('/',-2,-2));
+
+    obj.model->serializeIn(in);
 
     return in;
 }

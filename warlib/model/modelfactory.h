@@ -14,6 +14,7 @@ class ModelFactory
 public:
     ModelFactory();
     static void associateKeyToClass(const QString &key, ModelAbstract* mod);
+    ModelAbstract* createEmptyModel(const QString& key);
     ModelAbstract* createFromFile(const QString& path) const;
     ModelAbstract* createFromUI(const QString& key, const ParamsfromUImodel *params) const;
 	

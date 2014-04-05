@@ -27,6 +27,17 @@ void ModelFactory::associateKeyToClass(const QString &key, ModelAbstract *mod)
     }
 }
 
+ModelAbstract *ModelFactory::createEmptyModel(const QString &key)
+{
+    ModelAbstract* tmp = 0;
+    QMap<QString, ModelAbstract*>::const_iterator it = factory_model_map.find(key);
+    if(it != factory_model_map.end()) // key was found in map
+    {
+        tmp = *it;
+    }
+    return tmp;
+}
+
 //create the corresponding model type depending on the path
 ModelAbstract *ModelFactory::createFromFile(const QString& path) const
 {

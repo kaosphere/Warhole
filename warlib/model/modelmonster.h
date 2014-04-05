@@ -30,6 +30,19 @@ public:
     virtual void load(QString path);
     virtual void save(QString path);
 
+    //! SerializeOut
+    /*!
+     * VIRTUAL : Method to serialize unknown modelabstract pointer.
+     */
+    virtual QDataStream &serializeOut(QDataStream &out);
+
+    //! SerializeIn
+    /*!
+     * VIRTUAL : Method to serialize unknown modelabstract pointer.
+     * \param in QDataStream from which the data is read to feed the object.
+     */
+    virtual QDataStream &serializeIn(QDataStream& in);
+
 	virtual QString displayStringInfo();
     virtual QString getHtml();
 

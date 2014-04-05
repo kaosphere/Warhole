@@ -27,6 +27,19 @@ public:
     QString getSpecialRules() const;
     void setSpecialRules(const QString &value);
 
+    //! SerializeOut
+    /*!
+     * VIRTUAL : Method to serialize unknown modelabstract pointer.
+     */
+    virtual QDataStream& serializeOut(QDataStream& out);
+
+    //! SerializeIn
+    /*!
+     * VIRTUAL : Method to serialize unknown modelabstract pointer.
+     * \param in QDataStream from which the data is read to feed the object.
+     */
+    virtual QDataStream &serializeIn(QDataStream& in);
+
     static void initModelCavalrySystem();
     virtual ModelCavalry* setFromFile(QString path);
     virtual ModelCavalry* setFromUI(const ParamsfromUImodel* params);

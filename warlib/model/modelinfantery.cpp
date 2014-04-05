@@ -42,6 +42,18 @@ ModelInfantery *ModelInfantery::setFromFile(QString path)
     return tmp;
 }
 
+QDataStream& ModelInfantery::serializeOut(QDataStream& out)
+{
+    out << (*this);
+    return out;
+}
+
+QDataStream & ModelInfantery::serializeIn(QDataStream &in)
+{
+    in >> (*this);
+    return in;
+}
+
 ModelInfantery *ModelInfantery::setFromUI(const ParamsfromUImodel *params)
 {
     qDebug() << "yay this is setfromUI in ModelInfantery !";
@@ -158,12 +170,7 @@ void ModelInfantery::setType(const ModelType &value)
 int ModelInfantery::computePoints()
 {
     //compute whole points of the model
-    int points = stats.getPoints();
-    QList<OptionModel>::iterator i;
-    for (i = options.begin(); i != options.end(); ++i)
-    {
-        points += i->getNbPoints();
-    }
+    int points = computeBasePoints();
     return points;
 }
 

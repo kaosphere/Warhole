@@ -84,6 +84,18 @@ void ModelAbstract::save(const QString path)
 {
 }
 
+QDataStream& ModelAbstract::serializeOut(QDataStream& out)
+{
+    // We Should never pass here
+    return out;
+}
+
+QDataStream& ModelAbstract::serializeIn(QDataStream &in)
+{
+    // We should never pass here
+    return in;
+}
+
 ModelAbstract *ModelAbstract::setFromFile(const QString path)
 {
 }
@@ -127,9 +139,12 @@ QString ModelAbstract::getBaseHtml()
 	QList<OptionModel>::iterator i;
     for(i = options.begin(); i < options.end() ; ++i)
     {
-		html += "<li>";
-		html += i->getHtml();
-		html += "</li>\n";
+        if(i->isActivated())
+        {
+            html += "<li>";
+            html += i->getHtml();
+            html += "</li>\n";
+        }
 	}
 	html += "<br/>\n";
 	
@@ -248,6 +263,18 @@ void ModelAbstract::setUrlImage(const QString &value)
 
 int ModelAbstract::computePoints()
 {
+}
+
+int ModelAbstract::computeBasePoints()
+{
+    int points = stats.getPoints();
+    QList<OptionModel>::iterator i;
+    for (i = options.begin(); i != options.end(); ++i)
+    {
+        if(i->isActivated())
+            points += i->getNbPoints();
+    }
+    return points;
 }
 
 QDataStream &operator <<(QDataStream & out, const ModelAbstract & obj)
