@@ -17,26 +17,32 @@
 * Derived class for historic items
 * DiceHistoricItems hold data of passed dice rolls.
 */
-class DiceHistoricItem: public virtual HistoricAbstractItem {
+class DiceHistoricItem: public HistoricAbstractItem
+{
 public:
-	//! Constructor.
-		/*!
+    //! Constructor.
+    /*!
 		Default constructor of HistoricAbstractItem class
 		*/
-	DiceHistoricItem();
-
-	//! Copy Constructor.
-	/*!
+    DiceHistoricItem();
+    //! Copy Constructor.
+    /*!
 	* Copy constructor of HistoricAbstractItem class
 	* \param copy Object to be copied.
 	*/
-	DiceHistoricItem(DiceHistoricItem& copy);
-
-	//! Destructor.
-	/*!
+    DiceHistoricItem(DiceHistoricItem & copy);
+    //! Destructor.
+    /*!
 	* VIRTUAL : Base destructor of ModelAbstract class
 	*/
-	virtual ~DiceHistoricItem();
+    virtual ~DiceHistoricItem();
+
+    Dice getDiceType() const;
+    int getNbDice() const;
+    QList<int> getResults() const;
+    void setDiceType(Dice diceType);
+    void setNbDice(int nbDice);
+    void setResults(QList<int> results);
 
 private:
 	//! diceType

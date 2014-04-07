@@ -22,3 +22,35 @@ DiceHistoricItem::~DiceHistoricItem() {
 	// TODO Auto-generated destructor stub
 }
 
+Dice DiceHistoricItem::getDiceType() const
+{
+    return diceType;
+}
+
+int DiceHistoricItem::getNbDice() const
+{
+    return nbDice;
+}
+
+QList<int> DiceHistoricItem::getResults() const
+{
+    return results;
+}
+
+void DiceHistoricItem::setDiceType(Dice diceType)
+{
+    this->diceType = diceType;
+}
+
+void DiceHistoricItem::setNbDice(int nbDice)
+{
+    this->nbDice = nbDice;
+}
+
+void DiceHistoricItem::setResults(QList<int> results)
+{
+    this->results = results;
+}
+
+
+
