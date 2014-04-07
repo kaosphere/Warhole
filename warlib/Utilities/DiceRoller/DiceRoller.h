@@ -10,11 +10,11 @@
 #include <stdlib.h>
 #include <QTextStream>
 
+enum Dice { D2 = 0, D3, D4, D6, D8, D10, D12, D20};
+
 class DiceRoller
 {
 public:
-    enum Dice { D2 = 0, D3, D4, D6, D8, D10, D12, D20};
-
     static void initDiceRoller();
     static int rollSingleDie(Dice die);
     static QList<int> rollDiceInt(Dice die, int nbDice);

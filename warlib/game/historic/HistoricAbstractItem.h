@@ -45,7 +45,7 @@ public:
 	/*!
 	* VIRTUAL : Base destructor of ModelAbstract class
 	*/
-    virtual ~ModelAbstract() = 0;
+    virtual ~HistoricAbstractItem() = 0;
 
 
     QString getMessage() const;
@@ -76,3 +76,5 @@ private:
     QString source;
 
 };
+
+#endif

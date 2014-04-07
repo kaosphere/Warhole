@@ -9,7 +9,7 @@ HistoricAbstractItem::HistoricAbstractItem(HistoricAbstractItem & copy)
 {
 	message = copy.message;
 	timeStamp = copy.timeStamp;
-	source = copy.source();
+    source = copy.source;
 }
 
 QString HistoricAbstractItem::getMessage() const
