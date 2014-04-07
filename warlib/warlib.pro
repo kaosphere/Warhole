@@ -30,8 +30,10 @@ SOURCES += \
     regiment/recruitsgroup.cpp \
     Utilities/QLogger/QLogger.cpp \
     Utilities/DiceRoller/DiceRoller.cpp \ 
-    Utilities/PdfExporter/pdfexporter.cpp
-
+    Utilities/PdfExporter/pdfexporter.cpp \
+    game/Historic/HistoricAbstractItem.cpp \
+	game/Historic/DiceHistoricItem.cpp
+	
 HEADERS += \
     stats/statsmodel.h \
     army/army.h \
@@ -51,7 +53,9 @@ HEADERS += \
     regiment/recruitsgroup.h \
     Utilities/QLogger/QLogger.h \
     Utilities/DiceRoller/DiceRoller.h \ 
-    Utilities/PdfExporter/pdfexporter.h
+    Utilities/PdfExporter/pdfexporter.h \
+    game/Historic/HistoricAbstractItem.h \
+    game/Historic/DiceHistoricItem.h
 
 INSTALLS += target
 
