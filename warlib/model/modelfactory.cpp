@@ -33,7 +33,7 @@ ModelAbstract *ModelFactory::createEmptyModel(const QString &key)
     QMap<QString, ModelAbstract*>::const_iterator it = factory_model_map.find(key);
     if(it != factory_model_map.end()) // key was found in map
     {
-        tmp = *it;
+        tmp = (*it)->clone();
     }
     return tmp;
 }
@@ -48,7 +48,7 @@ ModelAbstract *ModelFactory::createFromFile(const QString& path) const
 
     if(it != factory_model_map.end()) // key was found in map
     {
-        tmp = *it;
+        tmp = (*it)->clone();
         tmp = tmp->setFromFile(path);
 
         QLog_Info(LOG_ID_INFO, "Key found in map : " + s);
@@ -65,7 +65,7 @@ ModelAbstract* ModelFactory::createFromUI(const QString &key, const ParamsfromUI
     QMap<QString, ModelAbstract*>::const_iterator it = factory_model_map.find(key);
     if(it != factory_model_map.end()) // key was found in map
     {
-        tmp = *it;
+        tmp = (*it)->clone();
         tmp = tmp->setFromUI(params);
     }
 
