@@ -208,8 +208,11 @@ void ArmyWindow::on_treeViewExistingModels_clicked(const QModelIndex &index)
         for(int i = 0 ; i < ma->getOptions().length() ; i++)
         {
             QList<QStandardItem *> newOption;
+            QStandardItem* checkBox = new QStandardItem(true);
+            checkBox->setCheckable(true);
 
-            newOption<<new QStandardItem(ma->getOptions()[i].getName())
+            newOption<< checkBox
+                     <<  new QStandardItem(ma->getOptions()[i].getName())
                     <<new QStandardItem(QString::number(ma->getOptions()[i].getNbPoints()))
                    <<new QStandardItem(ma->getOptions()[i].getSpecialRules());
 
@@ -218,6 +221,7 @@ void ArmyWindow::on_treeViewExistingModels_clicked(const QModelIndex &index)
         ui->textInfo->clear();
         ui->textInfo->append(ma->displayStringInfo());
     }
+
 }
 
 void ArmyWindow::on_checkBoxChampion_toggled(bool checked)
