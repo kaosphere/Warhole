@@ -9,11 +9,9 @@ const QString RecruitsGroup::LOG_ID_ERR = "RecruitsGroup_err";
 
 RecruitsGroup::RecruitsGroup()
 {
-    model = new ModelAbstract();
     casualties = 0;
     nb = 0;
     path = "";
-    model = NULL;
 
     QLoggerManager *manager = QLoggerManager::getInstance();
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
@@ -24,6 +22,7 @@ RecruitsGroup::RecruitsGroup()
 
 RecruitsGroup::RecruitsGroup(const int &n, const int &c, const QString& p)
 {
+    ModelFactory fac;
     casualties = c;
     nb = n;
     path = p;
@@ -44,7 +43,8 @@ RecruitsGroup::RecruitsGroup(const RecruitsGroup& copy)
     casualties = copy.casualties;
     nb = copy.nb;
     path = copy.path;
-    model = fac.createFromFile(copy.path);
+    //model = fac.createEmptyModel(copy.path.section('/',-2,-2));
+    model = copy.model->clone();
 }
 
 RecruitsGroup::~RecruitsGroup()
@@ -59,19 +59,20 @@ QDataStream & operator <<(QDataStream& out, const RecruitsGroup& obj)
     out << obj.nb
         << obj.casualties
         << obj.path;
-        obj.model->serializeOut(out);
+    obj.model->serializeOut(out);
 
     return out;
 }
 
 QDataStream & operator >>(QDataStream& in, RecruitsGroup& obj)
 {
+    ModelFactory fac;
     // Same comment that for other stream operator
     in >> obj.nb;
     in >> obj.casualties;
     in >> obj.path;
 
-    obj.model = obj.fac.createEmptyModel(obj.path.section('/',-2,-2));
+    obj.model = fac.createEmptyModel(obj.path.section('/',-2,-2));
 
     obj.model->serializeIn(in);
 
@@ -100,6 +101,8 @@ void RecruitsGroup::setPath(const QString &value)
 
 void RecruitsGroup::loadPath()
 {
+    ModelFactory fac;
+
     if(!path.isEmpty())
         model = fac.createFromFile(path);
     else

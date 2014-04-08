@@ -43,6 +43,14 @@ public:
      */
     virtual QDataStream &serializeIn(QDataStream& in);
 
+    //! clone
+    /*!
+    * VIRTUAL : Method that returns a copy of the object. This is used to copy a pointer
+    * to a derived class.
+    */
+    virtual ModelAbstract* clone();
+
+
 	virtual QString displayStringInfo();
     virtual QString getHtml();
 

@@ -37,6 +37,8 @@ OptionModel &OptionModel::operator =(const OptionModel & obj)
     nbPoints = obj.nbPoints;
     activated = obj.activated;
     specialRules = obj.specialRules;
+
+    return *this;
 }
 
 QString OptionModel::displayString()

@@ -155,6 +155,11 @@ void ModelCavalry::save(QString path)
     savedFile.sync();
 }
 
+ModelAbstract *ModelCavalry::clone()
+{
+    return new ModelCavalry(*this);
+}
+
 // Overloading of << operator
 QDataStream & operator << (QDataStream & out, const ModelCavalry & obj)
 {
@@ -231,9 +236,7 @@ QString ModelCavalry::getHtml()
 {
     QString html;
     html += getBaseHtml();
-    html += "Règles additionnelles : <br/>\n";
-    html += QString(specialRules.toHtmlEscaped() + "<br/>\n");
-    html += "<br/>\n";
+    html += QString("<i>%1</i><br/>\n").arg(specialRules.toHtmlEscaped());
     html += QString("Statistique de la monture (%1)<br/>\n").arg(mount.getName());
     html += mount.getHtml();
 

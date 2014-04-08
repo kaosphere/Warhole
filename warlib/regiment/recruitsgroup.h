@@ -59,8 +59,6 @@ private:
     int nb;
     int casualties;
     QString path;
-
-    ModelFactory fac;
 };
 
 #endif // RECRUITSGROUP_H

@@ -56,6 +56,11 @@ QDataStream & ModelMonster::serializeIn(QDataStream &in)
     return in;
 }
 
+ModelAbstract *ModelMonster::clone()
+{
+    return new ModelMonster(*this);
+}
+
 ModelMonster *ModelMonster::setFromUI(const ParamsfromUImodel *params)
 {
     ModelMonster* tmp = new ModelMonster(*this);
@@ -191,6 +196,8 @@ QDataStream & operator >>(QDataStream & in, ModelMonster & obj)
     }
     in >> obj.specialRules;
     in >> obj.hasACrew;
+
+    return in;
 }
 
 

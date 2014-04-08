@@ -57,6 +57,11 @@ QDataStream & ModelCharriot::serializeIn(QDataStream &in)
     return in;
 }
 
+ModelAbstract *ModelCharriot::clone()
+{
+    return new ModelCharriot(*this);
+}
+
 ModelCharriot *ModelCharriot::setFromUI(const ParamsfromUImodel *params)
 {
     ModelCharriot* tmp = new ModelCharriot(*this);

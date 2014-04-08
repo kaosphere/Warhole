@@ -159,6 +159,13 @@ public:
 	*/
     QString getBaseHtml();
 
+    //! clone
+    /*!
+    * VIRTUAL : Method that returns a copy of the object. This is used to copy a pointer
+    * to a derived class.
+    */
+    virtual ModelAbstract* clone();
+
     StatsModel getStats() const;
     void setStats(const StatsModel &value);
 

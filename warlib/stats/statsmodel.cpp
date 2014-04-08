@@ -57,6 +57,8 @@ StatsModel & StatsModel::operator =(const StatsModel &stat)
     svg = stat.svg;
     svgInv = stat.svgInv;
     points = stat.points;
+
+    return *this;
 }
 
 bool StatsModel::operator ==(const StatsModel & stat)
@@ -144,19 +146,19 @@ QString StatsModel::displayString() const
 
 QString StatsModel::getHtml() const
 {
-    QString html("<table cols=11 border=1 cellpadding=10>\n");
+    QString html("<table cols=11 border=1 cellpadding=5>\n");
 	html += "<tr>\n";
-	html += "<td width=40 align='center'>M</td>\n";
-	html += "<td width=40 align='center'>CC</td>\n";
-	html += "<td width=40 align='center'>CT</td>\n";
-	html += "<td width=40 align='center'>F</td>\n";
-	html += "<td width=40 align='center'>E</td>\n";
-	html += "<td width=40 align='center'>PV</td>\n";
-	html += "<td width=40 align='center'>I</td>\n";
-	html += "<td width=40 align='center'>A</td>\n";
-	html += "<td width=40 align='center'>Cmd</td>\n";
-	html += "<td width=40 align='center'>Svg</td>\n";
-	html += "<td width=40 align='center'>SvgInv</td>\n";
+    html += "<td align='center'>M</td>\n";
+    html += "<td align='center'>CC</td>\n";
+    html += "<td align='center'>CT</td>\n";
+    html += "<td align='center'>F</td>\n";
+    html += "<td align='center'>E</td>\n";
+    html += "<td align='center'>PV</td>\n";
+    html += "<td align='center'>I</td>\n";
+    html += "<td align='center'>A</td>\n";
+    html += "<td align='center'>Cmd</td>\n";
+    html += "<td align='center'>Svg</td>\n";
+    html += "<td align='center'>SvgInv</td>\n";
 	html += "</tr>\n";
 	html += "<tr>\n";
 	html += QString("<td align='center'>%1</td>\n").arg(m);

@@ -87,6 +87,11 @@ QDataStream & ModelCharacter::serializeIn(QDataStream &in)
     return in;
 }
 
+ModelAbstract *ModelCharacter::clone()
+{
+    return new ModelCharacter(*this);
+}
+
 ModelCharacter *ModelCharacter::setFromUI(const ParamsfromUImodel *params)
 {
     qDebug() << "yay this is setfromUI in modelCHARACTER !";

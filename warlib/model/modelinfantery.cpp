@@ -54,6 +54,11 @@ QDataStream & ModelInfantery::serializeIn(QDataStream &in)
     return in;
 }
 
+ModelAbstract *ModelInfantery::clone()
+{
+    return new ModelInfantery(*this);
+}
+
 ModelInfantery *ModelInfantery::setFromUI(const ParamsfromUImodel *params)
 {
     qDebug() << "yay this is setfromUI in ModelInfantery !";

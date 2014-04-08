@@ -54,6 +54,11 @@ QDataStream & ModelWarMachine::serializeIn(QDataStream &in)
     return in;
 }
 
+ModelAbstract *ModelWarMachine::clone()
+{
+    return new ModelWarMachine(*this);
+}
+
 ModelWarMachine *ModelWarMachine::setFromUI(const ParamsfromUImodel *params)
 {
     ModelWarMachine* tmp = new ModelWarMachine(*this);

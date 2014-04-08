@@ -45,6 +45,13 @@ public:
     virtual ModelCavalry* setFromUI(const ParamsfromUImodel* params);
     virtual void load(QString path);
     virtual void save(QString path);
+
+    //! clone
+    /*!
+    * VIRTUAL : Method that returns a copy of the object. This is used to copy a pointer
+    * to a derived class.
+    */
+    virtual ModelAbstract* clone();
     
     virtual QString displayStringInfo();
     virtual QString getHtml();

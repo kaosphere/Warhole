@@ -250,19 +250,22 @@ QString RegimentAbstract::displayShortInfo() const
 
 QString RegimentAbstract::getHtml()
 {
-    QString html("<p style=\"font-size:14pt\">\n");
-    html += QString("<h2>%1 : %2 points</h2>")
-            .arg(name)
-            .arg(QString::number(computePoints()));
+    QString html("<table width=100% cols=11 border=1 cellpadding=10>\n");
     for(int i = 0; i < groups.size() ; ++i)
     {
-        /*html += QString("Groupe de %1 %2 : %3 points.<br/>\n")
-                .arg(QString::number(groups[i].getNb()))
-                .arg(groups[i].getModel()->getStats().getName())
-                .arg(groups[i].computePoints());*/
+        html += QString("<tr>\n");
+        html += "<td width=17%>\n";
+        html += QString("%1 %2").arg(groups[i].getNb()).arg(groups[i].getModel()->getStats().getName());
+        html += "</td>\n";
+        html += "<td width=75%>\n";
         html += groups[i].getModel()->getHtml();
+        html += "</td>\n";
+        html += "<td width=8%>\n";
+        html += QString("%1 Points").arg(groups[i].computePoints());
+        html += "</td>\n";
+        html += "</tr>\n";
     }
-    html += QString("</p>\n");
+    html += QString("</table>\n");
 
     return html;
 }

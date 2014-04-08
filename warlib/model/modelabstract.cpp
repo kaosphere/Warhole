@@ -82,6 +82,7 @@ ModelAbstract::~ModelAbstract(){}
 
 void ModelAbstract::save(const QString path)
 {
+    // We should never pass here
 }
 
 QDataStream& ModelAbstract::serializeOut(QDataStream& out)
@@ -98,10 +99,12 @@ QDataStream& ModelAbstract::serializeIn(QDataStream &in)
 
 ModelAbstract *ModelAbstract::setFromFile(const QString path)
 {
+    return NULL;
 }
 
 QString ModelAbstract::displayStringInfo()
 {
+    return QString("ERROR");
 }
 
 QString ModelAbstract::displayBaseInfo()
@@ -125,17 +128,14 @@ QString ModelAbstract::displayBaseInfo()
 
 QString ModelAbstract::getHtml()
 {
+    return QString("ERROR");
 }
 
 QString ModelAbstract::getBaseHtml()
 {
     QString html;
-    html += QString("<h2>%1</h2><br/>\n").arg(stats.getName());
-	html += QString("Points du model : %1 pts <br/>\n")
-					.arg(QString::number(computePoints()));
+    html += QString("<h2>%1</h2>\n").arg(stats.getName());
 	html += stats.getHtml();
-	html += "<br/>\n";
-	html += "Options : <br/>\n";
 	QList<OptionModel>::iterator i;
     for(i = options.begin(); i < options.end() ; ++i)
     {
@@ -148,17 +148,23 @@ QString ModelAbstract::getBaseHtml()
 	}
 	html += "<br/>\n";
 	
-	return html;
+    return html;
+}
+
+ModelAbstract *ModelAbstract::clone()
+{
+    // We should never pass here
 }
 
 ModelAbstract *ModelAbstract::setFromUI(const ParamsfromUImodel *params)
 {
-
+    //We should never pass here
 }
 
 
 void ModelAbstract::load(const QString path)
 {
+
 }
 
 
@@ -263,6 +269,7 @@ void ModelAbstract::setUrlImage(const QString &value)
 
 int ModelAbstract::computePoints()
 {
+    return 0;
 }
 
 int ModelAbstract::computeBasePoints()
