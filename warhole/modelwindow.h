@@ -62,10 +62,10 @@ private slots:
     void on_pushButtonRmv_clicked();
 
 private:
-    const QString LOG_ID_TRACE = "ModelWindow_trace";
-    const QString LOG_ID_INFO = "ModelWindow_info";
-    const QString LOG_ID_WARN = "ModelWindow_warn";
-    const QString LOG_ID_ERR = "ModelWindow_err";
+    static const QString LOG_ID_TRACE;
+    static const QString LOG_ID_INFO;
+    static const QString LOG_ID_WARN;
+    static const QString LOG_ID_ERR;
 
     Ui::ModelWindow *ui;
     QGraphicsScene* scene;
