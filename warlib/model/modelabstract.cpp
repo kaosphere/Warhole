@@ -134,7 +134,7 @@ QString ModelAbstract::getHtml()
 QString ModelAbstract::getBaseHtml()
 {
     QString html;
-    html += QString("<h2>%1</h2>\n").arg(stats.getName());
+    html += QString("%1</h2>\n").arg(stats.getName());
 	html += stats.getHtml();
 	QList<OptionModel>::iterator i;
     for(i = options.begin(); i < options.end() ; ++i)

@@ -225,6 +225,17 @@ int RegimentAbstract::computePoints()
     return points;
 }
 
+int RegimentAbstract::computeTotalNb()
+{
+	int nb = 0;
+	QList<RecruitsGroup>::const_iterator i = groups.constBegin();
+	while (i != groups.constEnd()) {
+		nb += i->getNb();
+		++i;
+	}
+	return nb;
+}
+
 
 QString RegimentAbstract::displayShortInfo() const
 {
@@ -251,20 +262,24 @@ QString RegimentAbstract::displayShortInfo() const
 QString RegimentAbstract::getHtml()
 {
     QString html("<table width=100% cols=11 border=1 cellpadding=10>\n");
+
+    html += QString("<tr>\n");
+	html += "<td width=17%>\n";
+	html += QString("%1 %2").arg(this->getStartingCount())
+			.arg(groups[i].getModel()->getStats().getName());
+	html += "</td>\n";
     for(int i = 0; i < groups.size() ; ++i)
     {
-        html += QString("<tr>\n");
-        html += "<td width=17%>\n";
-        html += QString("%1 %2").arg(groups[i].getNb()).arg(groups[i].getModel()->getStats().getName());
-        html += "</td>\n";
         html += "<td width=75%>\n";
-        html += groups[i].getModel()->getHtml();
+        html += QString("<h2>%1 %2")
+        		.arg(QString::number(groups[i].getNb()))
+        		.arg(groups[i].getModel()->getHtml());
         html += "</td>\n";
-        html += "<td width=8%>\n";
-        html += QString("%1 Points").arg(groups[i].computePoints());
-        html += "</td>\n";
-        html += "</tr>\n";
     }
+    html += "<td width=8%>\n";
+    html += QString("%1 Points").arg(computePoints());
+    html += "</td>\n";
+    html += "</tr>\n";
     html += QString("</table>\n");
 
     return html;

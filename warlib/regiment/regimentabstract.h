@@ -77,6 +77,7 @@ public:
     void setStartingCount(int value);
 
     int computePoints();
+    int computeTotalNb();
 
     QString displayInfo() const;
     QString displayShortInfo() const;
