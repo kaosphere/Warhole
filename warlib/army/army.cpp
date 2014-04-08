@@ -115,12 +115,12 @@ QString Army::displayShortInfo() const
 QString Army::getHtml()
 {
     QString html("<html>\n");
-    html += QString("<body>\n");
+    html += QString("<body style=\"font-size:10pt\">\n");
     html += QString("<h1 align='center'>Armée : %1</h1>\n")
             .arg(name.toHtmlEscaped());
     html += QString("<h2>Nb de points total de l'armee : %1 pts</h2>\n")
             .arg(QString::number(computePoints()));
-
+    html += "<br/>\n";
     for(int i = 0; i < units.size() ; ++i)
     {
         html += units[i].getHtml();
