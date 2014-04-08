@@ -39,13 +39,8 @@ public:
 private:
     QString name;
     QList<RegimentAbstract> units;
-    
-    friend QDataStream & operator << (QDataStream &, const Army &);
-    friend QDataStream & operator >> (QDataStream &, Army &);
 };
 
 Q_DECLARE_METATYPE(Army)
-QDataStream & operator << (QDataStream & out, const Army &);
-QDataStream & operator >> (QDataStream & in, Army &);
 
 #endif // Army_H
