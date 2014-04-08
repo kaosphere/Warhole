@@ -264,7 +264,7 @@
          <item>
           <widget class="QCheckBox" name="checkBoxSkirmish">
            <property name="text">
-            <string>Tirrailleurs</string>
+            <string>Tirailleurs</string>
            </property>
           </widget>
          </item>
