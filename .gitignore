@@ -1,4 +1,5 @@
 build*
 *.autosave
 *.user
+*.qm
 bin*
