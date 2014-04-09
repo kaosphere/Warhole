@@ -210,7 +210,7 @@ QString ModelCavalry::displayStringInfo()
         info << "Base" << endl;
         break;
     case 1:
-        info << QString(QString::fromUtf8("Spéciale") << endl;
+        info << QString(QString::fromUtf8("Spéciale")) << endl;
         break;
     case 2:
         info << "Rare" << endl;
@@ -223,7 +223,7 @@ QString ModelCavalry::displayStringInfo()
     info << "Model Cavalry : " << endl;
     info << displayBaseInfo();
     info << "====================================================" << endl;
-    info << QString(QString::fromUtf8("Règles additionnelles : ") << endl;
+    info << QString(QString::fromUtf8("Règles additionnelles : ")) << endl;
     info << specialRules << endl;
     info << "====================================================" << endl;
     info << "Monture : " << mount.getName() << endl;

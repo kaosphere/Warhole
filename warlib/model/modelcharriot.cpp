@@ -180,14 +180,14 @@ QString ModelCharriot::displayStringInfo()
     QString s;
     QTextStream info(&s);
     info << endl << "====================================================" << endl;
-    info << QString(QString::fromUtf8("Unité ");
+    info << QString(QString::fromUtf8("Unité "));
     switch(type)
     {
     case 0:
         info << "Base" << endl;
         break;
     case 1:
-        info << QString(QString::fromUtf8("Spéciale") << endl;
+        info << QString(QString::fromUtf8("Spéciale")) << endl;
         break;
     case 2:
         info << "Rare" << endl;
@@ -200,10 +200,10 @@ QString ModelCharriot::displayStringInfo()
     info << "Model Cavalry : " << endl;
     info << displayBaseInfo();
     info << "====================================================" << endl;
-    info << QString(QString::fromUtf8("Règles additionnelles : ") << endl;
+    info << QString(QString::fromUtf8("Règles additionnelles : ")) << endl;
     info << specialRules << endl;
     info << "====================================================" << endl;
-    info << "Crew stats : " << endl;
+    info << QString(QString::fromUtf8("Statistique de l'équipage' : ")) << endl;
     QList<StatsModel>::iterator i;
     for(i = crew.begin(); i < crew.end() ; ++i)
     {

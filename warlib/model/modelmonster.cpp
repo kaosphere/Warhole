@@ -117,14 +117,14 @@ QString ModelMonster::displayStringInfo()
     QString s;
     QTextStream info(&s);
     info << endl << "====================================================" << endl;
-    info << QString(QString::fromUtf8("Unité ");
+    info << QString(QString::fromUtf8("Unité "));
     switch(type)
     {
     case 0:
         info << "Base" << endl;
         break;
     case 1:
-        info << QString(QString::fromUtf8("Spéciale") << endl;
+        info << QString(QString::fromUtf8("Spéciale")) << endl;
         break;
     case 2:
         info << "Rare" << endl;
@@ -137,7 +137,7 @@ QString ModelMonster::displayStringInfo()
     info << "Model Monster : " << endl;
     info << displayBaseInfo();
     info << "====================================================" << endl;
-    info << QString(QString::fromUtf8("Règles additionnelles : ") << endl;
+    info << QString(QString::fromUtf8("Règles additionnelles : ")) << endl;
     info << specialRules << endl;
     info << "====================================================" << endl;
     return s;

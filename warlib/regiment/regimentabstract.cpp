@@ -265,8 +265,8 @@ QString RegimentAbstract::getHtml()
 
     html += QString("<tr>\n");
 	html += "<td width=17%>\n";
-	html += QString("%1 %2").arg(this->getStartingCount())
-			.arg(groups[i].getModel()->getStats().getName());
+    html += QString("%1")
+            .arg(name);
 	html += "</td>\n";
     for(int i = 0; i < groups.size() ; ++i)
     {
