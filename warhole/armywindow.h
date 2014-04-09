@@ -46,6 +46,8 @@ private slots:
 
     void on_pushButtonExport_clicked();
 
+    void on_removeGroupButton_clicked();
+
 private:
     static const QString LOG_ID_TRACE;
     static const QString LOG_ID_INFO;

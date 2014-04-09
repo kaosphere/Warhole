@@ -3,33 +3,33 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
-    QMenu *menuFichier = menuBar()->addMenu("&Fichier");
+    QMenu *menuFichier = menuBar()->addMenu(tr("&Fichier"));
 
-    QAction *actionLaunchGame = new QAction("&Ecran de jeu", this);
+    QAction *actionLaunchGame = new QAction(tr("&Ecran de jeu"), this);
     menuFichier->addAction(actionLaunchGame);
     connect(actionLaunchGame, SIGNAL(triggered()), this, SLOT(openGameWindow()));
 
-    QAction *actionCreateModel = new QAction("&Creer une figurine", this);
+    QAction *actionCreateModel = new QAction(tr("&Creer une figurine"), this);
     menuFichier->addAction(actionCreateModel);
     actionCreateModel->setShortcut(QKeySequence("Ctrl+C"));
     connect(actionCreateModel, SIGNAL(triggered()), this, SLOT(openModelWindow()));
 
-    QAction *actionEditModel = new QAction("&Editer une figurine", this);
+    QAction *actionEditModel = new QAction(tr("&Editer une figurine"), this);
     menuFichier->addAction(actionEditModel);
     actionEditModel->setShortcut(QKeySequence("Ctrl+E"));
     connect(actionEditModel, SIGNAL(triggered()), this, SLOT(openEditModelWindow()));
 
-    QAction *actionCreateArmy = new QAction("&Créer une armée", this);
+    QAction *actionCreateArmy = new QAction(tr("&Créer une armée"), this);
     menuFichier->addAction(actionCreateArmy);
     actionCreateArmy->setShortcut(QKeySequence("Ctrl+A"));
     connect(actionCreateArmy, SIGNAL(triggered()), this, SLOT(openArmyWindow()));
 
-    QAction *actionEditArmy = new QAction("&Editer une armée", this);
+    QAction *actionEditArmy = new QAction(tr("&Editer une armée"), this);
     menuFichier->addAction(actionEditArmy);
     actionEditArmy->setShortcut(QKeySequence("Ctrl+D"));
     connect(actionEditArmy, SIGNAL(triggered()), this, SLOT(openEditArmyWindow()));
 
-    QAction *actionQuitter = new QAction("&Quitter", this);
+    QAction *actionQuitter = new QAction(tr("&Quitter"), this);
     menuFichier->addAction(actionQuitter);
     actionQuitter->setShortcut(QKeySequence("Ctrl+Q"));
     connect(actionQuitter, SIGNAL(triggered()), qApp, SLOT(quit()));

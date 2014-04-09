@@ -274,8 +274,8 @@ void ModelWindow::on_toolButtonImage_pressed()
 {
     QString fileName;
 
-    fileName = QFileDialog::getOpenFileName(this, tr("Open Image"),
-    			".", tr("Image Files (*.png *.jpg *.bmp)"));
+    fileName = QFileDialog::getOpenFileName(this, tr("Ouvrir Image"),
+                ".", tr("Fichiers images (*.png *.jpg *.bmp)"));
     ui->lineEditImage->setText(fileName);
 
     if(image->load(fileName))
@@ -283,7 +283,7 @@ void ModelWindow::on_toolButtonImage_pressed()
     	scene->clear();
     	scene->addPixmap(*image);
     }
-    else  QMessageBox::warning(this, "Info", "URL de l'image non valide");
+    else  QMessageBox::warning(this, tr("Info"), tr("URL de l'image non valide"));
 
 }
 
@@ -317,7 +317,7 @@ void ModelWindow::on_addOption_clicked()
     //don't do anything if not
     else
     {
-        QMessageBox::warning(this, "Erreur", "Le nombre de point doit être un nombre entier.");
+        QMessageBox::warning(this, tr("Erreur"), tr("Le nombre de point doit être un nombre entier."));
     }
 }
 
@@ -339,8 +339,8 @@ void ModelWindow::on_pushButtonSave_clicked()
        ui->comboRace->currentIndex() == 0 ||
        ui->comboUnitType->currentIndex() == 0 )
     {
-        QMessageBox::warning(this, "Info",
-        		"Vous devez obligatoirement choisir une race, un type d'unité et remplir un nom et une image.");
+        QMessageBox::warning(this, tr("Info"),
+                tr("Vous devez obligatoirement choisir une race, un type d'unité et remplir un nom et une image."));
         return;
     }
     // If any type was chosen, abort instead the model is a character because character don't have a type.
@@ -349,14 +349,14 @@ void ModelWindow::on_pushButtonSave_clicked()
        !ui->radioSpecial->isChecked() &&
        ui->comboUnitType->itemText(ui->comboUnitType->currentIndex()) != CHARACTER_STRING)
     {
-        QMessageBox::warning(this, "Info", "Un type (base, special ou rare) doit être choisi.");
+        QMessageBox::warning(this, tr("Info"), tr("Un type (base, special ou rare) doit être choisi."));
         return;
     }
     if(ui->comboUnitType->itemText(ui->comboUnitType->currentIndex()) == CAVALERY_STRING)
     {
         if(crew->rowCount() > 1 || crew->rowCount() == 0)
         {
-            QMessageBox::warning(this, "Info", "La figurine doit posséder obligatoirement une (seule) monture.");
+            QMessageBox::warning(this, tr("Info"), tr("La figurine doit posséder obligatoirement une (seule) monture."));
             return;
         }
     }
@@ -365,12 +365,12 @@ void ModelWindow::on_pushButtonSave_clicked()
     {
         if(ui->checkMounted->isChecked() && crew->rowCount() == 0)
         {
-            QMessageBox::warning(this, "Info", "Vous avez spécifié que le personnage était monté, veuillez ajouter une monture, ou décocher la case \"Monté\"");
+            QMessageBox::warning(this, tr("Info"), tr("Vous avez spécifié que le personnage était monté, veuillez ajouter une monture, ou décocher la case \"Monté\""));
             return;
         }
         if(crew->rowCount() > 1)
         {
-            QMessageBox::warning(this, "Info", "La figurine doit posséder obligatoirement une seule monture.");
+            QMessageBox::warning(this, tr("Info"), tr("La figurine doit posséder obligatoirement une seule monture."));
             return;
         }
         if(crew->rowCount()!=0 && !ui->checkMounted->isChecked())
@@ -389,21 +389,21 @@ void ModelWindow::on_pushButtonSave_clicked()
 
     if(f.exists())
     {
-        int rep = QMessageBox::question(this,"Ecraser",
-        		"La figurine existe déjà, voulez vous l'écraser?", QMessageBox::Yes | QMessageBox::No);
+        int rep = QMessageBox::question(this,tr("Ecraser"),
+                tr("La figurine existe déjà, voulez vous l'écraser?"), QMessageBox::Yes | QMessageBox::No);
         if (rep == QMessageBox::Yes)
         {
             save(path);
-            QMessageBox::information(this, "Info", "Figurine sauvegardée avec succès.");
+            QMessageBox::information(this, tr("Info"), tr("Figurine sauvegardée avec succès."));
         }
         else if (rep == QMessageBox::No)
         {
-            QMessageBox::critical(this, "Annulation", "Sauvegarde annulée");
+            QMessageBox::critical(this, tr("Annulation"), tr("Sauvegarde annulée"));
         }
     }
     else{
         save(path);
-        QMessageBox::information(this, "Info", "Figurine sauvegardée avec succès.");
+        QMessageBox::information(this, tr("Info"), tr("Figurine sauvegardée avec succès."));
     }
 }
 
@@ -440,7 +440,7 @@ void ModelWindow::fillUI(ModelAbstract* m, QString path)
     	scene->clear();
     	scene->addPixmap(*image);
     }
-    else  QMessageBox::warning(this, "Info", "URL de l'image non valide");
+    else  QMessageBox::warning(this, tr("Info"), tr("URL de l'image non valide"));
 
     for(int i = 0 ; i < m->getOptions().length() ; i++)
     {
@@ -704,7 +704,6 @@ void ModelWindow::save(QString path)
     {
         QLog_Error(LOG_ID_ERR, "save : Can't find type parameter.");
     }
-    qDebug() << "Params type : " << params->getType();
 
     params->setSpecRules(ui->textEdit->toPlainText());
     setModelProperties(params);
@@ -794,8 +793,8 @@ void ModelWindow::load(QString path)
 
 void ModelWindow::on_pushButtonLoad_clicked()
 {
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Open Model"),
-    		"./models", tr("Model files (*.unit)"));
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Ouvrir Model"),
+            "./models", tr("Fichiers de Models (*.unit)"));
 
     //clean all ui
     ui->comboRace->setCurrentIndex(0);
@@ -834,8 +833,9 @@ void ModelWindow::on_pushButtonAdd_clicked()
     {
         if(crew->rowCount()!=0)
         {
-            int rep = QMessageBox::question(this,"Monture",
-                    "Le personnage, ou le cavalier ne peut avoir qu'une seule monture. Voulez-vous remplacer la monture actuelle ?", QMessageBox::Yes | QMessageBox::No);
+            int rep = QMessageBox::question(this,tr("Monture"),
+                    tr("Le personnage, ou le cavalier ne peut avoir qu'une seule monture. Voulez-vous remplacer la monture actuelle ?"),
+                    QMessageBox::Yes | QMessageBox::No);
             if (rep == QMessageBox::No)
             {
                 ok = false;
@@ -882,7 +882,7 @@ void ModelWindow::on_pushButtonAdd_clicked()
         ui->lineEditSvg2->clear();
         ui->lineEditSvgInv2->clear();
     }
-    else QMessageBox::warning(this, "Erreur", "Le nombre de point doit être un nombre entier.");
+    else QMessageBox::warning(this, tr("Erreur"), tr("Le nombre de point doit être un nombre entier."));
 }
 
 void ModelWindow::on_pushButtonRmv_clicked()

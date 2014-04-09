@@ -35,7 +35,9 @@ HEADERS  += mainwindow.h \
     gamewindow.h \
     game/testgi.h \
     game/fieldlimits.h \
-    game/distances.h \
+    game/distances.h
+
+TRANSLATIONS = warhole_en.ts
 
 
 FORMS += \

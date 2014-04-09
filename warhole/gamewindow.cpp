@@ -17,7 +17,7 @@ GameWindow::GameWindow(QWidget *parent) :
     scene.installEventFilter(this);
 
     //background of the game (To be removed afterwards)
-    if(!background.load("E:/work/c++/test graphics/testGraphics/ressources/grass5.png"))
+    if(!background.load("C:/Users/Psycko/Documents/GitHub/Warhole/warhole/ressources/floor_grass5.jpg"))
     {
         qDebug()<<"GAMEWINDOW : Can't load background image";
     }

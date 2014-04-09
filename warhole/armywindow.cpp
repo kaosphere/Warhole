@@ -31,7 +31,7 @@ ArmyWindow::ArmyWindow(QWidget *parent) :
 
     if(existingRaces.isEmpty())
     {
-         QMessageBox::warning(this, "Erreur", "Aucune race existante ; commencez par créer des figurines");
+         QMessageBox::warning(this, tr("Erreur"), tr("Aucune race existante ; commencez par créer des figurines"));
     }
 
     existingRaces.removeOne(".");
@@ -88,7 +88,7 @@ ArmyWindow::ArmyWindow(QString fileName, QWidget *parent) :
 
     if(existingRaces.isEmpty())
     {
-         QMessageBox::warning(this, "Erreur", "Aucune race existante ; commencez par créer des figurines");
+         QMessageBox::warning(this, tr("Erreur"), tr("Aucune race existante ; commencez par créer des figurines"));
     }
 
     existingRaces.removeOne(".");
@@ -144,8 +144,8 @@ void ArmyWindow::on_comboBoxRace_currentIndexChanged(const QString &raceDir)
         }
         else
         {
-            int rep = QMessageBox::question(this,"Race",
-                                        "Une armée ne peut se composer que d'une seule race. Voulez-vous changer de race ? (Attention, cela supprimera les régiments déjà ajoutés.)",
+            int rep = QMessageBox::question(this,tr("Race"),
+                                        tr("Une armée ne peut se composer que d'une seule race. Voulez-vous changer de race ? (Attention, cela supprimera les régiments déjà ajoutés.)"),
                                         QMessageBox::Yes | QMessageBox::No);
             if (rep == QMessageBox::No)
             {
@@ -173,7 +173,7 @@ void ArmyWindow::on_comboBoxRace_currentIndexChanged(const QString &raceDir)
 
         if(existingModels.isEmpty())
         {
-             QMessageBox::warning(this, "Erreur", "Aucune race existante ; commencez par créer des figurines");
+             QMessageBox::warning(this, tr("Erreur"), tr("Aucune race existante ; commencez par créer des figurines"));
         }
 
         existingModels.removeOne(".");
@@ -283,7 +283,7 @@ void ArmyWindow::on_addGroupButton_clicked()
     }
     else
     {
-        QMessageBox::warning(this, "Info", "Le nombre de modèles ajoutés doit être suppérieur à 0.");
+        QMessageBox::warning(this, tr("Info"), tr("Le nombre de modèles ajoutés doit être suppérieur à 0."));
     }
 }
 
@@ -314,7 +314,7 @@ void ArmyWindow::on_addRegButton_clicked()
 
     if(!models->rowCount())
     {
-        QMessageBox::warning(this, "Info", "Le régiment est vide, veuillez ajouter des modèles.");
+        QMessageBox::warning(this, tr("Info"), tr("Le régiment est vide, veuillez ajouter des modèles."));
     }
     else
     {
@@ -329,7 +329,6 @@ void ArmyWindow::on_addRegButton_clicked()
                 {
                     case 0:
                         o.setNb(item->text().toUInt());
-                        qDebug() << "nombre dans le groupe : " << item->text().toUInt();
                         sp += o.getNb();
                         break;
                     case 1:
@@ -390,8 +389,8 @@ void ArmyWindow::on_removeRegButton_clicked()
     QModelIndex indexElementSelectionne = selection->currentIndex();
     if(indexElementSelectionne.isValid())
     {
-        int rep = QMessageBox::question(this,"Monture",
-                                        "Voulez-vous supprimer le régiment de l'armée ?",
+        int rep = QMessageBox::question(this,tr("Monture"),
+                                        tr("Voulez-vous supprimer le régiment de l'armée ?"),
                                         QMessageBox::Yes | QMessageBox::No);
         if (rep == QMessageBox::No)
         {
@@ -404,7 +403,7 @@ void ArmyWindow::on_removeRegButton_clicked()
     }
     else
     {
-        QMessageBox::warning(this, "Info", "Veuillez sélectionner un régiment a supprimer.");
+        QMessageBox::warning(this, tr("Info"), tr("Veuillez sélectionner un régiment a supprimer."));
     }
 }
 
@@ -465,7 +464,7 @@ void ArmyWindow::on_editRegButton_clicked()
     }
     else
     {
-        QMessageBox::warning(this, "Info", "Veuillez sélectionner un régiment a éditer.");
+        QMessageBox::warning(this, tr("Info"), tr("Veuillez sélectionner un régiment a éditer."));
     }
 }
 
@@ -493,7 +492,7 @@ void ArmyWindow::on_pushButtonDuplicate_clicked()
     }
     else
     {
-        QMessageBox::warning(this, "Info", "Veuillez sélectionner un régiment a dupliquer.");
+        QMessageBox::warning(this, tr("Info"), tr("Veuillez sélectionner un régiment a dupliquer."));
     }
 }
 
@@ -508,8 +507,8 @@ void ArmyWindow::on_pushButtonSave_clicked()
     if(ui->lineEditName->text().isEmpty() ||
        reg->rowCount() == 0)
     {
-        QMessageBox::warning(this, "Info",
-                "Vous devez donner un nom à l'armée et y ajouter des régiments.");
+        QMessageBox::warning(this, tr("Info"),
+                tr("Vous devez donner un nom à l'armée et y ajouter des régiments."));
         return;
     }
 
@@ -523,22 +522,22 @@ void ArmyWindow::on_pushButtonSave_clicked()
 
     if(f.exists())
     {
-        int rep = QMessageBox::question(this,"Ecraser",
-                                        "Une armée avec le même nom existe déjà, voulez vous l'écraser?",
+        int rep = QMessageBox::question(this,tr("Ecraser"),
+                                        tr("Une armée avec le même nom existe déjà, voulez vous l'écraser?"),
                                         QMessageBox::Yes | QMessageBox::No);
         if (rep == QMessageBox::Yes)
         {
             currentArmy.save(path);
-            QMessageBox::information(this, "Info", "Armée sauvegardée avec succès.");
+            QMessageBox::information(this, tr("Info"), tr("Armée sauvegardée avec succès."));
         }
         else if (rep == QMessageBox::No)
         {
-            QMessageBox::critical(this, "Annulation", "Sauvegarde annulée");
+            QMessageBox::critical(this, tr("Annulation"), tr("Sauvegarde annulée"));
         }
     }
     else{
         currentArmy.save(path);
-        QMessageBox::information(this, "Info", "Armée sauvegardée avec succès.");
+        QMessageBox::information(this, tr("Info"), tr("Armée sauvegardée avec succès."));
     }
 }
 
@@ -569,14 +568,19 @@ void ArmyWindow::on_pushButtonExport_clicked()
 {
     currentArmy.setName(ui->lineEditName->text());
     QLog_Info(LOG_ID_INFO, "on_pushButtonExport_clicked : Exporting army to PDF file.");
-    QString fileName = QFileDialog::getSaveFileName(this, "Save file", "./export.pdf", "pdf files(*.pdf)");
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Sauvegarde du fichier"), "./export.pdf", tr("fichiers pdf(*.pdf)"));
 
     if(PdfExporter::exportHtmlToPdfFile(fileName, currentArmy.getHtml()))
     {
-        QMessageBox::information(this, "Info", "PDF exporté avec succès.");
+        QMessageBox::information(this, tr("Info"), tr("PDF exporté avec succès."));
     }
     else
     {
-        QMessageBox::warning(this, "Info", "L'export du pdf a échoué. Vérifiez le nom du fichier.");
+        QMessageBox::warning(this, tr("Info"), tr("L'export du pdf a échoué. Vérifiez le nom du fichier."));
     }
+}
+
+void ArmyWindow::on_removeGroupButton_clicked()
+{
+
 }

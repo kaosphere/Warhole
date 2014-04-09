@@ -16,7 +16,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Création d'armée</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_22">
    <item>
