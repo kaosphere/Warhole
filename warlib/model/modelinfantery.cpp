@@ -115,14 +115,14 @@ QString ModelInfantery::displayStringInfo()
     QString s;
     QTextStream info(&s);
     info << endl << "====================================================" << endl;
-    info << "Unité ";
+    info << QString(QString::fromUtf8("Unité ");
     switch(type)
     {
     case 0:
         info << "Base" << endl;
         break;
     case 1:
-        info << "Spciale" << endl;
+        info << QString(QString::fromUtf8("Spéciale") << endl;
         break;
     case 2:
         info << "Rare" << endl;
@@ -135,7 +135,7 @@ QString ModelInfantery::displayStringInfo()
     info << "Model Infantery : " << endl;
     info << displayBaseInfo();
     info << "====================================================" << endl;
-    info << "Special Rules : " << endl;
+    info << QString(QString::fromUtf8("Règles additionnelles : ") << endl;
     info << specialRules << endl;
     info << "====================================================" << endl;
     return s;

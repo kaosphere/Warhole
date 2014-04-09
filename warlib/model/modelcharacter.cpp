@@ -165,14 +165,14 @@ QString ModelCharacter::displayStringInfo()
     info << "Model Character : " << endl;
     info << displayBaseInfo();
     info << "====================================================" << endl;
-    info << "Special Rules : " << endl;
+    info << QString(QString::fromUtf8("Règles additionnelles : ") << endl;
     info << specialRules << endl;
     info << "====================================================" << endl;
-    info << "Is the general : " << isTheGeneral << endl;
-    info << "Is a lord : " << isALord << endl;
-    info << "Is a mage : " << isAMage << endl;
-    info << "Is mounted : " << isMounted << endl;
-    info << "Has the GB : " << hasGB << endl;
+    info << QString(QString::fromUtf8("Général de l'armée : ") << isTheGeneral << endl;
+    info << "Est un seigneur : " << isALord << endl;
+    info << "Est un mage : " << isAMage << endl;
+    info << QString(QString::fromUtf8("Est monté : ") << isMounted << endl;
+    info << QString(QString::fromUtf8("Porteur de la grande bannière : ") << hasGB << endl;
     if(isMounted)
     {
         info << "=============" << endl;
