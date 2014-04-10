@@ -2,6 +2,7 @@
 #define DEFINES_H
 
 #include <QString>
+#include <QStringList>
 
 const QString MODEL_PATH("./models");
 
@@ -11,6 +12,12 @@ const QString CHARRIOT_STRING("Char");
 const QString INFANTERY_STRING("Infanterie");
 const QString MONSTER_STRING("Monstre");
 const QString WARMACHINE_STRING("Machine de Guerre");
+
+const QStringList OPTION_HEADER(QStringList()
+                                << QObject::tr("Choisir")
+                                << QObject::tr("Nom")
+                                << QObject::tr("Pts")
+                                << QObject::tr("Règles"));
 
 #define CAVALERY_TYPE 0
 #define CHARACTER_TYPE 1
