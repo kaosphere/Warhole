@@ -44,11 +44,14 @@ ArmyWindow::ArmyWindow(QWidget *parent) :
     // Associate model to view
     model = new QDirModel();
 
-
     options = new QStandardItemModel();
+    options->setHorizontalHeaderLabels(OPTION_HEADER);
 
     ui->viewOptions->setModel(options);
-    ui->viewOptions->header()->hide();
+    // TODO : This is a hack to fix the fact that options rows are collapsable for an unknown readon
+    // investigate and fix properly.
+    ui->viewOptions->setItemsExpandable(false);
+    ui->viewOptions->setRootIsDecorated(false);
 
     reg = new QStandardItemModel();
 
@@ -104,8 +107,14 @@ ArmyWindow::ArmyWindow(QString fileName, QWidget *parent) :
 
     options = new QStandardItemModel();
 
+    options = new QStandardItemModel();
+    options->setHorizontalHeaderLabels(OPTION_HEADER);
+
     ui->viewOptions->setModel(options);
-    ui->viewOptions->header()->hide();
+    // TODO : This is a hack to fix the fact that options rows are collapsable for an unknown readon
+    // investigate and fix properly.
+    ui->viewOptions->setItemsExpandable(false);
+    ui->viewOptions->setRootIsDecorated(false);
 
     reg = new QStandardItemModel();
 
@@ -212,12 +221,13 @@ void ArmyWindow::on_treeViewExistingModels_clicked(const QModelIndex &index)
             checkBox->setCheckable(true);
 
             newOption<< checkBox
-                     <<  new QStandardItem(ma->getOptions()[i].getName())
+                     << new QStandardItem(ma->getOptions()[i].getName())
                     <<new QStandardItem(QString::number(ma->getOptions()[i].getNbPoints()))
                    <<new QStandardItem(ma->getOptions()[i].getSpecialRules());
 
             options->appendRow(newOption);
         }
+        options->setHorizontalHeaderLabels(OPTION_HEADER);
         ui->textInfo->clear();
         ui->textInfo->append(ma->displayStringInfo());
     }
