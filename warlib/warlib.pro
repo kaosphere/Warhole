@@ -32,7 +32,8 @@ SOURCES += \
     Utilities/DiceRoller/DiceRoller.cpp \ 
     Utilities/PdfExporter/pdfexporter.cpp \
     game/Historic/HistoricAbstractItem.cpp \
-	game/Historic/DiceHistoricItem.cpp
+	game/Historic/DiceHistoricItem.cpp \
+	game/Historic/ChatHistoricItem.cpp
 	
 HEADERS += \
     stats/statsmodel.h \
@@ -55,7 +56,8 @@ HEADERS += \
     Utilities/DiceRoller/DiceRoller.h \ 
     Utilities/PdfExporter/pdfexporter.h \
     game/Historic/HistoricAbstractItem.h \
-    game/Historic/DiceHistoricItem.h
+    game/Historic/DiceHistoricItem.h \
+    game/Historic/ChatHistoricItem.h
 
 INSTALLS += target
 
