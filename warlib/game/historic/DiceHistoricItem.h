@@ -1,6 +1,6 @@
 /*********************************************************************//**
-* HistoricAbstractItem.h
-* HistoricAbstractItem class
+* DiceHistoricItem.h
+* DiceHistoricItem class
 *
 * AUTEUR: Alexandre Jumeline
 * DATE: 03-04-2014
@@ -12,9 +12,9 @@
 #include "HistoricAbstractItem.h"
 #include <Utilities/DiceRoller/DiceRoller.h>
 
-//! HistoricAbstractItem class
+//! DiceHistoricItem class
 /*!
-* Derived class for historic items
+* Derived class for historic dice items
 * DiceHistoricItems hold data of passed dice rolls.
 */
 class DiceHistoricItem: public HistoricAbstractItem
@@ -22,18 +22,19 @@ class DiceHistoricItem: public HistoricAbstractItem
 public:
     //! Constructor.
     /*!
-		Default constructor of HistoricAbstractItem class
+		Default constructor of DiceHistoricItem class
 		*/
     DiceHistoricItem();
+
     //! Copy Constructor.
     /*!
-	* Copy constructor of HistoricAbstractItem class
+	* Copy constructor of DiceHistoricItem class
 	* \param copy Object to be copied.
 	*/
     DiceHistoricItem(DiceHistoricItem & copy);
     //! Destructor.
     /*!
-	* VIRTUAL : Base destructor of ModelAbstract class
+	* VIRTUAL : Base destructor of DiceHistoricItem class
 	*/
     virtual ~DiceHistoricItem();
 
