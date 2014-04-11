@@ -42,3 +42,23 @@ void HistoricAbstractItem::setTimeStamp(QDate timeStamp)
     this->timeStamp = timeStamp;
 }
 
+QDataStream &operator <<(QDataStream & out, const HistoricAbstractItem & obj)
+{
+    out << obj.message
+    	<< obj.timeStamp
+    	<< obj.source;
+
+    return out;
+}
+
+QDataStream &operator >>(QDataStream & in, HistoricAbstractItem & obj)
+{
+    int size;
+
+    in >> obj.message;
+    in >> obj.timeStamp;
+    in >> obj.source;
+
+    return in;
+}
+

@@ -42,6 +42,19 @@ public:
     void setDestinationPlayer(QString destinationPlayer);
     void setType(ChatType type);
 
+    //! operator <<
+	/*!
+	* FRIEND : operator << of QDataStream Class in order to serialize ChatHistoricItem data.
+	*/
+	friend QDataStream & operator << (QDataStream &, const ChatHistoricItem &);
+
+	//! operator <<
+	/*!
+	* FRIEND : operator >> of QDataStream Class in order to serialize ChatHistoricItem data.
+	*/
+	friend QDataStream & operator >> (QDataStream &, ChatHistoricItem &);
+
+
 private:
     //! type.
 	/*!

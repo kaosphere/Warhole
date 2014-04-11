@@ -38,6 +38,18 @@ public:
 	*/
     virtual ~DiceHistoricItem();
 
+    //! operator <<
+	/*!
+	* FRIEND : operator << of QDataStream Class in order to serialize DiceHistoricItem data.
+	*/
+	friend QDataStream & operator << (QDataStream &, const DiceHistoricItem &);
+
+	//! operator <<
+	/*!
+	* FRIEND : operator >> of QDataStream Class in order to serialize DiceHistoricItem data.
+	*/
+	friend QDataStream & operator >> (QDataStream &, DiceHistoricItem &);
+
     Dice getDiceType() const;
     int getNbDice() const;
     QList<int> getResults() const;

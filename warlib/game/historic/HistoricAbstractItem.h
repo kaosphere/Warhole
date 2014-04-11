@@ -47,6 +47,17 @@ public:
 	*/
     virtual ~HistoricAbstractItem() = 0;
 
+    //! operator <<
+	/*!
+	* FRIEND : operator << of QDataStream Class in order to serialize HistoricAbstractItem data.
+	*/
+    friend QDataStream & operator << (QDataStream &, const HistoricAbstractItem &);
+
+    //! operator <<
+	/*!
+	* FRIEND : operator >> of QDataStream Class in order to serialize HistoricAbstractItem data.
+	*/
+    friend QDataStream & operator >> (QDataStream &, HistoricAbstractItem &);
 
     QString getMessage() const;
     QString getSource() const;

@@ -6,7 +6,7 @@
 * DATE: 11-04-2014
 *************************************************************************/
 
-#include "ChatHistoricItem.h"
+#include "Game/Historic/ChatHistoricItem.h"
 
 ChatHistoricItem::ChatHistoricItem() {
 	// TODO Auto-generated constructor stub
@@ -17,7 +17,7 @@ ChatHistoricItem::~ChatHistoricItem() {
 	// TODO Auto-generated destructor stub
 }
 
-ChatHistoricItem::ChatHistoricItem(ChatHistoricItem & copy)
+ChatHistoricItem::ChatHistoricItem(ChatHistoricItem & copy) : HistoricAbstractItem(copy)
 {
 	type = copy.type;
 	destinationPlayer = copy.destinationPlayer;
@@ -43,5 +43,24 @@ void ChatHistoricItem::setType(ChatType type)
     this->type = type;
 }
 
+// Overloading of << operator
+QDataStream & operator << (QDataStream & out, const ChatHistoricItem & obj)
+{
+    out << static_cast<HistoricAbstractItem&>(obj)
+        << obj.type
+        << obj.destinationPlayer;
+
+    return out;
+}
+
+// Overloading of >> operator
+QDataStream & operator >> (QDataStream & in, ChatHistoricItem & obj)
+{
+    in >> static_cast<HistoricAbstractItem&>(obj);
+    in >> obj.type;
+    in >> obj.destinationPlayer;
+
+    return in;
+}
 
 

@@ -5,7 +5,7 @@
  *      Author: jumelina
  */
 
-#include "DiceHistoricItem.h"
+#include "Game/Historic/DiceHistoricItem.h"
 
 DiceHistoricItem::DiceHistoricItem() : HistoricAbstractItem()
 {
@@ -15,7 +15,9 @@ DiceHistoricItem::DiceHistoricItem() : HistoricAbstractItem()
 
 DiceHistoricItem::DiceHistoricItem(DiceHistoricItem& copy) : HistoricAbstractItem(copy)
 {
-
+	diceType = copy.diceType;
+	nbDice = copy.nbDice;
+	results = copy.results;
 }
 
 DiceHistoricItem::~DiceHistoricItem() {
@@ -53,4 +55,38 @@ void DiceHistoricItem::setResults(QList<int> results)
 }
 
 
+// Overloading of << operator
+QDataStream & operator << (QDataStream & out, const DiceHistoricItem & obj)
+{
+    out << static_cast<HistoricAbstractItem&>(obj)
+        << obj.diceType
+        << obj.nbDice
+        << obj.results.size();
 
+    for(int i = 0; i<obj.results.size(); ++i)
+    {
+    	out << obj.results[i];
+    }
+
+    return out;
+}
+
+// Overloading of >> operator
+QDataStream & operator >> (QDataStream & in, DiceHistoricItem & obj)
+{
+    int size = 0;
+
+    in >> static_cast<HistoricAbstractItem&>(obj);
+    in >> obj.diceType;
+    in >> obj.nbDice;
+    in >> size;
+
+    for(int i = 0; i<size; ++i)
+    {
+    	int res = 0;
+    	in >> res;
+    	obj.results.append(res);
+    }
+
+    return in;
+}
