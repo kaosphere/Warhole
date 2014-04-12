@@ -56,7 +56,7 @@ void DiceHistoricItem::setResults(QList<int> results)
 
 
 // Overloading of << operator
-QDataStream & operator << (QDataStream & out, const DiceHistoricItem & obj)
+QDataStream & operator << (QDataStream & out, DiceHistoricItem & obj)
 {
     out << static_cast<HistoricAbstractItem&>(obj)
         << obj.diceType
@@ -75,9 +75,38 @@ QDataStream & operator << (QDataStream & out, const DiceHistoricItem & obj)
 QDataStream & operator >> (QDataStream & in, DiceHistoricItem & obj)
 {
     int size = 0;
+    int type = 0;
 
     in >> static_cast<HistoricAbstractItem&>(obj);
-    in >> obj.diceType;
+    in >> type;
+    switch(type)
+    {
+    case 0:
+        obj.diceType = D2;
+        break;
+    case 1:
+        obj.diceType = D3;
+        break;
+    case 2:
+        obj.diceType = D4;
+        break;
+    case 3:
+        obj.diceType = D6;
+        break;
+    case 4:
+        obj.diceType = D8;
+        break;
+    case 5:
+        obj.diceType = D10;
+        break;
+    case 6:
+        obj.diceType = D12;
+        break;
+    case 7:
+        obj.diceType = D20;
+        break;
+    }
+
     in >> obj.nbDice;
     in >> size;
 

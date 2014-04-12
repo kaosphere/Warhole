@@ -44,7 +44,7 @@ void ChatHistoricItem::setType(ChatType type)
 }
 
 // Overloading of << operator
-QDataStream & operator << (QDataStream & out, const ChatHistoricItem & obj)
+QDataStream & operator << (QDataStream & out, ChatHistoricItem & obj)
 {
     out << static_cast<HistoricAbstractItem&>(obj)
         << obj.type
@@ -56,8 +56,21 @@ QDataStream & operator << (QDataStream & out, const ChatHistoricItem & obj)
 // Overloading of >> operator
 QDataStream & operator >> (QDataStream & in, ChatHistoricItem & obj)
 {
+    int type = 0;
+
     in >> static_cast<HistoricAbstractItem&>(obj);
-    in >> obj.type;
+    in >> type;
+
+    switch(type)
+    {
+    case 0:
+        type = NORMAL;
+        break;
+    case 1:
+        type = WISPER;
+        break;
+    }
+
     in >> obj.destinationPlayer;
 
     return in;

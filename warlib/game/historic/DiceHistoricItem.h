@@ -42,7 +42,7 @@ public:
 	/*!
 	* FRIEND : operator << of QDataStream Class in order to serialize DiceHistoricItem data.
 	*/
-	friend QDataStream & operator << (QDataStream &, const DiceHistoricItem &);
+    friend QDataStream & operator << (QDataStream &, DiceHistoricItem &);
 
 	//! operator <<
 	/*!

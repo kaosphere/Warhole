@@ -10,7 +10,7 @@
 
 #include "HistoricAbstractItem.h"
 
-enum ChatType{normal, wisper};
+enum ChatType{NORMAL, WISPER};
 
 //! ChatHistoricItem class
 /*!
@@ -46,7 +46,7 @@ public:
 	/*!
 	* FRIEND : operator << of QDataStream Class in order to serialize ChatHistoricItem data.
 	*/
-	friend QDataStream & operator << (QDataStream &, const ChatHistoricItem &);
+    friend QDataStream & operator << (QDataStream &, ChatHistoricItem &);
 
 	//! operator <<
 	/*!
