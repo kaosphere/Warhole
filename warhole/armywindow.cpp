@@ -57,9 +57,6 @@ ArmyWindow::ArmyWindow(QWidget *parent) :
 
     ui->armyView->setModel(reg);
 
-    models = new QStandardItemModel();
-    ui->regimentView->setModel(models);
-
     ui->labelPointsArmy->setText("0");
     ui->spinBoxPtsBanner->setEnabled(false);
     ui->spinBoxPtsMusician->setEnabled(false);
@@ -120,9 +117,6 @@ ArmyWindow::ArmyWindow(QString fileName, QWidget *parent) :
 
     ui->armyView->setModel(reg);
 
-    models = new QStandardItemModel();
-    ui->regimentView->setModel(models);
-
     ui->labelPointsArmy->setText("0");
     ui->spinBoxPtsBanner->setEnabled(false);
     ui->spinBoxPtsMusician->setEnabled(false);
@@ -146,6 +140,8 @@ void ArmyWindow::on_comboBoxRace_currentIndexChanged(const QString &raceDir)
     bool updateDir = true;
     if(reg->rowCount() > 0)
     {
+        // The changeRace member prevents infinite loop when changing
+        // race and saying no when confirming is asked
         if(!changeRace)
         {
             changeRace = true;
@@ -202,36 +198,29 @@ void ArmyWindow::on_comboBoxRace_currentIndexChanged(const QString &raceDir)
 
 void ArmyWindow::on_treeViewExistingModels_clicked(const QModelIndex &index)
 {
-    options->clear();
-    selectedModel = index;
-    currentSelectedPath = model->filePath(index);
-
     QString name = index.data().toString();
     QStringList pieces = name.split(".");
 
     if(pieces.last() == "unit")
     {
-        QString path(model->filePath(index));
-        ma = fac.createFromFile(path);
-
-        for(int i = 0 ; i < ma->getOptions().length() ; i++)
-        {
-            QList<QStandardItem *> newOption;
-            QStandardItem* checkBox = new QStandardItem(true);
-            checkBox->setCheckable(true);
-
-            newOption<< checkBox
-                     << new QStandardItem(ma->getOptions()[i].getName())
-                    <<new QStandardItem(QString::number(ma->getOptions()[i].getNbPoints()))
-                   <<new QStandardItem(ma->getOptions()[i].getSpecialRules());
-
-            options->appendRow(newOption);
-        }
-        options->setHorizontalHeaderLabels(OPTION_HEADER);
-        ui->textInfo->clear();
-        ui->textInfo->append(ma->displayStringInfo());
+        currentSelectedPath = model->filePath(index);
     }
+}
 
+void ArmyWindow::on_buildRegButton_clicked()
+{
+    if(ui->spinBoxNB->value() != 0)
+    {
+        clearRegimentDisplay();
+        RegimentAbstract r;
+        RecruitsGroup rg(ui->spinBoxNB->value(),0,currentSelectedPath);
+        r.addGroup(rg);
+        loadRegimentInUI(r);
+    }
+    else
+    {
+        QMessageBox::warning(this, tr("Info"), tr("Le nombre de modèles ajoutés doit être suppérieur à 0."));
+    }
 }
 
 void ArmyWindow::on_checkBoxChampion_toggled(bool checked)
@@ -257,9 +246,12 @@ void ArmyWindow::setEnableChampionStats(bool checked)
 
 void ArmyWindow::clearRegimentDisplay()
 {
+    ui->regName->clear();
     ui->checkBoxBanner->setChecked(false);
+    ui->spinBoxPtsBanner->clear();
     ui->checkBoxChampion->setChecked(false);
     ui->checkBoxMusician->setChecked(false);
+    ui->spinBoxPtsMusician->clear();
     ui->checkBoxSkirmish->setChecked(false);
 
     ui->lineEditA->clear();
@@ -274,27 +266,18 @@ void ArmyWindow::clearRegimentDisplay()
     ui->lineEditSvg->clear();
     ui->lineEditSvgInv->clear();
     ui->spinPoints->clear();
-}
 
-void ArmyWindow::on_addGroupButton_clicked()
-{
-    if(ui->spinBoxNB->value() != 0)
-    {
-        clearRegimentDisplay();
-        RecruitsGroup rg(ui->spinBoxNB->value(),0,currentSelectedPath);
+    ui->labelModelM->clear();
+    ui->labelModelWS->clear();
+    ui->labelModelBS->clear();
+    ui->labelModelS->clear();
+    ui->labelModelT->clear();
+    ui->labelModelW->clear();
+    ui->labelModelA->clear();
+    ui->labelModelI->clear();
+    ui->labelModelLd->clear();
 
-        //add group in the group list
-        QList<QStandardItem *> newGroup;
-        newGroup<<new QStandardItem(QString::number(rg.getNb()))
-                <<new QStandardItem(rg.getModel()->getStats().getName())
-                <<new QStandardItem(QString::number(rg.computePoints()))
-               <<new QStandardItem(rg.getPath());
-        models->appendRow(newGroup);
-    }
-    else
-    {
-        QMessageBox::warning(this, tr("Info"), tr("Le nombre de modèles ajoutés doit être suppérieur à 0."));
-    }
+    options->clear();
 }
 
 void ArmyWindow::updateGlobalArmyPoints()
@@ -318,77 +301,43 @@ void ArmyWindow::updateRegModel()
 
 void ArmyWindow::on_addRegButton_clicked()
 {
-    RegimentAbstract ra;
-    QString modelName;
-    int sp = 0;
-
-    if(!models->rowCount())
+    if(ui->lineEditName->text().isEmpty())
     {
-        QMessageBox::warning(this, tr("Info"), tr("Le régiment est vide, veuillez ajouter des modèles."));
+        QMessageBox::warning(this, tr("Info"), tr("Veuillez donner un nom à votre régiment."));
     }
     else
     {
-        QList<RecruitsGroup> group;
-        for(int i = 0; i< models->rowCount(); i++)
-        {
-            RecruitsGroup o;
-            for(int j = 0; j < models->columnCount(); j++)
-            {
-                QStandardItem* item = models->item(i,j);
-                switch(j)
-                {
-                    case 0:
-                        o.setNb(item->text().toUInt());
-                        sp += o.getNb();
-                        break;
-                    case 1:
-                        modelName = item->text();
-                        break;
-                    case 3:
-                        o.setPath(item->text());
-                        break;
-                    default:
-                        break;
-                }
-            }
-            o.setCasualties(0);
-            o.loadPath();
-            group.append(o);
-        }
-        ra.setGroups(group);
-        ra.setBanner(ui->checkBoxBanner->isChecked());
+        regiment.setBanner(ui->checkBoxBanner->isChecked());
         if(ui->checkBoxBanner->isChecked())
-            ra.setBannerPoints(ui->spinBoxPtsBanner->value());
-        ra.setChampion(ui->checkBoxChampion->isChecked());
-        ra.setMusician(ui->checkBoxMusician->isChecked());
+            regiment.setBannerPoints(ui->spinBoxPtsBanner->value());
+        regiment.setChampion(ui->checkBoxChampion->isChecked());
+        regiment.setMusician(ui->checkBoxMusician->isChecked());
         if(ui->checkBoxMusician->isChecked())
-            ra.setMusicianPoints(ui->spinBoxPtsMusician->value());
+            regiment.setMusicianPoints(ui->spinBoxPtsMusician->value());
         if(ui->checkBoxChampion->isChecked())
         {
             // Load champion stats
-            ra.getChampionStats().setPoints(ui->spinPoints->value());
-            ra.getChampionStats().setM(ui->lineEditM->text());
-            ra.getChampionStats().setWs(ui->lineEditCC->text());
-            ra.getChampionStats().setBs(ui->lineEditCT->text());
-            ra.getChampionStats().setS(ui->lineEditF->text());
-            ra.getChampionStats().setT(ui->lineEditE->text());
-            ra.getChampionStats().setI(ui->lineEditI->text());
-            ra.getChampionStats().setA(ui->lineEditA->text());
-            ra.getChampionStats().setW(ui->lineEditPV->text());
-            ra.getChampionStats().setLd(ui->lineEditCdt->text());
-            ra.getChampionStats().setSvg(ui->lineEditSvg->text());
-            ra.getChampionStats().setSvgInv(ui->lineEditSvgInv->text());
+            regiment.getChampionStats().setPoints(ui->spinPoints->value());
+            regiment.getChampionStats().setM(ui->lineEditM->text());
+            regiment.getChampionStats().setWs(ui->lineEditCC->text());
+            regiment.getChampionStats().setBs(ui->lineEditCT->text());
+            regiment.getChampionStats().setS(ui->lineEditF->text());
+            regiment.getChampionStats().setT(ui->lineEditE->text());
+            regiment.getChampionStats().setI(ui->lineEditI->text());
+            regiment.getChampionStats().setA(ui->lineEditA->text());
+            regiment.getChampionStats().setW(ui->lineEditPV->text());
+            regiment.getChampionStats().setLd(ui->lineEditCdt->text());
+            regiment.getChampionStats().setSvg(ui->lineEditSvg->text());
+            regiment.getChampionStats().setSvgInv(ui->lineEditSvgInv->text());
         }
-        ra.setSkirmishers(ui->checkBoxSkirmish->isChecked());
-        ra.setStartingCount(sp);
-        ra.setName(ui->regName->text());
+        regiment.setSkirmishers(ui->checkBoxSkirmish->isChecked());
+        regiment.setStartingCount(regiment.getGroups().first().getNb());
+        regiment.setName(ui->regName->text());
 
-        currentArmy.addUnit(ra);
+        currentArmy.addUnit(regiment);
 
         updateRegModel();
 
-        models->clear();
-        ui->regName->clear();
         clearRegimentDisplay();
     }
 }
@@ -417,44 +366,63 @@ void ArmyWindow::on_removeRegButton_clicked()
     }
 }
 
-void ArmyWindow::loadRegimentInUI(RegimentAbstract r)
+void ArmyWindow::loadRegimentInUI(RegimentAbstract& r)
 {
-    ui->spinBoxNB->setValue(0);
-    ui->regName->setText(r.getName());
-    ui->checkBoxBanner->setChecked(r.getBanner());
-    ui->checkBoxChampion->setChecked(r.getChampion());
-    ui->checkBoxMusician->setChecked(r.getMusician());
-    if(r.getMusician())
-        ui->spinBoxPtsMusician->setValue(r.getMusicianPoints());
-    if(r.getBanner())
-        ui->spinBoxPtsBanner->setValue(r.getBannerPoints());
-    ui->checkBoxSkirmish->setChecked(r.getSkirmishers());
+    regiment = r;
+    clearRegimentDisplay();
 
-    for(int i=0; i<r.getGroups().size(); ++i)
+    ui->labelModelM->setText(regiment.getGroups().first().getModel()->getStats().getM());
+    ui->labelModelWS->setText(regiment.getGroups().first().getModel()->getStats().getWs());
+    ui->labelModelBS->setText(regiment.getGroups().first().getModel()->getStats().getBs());
+    ui->labelModelS->setText(regiment.getGroups().first().getModel()->getStats().getS());
+    ui->labelModelT->setText(regiment.getGroups().first().getModel()->getStats().getT());
+    ui->labelModelW->setText(regiment.getGroups().first().getModel()->getStats().getW());
+    ui->labelModelA->setText(regiment.getGroups().first().getModel()->getStats().getA());
+    ui->labelModelI->setText(regiment.getGroups().first().getModel()->getStats().getI());
+    ui->labelModelLd->setText(regiment.getGroups().first().getModel()->getStats().getLd());
+
+    ui->spinBoxNB->setValue(0);
+    ui->regName->setText(regiment.getName());
+    ui->checkBoxBanner->setChecked(regiment.getBanner());
+    ui->spinBoxPtsBanner->setValue(0);
+    ui->checkBoxChampion->setChecked(regiment.getChampion());
+    ui->checkBoxMusician->setChecked(regiment.getMusician());
+    ui->spinBoxPtsMusician->setValue(0);
+    if(regiment.getMusician())
+        ui->spinBoxPtsMusician->setValue(regiment.getMusicianPoints());
+    if(regiment.getBanner())
+        ui->spinBoxPtsBanner->setValue(regiment.getBannerPoints());
+    ui->checkBoxSkirmish->setChecked(regiment.getSkirmishers());
+
+    for(int i = 0 ; i < regiment.getGroups().first().getModel()->getOptions().length() ; i++)
     {
-        //add group in the group list
-        QList<QStandardItem *> newGroup;
-        newGroup<<new QStandardItem(QString::number(r.getGroups()[i].getNb()))
-                <<new QStandardItem(r.getGroups()[i].getModel()->getStats().getName())
-                <<new QStandardItem(QString::number(r.getGroups()[i].computePoints()))
-               <<new QStandardItem(r.getGroups()[i].getPath());
-        models->appendRow(newGroup);
+        QList<QStandardItem *> newOption;
+        QStandardItem* checkBox = new QStandardItem(true);
+        checkBox->setCheckable(true);
+
+        newOption<< checkBox
+                 << new QStandardItem(regiment.getGroups().first().getModel()->getOptions()[i].getName())
+                <<new QStandardItem(QString::number(regiment.getGroups().first().getModel()->getOptions()[i].getNbPoints()))
+               <<new QStandardItem(regiment.getGroups().first().getModel()->getOptions()[i].getSpecialRules());
+
+        options->appendRow(newOption);
     }
+    options->setHorizontalHeaderLabels(OPTION_HEADER);
 
     if(r.getChampion())
     {
-        ui->lineEditA->setText(r.getChampionStats().getA());
-        ui->lineEditCC->setText(r.getChampionStats().getWs());
-        ui->lineEditCdt->setText(r.getChampionStats().getLd());
-        ui->lineEditCT->setText(r.getChampionStats().getBs());
-        ui->lineEditE->setText(r.getChampionStats().getT());
-        ui->lineEditF->setText(r.getChampionStats().getS());
-        ui->lineEditI->setText(r.getChampionStats().getI());
-        ui->lineEditM->setText(r.getChampionStats().getM());
-        ui->lineEditPV->setText(r.getChampionStats().getW());
-        ui->lineEditSvg->setText(r.getChampionStats().getSvg());
-        ui->lineEditSvgInv->setText(r.getChampionStats().getSvgInv());
-        ui->spinPoints->setValue(r.getChampionStats().getPoints());
+        ui->lineEditA->setText(regiment.getChampionStats().getA());
+        ui->lineEditCC->setText(regiment.getChampionStats().getWs());
+        ui->lineEditCdt->setText(regiment.getChampionStats().getLd());
+        ui->lineEditCT->setText(regiment.getChampionStats().getBs());
+        ui->lineEditE->setText(regiment.getChampionStats().getT());
+        ui->lineEditF->setText(regiment.getChampionStats().getS());
+        ui->lineEditI->setText(regiment.getChampionStats().getI());
+        ui->lineEditM->setText(regiment.getChampionStats().getM());
+        ui->lineEditPV->setText(regiment.getChampionStats().getW());
+        ui->lineEditSvg->setText(regiment.getChampionStats().getSvg());
+        ui->lineEditSvgInv->setText(regiment.getChampionStats().getSvgInv());
+        ui->spinPoints->setValue(regiment.getChampionStats().getPoints());
     }
 }
 
@@ -590,7 +558,4 @@ void ArmyWindow::on_pushButtonExport_clicked()
     }
 }
 
-void ArmyWindow::on_removeGroupButton_clicked()
-{
 
-}

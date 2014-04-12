@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1145</width>
-    <height>734</height>
+    <width>1021</width>
+    <height>593</height>
    </rect>
   </property>
   <property name="font">
@@ -18,256 +18,11 @@
   <property name="windowTitle">
    <string>Création d'armée</string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout_22">
+  <layout class="QHBoxLayout" name="horizontalLayout_9">
    <item>
-    <layout class="QVBoxLayout" name="verticalLayout_10">
+    <layout class="QVBoxLayout" name="verticalLayout_4">
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_18">
-       <item>
-        <layout class="QVBoxLayout" name="verticalLayout_9">
-         <item>
-          <layout class="QVBoxLayout" name="verticalLayout_4">
-           <item>
-            <widget class="QLabel" name="labelRace">
-             <property name="font">
-              <font>
-               <pointsize>10</pointsize>
-               <weight>75</weight>
-               <bold>true</bold>
-              </font>
-             </property>
-             <property name="text">
-              <string>1 -Choisissez une race :</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QComboBox" name="comboBoxRace">
-             <item>
-              <property name="text">
-               <string>&lt;aucune&gt;</string>
-              </property>
-             </item>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_17">
-           <property name="font">
-            <font>
-             <pointsize>10</pointsize>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string>2 - Choisissez un modèle :</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QTreeView" name="treeViewExistingModels"/>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <widget class="Line" name="line_2">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <layout class="QVBoxLayout" name="verticalLayout_6">
-         <item>
-          <layout class="QVBoxLayout" name="verticalLayout_5">
-           <item>
-            <widget class="QLabel" name="label_18">
-             <property name="font">
-              <font>
-               <pointsize>10</pointsize>
-               <weight>75</weight>
-               <bold>true</bold>
-              </font>
-             </property>
-             <property name="text">
-              <string>3 - Entrez le nombre de modèles :</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_13">
-             <item>
-              <widget class="QLabel" name="label">
-               <property name="text">
-                <string>Nombre de modèles</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QSpinBox" name="spinBoxNB"/>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <widget class="QLabel" name="label_16">
-             <property name="text">
-              <string>Info du modèle : </string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QTextEdit" name="textInfo">
-             <property name="readOnly">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QVBoxLayout" name="verticalLayout_11">
-         <item>
-          <widget class="QPushButton" name="addGroupButton">
-           <property name="text">
-            <string>ajouter</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="removeGroupButton">
-           <property name="text">
-            <string>retirer</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
-       <item>
-        <widget class="Line" name="line">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_19">
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>4 - Choisissez les options :</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_3">
-         <property name="text">
-          <string>Options utilisées</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QTreeView" name="viewOptions">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="selectionMode">
-          <enum>QAbstractItemView::MultiSelection</enum>
-         </property>
-         <property name="animated">
-          <bool>true</bool>
-         </property>
-         <property name="allColumnsShowFocus">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_14">
-       <item>
-        <widget class="QLabel" name="label_15">
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>5 - Construisez un régiment : </string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="labelPointsReg">
-         <property name="font">
-          <font>
-           <pointsize>16</pointsize>
-           <weight>50</weight>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <widget class="QLabel" name="label_20">
-       <property name="text">
-        <string>Ici est décrit le régiment que vous allez intégrer</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="label_21">
-       <property name="text">
-        <string>à votre armée, n'oubliez pas les servants de</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="label_22">
-       <property name="text">
-        <string>machines de guerres ou autres avant d'ajouter</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="label_23">
-       <property name="text">
-        <string>le régiment à l'armée.</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QTreeView" name="regimentView"/>
-     </item>
-     <item>
-      <widget class="QLabel" name="label_24">
+      <widget class="QLabel" name="labelRace">
        <property name="font">
         <font>
          <pointsize>10</pointsize>
@@ -276,23 +31,521 @@
         </font>
        </property>
        <property name="text">
-        <string>6 - Nom du régiment</string>
+        <string>1 -Choisissez une race :</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="regName"/>
+      <widget class="QComboBox" name="comboBoxRace">
+       <item>
+        <property name="text">
+         <string>&lt;aucune&gt;</string>
+        </property>
+       </item>
+      </widget>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_12">
+      <widget class="QLabel" name="label_17">
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>2 - Choisissez un modèle :</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QTreeView" name="treeViewExistingModels"/>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_18">
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>3 - Nombre de modèles :</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBoxNB"/>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buildRegButton">
+       <property name="text">
+        <string>Construire le régiment !</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout_34">
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_27">
        <item>
-        <layout class="QHBoxLayout" name="layoutcheck">
+        <widget class="QLabel" name="label_49">
+         <property name="font">
+          <font>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Statistiques du modèle :</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_13">
          <item>
-          <widget class="QCheckBox" name="checkBoxSkirmish">
+          <layout class="QVBoxLayout" name="verticalLayout_6">
+           <item>
+            <widget class="QLabel" name="label_39">
+             <property name="font">
+              <font>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>M   </string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="labelModelM">
+             <property name="minimumSize">
+              <size>
+               <width>35</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_9">
+           <item>
+            <widget class="QLabel" name="label_35">
+             <property name="font">
+              <font>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>CC </string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="labelModelWS">
+             <property name="minimumSize">
+              <size>
+               <width>35</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_10">
+           <item>
+            <widget class="QLabel" name="label_33">
+             <property name="font">
+              <font>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>CT </string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="labelModelBS">
+             <property name="minimumSize">
+              <size>
+               <width>35</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_11">
+           <item>
+            <widget class="QLabel" name="label_36">
+             <property name="font">
+              <font>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>F   </string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="labelModelS">
+             <property name="minimumSize">
+              <size>
+               <width>35</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_13">
+           <item>
+            <widget class="QLabel" name="label_37">
+             <property name="font">
+              <font>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>E   </string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="labelModelT">
+             <property name="minimumSize">
+              <size>
+               <width>35</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_12">
+           <item>
+            <widget class="QLabel" name="label_34">
+             <property name="font">
+              <font>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>PV  </string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="labelModelW">
+             <property name="minimumSize">
+              <size>
+               <width>35</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_15">
+           <item>
+            <widget class="QLabel" name="label_38">
+             <property name="font">
+              <font>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>A   </string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="labelModelA">
+             <property name="minimumSize">
+              <size>
+               <width>35</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_14">
+           <item>
+            <widget class="QLabel" name="label_31">
+             <property name="font">
+              <font>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>I    </string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="labelModelI">
+             <property name="minimumSize">
+              <size>
+               <width>35</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_16">
+           <item>
+            <widget class="QLabel" name="label_32">
+             <property name="font">
+              <font>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>Cdt  </string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="labelModelLd">
+             <property name="minimumSize">
+              <size>
+               <width>35</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_4">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="Line" name="line_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_6">
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_32">
+         <item>
+          <widget class="QLabel" name="label_24">
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
            <property name="text">
-            <string>Tirailleurs</string>
+            <string>4 - Nom du régiment</string>
            </property>
           </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="regName"/>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_5">
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_31">
+             <item>
+              <widget class="QCheckBox" name="checkBoxSkirmish">
+               <property name="text">
+                <string>Tirailleurs</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="checkBoxChampion">
+               <property name="text">
+                <string>Champion</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_29">
+             <item>
+              <widget class="QCheckBox" name="checkBoxBanner">
+               <property name="text">
+                <string>Bannière</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_3">
+               <item>
+                <widget class="QSpinBox" name="spinBoxPtsBanner"/>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_28">
+                 <property name="text">
+                  <string>Pts</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_30">
+             <item>
+              <widget class="QCheckBox" name="checkBoxMusician">
+               <property name="text">
+                <string>Musicien</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_4">
+               <item>
+                <widget class="QSpinBox" name="spinBoxPtsMusician"/>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_30">
+                 <property name="text">
+                  <string>Pts</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </item>
+          </layout>
          </item>
         </layout>
        </item>
@@ -312,108 +565,29 @@
       </layout>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_16">
-       <item>
-        <widget class="QCheckBox" name="checkBoxBanner">
-         <property name="text">
-          <string>Bannière</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="horizontalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="QSpinBox" name="spinBoxPtsBanner"/>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_28">
-         <property name="text">
-          <string>Pts</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
+      <widget class="Line" name="line_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_17">
+      <layout class="QVBoxLayout" name="verticalLayout_28">
        <item>
-        <widget class="QCheckBox" name="checkBoxMusician">
-         <property name="text">
-          <string>Musicien</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="horizontalSpacer_3">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="QSpinBox" name="spinBoxPtsMusician"/>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_30">
-         <property name="text">
-          <string>Pts</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_19">
-       <item>
-        <widget class="QCheckBox" name="checkBoxChampion">
-         <property name="text">
-          <string>Champion</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="horizontalSpacer_4">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <layout class="QVBoxLayout" name="verticalLayout_3">
-       <item>
-        <widget class="QLabel" name="label_2">
-         <property name="text">
-          <string>Stats du champion</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_11">
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QLabel" name="label_2">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Stats du champion :</string>
+           </property>
+          </widget>
+         </item>
          <item>
           <widget class="QLabel" name="label_27">
            <property name="text">
@@ -434,238 +608,519 @@
            </property>
           </widget>
          </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
-          <widget class="QLabel" name="label_4">
-           <property name="text">
-            <string>M   </string>
+          <spacer name="horizontalSpacer_5">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
            </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="lineEditM">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
            </property>
-          </widget>
+          </spacer>
          </item>
         </layout>
        </item>
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
-          <widget class="QLabel" name="label_5">
-           <property name="text">
-            <string>CC </string>
-           </property>
-          </widget>
+          <layout class="QVBoxLayout" name="verticalLayout_3">
+           <item>
+            <widget class="QLabel" name="label_4">
+             <property name="text">
+              <string>M   </string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEditM">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>20</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>40</width>
+               <height>16777215</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEditCC">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-          </widget>
+          <layout class="QVBoxLayout" name="verticalLayout_17">
+           <item>
+            <widget class="QLabel" name="label_5">
+             <property name="text">
+              <string>CC </string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEditCC">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>40</width>
+               <height>16777215</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_18">
+           <item>
+            <widget class="QLabel" name="label_6">
+             <property name="text">
+              <string>CT </string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEditCT">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>20</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>40</width>
+               <height>16777215</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_19">
+           <item>
+            <widget class="QLabel" name="label_7">
+             <property name="text">
+              <string>F   </string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEditF">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>20</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>40</width>
+               <height>16777215</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_21">
+           <item>
+            <widget class="QLabel" name="label_8">
+             <property name="text">
+              <string>E   </string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEditE">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>20</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>40</width>
+               <height>16777215</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_23">
+           <item>
+            <widget class="QLabel" name="label_9">
+             <property name="text">
+              <string>PV  </string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEditPV">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>20</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>40</width>
+               <height>16777215</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_22">
+           <item>
+            <widget class="QLabel" name="label_10">
+             <property name="text">
+              <string>A   </string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEditA">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>20</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>40</width>
+               <height>16777215</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_20">
+           <item>
+            <widget class="QLabel" name="label_11">
+             <property name="text">
+              <string>I    </string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEditI">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>20</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>40</width>
+               <height>16777215</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_24">
+           <item>
+            <widget class="QLabel" name="label_29">
+             <property name="text">
+              <string>Cdt  </string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEditCdt">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>20</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>40</width>
+               <height>16777215</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_25">
+           <item>
+            <widget class="QLabel" name="label_12">
+             <property name="text">
+              <string>Svg</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEditSvg">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>20</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>40</width>
+               <height>16777215</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_26">
+           <item>
+            <widget class="QLabel" name="label_13">
+             <property name="text">
+              <string>Svg Inv</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEditSvgInv">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>20</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>40</width>
+               <height>16777215</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
         </layout>
        </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_3">
-         <item>
-          <widget class="QLabel" name="label_6">
-           <property name="text">
-            <string>CT </string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="lineEditCT">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_4">
-         <item>
-          <widget class="QLabel" name="label_7">
-           <property name="text">
-            <string>F   </string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="lineEditF">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_5">
-         <item>
-          <widget class="QLabel" name="label_8">
-           <property name="text">
-            <string>E   </string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="lineEditE">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_8">
-         <item>
-          <widget class="QLabel" name="label_11">
-           <property name="text">
-            <string>I    </string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="lineEditI">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="Line" name="line">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_5">
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_7">
          <item>
-          <widget class="QLabel" name="label_10">
+          <widget class="QLabel" name="label_19">
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="cursor">
+            <cursorShape>WhatsThisCursor</cursorShape>
+           </property>
            <property name="text">
-            <string>A   </string>
+            <string>5 - Choisissez les options du modèle :</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEditA">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
+          <spacer name="horizontalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QLabel" name="labelPointsOptions">
+           <property name="minimumSize">
+            <size>
+             <width>100</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_41">
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Pts</string>
            </property>
           </widget>
          </item>
         </layout>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_6">
+        <widget class="QTreeView" name="viewOptions">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="selectionMode">
+          <enum>QAbstractItemView::MultiSelection</enum>
+         </property>
+         <property name="animated">
+          <bool>true</bool>
+         </property>
+         <property name="allColumnsShowFocus">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_33">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_8">
          <item>
-          <widget class="QLabel" name="label_9">
+          <widget class="QLabel" name="label_40">
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="cursor">
+            <cursorShape>WhatsThisCursor</cursorShape>
+           </property>
            <property name="text">
-            <string>PV  </string>
+            <string>6 - Choisissez les options du régiment :</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEditPV">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
+          <spacer name="horizontalSpacer_3">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QLabel" name="labelPointsOptionsReg">
+           <property name="minimumSize">
+            <size>
+             <width>100</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_42">
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Pts</string>
            </property>
           </widget>
          </item>
         </layout>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_21">
-         <item>
-          <widget class="QLabel" name="label_29">
-           <property name="text">
-            <string>Cdt  </string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="lineEditCdt">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_9">
-         <item>
-          <widget class="QLabel" name="label_12">
-           <property name="text">
-            <string>Svg</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="lineEditSvg">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_10">
-         <item>
-          <widget class="QLabel" name="label_13">
-           <property name="text">
-            <string>Svg Inv</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="lineEditSvgInv">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-          </widget>
-         </item>
-        </layout>
+        <widget class="QTreeView" name="viewOptions_2">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="cursor" stdset="0">
+          <cursorShape>ArrowCursor</cursorShape>
+         </property>
+         <property name="selectionMode">
+          <enum>QAbstractItemView::MultiSelection</enum>
+         </property>
+         <property name="animated">
+          <bool>true</bool>
+         </property>
+         <property name="allColumnsShowFocus">
+          <bool>true</bool>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>
@@ -745,7 +1200,7 @@
           </font>
          </property>
          <property name="text">
-          <string>Total Points de l'armée :</string>
+          <string>Total Points :</string>
          </property>
         </widget>
        </item>
@@ -817,6 +1272,56 @@
     </layout>
    </item>
   </layout>
+  <zorder>label_31</zorder>
+  <zorder>label_32</zorder>
+  <zorder>label_33</zorder>
+  <zorder>label_34</zorder>
+  <zorder>label_35</zorder>
+  <zorder>label_36</zorder>
+  <zorder>label_37</zorder>
+  <zorder>label_38</zorder>
+  <zorder>label_39</zorder>
+  <zorder>labelModelM</zorder>
+  <zorder>labelModelS</zorder>
+  <zorder>labelModelW</zorder>
+  <zorder>labelModelA</zorder>
+  <zorder>labelModelLd</zorder>
+  <zorder>labelModelWS</zorder>
+  <zorder>labelModelBS</zorder>
+  <zorder>labelModelI</zorder>
+  <zorder>labelModelT</zorder>
+  <zorder>labelModelLd</zorder>
+  <zorder>labelModelS</zorder>
+  <zorder>labelModelW</zorder>
+  <zorder>labelModelI</zorder>
+  <zorder>labelModelT</zorder>
+  <zorder>labelModelBS</zorder>
+  <zorder>labelModelA</zorder>
+  <zorder>labelModelWS</zorder>
+  <zorder>label_49</zorder>
+  <zorder></zorder>
+  <zorder></zorder>
+  <zorder>regName</zorder>
+  <zorder>spinBoxPtsMusician</zorder>
+  <zorder>label_24</zorder>
+  <zorder></zorder>
+  <zorder></zorder>
+  <zorder>checkBoxMusician</zorder>
+  <zorder>label_24</zorder>
+  <zorder>regName</zorder>
+  <zorder></zorder>
+  <zorder></zorder>
+  <zorder></zorder>
+  <zorder></zorder>
+  <zorder></zorder>
+  <zorder></zorder>
+  <zorder>layoutWidget</zorder>
+  <zorder>horizontalSpacer</zorder>
+  <zorder>labelPointsOptions</zorder>
+  <zorder>label_41</zorder>
+  <zorder>labelPointsOptionsReg</zorder>
+  <zorder>horizontalSpacer_3</zorder>
+  <zorder>label_42</zorder>
  </widget>
  <resources/>
  <connections/>

@@ -33,7 +33,6 @@ private slots:
     void on_comboBoxRace_currentIndexChanged(const QString &raceDir);
     void on_treeViewExistingModels_clicked(const QModelIndex &index);
     void on_checkBoxChampion_toggled(bool checked);
-    void on_addGroupButton_clicked();
     void on_addRegButton_clicked();
     void on_removeRegButton_clicked();
     void on_editRegButton_clicked();
@@ -43,10 +42,8 @@ private slots:
     void on_pushButtonQuit_clicked();
     void on_pushButtonSave_clicked();
     void on_pushButtonLoad_clicked();
-
     void on_pushButtonExport_clicked();
-
-    void on_removeGroupButton_clicked();
+    void on_buildRegButton_clicked();
 
 private:
     static const QString LOG_ID_TRACE;
@@ -58,7 +55,7 @@ private:
     void clearRegimentDisplay();
     void updateRegModel();
     void updateGlobalArmyPoints();
-    void loadRegimentInUI(RegimentAbstract r);
+    void loadRegimentInUI(RegimentAbstract &r);
     void load(QString path);
 
     bool changeRace;
@@ -67,10 +64,9 @@ private:
     QStringList existingRaces;
     ModelFactory fac;
     ModelAbstract* ma;
+    RegimentAbstract regiment;
     QStandardItemModel* options;
     QStandardItemModel* reg;
-    QStandardItemModel* models;
-    QModelIndex selectedModel;
     QString currentSelectedPath;
     Army currentArmy;
 };
