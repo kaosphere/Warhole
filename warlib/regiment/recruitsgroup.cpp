@@ -43,8 +43,13 @@ RecruitsGroup::RecruitsGroup(const RecruitsGroup& copy)
     casualties = copy.casualties;
     nb = copy.nb;
     path = copy.path;
-    //model = fac.createEmptyModel(copy.path.section('/',-2,-2));
     model = copy.model->clone();
+
+    QLoggerManager *manager = QLoggerManager::getInstance();
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_INFO), QLogger::InfoLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_ERR), QLogger::ErrorLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_WARN), QLogger::WarnLevel);
 }
 
 RecruitsGroup::~RecruitsGroup()
@@ -118,6 +123,16 @@ bool RecruitsGroup::operator==(const RecruitsGroup& obj) const
         return true;
     }
     else return false;
+}
+
+RecruitsGroup &RecruitsGroup::operator =(const RecruitsGroup &copy)
+{
+    casualties = copy.casualties;
+    nb = copy.nb;
+    path = copy.path;
+    model = copy.model->clone();
+
+    return *this;
 }
 
 int RecruitsGroup::computePoints() const

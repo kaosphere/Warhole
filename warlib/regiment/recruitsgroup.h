@@ -41,6 +41,7 @@ public:
     void setPath(const QString &value);
 
     bool operator==(const RecruitsGroup& obj) const;
+    RecruitsGroup& operator=(const RecruitsGroup& copy);
     
     int computePoints() const;
 
