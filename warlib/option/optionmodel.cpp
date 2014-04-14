@@ -4,12 +4,13 @@ OptionModel::OptionModel()
 {
 }
 
-OptionModel::OptionModel(const QString &n, const int &pts, const bool &act, const QString &specRules)
+OptionModel::OptionModel(const QString &n, const int &pts, const bool &act, const QString &specRules, const bool& ro)
 {
     name = n;
     nbPoints = pts;
     activated = act;
     specialRules = specRules;
+    regimentOptions = ro;
 }
 
 OptionModel::OptionModel(const OptionModel &obj)
@@ -18,6 +19,7 @@ OptionModel::OptionModel(const OptionModel &obj)
     nbPoints = obj.nbPoints;
     activated = obj.activated;
     specialRules = obj.specialRules;
+    regimentOptions = obj.regimentOptions;
 }
 
 OptionModel::~OptionModel()
@@ -26,7 +28,11 @@ OptionModel::~OptionModel()
 
 bool OptionModel::operator ==(const OptionModel &o)
 {
-    if(name == o.name && nbPoints == o.nbPoints && specialRules == o.specialRules)
+    if(name == o.name &&
+       nbPoints == o.nbPoints &&
+       specialRules == o.specialRules &&
+       activated == o.activated &&
+       regimentOptions == o.regimentOptions)
         return true;
     else return false;
 }
@@ -37,6 +43,7 @@ OptionModel &OptionModel::operator =(const OptionModel & obj)
     nbPoints = obj.nbPoints;
     activated = obj.activated;
     specialRules = obj.specialRules;
+    regimentOptions = obj.regimentOptions;
 
     return *this;
 }
@@ -49,17 +56,17 @@ QString OptionModel::displayString()
     info << "Points :                   " << nbPoints << endl;
     info << "Rules :                    " << specialRules << endl;
     info << "Selected :                 " << activated << endl;
+    info << "Regiment options :         " << regimentOptions <<endl;
     return s;
 }
 
 QString OptionModel::getHtml()
 {
     QString html;
-    html += QString("%1 : %2. %3 pts.")
+    html += QString("%1 (%3 pts)")
             .arg(name)
-            .arg(specialRules.toHtmlEscaped())
             .arg(QString::number(nbPoints));
-	return html;
+    return html;
 }
 
 QString OptionModel::getName() const
@@ -102,12 +109,23 @@ void OptionModel::setSpecialRules(const QString &value)
     specialRules = value;
 }
 
+bool OptionModel::isRegimentOptions() const
+{
+    return regimentOptions;
+}
+
+void OptionModel::setRegimentOptions(bool value)
+{
+    regimentOptions = value;
+}
+
 QDataStream & operator <<(QDataStream & out, const OptionModel & obj)
 {
     out << obj.name
         << obj.nbPoints
         << obj.activated
-        << obj.specialRules;
+        << obj.specialRules
+        << obj.regimentOptions;
 
     return out;
 }
@@ -118,6 +136,7 @@ QDataStream & operator >>(QDataStream & in, OptionModel & obj)
     in >> obj.nbPoints;
     in >> obj.activated;
     in >> obj.specialRules;
+    in >> obj.regimentOptions;
 
     return in;
 }

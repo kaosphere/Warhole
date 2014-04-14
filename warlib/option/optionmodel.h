@@ -10,7 +10,7 @@ class OptionModel
 public:
     explicit OptionModel();
 
-    OptionModel(const QString &n, const int& pts, const bool& act, const QString& specRules);
+    OptionModel(const QString &n, const int& pts, const bool& act, const QString& specRules, const bool &ro);
 
     OptionModel(const OptionModel & obj);
 
@@ -35,11 +35,15 @@ public:
     QString getSpecialRules() const;
     void setSpecialRules(const QString &value);
 
+    bool isRegimentOptions() const;
+    void setRegimentOptions(bool value);
+
 protected:
     QString name;
     int nbPoints;
     bool activated;
     QString specialRules;
+    bool regimentOptions;
 
     friend QDataStream & operator << (QDataStream &, const OptionModel &);
     friend QDataStream & operator >> (QDataStream &, OptionModel &);
