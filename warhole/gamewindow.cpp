@@ -1,6 +1,9 @@
 #include "gamewindow.h"
 #include "ui_gamewindow.h"
 
+const double GameWindow::maxScaleFactor = 2;
+const double GameWindow::minScaleFactor = 0.2;
+
 GameWindow::GameWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::GameWindow)

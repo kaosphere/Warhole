@@ -47,8 +47,8 @@ private:
     QPixmap background;
     testGI* regiment;
 
-    const double maxScaleFactor = 2;
-    const double minScaleFactor = 0.2;
+    static const double maxScaleFactor;
+    static const double minScaleFactor;
 };
 
 #endif // GAMEWINDOW_H
