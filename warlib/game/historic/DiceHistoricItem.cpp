@@ -5,7 +5,7 @@
  *      Author: jumelina
  */
 
-#include "Game/Historic/DiceHistoricItem.h"
+#include "game/historic/DiceHistoricItem.h"
 
 DiceHistoricItem::DiceHistoricItem() : HistoricAbstractItem()
 {

@@ -6,7 +6,7 @@
 * DATE: 11-04-2014
 *************************************************************************/
 
-#include "Game/Historic/ChatHistoricItem.h"
+#include "game/historic/ChatHistoricItem.h"
 
 ChatHistoricItem::ChatHistoricItem() {
 	// TODO Auto-generated constructor stub

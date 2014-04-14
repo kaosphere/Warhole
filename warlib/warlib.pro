@@ -31,9 +31,9 @@ SOURCES += \
     Utilities/QLogger/QLogger.cpp \
     Utilities/DiceRoller/DiceRoller.cpp \ 
     Utilities/PdfExporter/pdfexporter.cpp \
-    game/Historic/HistoricAbstractItem.cpp \
-	game/Historic/DiceHistoricItem.cpp \
-	game/Historic/ChatHistoricItem.cpp
+    game/historic/ChatHistoricItem.cpp \
+    game/historic/DiceHistoricItem.cpp \
+    game/historic/HistoricAbstractItem.cpp
 	
 HEADERS += \
     stats/statsmodel.h \
@@ -55,9 +55,9 @@ HEADERS += \
     Utilities/QLogger/QLogger.h \
     Utilities/DiceRoller/DiceRoller.h \ 
     Utilities/PdfExporter/pdfexporter.h \
-    game/Historic/HistoricAbstractItem.h \
-    game/Historic/DiceHistoricItem.h \
-    game/Historic/ChatHistoricItem.h
+    game/historic/ChatHistoricItem.h \
+    game/historic/DiceHistoricItem.h \
+    game/historic/HistoricAbstractItem.h
 
 INSTALLS += target
 
