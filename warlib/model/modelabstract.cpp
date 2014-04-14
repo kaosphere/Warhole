@@ -272,13 +272,25 @@ int ModelAbstract::computePoints()
     return 0;
 }
 
+int ModelAbstract::getRegimentPoints()
+{
+    int points = 0;
+    QList<OptionModel>::iterator i;
+    for (i = options.begin(); i != options.end(); ++i)
+    {
+        if(i->isActivated() && i->isRegimentOptions())
+            points += i->getNbPoints();
+    }
+    return points;
+}
+
 int ModelAbstract::computeBasePoints()
 {
     int points = stats.getPoints();
     QList<OptionModel>::iterator i;
     for (i = options.begin(); i != options.end(); ++i)
     {
-        if(i->isActivated())
+        if(i->isActivated() && !i->isRegimentOptions())
             points += i->getNbPoints();
     }
     return points;

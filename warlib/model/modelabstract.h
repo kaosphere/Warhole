@@ -217,6 +217,7 @@ public:
 	*/
     virtual int computePoints();
 
+    int getRegimentPoints();
     int computeBasePoints();
 
 protected:
