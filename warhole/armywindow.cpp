@@ -42,16 +42,24 @@ ArmyWindow::ArmyWindow(QWidget *parent) :
     ui->comboBoxRace->addItems(existingRaces);
 
     // Associate model to view
-    model = new QDirModel();
+    model = new QFileSystemModel(this);
 
     options = new QStandardItemModel();
+    regOptions = new QStandardItemModel();
+
+    connect(options,SIGNAL(itemChanged(QStandardItem*)),this,SLOT(evaluateOptionsPoints()));
+    connect(regOptions,SIGNAL(itemChanged(QStandardItem*)),this,SLOT(evaluateRegimentOptionsPoints()));
     options->setHorizontalHeaderLabels(OPTION_HEADER);
+    regOptions->setHorizontalHeaderLabels(OPTION_HEADER);
 
     ui->viewOptions->setModel(options);
+    ui->viewOptions2->setModel(regOptions);
     // TODO : This is a hack to fix the fact that options rows are collapsable for an unknown readon
     // investigate and fix properly.
     ui->viewOptions->setItemsExpandable(false);
     ui->viewOptions->setRootIsDecorated(false);
+    ui->viewOptions2->setItemsExpandable(false);
+    ui->viewOptions2->setRootIsDecorated(false);
 
     reg = new QStandardItemModel();
 
@@ -99,19 +107,22 @@ ArmyWindow::ArmyWindow(QString fileName, QWidget *parent) :
     ui->comboBoxRace->addItems(existingRaces);
 
     // Associate model to view
-    model = new QDirModel();
-
-
-    options = new QStandardItemModel();
+    model = new QFileSystemModel(this);
 
     options = new QStandardItemModel();
     options->setHorizontalHeaderLabels(OPTION_HEADER);
 
+    regOptions = new QStandardItemModel();
+    regOptions->setHorizontalHeaderLabels(OPTION_HEADER);
+
     ui->viewOptions->setModel(options);
+    ui->viewOptions2->setModel(regOptions);
     // TODO : This is a hack to fix the fact that options rows are collapsable for an unknown readon
     // investigate and fix properly.
     ui->viewOptions->setItemsExpandable(false);
     ui->viewOptions->setRootIsDecorated(false);
+    ui->viewOptions2->setItemsExpandable(false);
+    ui->viewOptions2->setRootIsDecorated(false);
 
     reg = new QStandardItemModel();
 
@@ -130,6 +141,8 @@ ArmyWindow::ArmyWindow(QString fileName, QWidget *parent) :
 ArmyWindow::~ArmyWindow()
 {
     delete model;
+    delete options;
+    delete regOptions;
     delete ma;
     delete ui;
 }
@@ -168,30 +181,25 @@ void ArmyWindow::on_comboBoxRace_currentIndexChanged(const QString &raceDir)
     }
     if(changeRace && updateDir)
     {
-        // get list of existing models
+        // get list of existing models to verify if some exist
         QDir* modelDir = new QDir(MODEL_PATH + "/" + raceDir);
         QStringList existingModels;
         if (modelDir->exists())
         {
             existingModels = modelDir->entryList();
         }
-
         if(existingModels.isEmpty())
         {
              QMessageBox::warning(this, tr("Erreur"), tr("Aucune race existante ; commencez par créer des figurines"));
         }
 
-        existingModels.removeOne(".");
-        existingModels.removeOne("..");
-
-        int i;
-        for (i=4;i==model->columnCount();i++)
-        {
-             ui->treeViewExistingModels->hideColumn(i);
-        }
-
+        // set the root path of the tree view
         ui->treeViewExistingModels->setModel(model);
-        ui->treeViewExistingModels->setRootIndex(model->index(MODEL_PATH + "/" + raceDir));
+        ui->treeViewExistingModels->setRootIndex(model->setRootPath(MODEL_PATH + "/" + raceDir));
+        // hide size, type and date collumns
+        ui->treeViewExistingModels->hideColumn(1);
+        ui->treeViewExistingModels->hideColumn(2);
+        ui->treeViewExistingModels->hideColumn(3);
     }
 }
 
@@ -200,7 +208,6 @@ void ArmyWindow::on_treeViewExistingModels_clicked(const QModelIndex &index)
 {
     QString name = index.data().toString();
     QStringList pieces = name.split(".");
-
     if(pieces.last() == "unit")
     {
         currentSelectedPath = model->filePath(index);
@@ -211,11 +218,15 @@ void ArmyWindow::on_buildRegButton_clicked()
 {
     if(ui->spinBoxNB->value() != 0)
     {
-        clearRegimentDisplay();
-        RegimentAbstract r;
-        RecruitsGroup rg(ui->spinBoxNB->value(),0,currentSelectedPath);
-        r.addGroup(rg);
-        loadRegimentInUI(r);
+        QStringList pieces = currentSelectedPath.split(".");
+        if(pieces.last() == "unit")
+        {
+            clearRegimentDisplay();
+            RegimentAbstract r;
+            RecruitsGroup rg(ui->spinBoxNB->value(),0,currentSelectedPath);
+            r.addGroup(rg);
+            loadRegimentInUI(r);
+        }
     }
     else
     {
@@ -226,6 +237,7 @@ void ArmyWindow::on_buildRegButton_clicked()
 void ArmyWindow::on_checkBoxChampion_toggled(bool checked)
 {
     setEnableChampionStats(checked);
+    updateRegimentPoints();
 }
 
 void ArmyWindow::setEnableChampionStats(bool checked)
@@ -247,6 +259,9 @@ void ArmyWindow::setEnableChampionStats(bool checked)
 void ArmyWindow::clearRegimentDisplay()
 {
     ui->regName->clear();
+    ui->regPtsLabel->clear();
+    ui->modelNameLabel->clear();
+    ui->modelPtsLabel->clear();
     ui->checkBoxBanner->setChecked(false);
     ui->spinBoxPtsBanner->clear();
     ui->checkBoxChampion->setChecked(false);
@@ -265,7 +280,6 @@ void ArmyWindow::clearRegimentDisplay()
     ui->lineEditPV->clear();
     ui->lineEditSvg->clear();
     ui->lineEditSvgInv->clear();
-    ui->spinPoints->clear();
 
     ui->labelModelM->clear();
     ui->labelModelWS->clear();
@@ -278,6 +292,7 @@ void ArmyWindow::clearRegimentDisplay()
     ui->labelModelLd->clear();
 
     options->clear();
+    regOptions->clear();
 }
 
 void ArmyWindow::updateGlobalArmyPoints()
@@ -301,7 +316,7 @@ void ArmyWindow::updateRegModel()
 
 void ArmyWindow::on_addRegButton_clicked()
 {
-    if(ui->lineEditName->text().isEmpty())
+    if(ui->regName->text().isEmpty())
     {
         QMessageBox::warning(this, tr("Info"), tr("Veuillez donner un nom à votre régiment."));
     }
@@ -333,6 +348,72 @@ void ArmyWindow::on_addRegButton_clicked()
         regiment.setSkirmishers(ui->checkBoxSkirmish->isChecked());
         regiment.setStartingCount(regiment.getGroups().first().getNb());
         regiment.setName(ui->regName->text());
+
+        regiment.getGroups().first().setNb(ui->spinBoxNB->value());
+
+        regiment.getGroups()[0].getModel()->clearOptions();
+
+        for(int i = 0; i< options->rowCount(); i++)
+        {
+            OptionModel o;
+            for(int j = 0; j < options->columnCount(); j++)
+            {
+                QStandardItem* item = options->item(i,j);
+                switch(j)
+                {
+                    case 0:
+                        if(item->checkState() == Qt::Checked)
+                            o.setActivated(true);
+                        else
+                            o.setActivated(false);
+                        break;
+                    case 1:
+                        o.setName(item->text());
+                        break;
+                    case 2:
+                        o.setNbPoints(item->text().toUInt());
+                        break;
+                    case 3:
+                        o.setSpecialRules(item->text());
+                        break;
+                    default:
+                        break;
+                }
+            }
+            o.setRegimentOptions(false);
+            regiment.getGroups().first().getModel()->addOption(o);
+        }
+        // treat regiment options separately
+        for(int i = 0; i< regOptions->rowCount(); i++)
+        {
+            OptionModel o;
+            for(int j = 0; j < regOptions->columnCount(); j++)
+            {
+                QStandardItem* item = regOptions->item(i,j);
+                switch(j)
+                {
+                    case 0:
+                        if(item->checkState() == Qt::Checked)
+                            o.setActivated(true);
+                        else
+                            o.setActivated(false);
+                        break;
+                    case 1:
+                        o.setName(item->text());
+                        break;
+                    case 2:
+                        o.setNbPoints(item->text().toUInt());
+                        break;
+                    case 3:
+                        o.setSpecialRules(item->text());
+                        break;
+                    default:
+                        break;
+                }
+            }
+            o.setRegimentOptions(true);
+            regiment.getGroups().first().getModel()->addOption(o);
+        }
 
         currentArmy.addUnit(regiment);
 
@@ -366,11 +447,54 @@ void ArmyWindow::on_removeRegButton_clicked()
     }
 }
 
+void ArmyWindow::evaluateOptionsPoints()
+{
+    int pts = 0;
+    for(int i = 0; i< options->rowCount(); i++)
+    {
+        if(options->item(i,0)->checkState() == Qt::Checked)
+            pts+= options->item(i,2)->text().toUInt();
+    }
+    ui->labelPointsOptions->setText(QString::number(pts));
+
+    updateRegimentPoints();
+}
+
+void ArmyWindow::evaluateRegimentOptionsPoints()
+{
+    int pts = 0;
+    for(int i = 0; i< regOptions->rowCount(); i++)
+    {
+        if(regOptions->item(i,0)->checkState() == Qt::Checked)
+            pts+= regOptions->item(i,2)->text().toUInt();
+    }
+    ui->labelPointsOptionsReg->setText(QString::number(pts));
+
+    updateRegimentPoints();
+}
+
+void ArmyWindow::updateRegimentPoints()
+{
+    if(regiment.getGroups().size() > 0)
+    {
+        int pts = 0;
+        pts += ui->spinBoxNB->value() * regiment.getGroups().first().getModel()->getStats().getPoints();
+        if (ui->checkBoxBanner->isChecked()) pts += ui->spinBoxPtsBanner->value();
+        if (ui->checkBoxChampion->isChecked()) pts += ui->spinPoints->value();
+        if (ui->checkBoxMusician->isChecked()) pts += ui->spinBoxPtsMusician->value();
+        pts += ui->spinBoxNB->value() * ui->labelPointsOptions->text().toUInt();
+        pts += ui->labelPointsOptionsReg->text().toUInt();
+        ui->regPtsLabel->setText(QString::number(pts));
+    }
+}
+
 void ArmyWindow::loadRegimentInUI(RegimentAbstract& r)
 {
     regiment = r;
     clearRegimentDisplay();
 
+    ui->modelPtsLabel->setText(QString::number(regiment.getGroups().first().getModel()->getStats().getPoints()));
+    ui->modelNameLabel->setText(regiment.getGroups().first().getModel()->getStats().getName());
     ui->labelModelM->setText(regiment.getGroups().first().getModel()->getStats().getM());
     ui->labelModelWS->setText(regiment.getGroups().first().getModel()->getStats().getWs());
     ui->labelModelBS->setText(regiment.getGroups().first().getModel()->getStats().getBs());
@@ -381,7 +505,7 @@ void ArmyWindow::loadRegimentInUI(RegimentAbstract& r)
     ui->labelModelI->setText(regiment.getGroups().first().getModel()->getStats().getI());
     ui->labelModelLd->setText(regiment.getGroups().first().getModel()->getStats().getLd());
 
-    ui->spinBoxNB->setValue(0);
+    ui->spinBoxNB->setValue(regiment.getGroups().first().getNb());
     ui->regName->setText(regiment.getName());
     ui->checkBoxBanner->setChecked(regiment.getBanner());
     ui->spinBoxPtsBanner->setValue(0);
@@ -400,14 +524,21 @@ void ArmyWindow::loadRegimentInUI(RegimentAbstract& r)
         QStandardItem* checkBox = new QStandardItem(true);
         checkBox->setCheckable(true);
 
+        if(regiment.getGroups().first().getModel()->getOptions()[i].isActivated())
+        {
+            checkBox->setCheckState(Qt::Checked);
+        }
         newOption<< checkBox
                  << new QStandardItem(regiment.getGroups().first().getModel()->getOptions()[i].getName())
                 <<new QStandardItem(QString::number(regiment.getGroups().first().getModel()->getOptions()[i].getNbPoints()))
                <<new QStandardItem(regiment.getGroups().first().getModel()->getOptions()[i].getSpecialRules());
-
-        options->appendRow(newOption);
+        if(regiment.getGroups().first().getModel()->getOptions()[i].isRegimentOptions())
+            regOptions->appendRow(newOption);
+        else
+            options->appendRow(newOption);
     }
     options->setHorizontalHeaderLabels(OPTION_HEADER);
+    regOptions->setHorizontalHeaderLabels(OPTION_HEADER);
 
     if(r.getChampion())
     {
@@ -424,6 +555,8 @@ void ArmyWindow::loadRegimentInUI(RegimentAbstract& r)
         ui->lineEditSvgInv->setText(regiment.getChampionStats().getSvgInv());
         ui->spinPoints->setValue(regiment.getChampionStats().getPoints());
     }
+
+    updateRegimentPoints();
 }
 
 void ArmyWindow::on_editRegButton_clicked()
@@ -449,11 +582,13 @@ void ArmyWindow::on_editRegButton_clicked()
 void ArmyWindow::on_checkBoxBanner_toggled(bool checked)
 {
     ui->spinBoxPtsBanner->setEnabled(checked);
+    updateRegimentPoints();
 }
 
 void ArmyWindow::on_checkBoxMusician_toggled(bool checked)
 {
     ui->spinBoxPtsMusician->setEnabled(checked);
+    updateRegimentPoints();
 }
 
 void ArmyWindow::on_pushButtonDuplicate_clicked()
@@ -559,3 +694,23 @@ void ArmyWindow::on_pushButtonExport_clicked()
 }
 
 
+
+void ArmyWindow::on_spinBoxNB_valueChanged(int arg1)
+{
+    updateRegimentPoints();
+}
+
+void ArmyWindow::on_spinBoxPtsBanner_valueChanged(const QString &arg1)
+{
+    updateRegimentPoints();
+}
+
+void ArmyWindow::on_spinBoxPtsMusician_valueChanged(int arg1)
+{
+    updateRegimentPoints();
+}
+
+void ArmyWindow::on_spinPoints_valueChanged(const int &arg1)
+{
+    updateRegimentPoints();
+}

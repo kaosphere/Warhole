@@ -25,6 +25,7 @@ ModelWindow::ModelWindow(QWidget *parent) :
     ui->graphicsView->setScene(scene);
 
     options = new QStandardItemModel();
+    regOptions = new QStandardItemModel();
     crew = new QStandardItemModel();
 
     QStringList modelList;
@@ -33,7 +34,9 @@ ModelWindow::ModelWindow(QWidget *parent) :
     ui->comboUnitType->addItems(modelList);
 
     ui->viewOptions->setModel(options);
-    ui->viewOptions->header()->hide();
+    ui->viewOptions2->setModel(regOptions);
+    options->setHorizontalHeaderLabels(OPTION_HEADER);
+    regOptions->setHorizontalHeaderLabels(OPTION_HEADER);
 
     ui->viewModelCrew->setModel(crew);
     ui->viewModelCrew->header()->hide();
@@ -59,6 +62,7 @@ ModelWindow::ModelWindow(QString f, QWidget *parent) :
     ui->graphicsView->setScene(scene);
 
     options = new QStandardItemModel();
+    regOptions = new QStandardItemModel();
     crew = new QStandardItemModel();
 
     QStringList modelList;
@@ -67,7 +71,9 @@ ModelWindow::ModelWindow(QString f, QWidget *parent) :
     ui->comboUnitType->addItems(modelList);
 
     ui->viewOptions->setModel(options);
-    ui->viewOptions->header()->hide();
+    ui->viewOptions2->setModel(regOptions);
+    options->setHorizontalHeaderLabels(OPTION_HEADER);
+    regOptions->setHorizontalHeaderLabels(OPTION_HEADER);
 
     ui->viewModelCrew->setModel(crew);
     ui->viewModelCrew->header()->hide();
@@ -83,6 +89,7 @@ ModelWindow::~ModelWindow()
 
     delete crew;
     delete options;
+    delete regOptions;
     delete scene;
 
     delete ui;
@@ -108,16 +115,17 @@ void ModelWindow::loadWidgets(bool l)
     ui->label_28->setEnabled(l);
     ui->label_54->setEnabled(l);
     ui->label_55->setEnabled(l);
-    ui->label_56->setEnabled(l);
-    ui->label_57->setEnabled(l);
-    ui->label_58->setEnabled(l);
-    ui->label_59->setEnabled(l);
-    ui->label_60->setEnabled(l);
-    ui->label_61->setEnabled(l);
-    ui->label_62->setEnabled(l);
-    ui->label_63->setEnabled(l);
-    ui->label_64->setEnabled(l);
-    ui->label_65->setEnabled(l);
+    ui->label_41->setEnabled(l);
+    ui->label_42->setEnabled(l);
+    ui->label_43->setEnabled(l);
+    ui->label_44->setEnabled(l);
+    ui->label_45->setEnabled(l);
+    ui->label_46->setEnabled(l);
+    ui->label_47->setEnabled(l);
+    ui->label_48->setEnabled(l);
+    ui->label_49->setEnabled(l);
+    ui->label_50->setEnabled(l);
+    ui->label_51->setEnabled(l);
     ui->label_66->setEnabled(l);
     ui->label_67->setEnabled(l);
 
@@ -321,11 +329,47 @@ void ModelWindow::on_addOption_clicked()
     }
 }
 
+void ModelWindow::on_addOption_2_clicked()
+{
+    bool ok;
+    //check if the point number for the option is an integer
+    ui->lineEditOptionPts2->text().toUInt(&ok);
+
+    //save it if nbPoints is integer
+    if(ok)
+    {
+        QList<QStandardItem *> newOption;
+
+        newOption<<new QStandardItem(ui->lineOptionName2->text())
+                <<new QStandardItem(ui->lineEditOptionPts2->text())
+               <<new QStandardItem(ui->lineEditOptionSpec2->text());
+
+        regOptions->appendRow(newOption);
+
+        ui->lineOptionName2->clear();
+        ui->lineEditOptionPts2->clear();
+        ui->lineEditOptionSpec2->clear();
+    }
+    //don't do anything if not
+    else
+    {
+        QMessageBox::warning(this, tr("Erreur"), tr("Le nombre de point doit être un nombre entier."));
+    }
+}
+
+
 void ModelWindow::on_deleteOption_clicked()
 {
     QItemSelectionModel *selection = ui->viewOptions->selectionModel();
     QModelIndex indexElementSelectionne = selection->currentIndex();
     options->removeRow(indexElementSelectionne.row());
+}
+
+void ModelWindow::on_deleteOption_2_clicked()
+{
+    QItemSelectionModel *selection = ui->viewOptions2->selectionModel();
+    QModelIndex indexElementSelectionne = selection->currentIndex();
+    regOptions->removeRow(indexElementSelectionne.row());
 }
 
 void ModelWindow::on_pushButtonSave_clicked()
@@ -449,8 +493,10 @@ void ModelWindow::fillUI(ModelAbstract* m, QString path)
         newOption<<new QStandardItem(m->getOptions()[i].getName())
                 <<new QStandardItem(QString::number(m->getOptions()[i].getNbPoints()))
                <<new QStandardItem(m->getOptions()[i].getSpecialRules());
-
-        options->appendRow(newOption);
+        if(m->getOptions()[i].isRegimentOptions())
+            regOptions->appendRow(newOption);
+        else
+            options->appendRow(newOption);
     }
     //fill specifi UI data depending on model type
     if(type == CAVALERY_STRING)
@@ -658,6 +704,7 @@ void ModelWindow::setModelProperties(ParamsfromUImodel *p)
     p->setUrlImage(ui->lineEditImage->text());
 
     QList<OptionModel> optionList;
+    // adding moodel options
     for(int i = 0; i< options->rowCount(); i++)
     {
         OptionModel o;
@@ -679,6 +726,33 @@ void ModelWindow::setModelProperties(ParamsfromUImodel *p)
                     break;
             }
             o.setActivated(false);
+            o.setRegimentOptions(false);
+        }
+        optionList.append(o);
+    }
+    // adding regiment options
+    for(int i = 0; i< regOptions->rowCount(); i++)
+    {
+        OptionModel o;
+        for(int j = 0; j < regOptions->columnCount(); j++)
+        {
+            QStandardItem* item = regOptions->item(i,j);
+            switch(j)
+            {
+                case 0:
+                    o.setName(item->text());
+                    break;
+                case 1:
+                    o.setNbPoints(item->text().toUInt());
+                    break;
+                case 2:
+                    o.setSpecialRules(item->text());
+                    break;
+                default:
+                    break;
+            }
+            o.setActivated(false);
+            o.setRegimentOptions(true);
         }
         optionList.append(o);
     }
@@ -818,6 +892,7 @@ void ModelWindow::on_pushButtonLoad_clicked()
     ui->spinPU->clear();
 
     options->clear();
+    regOptions->clear();
     crew->clear();
 
     //load the file

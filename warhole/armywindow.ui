@@ -18,7 +18,7 @@
   <property name="windowTitle">
    <string>Création d'armée</string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout_9">
+  <layout class="QHBoxLayout" name="horizontalLayout_10">
    <item>
     <layout class="QVBoxLayout" name="verticalLayout_4">
      <item>
@@ -62,6 +62,13 @@
       <widget class="QTreeView" name="treeViewExistingModels"/>
      </item>
      <item>
+      <widget class="QPushButton" name="buildRegButton">
+       <property name="text">
+        <string>Construire le régiment !</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QLabel" name="label_18">
        <property name="font">
         <font>
@@ -78,19 +85,12 @@
      <item>
       <widget class="QSpinBox" name="spinBoxNB"/>
      </item>
-     <item>
-      <widget class="QPushButton" name="buildRegButton">
-       <property name="text">
-        <string>Construire le régiment !</string>
-       </property>
-      </widget>
-     </item>
     </layout>
    </item>
    <item>
     <layout class="QVBoxLayout" name="verticalLayout_34">
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_27">
+      <layout class="QHBoxLayout" name="horizontalLayout_9">
        <item>
         <widget class="QLabel" name="label_49">
          <property name="font">
@@ -104,6 +104,74 @@
          </property>
         </widget>
        </item>
+       <item>
+        <widget class="QLabel" name="modelNameLabel">
+         <property name="minimumSize">
+          <size>
+           <width>100</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer_6">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_50">
+         <property name="font">
+          <font>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Pts par modèle :</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="modelPtsLabel">
+         <property name="minimumSize">
+          <size>
+           <width>50</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_27">
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_13">
          <item>
@@ -561,6 +629,40 @@
           </size>
          </property>
         </spacer>
+       </item>
+       <item>
+        <widget class="QLabel" name="label">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Nombre de points total du régiment: </string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="regPtsLabel">
+         <property name="minimumSize">
+          <size>
+           <width>50</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>
@@ -1101,7 +1203,7 @@
         </layout>
        </item>
        <item>
-        <widget class="QTreeView" name="viewOptions_2">
+        <widget class="QTreeView" name="viewOptions2">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
            <horstretch>0</horstretch>
@@ -1272,56 +1374,12 @@
     </layout>
    </item>
   </layout>
-  <zorder>label_31</zorder>
-  <zorder>label_32</zorder>
-  <zorder>label_33</zorder>
-  <zorder>label_34</zorder>
-  <zorder>label_35</zorder>
-  <zorder>label_36</zorder>
-  <zorder>label_37</zorder>
-  <zorder>label_38</zorder>
-  <zorder>label_39</zorder>
-  <zorder>labelModelM</zorder>
-  <zorder>labelModelS</zorder>
-  <zorder>labelModelW</zorder>
-  <zorder>labelModelA</zorder>
-  <zorder>labelModelLd</zorder>
-  <zorder>labelModelWS</zorder>
-  <zorder>labelModelBS</zorder>
-  <zorder>labelModelI</zorder>
-  <zorder>labelModelT</zorder>
-  <zorder>labelModelLd</zorder>
-  <zorder>labelModelS</zorder>
-  <zorder>labelModelW</zorder>
-  <zorder>labelModelI</zorder>
-  <zorder>labelModelT</zorder>
-  <zorder>labelModelBS</zorder>
-  <zorder>labelModelA</zorder>
-  <zorder>labelModelWS</zorder>
+  <zorder></zorder>
+  <zorder></zorder>
+  <zorder></zorder>
+  <zorder></zorder>
   <zorder>label_49</zorder>
-  <zorder></zorder>
-  <zorder></zorder>
-  <zorder>regName</zorder>
-  <zorder>spinBoxPtsMusician</zorder>
-  <zorder>label_24</zorder>
-  <zorder></zorder>
-  <zorder></zorder>
-  <zorder>checkBoxMusician</zorder>
-  <zorder>label_24</zorder>
-  <zorder>regName</zorder>
-  <zorder></zorder>
-  <zorder></zorder>
-  <zorder></zorder>
-  <zorder></zorder>
-  <zorder></zorder>
-  <zorder></zorder>
-  <zorder>layoutWidget</zorder>
-  <zorder>horizontalSpacer</zorder>
-  <zorder>labelPointsOptions</zorder>
-  <zorder>label_41</zorder>
-  <zorder>labelPointsOptionsReg</zorder>
-  <zorder>horizontalSpacer_3</zorder>
-  <zorder>label_42</zorder>
+  <zorder>modelNameLabel</zorder>
  </widget>
  <resources/>
  <connections/>

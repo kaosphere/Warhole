@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QDirModel>
+#include <QFileSystemModel>
 #include <QDebug>
 #include <QMessageBox>
 #include "defines.h"
@@ -44,6 +45,14 @@ private slots:
     void on_pushButtonLoad_clicked();
     void on_pushButtonExport_clicked();
     void on_buildRegButton_clicked();
+    void evaluateOptionsPoints();
+    void evaluateRegimentOptionsPoints();
+    void updateRegimentPoints();
+
+    void on_spinBoxNB_valueChanged(int arg1);
+    void on_spinBoxPtsBanner_valueChanged(const QString &arg1);
+    void on_spinBoxPtsMusician_valueChanged(int arg1);
+    void on_spinPoints_valueChanged(const int &arg1);
 
 private:
     static const QString LOG_ID_TRACE;
@@ -60,12 +69,13 @@ private:
 
     bool changeRace;
     Ui::ArmyWindow *ui;
-    QDirModel *model;
+    QFileSystemModel *model;
     QStringList existingRaces;
     ModelFactory fac;
     ModelAbstract* ma;
     RegimentAbstract regiment;
     QStandardItemModel* options;
+    QStandardItemModel* regOptions;
     QStandardItemModel* reg;
     QString currentSelectedPath;
     Army currentArmy;

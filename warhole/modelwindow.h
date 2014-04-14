@@ -61,6 +61,10 @@ private slots:
     void on_pushButtonAdd_clicked();
     void on_pushButtonRmv_clicked();
 
+    void on_addOption_2_clicked();
+
+    void on_deleteOption_2_clicked();
+
 private:
     static const QString LOG_ID_TRACE;
     static const QString LOG_ID_INFO;
@@ -70,6 +74,7 @@ private:
     Ui::ModelWindow *ui;
     QGraphicsScene* scene;
     QStandardItemModel* options;
+    QStandardItemModel* regOptions;
     QStandardItemModel* crew;
     QPixmap* image;
 
