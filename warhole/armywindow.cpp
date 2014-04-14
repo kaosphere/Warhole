@@ -70,6 +70,7 @@ ArmyWindow::ArmyWindow(QWidget *parent) :
     ui->spinBoxPtsMusician->setEnabled(false);
 
     changeRace = true;
+    editing = false;
 
     setEnableChampionStats(false);
 }
@@ -133,6 +134,7 @@ ArmyWindow::ArmyWindow(QString fileName, QWidget *parent) :
     ui->spinBoxPtsMusician->setEnabled(false);
 
     changeRace = false;
+    editing = false;
 
     setEnableChampionStats(false);
     load(fileName);
@@ -210,27 +212,36 @@ void ArmyWindow::on_treeViewExistingModels_clicked(const QModelIndex &index)
     QStringList pieces = name.split(".");
     if(pieces.last() == "unit")
     {
-        currentSelectedPath = model->filePath(index);
-    }
-}
-
-void ArmyWindow::on_buildRegButton_clicked()
-{
-    if(ui->spinBoxNB->value() != 0)
-    {
-        QStringList pieces = currentSelectedPath.split(".");
-        if(pieces.last() == "unit")
+        bool ok = true;
+        // check if the user was currently editing a regiment
+        if(editing)
         {
-            clearRegimentDisplay();
-            RegimentAbstract r;
-            RecruitsGroup rg(ui->spinBoxNB->value(),0,currentSelectedPath);
-            r.addGroup(rg);
-            loadRegimentInUI(r);
+            int rep = QMessageBox::question(this,tr("Edition"),
+                                        tr("Vous etes en train d'éditer un des régiments. Voulez vous charger une nouvelle figurine ? le régiment édité sera perdu. Sinon, ajoutez le régiment a l'armée."),
+                                        QMessageBox::Yes | QMessageBox::No);
+            if (rep == QMessageBox::No)
+            {
+                ok = false;
+            }
+            else if(rep == QMessageBox::Yes)
+            {
+                editing = false;
+            }
         }
-    }
-    else
-    {
-        QMessageBox::warning(this, tr("Info"), tr("Le nombre de modèles ajoutés doit être suppérieur à 0."));
+        if(ok)
+        {
+            currentSelectedPath = model->filePath(index);
+
+            QStringList pieces = currentSelectedPath.split(".");
+            if(pieces.last() == "unit")
+            {
+                clearRegimentDisplay();
+                RegimentAbstract r;
+                RecruitsGroup rg(ui->spinBoxNB->value(),0,currentSelectedPath);
+                r.addGroup(rg);
+                loadRegimentInUI(r);
+            }
+        }
     }
 }
 
@@ -260,6 +271,8 @@ void ArmyWindow::clearRegimentDisplay()
 {
     ui->regName->clear();
     ui->regPtsLabel->clear();
+    ui->labelPointsOptions->clear();
+    ui->labelPointsOptionsReg->clear();
     ui->modelNameLabel->clear();
     ui->modelPtsLabel->clear();
     ui->checkBoxBanner->setChecked(false);
@@ -316,9 +329,18 @@ void ArmyWindow::updateRegModel()
 
 void ArmyWindow::on_addRegButton_clicked()
 {
-    if(ui->regName->text().isEmpty())
+    editing = false;
+    if(currentSelectedPath.isEmpty())
+    {
+        QMessageBox::warning(this, tr("Info"), tr("Sélectionnez d'abord une figurine."));
+    }
+    else if(ui->regName->text().isEmpty())
     {
         QMessageBox::warning(this, tr("Info"), tr("Veuillez donner un nom à votre régiment."));
+    }
+    else if(ui->spinBoxNB->value() == 0)
+    {
+        QMessageBox::warning(this, tr("Info"), tr("Le nombre de figurine doit etre supérieur à zéro."));
     }
     else
     {
@@ -555,12 +577,13 @@ void ArmyWindow::loadRegimentInUI(RegimentAbstract& r)
         ui->lineEditSvgInv->setText(regiment.getChampionStats().getSvgInv());
         ui->spinPoints->setValue(regiment.getChampionStats().getPoints());
     }
-
-    updateRegimentPoints();
+    evaluateOptionsPoints();
+    evaluateRegimentOptionsPoints();
 }
 
 void ArmyWindow::on_editRegButton_clicked()
 {
+    editing = true;
     RegimentAbstract ra;
     QItemSelectionModel *selection = ui->armyView->selectionModel();
     QModelIndex indexElementSelectionne = selection->currentIndex();

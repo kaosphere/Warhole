@@ -44,7 +44,6 @@ private slots:
     void on_pushButtonSave_clicked();
     void on_pushButtonLoad_clicked();
     void on_pushButtonExport_clicked();
-    void on_buildRegButton_clicked();
     void evaluateOptionsPoints();
     void evaluateRegimentOptionsPoints();
     void updateRegimentPoints();
@@ -79,6 +78,7 @@ private:
     QStandardItemModel* reg;
     QString currentSelectedPath;
     Army currentArmy;
+    bool editing;
 };
 
 #endif // ARMYWINDOW_H

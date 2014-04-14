@@ -114,7 +114,6 @@ void ModelWindow::loadWidgets(bool l)
 
     ui->label_28->setEnabled(l);
     ui->label_54->setEnabled(l);
-    ui->label_55->setEnabled(l);
     ui->label_41->setEnabled(l);
     ui->label_42->setEnabled(l);
     ui->label_43->setEnabled(l);
@@ -227,7 +226,7 @@ void ModelWindow::loadMonsterWidget()
     ui->spinWidth->setValue(50);
     ui->spinLength->setValue(50);
 
-    loadWidgets(false);
+    loadWidgets(true);
 }
 
 void ModelWindow::loadWarMachineWidget()
@@ -246,7 +245,7 @@ void ModelWindow::loadWarMachineWidget()
     ui->spinWidth->setValue(25);
     ui->spinLength->setValue(25);
 
-    loadWidgets(false);
+    loadWidgets(true);
 }
 
 void ModelWindow::on_comboUnitType_currentIndexChanged(int index)
@@ -643,6 +642,25 @@ void ModelWindow::fillUI(ModelAbstract* m, QString path)
         ModelMonster* mon = dynamic_cast<ModelMonster*>(m);
         if (mon)
         {
+            for(int i = 0 ; i < mon->getCrew().size() ; i++)
+
+            {
+                QList<QStandardItem *> newCrew;
+                newCrew<<new QStandardItem(mon->getCrew()[i].getName())
+                        <<new QStandardItem(QString::number(mon->getCrew()[i].getPoints()))
+                        <<new QStandardItem(mon->getCrew()[i].getM())
+                        <<new QStandardItem(mon->getCrew()[i].getWs())
+                        <<new QStandardItem(mon->getCrew()[i].getBs())
+                        <<new QStandardItem(mon->getCrew()[i].getS())
+                        <<new QStandardItem(mon->getCrew()[i].getT())
+                        <<new QStandardItem(mon->getCrew()[i].getW())
+                        <<new QStandardItem(mon->getCrew()[i].getI())
+                        <<new QStandardItem(mon->getCrew()[i].getA())
+                        <<new QStandardItem(mon->getCrew()[i].getLd())
+                        <<new QStandardItem(mon->getCrew()[i].getSvg())
+                        <<new QStandardItem(mon->getCrew()[i].getSvgInv());
+                crew->appendRow(newCrew);
+            }
             ui->textEdit->append(mon->getSpecialRules());
             switch(mon->getType())
             {
@@ -668,6 +686,25 @@ void ModelWindow::fillUI(ModelAbstract* m, QString path)
         ModelWarMachine* war = dynamic_cast<ModelWarMachine*>(m);
         if (war)
         {
+            for(int i = 0 ; i < war->getCrew().size() ; i++)
+
+            {
+                QList<QStandardItem *> newCrew;
+                newCrew<<new QStandardItem(war->getCrew()[i].getName())
+                        <<new QStandardItem(QString::number(war->getCrew()[i].getPoints()))
+                        <<new QStandardItem(war->getCrew()[i].getM())
+                        <<new QStandardItem(war->getCrew()[i].getWs())
+                        <<new QStandardItem(war->getCrew()[i].getBs())
+                        <<new QStandardItem(war->getCrew()[i].getS())
+                        <<new QStandardItem(war->getCrew()[i].getT())
+                        <<new QStandardItem(war->getCrew()[i].getW())
+                        <<new QStandardItem(war->getCrew()[i].getI())
+                        <<new QStandardItem(war->getCrew()[i].getA())
+                        <<new QStandardItem(war->getCrew()[i].getLd())
+                        <<new QStandardItem(war->getCrew()[i].getSvg())
+                        <<new QStandardItem(war->getCrew()[i].getSvgInv());
+                crew->appendRow(newCrew);
+            }
             ui->textEdit->append(war->getSpecialRules());
             switch(war->getType())
             {
@@ -859,7 +896,7 @@ void ModelWindow::load(QString path)
     if(!path.isEmpty())
     {
         QLogger::QLog_Info(LOG_ID_INFO, "Loading model with path : " + path);
-        delete poupik;
+        //if(poupik))delete poupik;
         poupik = fac.createFromFile(path);
         fillUI(poupik, path);
     }

@@ -15,8 +15,8 @@ TEMPLATE = app
 win32:debug:LIBS += -L../../warlib/build/debug -lwarlib
 win32:release:LIBS += -L../../warlib/build/release -lwarlib
 
-unix:debug:LIBS += -L../../warlib/build/Debug -lwarlib
-unix:release:LIBS += -L../../warlib/build/Release -lwarlib
+unix:debug:LIBS += -L../../../warlib/build/debug -lwarlib
+unix:release:LIBS += -L../../../warlib/build/release -lwarlib
 
 INCLUDEPATH += ../../warlib/warlib
 
