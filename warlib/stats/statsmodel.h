@@ -15,6 +15,8 @@
 #include <QDataStream>
 #include <QTextStream>
 
+#include "defines.h"
+
 
 //! StatsModel class
 /*!

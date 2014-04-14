@@ -298,7 +298,8 @@ int ModelAbstract::computeBasePoints()
 
 QDataStream &operator <<(QDataStream & out, const ModelAbstract & obj)
 {
-    out << obj.stats
+    out << SAVE_VERSION
+        << obj.stats
         << obj.squareBaseW
         << obj.squareBaseL
         << obj.unitPower
@@ -317,6 +318,9 @@ QDataStream &operator <<(QDataStream & out, const ModelAbstract & obj)
 QDataStream &operator >>(QDataStream & in, ModelAbstract & obj)
 {
     int nb;
+    int version = 0;
+
+    in >> version;
     in >> obj.stats;
     in >> obj.squareBaseW;
     in >> obj.squareBaseL;

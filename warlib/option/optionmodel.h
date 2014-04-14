@@ -5,6 +5,8 @@
 #include <QtCore>
 #include <QtWidgets>
 
+#include "defines.h"
+
 class OptionModel
 {
 public:

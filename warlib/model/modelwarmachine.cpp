@@ -22,6 +22,7 @@ ModelWarMachine::ModelWarMachine(const ModelWarMachine &copy) : ModelAbstract(co
 {
     specialRules = copy.specialRules;
     type = copy.type;
+    crew = copy.crew;
 }
 
 ModelWarMachine::~ModelWarMachine()
@@ -64,7 +65,6 @@ ModelWarMachine *ModelWarMachine::setFromUI(const ParamsfromUImodel *params)
     ModelWarMachine* tmp = new ModelWarMachine(*this);
 
     // modelabstract params
-    tmp->setType(params->getType());
     tmp->setStats(params->getStats());
     tmp->setSquareBaseW(params->getWidthBase());
     tmp->setSquareBaseL(params->getLengthBase());
@@ -73,8 +73,10 @@ ModelWarMachine *ModelWarMachine::setFromUI(const ParamsfromUImodel *params)
     tmp->setUrlImage(params->getUrlImage());
     tmp->setOptions(params->getOptions());
 
-    // modelcavalery params
+    // modelwarmachine params
     tmp->setSpecialRules(params->getSpecRules());
+    tmp->setType(params->getType());
+    tmp->setCrew(params->getMorC());
 
     return tmp;
 }
@@ -98,6 +100,7 @@ void ModelWarMachine::load(QString path)
 
     figSupInd = temp.getFigSupInd();
     specialRules = temp.getSpecialRules();
+    crew = temp.getCrew();
 
     options = temp.getOptions();
 }
@@ -114,6 +117,11 @@ int ModelWarMachine::computePoints()
 {
     //compute whole points of the model
     int points = computeBasePoints();
+    QList<StatsModel>::Iterator j;
+    for(j = crew.begin(); j < crew.end(); ++j)
+    {
+        points += j->getPoints();
+    }
     return points;
 }
 
@@ -145,6 +153,14 @@ QString ModelWarMachine::displayStringInfo()
     info << QString(QString::fromUtf8("Règles additionnelles : ")) << endl;
     info << specialRules << endl;
     info << "====================================================" << endl;
+    info << QString(QString::fromUtf8("Statistique des servants : ")) << endl;
+    QList<StatsModel>::iterator i;
+    for(i = crew.begin(); i < crew.end() ; ++i)
+    {
+        info << "------------------" << endl;
+        info << i->displayString() << endl;;
+    }
+    info << "====================================================" << endl;
     return s;
 }
 
@@ -154,6 +170,18 @@ QString ModelWarMachine::getHtml()
     html += getBaseHtml();
     html += "Règles additionnelles : <br/>\n";
     html += QString(specialRules.toHtmlEscaped() + "<br/>\n");
+    if(crew.size() != 0)
+    {
+        html += QString("Liste des servants: <br/>\n");
+        QList<StatsModel>::iterator i;
+        for(i = crew.begin(); i < crew.end() ; ++i)
+        {
+            html += QString("<li>\n");
+            html += QString("%1 : <br/>\n").arg(i->getName());
+            html += i->getHtml();
+            html += QString("</li>\n");
+        }
+    }
     html += "<br/>\n";
 
     return html;
@@ -179,11 +207,38 @@ void ModelWarMachine::setType(const ModelType &value)
 type = value;
 }
 
+QList<StatsModel> ModelWarMachine::getCrew() const
+{
+    return crew;
+}
+
+void ModelWarMachine::setCrew(const QList<StatsModel> &value)
+{
+    crew = value;
+}
+
+void ModelWarMachine::addCrew(StatsModel c)
+{
+    crew << c;
+}
+
+void ModelWarMachine::clearCrew()
+{
+    crew.clear();
+}
+
 QDataStream & operator <<(QDataStream & out, const ModelWarMachine & obj)
 {
-    out << static_cast<ModelAbstract>(obj)
+    out << SAVE_VERSION
+        << static_cast<ModelAbstract>(obj)
         << obj.type
-        << obj.specialRules;
+        << obj.specialRules
+        << obj.crew.size();
+
+    for(int i = 0 ; i < obj.crew.size() ; i++)
+    {
+        out << obj.crew[i];
+    }
 
     return out;
 }
@@ -191,7 +246,10 @@ QDataStream & operator <<(QDataStream & out, const ModelWarMachine & obj)
 QDataStream & operator >>(QDataStream & in, ModelWarMachine & obj)
 {
     int type;
+    int nb;
+    int version = 0;
 
+    in >> version;
     in >> static_cast<ModelAbstract&>(obj);
     in >> type;
     switch(type)
@@ -209,6 +267,14 @@ QDataStream & operator >>(QDataStream & in, ModelWarMachine & obj)
         break;
     }
     in >> obj.specialRules;
+    in >> nb;
+
+    for(int i = 0 ; i < nb ; i++)
+    {
+        StatsModel s;
+        in >> s;
+        obj.addCrew(s);
+    }
 
     return in;
 }

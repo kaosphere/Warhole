@@ -65,7 +65,8 @@ void Army::load(const QString& path)
 
 QDataStream &operator <<(QDataStream & out, const Army & obj)
 {
-    out << obj.name
+    out << SAVE_VERSION
+        << obj.name
         << obj.units.size();
     for(int i = 0; i < obj.units.size(); i++)
     {
@@ -78,7 +79,9 @@ QDataStream &operator <<(QDataStream & out, const Army & obj)
 QDataStream &operator >>(QDataStream & in, Army & obj)
 {
     int nb;
+    int version = 0;
 
+    in >> version;
     in >> obj.name;
     in >> nb;
 

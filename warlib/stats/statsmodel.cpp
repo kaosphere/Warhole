@@ -86,7 +86,8 @@ bool StatsModel::operator ==(const StatsModel & stat)
 QDataStream & operator << (QDataStream & out, const StatsModel & obj)
 {
     //out << obj.streamOut();
-    out << obj.name
+    out << SAVE_VERSION
+        << obj.name
         << obj.m
         << obj.ws
         << obj.bs
@@ -106,7 +107,9 @@ QDataStream & operator << (QDataStream & out, const StatsModel & obj)
 // Overloading of >> operator
 QDataStream & operator >> (QDataStream & in, StatsModel & obj)
 {
+    int version = 0;
     //obj.streamIn(in);
+    in >> version;
     in >> obj.name;
     in >> obj.m;
     in >> obj.ws;

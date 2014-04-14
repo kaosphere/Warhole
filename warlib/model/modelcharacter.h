@@ -96,7 +96,5 @@ private:
 };
 
 Q_DECLARE_METATYPE( ModelCharacter)
-QDataStream & operator << (QDataStream & out, const  ModelCharacter &);
-QDataStream & operator >> (QDataStream & in,  ModelCharacter &);
 
 #endif // MODELCHARACTER_H

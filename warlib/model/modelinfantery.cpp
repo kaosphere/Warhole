@@ -181,7 +181,8 @@ int ModelInfantery::computePoints()
 
 QDataStream & operator <<(QDataStream & out, const ModelInfantery & obj)
 {
-    out << static_cast<ModelAbstract>(obj)
+    out << SAVE_VERSION
+        << static_cast<ModelAbstract>(obj)
         << obj.type
         << obj.specialRules;
     return out;
@@ -190,7 +191,9 @@ QDataStream & operator <<(QDataStream & out, const ModelInfantery & obj)
 QDataStream & operator >>(QDataStream & in, ModelInfantery & obj)
 {
     int type;
+    int version = 0;
 
+    in >> version;
     in >> static_cast<ModelAbstract&>(obj);
     in >> type;
     switch(type)

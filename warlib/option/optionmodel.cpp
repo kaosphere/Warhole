@@ -121,7 +121,8 @@ void OptionModel::setRegimentOptions(bool value)
 
 QDataStream & operator <<(QDataStream & out, const OptionModel & obj)
 {
-    out << obj.name
+    out << SAVE_VERSION
+        << obj.name
         << obj.nbPoints
         << obj.activated
         << obj.specialRules
@@ -132,6 +133,8 @@ QDataStream & operator <<(QDataStream & out, const OptionModel & obj)
 
 QDataStream & operator >>(QDataStream & in, OptionModel & obj)
 {
+    int version = 0;
+    in >> version;
     in >> obj.name;
     in >> obj.nbPoints;
     in >> obj.activated;

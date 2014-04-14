@@ -129,7 +129,8 @@ QDataStream & operator <<(QDataStream & out, const ModelCharriot & obj)
     int nb;
     nb = obj.crew.size();
 
-    out << static_cast<ModelAbstract>(obj)
+    out << SAVE_VERSION
+        << static_cast<ModelAbstract>(obj)
         << obj.type
         << obj.specialRules
         << nb;
@@ -145,7 +146,9 @@ QDataStream & operator >>(QDataStream & in, ModelCharriot & obj)
 {
     int nb;
     int type;
+    int version;
 
+    in >> version;
     in >> static_cast<ModelAbstract&>(obj);
     in >> type;
     switch(type)

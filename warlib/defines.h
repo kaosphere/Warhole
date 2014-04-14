@@ -4,6 +4,8 @@
 #include <QString>
 #include <QStringList>
 
+const int SAVE_VERSION(1);
+
 const QString MODEL_PATH("./models");
 
 const QString CAVALERY_STRING("Cavalerie");

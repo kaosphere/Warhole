@@ -74,7 +74,5 @@ private:
 };
 
 Q_DECLARE_METATYPE(ModelCharriot)
-QDataStream & operator << (QDataStream & out, const  ModelCharriot &);
-QDataStream & operator >> (QDataStream & in,  ModelCharriot &);
 
 #endif // MODELCHARRIOT_H

@@ -163,7 +163,8 @@ ModelAbstract *ModelCavalry::clone()
 // Overloading of << operator
 QDataStream & operator << (QDataStream & out, const ModelCavalry & obj)
 {
-    out << static_cast<ModelAbstract>(obj)
+    out << SAVE_VERSION
+        << static_cast<ModelAbstract>(obj)
         << obj.type
         << obj.specialRules
         << obj.mount;
@@ -175,7 +176,9 @@ QDataStream & operator << (QDataStream & out, const ModelCavalry & obj)
 QDataStream & operator >> (QDataStream & in, ModelCavalry & obj)
 {
     int type;
+    int version = 0;
 
+    in >> version;
     in >> static_cast<ModelAbstract&>(obj);
     in >> type;
     switch(type)

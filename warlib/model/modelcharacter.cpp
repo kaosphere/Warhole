@@ -265,7 +265,8 @@ void ModelCharacter::setHasGB(bool value)
 
 QDataStream & operator <<(QDataStream & out, const ModelCharacter & obj)
 {
-    out << static_cast<ModelAbstract>(obj)
+    out << SAVE_VERSION
+        << static_cast<ModelAbstract>(obj)
         << obj.specialRules
         << obj.isALord
         << obj.isTheGeneral
@@ -279,6 +280,9 @@ QDataStream & operator <<(QDataStream & out, const ModelCharacter & obj)
 
 QDataStream & operator >>(QDataStream & in, ModelCharacter & obj)
 {
+    int version = 0;
+
+    in >> version;
     in >> static_cast<ModelAbstract&>(obj);
     in >> obj.specialRules;
     in >> obj.isALord;

@@ -19,7 +19,7 @@ public:
                  const QString &init, const QString &attacks, const QString &leadership,
                  const QString &save, const QString &invSave, const int points, const int &widthBase,
                  const int &lengthBase, const int &unitP, const QString& urlImage , bool figSup,
-                 const QString& specRules, bool hasCrew,const ModelType &t);
+                 const QString& specRules, const ModelType &t);
     ModelMonster(const ModelMonster &copy);
 
     virtual ~ModelMonster();
@@ -62,24 +62,23 @@ public:
 
     int computePoints();
 
-    QList<ModelInfantery *> getCrew() const;
-    void setCrew(const QList<ModelInfantery *> &value);
-
     ModelType getType() const;
     void setType(const ModelType &value);
 
+    QList<StatsModel> getCrew() const;
+    void setCrew(const QList<StatsModel> &value);
+
+    void addCrew(StatsModel c);
+    void clearCrew();
 private:
     ModelType type;
     QString specialRules;
-    QList<ModelInfantery *> crew;
-    bool hasACrew;
+    QList<StatsModel> crew;
 
     friend QDataStream & operator << (QDataStream &, const ModelMonster &);
     friend QDataStream & operator >> (QDataStream &, ModelMonster &);
 };
 
 Q_DECLARE_METATYPE(ModelMonster)
-QDataStream & operator << (QDataStream & out, const  ModelMonster &);
-QDataStream & operator >> (QDataStream & in,  ModelMonster &);
 
 #endif // MODELMONSTER_H

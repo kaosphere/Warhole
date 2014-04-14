@@ -61,19 +61,22 @@ public:
     ModelType getType() const;
     void setType(const ModelType &value);
 
+    QList<StatsModel> getCrew() const;
+    void setCrew(const QList<StatsModel> &value);
+    void addCrew(StatsModel c);
+    void clearCrew();
+
 private:
     QString specialRules;
     ModelType type;
 
     //TODO : remove this crew shit
-    QList<ModelInfantery *> crew;
+    QList<StatsModel> crew;
 
     friend QDataStream & operator << (QDataStream &, const ModelWarMachine &);
     friend QDataStream & operator >> (QDataStream &, ModelWarMachine &);
 };
 
 Q_DECLARE_METATYPE(ModelWarMachine)
-QDataStream & operator << (QDataStream & out, const  ModelWarMachine &);
-QDataStream & operator >> (QDataStream & in,  ModelWarMachine &);
 
 #endif // MODELWARMACHINE_H

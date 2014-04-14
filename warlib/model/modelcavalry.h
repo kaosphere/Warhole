@@ -80,7 +80,5 @@ private:
 };
 
 Q_DECLARE_METATYPE(ModelCavalry)
-QDataStream & operator << (QDataStream & out, const ModelCavalry &);
-QDataStream & operator >> (QDataStream & in, ModelCavalry &);
 
 #endif // MODELCAVALRY_H

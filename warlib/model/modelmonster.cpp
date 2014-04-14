@@ -10,13 +10,12 @@ ModelMonster::ModelMonster(const QString &n, const QString &move, const QString 
       const QString &wounds, const QString &init, const QString &attacks,
       const QString &leadership, const QString &save, const QString &invSave, const int points,
       const int &widthBase, const int &lengthBase, const int &unitP, const QString &urlImage,
-      bool figSup, const QString &specRules, bool hasCrew,const ModelType &t) :
+      bool figSup, const QString &specRules, const ModelType &t) :
     ModelAbstract(n,move,weaponS,balisticS, strength, toughness, wounds, init, attacks, leadership, save,
                   invSave, points, widthBase, lengthBase, unitP, urlImage, figSup)
 {
     type = t;
     specialRules = specRules;
-    hasACrew = hasCrew;
 }
 
 // Copy constructor
@@ -24,6 +23,7 @@ ModelMonster::ModelMonster(const ModelMonster &copy) : ModelAbstract(copy)
 {
     specialRules = copy.specialRules;
     type = copy.type;
+    crew = copy.crew;
 }
 
 ModelMonster::~ModelMonster()
@@ -76,8 +76,7 @@ ModelMonster *ModelMonster::setFromUI(const ParamsfromUImodel *params)
 
     // ModelMonster params
     tmp->setSpecialRules(params->getSpecRules());
-    tmp->setHasACrew(params->getHasCrew());
-    // TODO CREW
+    tmp->setCrew(params->getMorC());
     return tmp;
 }
 
@@ -102,6 +101,8 @@ void ModelMonster::load(QString path)
     specialRules = temp.getSpecialRules();
 
     options = temp.getOptions();
+
+    crew = temp.getCrew();
 }
 
 void ModelMonster::save(QString path)
@@ -140,6 +141,14 @@ QString ModelMonster::displayStringInfo()
     info << QString(QString::fromUtf8("Règles additionnelles : ")) << endl;
     info << specialRules << endl;
     info << "====================================================" << endl;
+    info << QString(QString::fromUtf8("Statistique de l'équipage : ")) << endl;
+    QList<StatsModel>::iterator i;
+    for(i = crew.begin(); i < crew.end() ; ++i)
+    {
+        info << "------------------" << endl;
+        info << i->displayString() << endl;;
+    }
+    info << "====================================================" << endl;
     return s;
 }
 
@@ -149,6 +158,18 @@ QString ModelMonster::getHtml()
     html += getBaseHtml();
     html += "Règles additionnelles : <br/>\n";
     html += QString(specialRules.toHtmlEscaped() + "<br/>\n");
+    if(crew.size() != 0)
+    {
+        html += QString("Equipage : <br/>\n");
+        QList<StatsModel>::iterator i;
+        for(i = crew.begin(); i < crew.end() ; ++i)
+        {
+            html += QString("<li>\n");
+            html += QString("%1 : <br/>\n").arg(i->getName());
+            html += i->getHtml();
+            html += QString("</li>\n");
+        }
+    }
     html += "<br/>\n";
 
     return html;
@@ -167,17 +188,26 @@ void ModelMonster::setSpecialRules(const QString &value)
 
 QDataStream & operator <<(QDataStream & out, const ModelMonster & obj)
 {
-    out << static_cast<ModelAbstract>(obj)
+    out << SAVE_VERSION
+        << static_cast<ModelAbstract>(obj)
         << obj.type
         << obj.specialRules
-        << obj.hasACrew;
+        << obj.crew.size();
+
+    for(int i = 0 ; i < obj.crew.size() ; i++)
+    {
+        out << obj.crew[i];
+    }
     return out;
 }
 
 QDataStream & operator >>(QDataStream & in, ModelMonster & obj)
 {
     int type;
+    int nb;
+    int version = 0;
 
+    in >> version;
     in >> static_cast<ModelAbstract&>(obj);
     in >> type;
     switch(type)
@@ -195,30 +225,16 @@ QDataStream & operator >>(QDataStream & in, ModelMonster & obj)
         break;
     }
     in >> obj.specialRules;
-    in >> obj.hasACrew;
+    in >> nb;
+
+    for(int i = 0 ; i < nb ; i++)
+    {
+        StatsModel s;
+        in >> s;
+        obj.addCrew(s);
+    }
 
     return in;
-}
-
-
-QList<ModelInfantery *> ModelMonster::getCrew() const
-{
-    return crew;
-}
-
-void ModelMonster::setCrew(const QList<ModelInfantery *> &value)
-{
-    crew = value;
-}
-
-bool ModelMonster::getHasACrew() const
-{
-    return hasACrew;
-}
-
-void ModelMonster::setHasACrew(bool value)
-{
-    hasACrew = value;
 }
 
 ModelType ModelMonster::getType() const
@@ -231,11 +247,36 @@ void ModelMonster::setType(const ModelType &value)
     type = value;
 }
 
+QList<StatsModel> ModelMonster::getCrew() const
+{
+    return crew;
+}
+
+void ModelMonster::setCrew(const QList<StatsModel> &value)
+{
+    crew = value;
+}
+
+void ModelMonster::addCrew(StatsModel c)
+{
+    crew << c;
+}
+
+void ModelMonster::clearCrew()
+{
+    crew.clear();
+}
+
 
 int ModelMonster::computePoints()
 {
     //compute whole points of the model
     int points = computeBasePoints();
+    QList<StatsModel>::Iterator j;
+    for(j = crew.begin(); j < crew.end(); ++j)
+    {
+        points += j->getPoints();
+    }
     return points;
 }
 

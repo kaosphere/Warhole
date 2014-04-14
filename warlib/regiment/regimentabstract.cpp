@@ -324,7 +324,8 @@ QString RegimentAbstract::displayInfo() const
 
 QDataStream &operator <<(QDataStream & out, const RegimentAbstract & obj)
 {
-    out << obj.name
+    out << SAVE_VERSION
+        << obj.name
         << obj.banner
         << obj.bannerPoints
         << obj.musician
@@ -346,7 +347,9 @@ QDataStream &operator <<(QDataStream & out, const RegimentAbstract & obj)
 QDataStream &operator >>(QDataStream & in, RegimentAbstract & obj)
 {
     int size;
+    int version = 0;
 
+    in >> version;
     in >> obj.name;
     in >> obj.banner;
     in >> obj.bannerPoints;

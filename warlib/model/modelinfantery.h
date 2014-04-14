@@ -68,7 +68,5 @@ private:
 };
 
 Q_DECLARE_METATYPE(ModelInfantery)
-QDataStream & operator << (QDataStream & out, const  ModelInfantery &);
-QDataStream & operator >> (QDataStream & in,  ModelInfantery &);
 
 #endif // MODELINFANTERY_H

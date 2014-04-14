@@ -61,7 +61,8 @@ QDataStream & operator <<(QDataStream& out, const RecruitsGroup& obj)
 {
     // Model is not in the serialization because we want the regiment to be bound with
     // a .unit file which is susceptible to change over time
-    out << obj.nb
+    out << SAVE_VERSION
+        << obj.nb
         << obj.casualties
         << obj.path;
     obj.model->serializeOut(out);
@@ -72,7 +73,9 @@ QDataStream & operator <<(QDataStream& out, const RecruitsGroup& obj)
 QDataStream & operator >>(QDataStream& in, RecruitsGroup& obj)
 {
     ModelFactory fac;
+    int version = 0;
     // Same comment that for other stream operator
+    in >> version;
     in >> obj.nb;
     in >> obj.casualties;
     in >> obj.path;
