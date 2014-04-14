@@ -40,7 +40,7 @@ public:
     bool getBanner() const;
     void setBanner(bool value);
 
-    QList<RecruitsGroup> getGroups() const;
+    QList<RecruitsGroup> &getGroups();
     void setGroups(const QList<RecruitsGroup> &value);
     void addGroup(const RecruitsGroup& r);
     void removeGroup(const RecruitsGroup& r);

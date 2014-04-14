@@ -137,9 +137,12 @@ RecruitsGroup &RecruitsGroup::operator =(const RecruitsGroup &copy)
 
 int RecruitsGroup::computePoints() const
 {
+    int points = 0;
 	if(model)
 	{
-		return (nb * model->computePoints());
+        points += (nb * model->computePoints());
+        points += model->getRegimentPoints();
+        return points;
 	}
 	else
 	{

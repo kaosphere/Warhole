@@ -121,7 +121,7 @@ void RegimentAbstract::setName(const QString &value)
     name = value;
 }
 
-QList<RecruitsGroup> RegimentAbstract::getGroups() const
+QList<RecruitsGroup>& RegimentAbstract::getGroups()
 {
     return groups;
 }
