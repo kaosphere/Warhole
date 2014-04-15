@@ -145,6 +145,18 @@ int RecruitsGroup::computePoints() const
 	{
         points += (nb * model->computePoints());
         points += model->getRegimentPoints();
+        if(model->getMusician())
+        {
+            points += model->getMusicianPoints();
+        }
+        if(model->getChampion())
+        {
+            points += model->getChampionStats().getPoints();
+        }
+        if(model->getBanner())
+        {
+            points += model->getBannerPoints();
+        }
         return points;
 	}
 	else

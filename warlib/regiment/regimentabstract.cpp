@@ -17,25 +17,13 @@ RegimentAbstract::RegimentAbstract()
 
 	
     name = "";
-    musician = false;
-    musicianPoints = 0;
-    champion = false;
     skirmishers = false;
-    banner = false;
-    points = 0;
     startingCount = 0;
 }
 
 RegimentAbstract::RegimentAbstract(const QString &n,
-                                   const bool &m,
-                                   const int & mp,
                                    const bool &s,
-                                   const bool &c,
-                                   const bool &b,
-                                   const int &bp,
-                                   const StatsModel& st,
                                    const QList<RecruitsGroup> g,
-                                   const int& p,
                                    const int& sc)
 {
     QLoggerManager *manager = QLoggerManager::getInstance();
@@ -46,15 +34,8 @@ RegimentAbstract::RegimentAbstract(const QString &n,
 
 	
     name = n;
-    musician = m;
-    musicianPoints = mp;
     skirmishers = s;
-    champion = c;
-    banner = b;
-    bannerPoints = bp;
-    championStats = st;
     groups = g;
-    points = p;
     startingCount = sc;
 }
 
@@ -68,27 +49,9 @@ RegimentAbstract::RegimentAbstract(const RegimentAbstract &u)
 
 	
     name = u.name;
-    musician = u.musician;
-    musicianPoints = u.musicianPoints;
     skirmishers = u.skirmishers;
-    champion = u.champion;
-    banner = u.banner;
-    bannerPoints = u.bannerPoints;
-    championStats = u.championStats;
     groups = u.groups;
-    points = u.points;
     startingCount = u.startingCount;
-}
-
-
-bool RegimentAbstract::getMusician() const
-{
-    return musician;
-}
-
-void RegimentAbstract::setMusician(bool value)
-{
-    musician = value;
 }
 
 bool RegimentAbstract::getSkirmishers() const
@@ -99,16 +62,6 @@ bool RegimentAbstract::getSkirmishers() const
 void RegimentAbstract::setSkirmishers(bool value)
 {
     skirmishers = value;
-}
-
-bool RegimentAbstract::getChampion() const
-{
-    return champion;
-}
-
-void RegimentAbstract::setChampion(bool value)
-{
-    champion = value;
 }
 
 QString RegimentAbstract::getName() const
@@ -142,56 +95,6 @@ void RegimentAbstract::removeGroup(const RecruitsGroup& r)
     groups.removeOne(r);
 }
 
-bool RegimentAbstract::getBanner() const
-{
-    return banner;
-}
-
-void RegimentAbstract::setBanner(bool value)
-{
-    banner = value;
-}
-
-StatsModel &RegimentAbstract::getChampionStats()
-{
-    return championStats;
-}
-
-void RegimentAbstract::setChampionStats(const StatsModel &value)
-{
-    championStats = value;
-}
-
-int RegimentAbstract::getPoints() const
-{
-    return points;
-}
-
-void RegimentAbstract::setPoints(const int& value)
-{
-    points = value;
-}
-
-int RegimentAbstract::getMusicianPoints() const
-{
-	return musicianPoints;
-}
-
-void RegimentAbstract::setMusicianPoints(const int& value)
-{
-	musicianPoints = value;
-}
-
-int RegimentAbstract::getBannerPoints() const
-{
-	return bannerPoints;
-}
-
-void RegimentAbstract::setBannerPoints(const int& value)
-{
-	bannerPoints = value;
-}
-
 int RegimentAbstract::getStartingCount() const
 {
     return startingCount;
@@ -209,18 +112,6 @@ int RegimentAbstract::computePoints()
     while (i != groups.constEnd()) {
         points += i->computePoints();
 		++i;
-	}
-	if(musician)
-	{
-		points += musicianPoints;
-	}
-	if(champion)
-	{
-		points += championStats.getPoints();
-	}
-	if(banner)
-	{
-		points += bannerPoints;
 	}
     return points;
 }
@@ -274,6 +165,21 @@ QString RegimentAbstract::getHtml()
         html += QString("<h2>%1 %2")
         		.arg(QString::number(groups[i].getNb()))
         		.arg(groups[i].getModel()->getHtml());
+        if(groups[i].getModel()->getMusician())
+        {
+            html += QString("<li>Musicien (%1 pts)</li>\n")
+                    .arg(groups[i].getModel()->getMusicianPoints());
+        }
+        if(groups[i].getModel()->getBanner())
+        {
+            html += QString("<li>Porte étendard (%1 pts)</li>\n")
+                    .arg(groups[i].getModel()->getBannerPoints());
+        }
+        if(groups[i].getModel()->getChampion())
+        {
+            html += QString("<li>Champion (%1 pts)</li>\n")
+                    .arg(groups[i].getModel()->getChampionStats().getPoints());
+        }
         html += "</td>\n";
     }
     html += "<td width=8%>\n";
@@ -293,22 +199,6 @@ QString RegimentAbstract::displayInfo() const
     info << "******                  Regiment                  ******" << endl;
     info << "********************************************************" << endl;
     info << "Name : " << name << endl;
-    if(musician)
-    {
-        info << "Has a musician for " << musicianPoints << " points." << endl;
-	}
-	else info << "Has no musician." << endl;
-    if(banner)
-    {
-		info << "Has a banner for " << bannerPoints << " points." << endl;
-	}
-	else info << "Has no banner." << endl;
-	if(champion)
-    {
-		info << "Has a champion : " << endl;
-		info << championStats.displayString();
-	}
-	else info << "Has no musician." << endl;
     info << "Contains " << groups.size() << " groups : " << endl;
     for(int i = 0; i < groups.size() ; ++i)
 	{
@@ -326,14 +216,7 @@ QDataStream &operator <<(QDataStream & out, const RegimentAbstract & obj)
 {
     out << SAVE_VERSION
         << obj.name
-        << obj.banner
-        << obj.bannerPoints
-        << obj.musician
-        << obj.musicianPoints
-        << obj.champion
         << obj.skirmishers
-        << obj.championStats
-        << obj.points
         << obj.startingCount
         << obj.groups.size();
 
@@ -351,14 +234,7 @@ QDataStream &operator >>(QDataStream & in, RegimentAbstract & obj)
 
     in >> version;
     in >> obj.name;
-    in >> obj.banner;
-    in >> obj.bannerPoints;
-    in >> obj.musician;
-    in >> obj.musicianPoints;
-    in >> obj.champion;
     in >> obj.skirmishers;
-    in >> obj.championStats;
-    in >> obj.points;
     in >> obj.startingCount;
     in >> size;
 
@@ -375,14 +251,8 @@ QDataStream &operator >>(QDataStream & in, RegimentAbstract & obj)
 bool RegimentAbstract::operator==(const RegimentAbstract& obj)
 {
 	if(name == obj.name &&
-		musician == obj.musician &&
-        musicianPoints == obj.musicianPoints &&
 		skirmishers == obj.skirmishers &&
-		champion == obj.champion &&
-		banner == obj.banner &&
-		championStats == obj.championStats &&
 		groups == obj.groups &&
-		points == obj.points &&
 		startingCount == obj.startingCount)
 	{
 		return true;

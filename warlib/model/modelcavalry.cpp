@@ -36,6 +36,7 @@ ModelCavalry::ModelCavalry(const QString &n, const QString &move, const QString 
     
     specialRules = specRules;
     type = t;
+    // TODO : This one isn't up to date, but is never used.
 }
 
 // Copy constructor
@@ -50,6 +51,7 @@ ModelCavalry::ModelCavalry(const ModelCavalry &copy) : ModelAbstract(copy)
     specialRules = copy.specialRules;
     mount = copy.mount;
     type = copy.type;
+
 }
 
 //Destructor
@@ -119,6 +121,13 @@ ModelCavalry *ModelCavalry::setFromUI(const ParamsfromUImodel *params)
         QLog_Error(LOG_ID_ERR, "setFromUI : mOrC is empty, can't set mount.");
     }
 
+    tmp->setBanner(params->getBanner());
+    tmp->setBannerPoints(params->getBannerPoints());
+    tmp->setChampion(params->getChampion());
+    tmp->setChampionStats(params->getChampionStats());
+    tmp->setMusician(params->getMusician());
+    tmp->setMusicianPoints(params->getMusicianPoints());
+
     return tmp;
 }
 
@@ -145,6 +154,13 @@ void  ModelCavalry::load(QString path)
     options = temp.getOptions();
 
     mount = temp.getMount();
+
+    banner = temp.getBanner();
+    bannerPoints = temp.getBannerPoints();
+    musician = temp.getMusician();
+    musicianPoints = temp.getMusicianPoints();
+    champion = temp.getChampion();
+    championStats = temp.getChampionStats();
 }
 
 void ModelCavalry::save(QString path)
@@ -272,5 +288,6 @@ int ModelCavalry::computePoints()
     int points = computeBasePoints();
 
     points += mount.getPoints();
+
     return points;
 }

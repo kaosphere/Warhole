@@ -186,6 +186,24 @@ public:
 
     QList<OptionModel> getOptions() const;
     void setOptions(const QList<OptionModel> &value);
+
+    bool getBanner() const;
+    void setBanner(bool value);
+
+    int getBannerPoints() const;
+    void setBannerPoints(int value);
+
+    bool getMusician() const;
+    void setMusician(bool value);
+
+    int getMusicianPoints() const;
+    void setMusicianPoints(int value);
+
+    bool getChampion() const;
+    void setChampion(bool value);
+
+    StatsModel getChampionStats() const;
+    void setChampionStats(const StatsModel &value);
     
     //! addOption
 	/*!
@@ -240,6 +258,13 @@ protected:
     QString urlImage;	/// Path to the image
 
     QList<OptionModel> options;   /// List of options possible for model
+
+    bool banner;
+    int bannerPoints;
+    bool musician;
+    int musicianPoints;
+    bool champion;
+    StatsModel championStats;
 	
 	//! QDataStream & operator <<
 	/*!

@@ -193,3 +193,64 @@ void ParamsfromUImodel::setType(ModelType value)
 {
     type = value;
 }
+
+
+StatsModel ParamsfromUImodel::getChampionStats() const
+{
+    return championStats;
+}
+
+void ParamsfromUImodel::setChampionStats(const StatsModel &value)
+{
+    championStats = value;
+}
+
+bool ParamsfromUImodel::getChampion() const
+{
+    return champion;
+}
+
+void ParamsfromUImodel::setChampion(bool value)
+{
+    champion = value;
+}
+
+int ParamsfromUImodel::getMusicianPoints() const
+{
+    return musicianPoints;
+}
+
+void ParamsfromUImodel::setMusicianPoints(int value)
+{
+    musicianPoints = value;
+}
+
+bool ParamsfromUImodel::getMusician() const
+{
+    return musician;
+}
+
+void ParamsfromUImodel::setMusician(bool value)
+{
+    musician = value;
+}
+
+int ParamsfromUImodel::getBannerPoints() const
+{
+    return bannerPoints;
+}
+
+void ParamsfromUImodel::setBannerPoints(int value)
+{
+    bannerPoints = value;
+}
+
+bool ParamsfromUImodel::getBanner() const
+{
+    return banner;
+}
+
+void ParamsfromUImodel::setBanner(bool value)
+{
+    banner = value;
+}

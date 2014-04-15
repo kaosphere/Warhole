@@ -24,21 +24,10 @@ class RegimentAbstract
 public:
     RegimentAbstract();
     RegimentAbstract(const QString& n,
-                     const bool& m, const int& mp,
                      const bool& s,
-                     const bool& c, const bool& b,
-                     const int& bp,
-                     const StatsModel& st,
                      const QList<RecruitsGroup> g,
-                     const int& p,
                      const int& sc);
     RegimentAbstract(const RegimentAbstract& u);
-
-    bool getMusician() const;
-    void setMusician(bool value);
-
-    bool getBanner() const;
-    void setBanner(bool value);
 
     QList<RecruitsGroup> &getGroups();
     void setGroups(const QList<RecruitsGroup> &value);
@@ -48,14 +37,8 @@ public:
     QString getName() const;
     void setName(const QString &value);
 
-    bool getChampion() const;
-    void setChampion(bool value);
-
     bool getSkirmishers() const;
     void setSkirmishers(bool value);
-
-    StatsModel& getChampionStats();
-    void setChampionStats(const StatsModel &value);
 
     friend QDataStream & operator << (QDataStream &, const RegimentAbstract &);
     friend QDataStream & operator >> (QDataStream &, RegimentAbstract &);
@@ -63,15 +46,6 @@ public:
     bool operator==(const RegimentAbstract&);
 
     void loadAllModels();
-
-    int getPoints() const;
-    void setPoints(const int& value);
-    
-    int getMusicianPoints() const;
-    void setMusicianPoints(const int& value);
-	
-	int getBannerPoints() const;
-    void setBannerPoints(const int& value);
 	
     int getStartingCount() const;
     void setStartingCount(int value);
@@ -92,14 +66,7 @@ private:
 
     QString name;
     QList<RecruitsGroup> groups; //using a map permits not to have doubles
-    bool banner;
-    int bannerPoints;
-    bool musician;
-    int musicianPoints;
-    bool champion;
     bool skirmishers;
-    StatsModel championStats;
-    int points;
     int startingCount;
 };
 

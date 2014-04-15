@@ -76,6 +76,14 @@ ModelInfantery *ModelInfantery::setFromUI(const ParamsfromUImodel *params)
 
     // ModelInfantery params
     tmp->setSpecialRules(params->getSpecRules());
+
+    tmp->setBanner(params->getBanner());
+    tmp->setBannerPoints(params->getBannerPoints());
+    tmp->setChampion(params->getChampion());
+    tmp->setChampionStats(params->getChampionStats());
+    tmp->setMusician(params->getMusician());
+    tmp->setMusicianPoints(params->getMusicianPoints());
+
     return tmp;
 }
 
@@ -100,6 +108,13 @@ void ModelInfantery::load(QString path)
     specialRules = temp.getSpecialRules();
 
     options = temp.getOptions();
+
+    banner = temp.getBanner();
+    bannerPoints = temp.getBannerPoints();
+    musician = temp.getMusician();
+    musicianPoints = temp.getMusicianPoints();
+    champion = temp.getChampion();
+    championStats = temp.getChampionStats();
 }
 
 void ModelInfantery::save(QString path)
@@ -176,6 +191,7 @@ int ModelInfantery::computePoints()
 {
     //compute whole points of the model
     int points = computeBasePoints();
+
     return points;
 }
 

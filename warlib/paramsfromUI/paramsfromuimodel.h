@@ -63,6 +63,24 @@ public:
     bool getHasGB() const;
     void setHasGB(bool value);
 
+    bool getBanner() const;
+    void setBanner(bool value);
+
+    int getBannerPoints() const;
+    void setBannerPoints(int value);
+
+    bool getMusician() const;
+    void setMusician(bool value);
+
+    int getMusicianPoints() const;
+    void setMusicianPoints(int value);
+
+    bool getChampion() const;
+    void setChampion(bool value);
+
+    StatsModel getChampionStats() const;
+    void setChampionStats(const StatsModel &value);
+
 private:
     // modelabstract params
     StatsModel stats;
@@ -86,6 +104,13 @@ private:
     bool hasCrew;
     // mount or crew
     QList<StatsModel> mOrC;
+
+    bool banner;
+    int bannerPoints;
+    bool musician;
+    int musicianPoints;
+    bool champion;
+    StatsModel championStats;
 
 };
 

@@ -78,6 +78,14 @@ ModelCharriot *ModelCharriot::setFromUI(const ParamsfromUImodel *params)
     // ModelCharriot params
     tmp->setSpecialRules(params->getSpecRules());
     tmp->setCrew(params->getMorC());
+
+    tmp->setBanner(params->getBanner());
+    tmp->setBannerPoints(params->getBannerPoints());
+    tmp->setChampion(params->getChampion());
+    tmp->setChampionStats(params->getChampionStats());
+    tmp->setMusician(params->getMusician());
+    tmp->setMusicianPoints(params->getMusicianPoints());
+
     return tmp;
 }
 
@@ -104,6 +112,13 @@ void ModelCharriot::load(QString path)
     options = temp.getOptions();
 
     crew = temp.getCrew();
+
+    banner = temp.getBanner();
+    bannerPoints = temp.getBannerPoints();
+    musician = temp.getMusician();
+    musicianPoints = temp.getMusicianPoints();
+    champion = temp.getChampion();
+    championStats = temp.getChampionStats();
 }
 
 void ModelCharriot::save(QString path)
@@ -139,6 +154,7 @@ QDataStream & operator <<(QDataStream & out, const ModelCharriot & obj)
     {
         out << obj.crew[i];
     }
+
     return out;
 }
 

@@ -76,6 +76,12 @@ ModelAbstract::ModelAbstract(const ModelAbstract &copy)
     squareBaseL = copy.squareBaseL;
     unitPower = copy.unitPower;
     options = copy.options;
+    banner = copy.banner;
+    bannerPoints = copy.bannerPoints;
+    musician = copy.musician;
+    musicianPoints = copy.musicianPoints;
+    champion = copy.champion;
+    championStats = copy.championStats;
 }
 
 ModelAbstract::~ModelAbstract(){}
@@ -123,6 +129,27 @@ QString ModelAbstract::displayBaseInfo()
         info << "----------------------------" << endl;
         info << i->displayString() << endl;
     }
+    if(musician)
+    {
+        info << "Has a musician for " << musicianPoints << " points." << endl;
+    }
+    else info << "Has no musician (" << musicianPoints << " pts)" << endl;
+    if(banner)
+    {
+        info << "Has a banner for " << bannerPoints << " points." << endl;
+    }
+    else info << "Has no banner (" << musicianPoints << " pts)" << endl;
+    if(champion)
+    {
+        info << "Has a champion : " << endl;
+        info << championStats.displayString();
+    }
+    else
+    {
+        info << "Has no champion." << endl;
+        info << championStats.displayString();
+    }
+
     return s;
 }
 
@@ -243,8 +270,6 @@ void ModelAbstract::setOptions(const QList<OptionModel> &value)
 void ModelAbstract::addOption(const OptionModel &opt)
 {
     options << opt;
-
-    //std::cout << options[0].getName().toStdString();
 }
 
 void ModelAbstract::removeOption(const OptionModel& opt)
@@ -265,6 +290,67 @@ QString ModelAbstract::getUrlImage() const
 void ModelAbstract::setUrlImage(const QString &value)
 {
     urlImage = value;
+}
+
+StatsModel ModelAbstract::getChampionStats() const
+{
+    return championStats;
+}
+
+void ModelAbstract::setChampionStats(const StatsModel &value)
+{
+    championStats = value;
+}
+
+bool ModelAbstract::getChampion() const
+{
+    return champion;
+}
+
+void ModelAbstract::setChampion(bool value)
+{
+    champion = value;
+}
+
+int ModelAbstract::getMusicianPoints() const
+{
+    return musicianPoints;
+}
+
+void ModelAbstract::setMusicianPoints(int value)
+{
+    musicianPoints = value;
+}
+
+bool ModelAbstract::getMusician() const
+{
+    return musician;
+}
+
+void ModelAbstract::setMusician(bool value)
+{
+    musician = value;
+}
+
+
+bool ModelAbstract::getBanner() const
+{
+    return banner;
+}
+
+void ModelAbstract::setBanner(bool value)
+{
+    banner = value;
+}
+
+int ModelAbstract::getBannerPoints() const
+{
+    return bannerPoints;
+}
+
+void ModelAbstract::setBannerPoints(int value)
+{
+    bannerPoints = value;
 }
 
 int ModelAbstract::computePoints()
@@ -312,6 +398,13 @@ QDataStream &operator <<(QDataStream & out, const ModelAbstract & obj)
         out << obj.options[i];
     }
 
+    out << obj.banner
+        << obj.bannerPoints
+        << obj.musician
+        << obj.musicianPoints
+        << obj.champion
+        << obj.championStats;
+
     return out;
 }
 
@@ -336,6 +429,13 @@ QDataStream &operator >>(QDataStream & in, ModelAbstract & obj)
         in >> o;
         obj.addOption(o);
     }
+
+    in >> obj.banner;
+    in >> obj.bannerPoints;
+    in >> obj.musician;
+    in >> obj.musicianPoints;
+    in >> obj.champion;
+    in >> obj.championStats;
 
     return in;
 }
