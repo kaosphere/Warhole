@@ -19,6 +19,7 @@ ArmyWindow::ArmyWindow(QWidget *parent) :
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_ERR), QLogger::ErrorLevel);
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_WARN), QLogger::WarnLevel);
 
+    QLog_Info(LOG_ID_INFO, "ArmyWindow : Entering ArmyWindow by normal constructor.");
     // Put list of existing races in comboBox
     ui->setupUi(this);
     // get list of existing races
@@ -31,7 +32,8 @@ ArmyWindow::ArmyWindow(QWidget *parent) :
 
     if(existingRaces.isEmpty())
     {
-         QMessageBox::warning(this, tr("Erreur"), tr("Aucune race existante ; commencez par créer des figurines"));
+        QLog_Info(LOG_ID_INFO, "ArmyWindow() : No race found.");
+        QMessageBox::warning(this, tr("Erreur"), tr("Aucune race existante ; commencez par créer des figurines"));
     }
 
     existingRaces.removeOne(".");
@@ -83,6 +85,9 @@ ArmyWindow::ArmyWindow(QString fileName, QWidget *parent) :
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_ERR), QLogger::ErrorLevel);
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_WARN), QLogger::WarnLevel);
 
+    QLog_Info(LOG_ID_INFO, "ArmyWindow() : Entering ArmyWindow by loading constructor.");
+    QLog_Info(LOG_ID_INFO, "ArmyWindow() : File name to load : " + fileName);
+
     // Put list of existing races in comboBox
     ui->setupUi(this);
     // get list of existing races
@@ -95,7 +100,8 @@ ArmyWindow::ArmyWindow(QString fileName, QWidget *parent) :
 
     if(existingRaces.isEmpty())
     {
-         QMessageBox::warning(this, tr("Erreur"), tr("Aucune race existante ; commencez par créer des figurines"));
+        QLog_Info(LOG_ID_INFO, "ArmyWindow() : No race found.");
+        QMessageBox::warning(this, tr("Erreur"), tr("Aucune race existante ; commencez par créer des figurines"));
     }
 
     existingRaces.removeOne(".");
@@ -116,6 +122,7 @@ ArmyWindow::ArmyWindow(QString fileName, QWidget *parent) :
 
     ui->viewOptions->setModel(options);
     ui->viewOptions2->setModel(regOptions);
+
     // TODO : This is a hack to fix the fact that options rows are collapsable for an unknown readon
     // investigate and fix properly.
     ui->viewOptions->setItemsExpandable(false);
@@ -138,6 +145,7 @@ ArmyWindow::ArmyWindow(QString fileName, QWidget *parent) :
 
 ArmyWindow::~ArmyWindow()
 {
+    QLog_Info(LOG_ID_INFO, "~ArmyWindow() : Exiting ArmyWindow");
     delete model;
     delete options;
     delete regOptions;
@@ -188,7 +196,8 @@ void ArmyWindow::on_comboBoxRace_currentIndexChanged(const QString &raceDir)
         }
         if(existingModels.isEmpty())
         {
-             QMessageBox::warning(this, tr("Erreur"), tr("Aucune race existante ; commencez par créer des figurines"));
+            QLog_Info(LOG_ID_INFO, "on_comboBoxRace_currentIndexChanged() : No Model found in race : " + raceDir);
+            QMessageBox::warning(this, tr("Erreur"), tr("Aucune race existante ; commencez par créer des figurines"));
         }
 
         // set the root path of the tree view
@@ -228,6 +237,7 @@ void ArmyWindow::on_treeViewExistingModels_clicked(const QModelIndex &index)
         {
             currentSelectedPath = model->filePath(index);
             clearRegimentDisplay();
+            QLog_Info(LOG_ID_INFO, "on_treeViewExistingModels_clicked() : Loading regiment with model : " + currentSelectedPath);
             RegimentAbstract r;
             RecruitsGroup rg(ui->spinBoxNB->value(),0,currentSelectedPath);
             r.addGroup(rg);
@@ -657,14 +667,17 @@ void ArmyWindow::on_pushButtonSave_clicked()
             QMessageBox::critical(this, tr("Annulation"), tr("Sauvegarde annulée"));
         }
     }
-    else{
+    else
+    {
         currentArmy.save(path);
+        QLog_Info(LOG_ID_INFO, "save() : Saved army : " + path);
         QMessageBox::information(this, tr("Info"), tr("Armée sauvegardée avec succès."));
     }
 }
 
 void ArmyWindow::load(QString path)
 {
+    QLog_Info(LOG_ID_INFO, "load() : Loading army : " + path);
     if(!path.isEmpty())
     {
         currentArmy.load(path);
@@ -675,6 +688,10 @@ void ArmyWindow::load(QString path)
         QString s = path.section('/',-2,-2);
         ui->comboBoxRace->setCurrentText(s);
         ui->lineEditName->setText(currentArmy.getName());
+    }
+    else
+    {
+        QLog_Error(LOG_ID_INFO, "load() : The path is empyty");
     }
 }
 

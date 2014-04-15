@@ -18,6 +18,8 @@ ModelWindow::ModelWindow(QWidget *parent) :
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_ERR), QLogger::ErrorLevel);
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_WARN), QLogger::WarnLevel);
 
+    QLog_Info(LOG_ID_INFO, "ModelWindow() : entered model window with default constructor.");
+
     ui->setupUi(this);
     image = new QPixmap();
     scene = new QGraphicsScene();
@@ -54,6 +56,8 @@ ModelWindow::ModelWindow(QString f, QWidget *parent) :
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_ERR), QLogger::ErrorLevel);
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_WARN), QLogger::WarnLevel);
 
+    QLog_Info(LOG_ID_INFO, "ModelWindow() : entered model window with loading constructor.");
+
     ui->setupUi(this);
     image = new QPixmap();
 
@@ -85,6 +89,7 @@ ModelWindow::ModelWindow(QString f, QWidget *parent) :
 
 ModelWindow::~ModelWindow()
 {
+    QLog_Info(LOG_ID_INFO, "~ModelWindow() : exited modelWindow.");
     delete poupik;
 
     delete crew;
@@ -333,7 +338,11 @@ void ModelWindow::on_toolButtonImage_pressed()
     	scene->clear();
     	scene->addPixmap(*image);
     }
-    else  QMessageBox::warning(this, tr("Info"), tr("URL de l'image non valide"));
+    else
+    {
+        QMessageBox::warning(this, tr("Info"), tr("URL de l'image non valide"));
+        QLog_Info(LOG_ID_INFO, "on_toolButtonImage_pressed() : invalid image with path : " + fileName);
+    }
 
 }
 
@@ -368,6 +377,7 @@ void ModelWindow::on_addOption_clicked()
     else
     {
         QMessageBox::warning(this, tr("Erreur"), tr("Le nombre de point doit être un nombre entier."));
+        QLog_Info(LOG_ID_INFO, "on_addOption_clicked() : integer needef for option point, got " + ui->lineEditOptionPts->text());
     }
 }
 
@@ -396,6 +406,7 @@ void ModelWindow::on_addOption_2_clicked()
     else
     {
         QMessageBox::warning(this, tr("Erreur"), tr("Le nombre de point doit être un nombre entier."));
+        QLog_Info(LOG_ID_INFO, "on_addOption_2_clicked() : integer needef for option point, got " + ui->lineEditOptionPts2->text());
     }
 }
 
@@ -893,6 +904,7 @@ void ModelWindow::setModelProperties(ParamsfromUImodel *p)
 
 void ModelWindow::save(QString path)
 {
+    QLog_Info(LOG_ID_INFO, "save() : saving model with path : " + path);
     ParamsfromUImodel* params = new ParamsfromUImodel();
     if(ui->radioBase->isChecked())
     {
@@ -983,7 +995,7 @@ void ModelWindow::save(QString path)
 
     // save in class with factory + save in file
     poupik = fac.createFromUI(ui->comboUnitType->currentText(), params);
-    qDebug() << poupik->displayStringInfo();
+    QLog_Info(LOG_ID_INFO, "save() : model saved : " + poupik->displayStringInfo());
     poupik->save(path);
 }
 
@@ -994,7 +1006,7 @@ void ModelWindow::load(QString path)
         QLogger::QLog_Info(LOG_ID_INFO, "Loading model with path : " + path);
         //if(poupik))delete poupik;
         poupik = fac.createFromFile(path);
-        qDebug()<<poupik->displayStringInfo();
+        QLog_Info(LOG_ID_INFO, "load() : model loaded : " + poupik->displayStringInfo());
         fillUI(poupik, path);
     }
 }
