@@ -3,10 +3,22 @@
 
 WarlibInit::WarlibInit()
 {
+
 }
 
 void WarlibInit::initWarlib()
 {
+    qDebug() << "Initialization of the warlib";
+    // remove log file of previous rum
+    QFile logFile("logs/lastrun.log");
+    if(logFile.exists())
+    {
+        qDebug() << "removing previous log file";
+        logFile.remove();
+    }
+    else
+        qDebug() << "No logFile not found !";
+
     initModelSerialization();
     initModelFactory();
     DiceRoller::initDiceRoller();
