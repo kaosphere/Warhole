@@ -65,6 +65,7 @@ private:
     void updateGlobalArmyPoints();
     void loadRegimentInUI(RegimentAbstract &r);
     void load(QString path);
+    void enableChampionUI(bool checked);
 
     bool changeRace;
     Ui::ArmyWindow *ui;

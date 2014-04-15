@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1152</width>
-    <height>664</height>
+    <width>1254</width>
+    <height>732</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,7 +19,7 @@
   <property name="windowTitle">
    <string>Création de figurine</string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout_2">
+  <layout class="QHBoxLayout" name="horizontalLayout_4">
    <item>
     <layout class="QVBoxLayout" name="verticalLayout_3">
      <item>
@@ -244,23 +244,15 @@
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="label_27">
-           <property name="text">
-            <string>Points (sans options)</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QSpinBox" name="spinPoints">
-           <property name="maximum">
-            <number>999</number>
-           </property>
-          </widget>
-         </item>
-         <item>
           <layout class="QVBoxLayout" name="verticalLayout_5">
            <item>
             <widget class="QLabel" name="label_16">
+             <property name="cursor">
+              <cursorShape>WhatsThisCursor</cursorShape>
+             </property>
+             <property name="toolTip">
+              <string>La taille du socle est un paramètre très important du modèle car elle permet de représenter le modèle à la bonne taille sur la table de jeu.</string>
+             </property>
              <property name="text">
               <string>Taille du socle</string>
              </property>
@@ -327,6 +319,64 @@
            <item>
             <layout class="QVBoxLayout" name="verticalLayout_6">
              <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_22">
+               <item>
+                <widget class="QLabel" name="label_69">
+                 <property name="text">
+                  <string>Musicien :</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_24">
+                 <item>
+                  <widget class="QSpinBox" name="spinMusicianPoints">
+                   <property name="maximum">
+                    <number>999</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_70">
+                   <property name="text">
+                    <string>pts</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_28">
+               <item>
+                <widget class="QLabel" name="label_71">
+                 <property name="text">
+                  <string>Porte étendard</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_29">
+                 <item>
+                  <widget class="QSpinBox" name="spinBannerPoints">
+                   <property name="maximum">
+                    <number>999</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_72">
+                   <property name="text">
+                    <string>pts</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </item>
+             <item>
               <widget class="QLabel" name="label_21">
                <property name="text">
                 <string>Puissance d'unité</string>
@@ -366,6 +416,51 @@
         <layout class="QVBoxLayout" name="verticalLayout_18">
          <item>
           <layout class="QVBoxLayout" name="verticalLayout_15">
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_2">
+             <item>
+              <widget class="QLabel" name="label_4">
+               <property name="font">
+                <font>
+                 <pointsize>10</pointsize>
+                 <weight>75</weight>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="text">
+                <string>Statistiques de la figurine :</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_2">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_27">
+               <property name="text">
+                <string>Points (sans options)</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QSpinBox" name="spinPoints">
+               <property name="maximum">
+                <number>999</number>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_25">
              <item>
@@ -531,16 +626,16 @@
               </layout>
              </item>
              <item>
-              <layout class="QVBoxLayout" name="verticalLayout_28">
+              <layout class="QVBoxLayout" name="verticalLayout_29">
                <item>
-                <widget class="QLabel" name="label_36">
+                <widget class="QLabel" name="label_37">
                  <property name="text">
-                  <string>A   </string>
+                  <string>I    </string>
                  </property>
                 </widget>
                </item>
                <item>
-                <widget class="QLineEdit" name="lineEditA">
+                <widget class="QLineEdit" name="lineEditI">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                    <horstretch>20</horstretch>
@@ -558,16 +653,16 @@
               </layout>
              </item>
              <item>
-              <layout class="QVBoxLayout" name="verticalLayout_29">
+              <layout class="QVBoxLayout" name="verticalLayout_28">
                <item>
-                <widget class="QLabel" name="label_37">
+                <widget class="QLabel" name="label_36">
                  <property name="text">
-                  <string>I    </string>
+                  <string>A   </string>
                  </property>
                 </widget>
                </item>
                <item>
-                <widget class="QLineEdit" name="lineEditI">
+                <widget class="QLineEdit" name="lineEditA">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                    <horstretch>20</horstretch>
@@ -668,7 +763,353 @@
             </layout>
            </item>
            <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_3">
+             <item>
+              <widget class="QLabel" name="label_6">
+               <property name="font">
+                <font>
+                 <pointsize>10</pointsize>
+                 <weight>75</weight>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="text">
+                <string>Statistiques du champion :</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_3">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_73">
+               <property name="text">
+                <string>Points</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QSpinBox" name="spinPointsChamp">
+               <property name="maximum">
+                <number>999</number>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
             <layout class="QVBoxLayout" name="verticalLayout_21">
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_27">
+               <item>
+                <layout class="QVBoxLayout" name="verticalLayout_47">
+                 <item>
+                  <widget class="QLabel" name="label_56">
+                   <property name="text">
+                    <string>M   </string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="lineEditMChamp">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                     <horstretch>20</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>40</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QVBoxLayout" name="verticalLayout_48">
+                 <item>
+                  <widget class="QLabel" name="label_57">
+                   <property name="text">
+                    <string>CC </string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="lineEditCCChamp">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>40</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QVBoxLayout" name="verticalLayout_49">
+                 <item>
+                  <widget class="QLabel" name="label_58">
+                   <property name="text">
+                    <string>CT </string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="lineEditCTChamp">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                     <horstretch>20</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>40</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QVBoxLayout" name="verticalLayout_50">
+                 <item>
+                  <widget class="QLabel" name="label_59">
+                   <property name="text">
+                    <string>F   </string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="lineEditFChamp">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                     <horstretch>20</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>40</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QVBoxLayout" name="verticalLayout_51">
+                 <item>
+                  <widget class="QLabel" name="label_60">
+                   <property name="text">
+                    <string>E   </string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="lineEditEChamp">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                     <horstretch>20</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>40</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QVBoxLayout" name="verticalLayout_52">
+                 <item>
+                  <widget class="QLabel" name="label_61">
+                   <property name="text">
+                    <string>PV  </string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="lineEditPVChamp">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                     <horstretch>20</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>40</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QVBoxLayout" name="verticalLayout_53">
+                 <item>
+                  <widget class="QLabel" name="label_62">
+                   <property name="text">
+                    <string>I    </string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="lineEditIChamp">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                     <horstretch>20</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>40</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QVBoxLayout" name="verticalLayout_54">
+                 <item>
+                  <widget class="QLabel" name="label_63">
+                   <property name="text">
+                    <string>A   </string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="lineEditAChamp">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                     <horstretch>20</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>40</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QVBoxLayout" name="verticalLayout_55">
+                 <item>
+                  <widget class="QLabel" name="label_64">
+                   <property name="text">
+                    <string>Cdt  </string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="lineEditCdtChamp">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                     <horstretch>20</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>40</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QVBoxLayout" name="verticalLayout_56">
+                 <item>
+                  <widget class="QLabel" name="label_65">
+                   <property name="text">
+                    <string>Svg</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="lineEditSvgChamp">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                     <horstretch>20</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>40</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QVBoxLayout" name="verticalLayout_57">
+                 <item>
+                  <widget class="QLabel" name="label_68">
+                   <property name="text">
+                    <string>Svg Inv</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="lineEditSvgInvChamp">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                     <horstretch>20</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>40</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </item>
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_20">
                <item>
@@ -730,6 +1171,12 @@
                    <weight>75</weight>
                    <bold>true</bold>
                   </font>
+                 </property>
+                 <property name="cursor">
+                  <cursorShape>WhatsThisCursor</cursorShape>
+                 </property>
+                 <property name="toolTip">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Les statistiques additionnelles permettent de renseigner les statistiques de modèles inclus dans un autres. &lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Ces modèles sont le plus souvent :&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;- la monture d'un cavalier&lt;/p&gt;&lt;p&gt;- l'équipage d'un char&lt;/p&gt;&lt;p&gt;- les animaux qui tirent le char&lt;/p&gt;&lt;p&gt;- les servants d'une marchine de guerre&lt;/p&gt;&lt;p&gt;- les maitres des bêtes qui accompagne un monstre&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                  </property>
                  <property name="text">
                   <string>4 - Stats additionnelles (montures,équipage de char, servants...)</string>
@@ -941,16 +1388,16 @@
                 </layout>
                </item>
                <item>
-                <layout class="QVBoxLayout" name="verticalLayout_39">
+                <layout class="QVBoxLayout" name="verticalLayout_40">
                  <item>
-                  <widget class="QLabel" name="label_47">
+                  <widget class="QLabel" name="label_48">
                    <property name="text">
-                    <string>A   </string>
+                    <string>I    </string>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEditA2">
+                  <widget class="QLineEdit" name="lineEditI2">
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                      <horstretch>20</horstretch>
@@ -968,16 +1415,16 @@
                 </layout>
                </item>
                <item>
-                <layout class="QVBoxLayout" name="verticalLayout_40">
+                <layout class="QVBoxLayout" name="verticalLayout_39">
                  <item>
-                  <widget class="QLabel" name="label_48">
+                  <widget class="QLabel" name="label_47">
                    <property name="text">
-                    <string>I    </string>
+                    <string>A   </string>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEditI2">
+                  <widget class="QLineEdit" name="lineEditA2">
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                      <horstretch>20</horstretch>
@@ -1201,6 +1648,12 @@
              <bold>true</bold>
             </font>
            </property>
+           <property name="cursor">
+            <cursorShape>WhatsThisCursor</cursorShape>
+           </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Les options de figurines, ou équipement sont les options attribuées à chaque figurine d'un régiment. &lt;/p&gt;&lt;p&gt;Les points de ces options seront multipliés par le nombre de figurines dans le régiment.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
            <property name="text">
             <string>4 - Equipement</string>
            </property>
@@ -1294,6 +1747,12 @@
            <weight>75</weight>
            <bold>true</bold>
           </font>
+         </property>
+         <property name="cursor">
+          <cursorShape>WhatsThisCursor</cursorShape>
+         </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Les options de régiments sont les options attribuées au régiment complet. &lt;/p&gt;&lt;p&gt;Les points de ces options ne sont comptabilisés qu'une seule fois pour tout le régiment.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="text">
           <string>5 - Options de régiment</string>
@@ -1389,6 +1848,12 @@
              <bold>true</bold>
             </font>
            </property>
+           <property name="cursor">
+            <cursorShape>WhatsThisCursor</cursorShape>
+           </property>
+           <property name="toolTip">
+            <string>Ici sont décrites les règles spéciale de la figurine, comme la peur, la terreur, l'immunité à la psychologie...</string>
+           </property>
            <property name="text">
             <string>6 - Règles spéciales supplémentaires</string>
            </property>
@@ -1430,8 +1895,10 @@
    </item>
   </layout>
   <zorder></zorder>
-  <zorder></zorder>
-  <zorder>line_5</zorder>
+  <zorder>line_4</zorder>
+  <zorder>label_4</zorder>
+  <zorder>spinPoints</zorder>
+  <zorder>label_27</zorder>
  </widget>
  <resources/>
  <connections/>

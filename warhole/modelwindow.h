@@ -50,6 +50,7 @@ public:
     void setModelProperties(ParamsfromUImodel *p);
     void save(QString path);
 
+    void enableChampionUI(bool b);
 private slots:
     void on_comboUnitType_currentIndexChanged(int index);
     void on_toolButtonImage_pressed();

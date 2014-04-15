@@ -134,6 +134,44 @@ void ModelWindow::loadWidgets(bool l)
     ui->viewModelCrew->setEnabled(l);
 }
 
+void ModelWindow::enableChampionUI(bool b)
+{
+    ui->label_56->setEnabled(b);
+    ui->label_57->setEnabled(b);
+    ui->label_58->setEnabled(b);
+    ui->label_59->setEnabled(b);
+    ui->label_60->setEnabled(b);
+    ui->label_61->setEnabled(b);
+    ui->label_62->setEnabled(b);
+    ui->label_63->setEnabled(b);
+    ui->label_64->setEnabled(b);
+    ui->label_65->setEnabled(b);
+    ui->label_68->setEnabled(b);
+    ui->label_6->setEnabled(b);
+    ui->label_73->setEnabled(b);
+
+    ui->lineEditAChamp->setEnabled(b);
+    ui->lineEditCCChamp->setEnabled(b);
+    ui->lineEditCdtChamp->setEnabled(b);
+    ui->lineEditCTChamp->setEnabled(b);
+    ui->lineEditEChamp->setEnabled(b);
+    ui->lineEditFChamp->setEnabled(b);
+    ui->lineEditFChamp->setEnabled(b);
+    ui->lineEditIChamp->setEnabled(b);
+    ui->lineEditPVChamp->setEnabled(b);
+    ui->lineEditSvgInvChamp->setEnabled(b);
+    ui->lineEditSvgChamp->setEnabled(b);
+    ui->lineEditMChamp->setEnabled(b);
+    ui->spinPointsChamp->setEnabled(b);
+
+    ui->spinBannerPoints->setEnabled(b);
+    ui->spinMusicianPoints->setEnabled(b);
+    ui->label_69->setEnabled(b);
+    ui->label_70->setEnabled(b);
+    ui->label_71->setEnabled(b);
+    ui->label_72->setEnabled(b);
+}
+
 void ModelWindow::loadCavaleryWidget()
 {
     //hide character checkboxes
@@ -150,7 +188,7 @@ void ModelWindow::loadCavaleryWidget()
     ui->spinWidth->setValue(25);
     ui->spinLength->setValue(50);
     loadWidgets(true);
-
+    enableChampionUI(true);
 }
 
 void ModelWindow::loadCharacterWidget()
@@ -170,6 +208,7 @@ void ModelWindow::loadCharacterWidget()
     ui->radioSpecial->setEnabled(false);
 
     loadWidgets(true);
+    enableChampionUI(false);
 }
 
 void ModelWindow::loadCharriotWidget()
@@ -189,6 +228,7 @@ void ModelWindow::loadCharriotWidget()
     ui->radioSpecial->setEnabled(true);
 
     loadWidgets(true);
+    enableChampionUI(true);
 }
 
 void ModelWindow::loadInfanteryWidget()
@@ -208,6 +248,7 @@ void ModelWindow::loadInfanteryWidget()
     ui->spinLength->setValue(25);
 
     loadWidgets(false);
+    enableChampionUI(true);
 }
 
 void ModelWindow::loadMonsterWidget()
@@ -227,6 +268,7 @@ void ModelWindow::loadMonsterWidget()
     ui->spinLength->setValue(50);
 
     loadWidgets(true);
+    enableChampionUI(false);
 }
 
 void ModelWindow::loadWarMachineWidget()
@@ -246,6 +288,7 @@ void ModelWindow::loadWarMachineWidget()
     ui->spinLength->setValue(25);
 
     loadWidgets(true);
+    enableChampionUI(false);
 }
 
 void ModelWindow::on_comboUnitType_currentIndexChanged(int index)
@@ -474,9 +517,7 @@ void ModelWindow::fillUI(ModelAbstract* m, QString path)
     ui->spinWidth->setValue(m->getSquareBaseW());
     ui->spinLength->setValue(m->getSquareBaseL());
     ui->spinPU->setValue(m->getUnitPower());
-    //ui->lineEditName->setText(poupik.getFigSupInd());
     ui->lineEditImage->setText(m->getUrlImage());
-    //ui->textEdit->append(poupik->getSpecialRules());
 
     if(image->load(m->getUrlImage()))
     {
@@ -533,6 +574,20 @@ void ModelWindow::fillUI(ModelAbstract* m, QString path)
                 QLog_Error(LOG_ID_ERR, "fillUI : can't find a valid type.");
                 break;
             }
+            ui->spinPointsChamp->setValue(cav->getChampionStats().getPoints());
+            ui->lineEditMChamp->setText(cav->getChampionStats().getM());
+            ui->lineEditCCChamp->setText(cav->getChampionStats().getWs());
+            ui->lineEditCTChamp->setText(cav->getChampionStats().getBs());
+            ui->lineEditFChamp->setText(cav->getChampionStats().getS());
+            ui->lineEditEChamp->setText(cav->getChampionStats().getT());
+            ui->lineEditPVChamp->setText(cav->getChampionStats().getW());
+            ui->lineEditIChamp->setText(cav->getChampionStats().getI());
+            ui->lineEditAChamp->setText(cav->getChampionStats().getA());
+            ui->lineEditCdtChamp->setText(cav->getChampionStats().getLd());
+            ui->lineEditSvgChamp->setText(cav->getChampionStats().getSvg());
+            ui->lineEditSvgInvChamp->setText(cav->getChampionStats().getSvgInv());
+            ui->spinBannerPoints->setValue(cav->getBannerPoints());
+            ui->spinMusicianPoints->setValue(cav->getMusicianPoints());
         }
         else
             QLog_Error(LOG_ID_ERR, "FillUI : DYNAMIC_CAST ERROR : Can't cast to ModelCavalry.");
@@ -608,6 +663,20 @@ void ModelWindow::fillUI(ModelAbstract* m, QString path)
                 QLog_Error(LOG_ID_ERR, "fillUI : can't find a valid type.");
                 break;
             }
+            ui->spinPointsChamp->setValue(ch->getChampionStats().getPoints());
+            ui->lineEditMChamp->setText(ch->getChampionStats().getM());
+            ui->lineEditCCChamp->setText(ch->getChampionStats().getWs());
+            ui->lineEditCTChamp->setText(ch->getChampionStats().getBs());
+            ui->lineEditFChamp->setText(ch->getChampionStats().getS());
+            ui->lineEditEChamp->setText(ch->getChampionStats().getT());
+            ui->lineEditPVChamp->setText(ch->getChampionStats().getW());
+            ui->lineEditIChamp->setText(ch->getChampionStats().getI());
+            ui->lineEditAChamp->setText(ch->getChampionStats().getA());
+            ui->lineEditCdtChamp->setText(ch->getChampionStats().getLd());
+            ui->lineEditSvgChamp->setText(ch->getChampionStats().getSvg());
+            ui->lineEditSvgInvChamp->setText(ch->getChampionStats().getSvgInv());
+            ui->spinBannerPoints->setValue(ch->getBannerPoints());
+            ui->spinMusicianPoints->setValue(ch->getMusicianPoints());
         }
         else
             QLog_Error(LOG_ID_ERR, "FillUI : DYNAMIC_CAST ERROR : Can't cast to ModelCharriot.");
@@ -633,6 +702,20 @@ void ModelWindow::fillUI(ModelAbstract* m, QString path)
                 QLog_Error(LOG_ID_ERR, "fillUI : can't find a valid type.");
                 break;
             }
+            ui->spinPointsChamp->setValue(inf->getChampionStats().getPoints());
+            ui->lineEditMChamp->setText(inf->getChampionStats().getM());
+            ui->lineEditCCChamp->setText(inf->getChampionStats().getWs());
+            ui->lineEditCTChamp->setText(inf->getChampionStats().getBs());
+            ui->lineEditFChamp->setText(inf->getChampionStats().getS());
+            ui->lineEditEChamp->setText(inf->getChampionStats().getT());
+            ui->lineEditPVChamp->setText(inf->getChampionStats().getW());
+            ui->lineEditIChamp->setText(inf->getChampionStats().getI());
+            ui->lineEditAChamp->setText(inf->getChampionStats().getA());
+            ui->lineEditCdtChamp->setText(inf->getChampionStats().getLd());
+            ui->lineEditSvgChamp->setText(inf->getChampionStats().getSvg());
+            ui->lineEditSvgInvChamp->setText(inf->getChampionStats().getSvgInv());
+            ui->spinBannerPoints->setValue(inf->getBannerPoints());
+            ui->spinMusicianPoints->setValue(inf->getMusicianPoints());
         }
         else
             QLog_Error(LOG_ID_ERR, "FillUI : DYNAMIC_CAST ERROR : Can't cast to ModelInfantery.");
@@ -794,6 +877,18 @@ void ModelWindow::setModelProperties(ParamsfromUImodel *p)
         optionList.append(o);
     }
     p->setOptions(optionList);
+
+    p->setBannerPoints(ui->spinBannerPoints->value());
+    p->setMusicianPoints(ui->spinMusicianPoints->value());
+    StatsModel sc("champion", ui->lineEditMChamp->text(),ui->lineEditCCChamp->text(),
+                 ui->lineEditCTChamp->text(), ui->lineEditFChamp->text(),ui->lineEditEChamp->text(),
+                 ui->lineEditPVChamp->text(), ui->lineEditIChamp->text(), ui->lineEditAChamp->text(),
+                 ui->lineEditCdtChamp->text(), ui->lineEditSvgChamp->text(), ui->lineEditSvgInvChamp->text(),
+                 ui->spinPointsChamp->value());
+    p->setChampionStats(sc);
+    p->setBanner(false);
+    p->setMusician(false);
+    p->setChampion(false);
 }
 
 void ModelWindow::save(QString path)
@@ -888,6 +983,7 @@ void ModelWindow::save(QString path)
 
     // save in class with factory + save in file
     poupik = fac.createFromUI(ui->comboUnitType->currentText(), params);
+    qDebug() << poupik->displayStringInfo();
     poupik->save(path);
 }
 
@@ -898,6 +994,7 @@ void ModelWindow::load(QString path)
         QLogger::QLog_Info(LOG_ID_INFO, "Loading model with path : " + path);
         //if(poupik))delete poupik;
         poupik = fac.createFromFile(path);
+        qDebug()<<poupik->displayStringInfo();
         fillUI(poupik, path);
     }
 }
@@ -927,6 +1024,23 @@ void ModelWindow::on_pushButtonLoad_clicked()
     ui->textEdit->clear();
     ui->spinPoints->clear();
     ui->spinPU->clear();
+
+    ui->lineEditAChamp->clear();
+    ui->lineEditCCChamp->clear();
+    ui->lineEditCdtChamp->clear();
+    ui->lineEditCTChamp->clear();
+    ui->lineEditEChamp->clear();
+    ui->lineEditFChamp->clear();
+    ui->lineEditFChamp->clear();
+    ui->lineEditIChamp->clear();
+    ui->lineEditPVChamp->clear();
+    ui->lineEditSvgInvChamp->clear();
+    ui->lineEditSvgChamp->clear();
+    ui->lineEditMChamp->clear();
+    ui->spinPointsChamp->clear();
+
+    ui->spinBannerPoints->clear();
+    ui->spinMusicianPoints->clear();
 
     options->clear();
     regOptions->clear();
