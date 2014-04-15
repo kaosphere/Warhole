@@ -33,8 +33,11 @@ ModelAbstract *ModelFactory::createEmptyModel(const QString &key)
     QMap<QString, ModelAbstract*>::const_iterator it = factory_model_map.find(key);
     if(it != factory_model_map.end()) // key was found in map
     {
+        QLog_Info(LOG_ID_INFO, "createEmptyModel() : Key found in map : " + s);
         tmp = (*it)->clone();
     }
+    else
+        QLog_Error(LOG_ID_ERR, "createEmptyModel() : Can't find key in path : " + path);
     return tmp;
 }
 
@@ -51,10 +54,10 @@ ModelAbstract *ModelFactory::createFromFile(const QString& path) const
         tmp = (*it)->clone();
         tmp = tmp->setFromFile(path);
 
-        QLog_Info(LOG_ID_INFO, "Key found in map : " + s);
+        QLog_Info(LOG_ID_INFO, "createFromFile() : Key found in map : " + s);
     }
     else
-        QLog_Error(LOG_ID_ERR, "Can't find key in path : " + path);
+        QLog_Error(LOG_ID_ERR, "createFromFile() : Can't find key in path : " + path);
 
     return tmp;
 }
@@ -67,7 +70,10 @@ ModelAbstract* ModelFactory::createFromUI(const QString &key, const ParamsfromUI
     {
         tmp = (*it)->clone();
         tmp = tmp->setFromUI(params);
+        QLog_Info(LOG_ID_INFO, "createFromUI() : Key found in map : " + s);
     }
+    else
+        QLog_Error(LOG_ID_ERR, "createFromFile() : Can't find key in path : " + path);
 
     return tmp;
 }

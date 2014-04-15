@@ -33,9 +33,6 @@ RecruitsGroup::RecruitsGroup(const int &n, const int &c, const QString& p)
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_INFO), QLogger::InfoLevel);
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_ERR), QLogger::ErrorLevel);
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_WARN), QLogger::WarnLevel);
-
-    QLog_Info(LOG_ID_INFO, "RecruitsGroup(n,c,p) : RecruitsGroup created with following model : ");
-    QLog_Info(LOG_ID_INFO, model->displayStringInfo());
 }
 
 RecruitsGroup::RecruitsGroup(const RecruitsGroup& copy)
