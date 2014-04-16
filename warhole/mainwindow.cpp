@@ -40,7 +40,9 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
-    //delete mod;
+    mod->deleteLater();
+    arm->deleteLater();
+    game->deleteLater();
 }
 
 
