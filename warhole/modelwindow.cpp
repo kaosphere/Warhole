@@ -105,6 +105,20 @@ ModelWindow::~ModelWindow()
     delete ui;
 }
 
+void ModelWindow::closeEvent (QCloseEvent *event)
+{
+    int rep = QMessageBox::question(this,tr("Quitter"),
+            tr("Voulez-vous vraiment quitter ?"), QMessageBox::Yes | QMessageBox::No);
+    if (rep == QMessageBox::Yes)
+    {
+        event->accept();
+    }
+    else if (rep == QMessageBox::No)
+    {
+        event->ignore();
+    }
+}
+
 void ModelWindow::loadWidgets(bool l)
 {
     ui->lineEditA2->setEnabled(l);

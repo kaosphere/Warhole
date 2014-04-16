@@ -61,10 +61,9 @@ private slots:
     void on_pushButtonLoad_clicked();
     void on_pushButtonAdd_clicked();
     void on_pushButtonRmv_clicked();
-
     void on_addOption_2_clicked();
-
     void on_deleteOption_2_clicked();
+    void closeEvent(QCloseEvent*);
 
 private:
     static const QString LOG_ID_TRACE;

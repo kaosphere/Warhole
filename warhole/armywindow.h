@@ -82,6 +82,7 @@ private:
     bool editing;
 
     static const QStringList OPTION_HEADER;
+    void closeEvent(QCloseEvent *event);
 };
 
 #endif // ARMYWINDOW_H
