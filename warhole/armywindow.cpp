@@ -8,6 +8,12 @@ const QString ArmyWindow::LOG_ID_TRACE = "ArmyWindow_trace";
 const QString ArmyWindow::LOG_ID_WARN = "ArmyWindow_warm";
 const QString ArmyWindow::LOG_ID_ERR = "ArmyWindow_err";
 
+const QStringList ArmyWindow::OPTION_HEADER = QStringList()
+                            << QObject::tr("Choisir")
+                            << QObject::tr("Nom")
+                            << QObject::tr("Pts")
+                            << QObject::tr("Règles");
+
 ArmyWindow::ArmyWindow(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ArmyWindow)

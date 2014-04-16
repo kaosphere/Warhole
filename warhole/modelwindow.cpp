@@ -8,6 +8,11 @@ const QString ModelWindow::LOG_ID_TRACE = "ModelWindow_trace";
 const QString ModelWindow::LOG_ID_WARN = "ModelWindow_warm";
 const QString ModelWindow::LOG_ID_ERR = "ModelWindow_err";
 
+const QStringList ModelWindow::OPTION_HEADER = QStringList()
+                            << QObject::tr("Nom")
+                            << QObject::tr("Pts")
+                            << QObject::tr("Règles");
+
 ModelWindow::ModelWindow(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ModelWindow)

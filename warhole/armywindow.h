@@ -80,6 +80,8 @@ private:
     QString currentSelectedPath;
     Army currentArmy;
     bool editing;
+
+    static const QStringList OPTION_HEADER;
 };
 
 #endif // ARMYWINDOW_H

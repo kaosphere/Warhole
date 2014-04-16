@@ -90,6 +90,8 @@ private:
 
     ParamsfromUImodel* pfUI;
     ModelFactory fac;
+
+    static const QStringList OPTION_HEADER;
 };
 
 #endif // MODELWINDOW_H
