@@ -33,7 +33,8 @@ SOURCES += \
     Utilities/PdfExporter/pdfexporter.cpp \
     game/historic/ChatHistoricItem.cpp \
     game/historic/DiceHistoricItem.cpp \
-    game/historic/HistoricAbstractItem.cpp
+    game/historic/HistoricAbstractItem.cpp \
+    game/historic/historic.cpp
 	
 HEADERS += \
     stats/statsmodel.h \
@@ -57,7 +58,8 @@ HEADERS += \
     Utilities/PdfExporter/pdfexporter.h \
     game/historic/ChatHistoricItem.h \
     game/historic/DiceHistoricItem.h \
-    game/historic/HistoricAbstractItem.h
+    game/historic/HistoricAbstractItem.h \
+    game/historic/historic.h
 
 INSTALLS += target
 
