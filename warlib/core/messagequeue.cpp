@@ -5,7 +5,7 @@ MessageQueue::MessageQueue(QObject *parent) :
 {
 }
 
-QList<Message> MessageQueue::getMessageList() const
+QList<Message> MessageQueue::getMessageList()
 {
     QMutexLocker locker(&mutex);
     return messageList;

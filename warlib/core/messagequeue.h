@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QList>
 #include <QMutex>
+#include <QMutexLocker>
 #include "message.h"
 
 //! MessageQueue class
@@ -25,7 +26,7 @@ public:
     */
     explicit MessageQueue(QObject *parent = 0);
 
-    QList<Message> getMessageList() const;
+    QList<Message> getMessageList();
     void setMessageList(const QList<Message> &value);
     void addMessage(Message &m);
     void removeMessage(Message &m);
