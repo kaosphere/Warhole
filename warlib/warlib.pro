@@ -34,7 +34,9 @@ SOURCES += \
     game/historic/ChatHistoricItem.cpp \
     game/historic/DiceHistoricItem.cpp \
     game/historic/HistoricAbstractItem.cpp \
-    game/historic/historic.cpp
+    game/historic/historic.cpp \
+    core/messagequeue.cpp \
+    core/message.cpp
 	
 HEADERS += \
     stats/statsmodel.h \
@@ -59,7 +61,9 @@ HEADERS += \
     game/historic/ChatHistoricItem.h \
     game/historic/DiceHistoricItem.h \
     game/historic/HistoricAbstractItem.h \
-    game/historic/historic.h
+    game/historic/historic.h \
+    core/messagequeue.h \
+    core/message.h
 
 INSTALLS += target
 
