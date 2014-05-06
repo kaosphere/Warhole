@@ -2,8 +2,8 @@
 #define PARAMSFROMUIMODEL_H
 
 #include <QString>
-#include "stats/statsmodel.h"
-#include "option/optionmodel.h"
+#include "game/stats/statsmodel.h"
+#include "game/option/optionmodel.h"
 #include "defines.h"
 
 class ParamsfromUImodel

@@ -1,7 +1,7 @@
 #ifndef Army_H
 #define Army_H
 
-#include "regiment/regimentabstract.h"
+#include "game/regiment/regimentabstract.h"
 #include <QString>
 #include <QList>
 

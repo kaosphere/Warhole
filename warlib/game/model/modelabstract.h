@@ -1,4 +1,4 @@
-/*********************************************************************//**
+/*! ********************************************************************
 * modelabstract.h
 * ModelAbstract class
 *
@@ -15,15 +15,17 @@
 #include <iostream>
 #include <QTextDocument>
 
-#include "option/optionmodel.h"
-#include "stats/statsmodel.h"
-#include "paramsfromUI/paramsfromuimodel.h"
+#include "game/option/optionmodel.h"
+#include "game/stats/statsmodel.h"
+#include "game/paramsfromUI/paramsfromuimodel.h"
 #include "defines.h"
 
 //! ModelAbstract class
 /*!
 * Main data structure storing model characteristics.
 * This is the base class for all types of models.
+* TODO AJ 2014-05-06 : this class should be a pure abstract class but serialization
+* prevents to do it. Find a way to do this more cleanly.
 */
 class ModelAbstract
 {
@@ -247,23 +249,50 @@ protected:
     StatsModel stats;
     //QList<ModelAbstract *> champion; //list of possible champion
 
-    int squareBaseW;    /// Width of the square base
-    int squareBaseL;    /// Length of the square base
+    /// Width of the square base in millimeters
+    int squareBaseW;
 
-    int unitPower;      /// Unit power of the model
+    /// Length of the square base in millimeters
+    int squareBaseL;
 
-    bool figSupInd;     /// Independant models (for charriots, war machines and monsters)
+    /// Unit power of the model
+    int unitPower;
 
-    QPixmap *image;     /// Image of the model to be used in the graphics
-    QString urlImage;	/// Path to the image
+    // TODO : AJ 2014-05-06 This one isn't used : to be removed.
+    /// Independant models (for charriots, war machines and monsters)
+    bool figSupInd;
 
-    QList<OptionModel> options;   /// List of options possible for model
+    // TODO : AJ 2014-05-06 This one isn't used : to be removed. (isn't even serialized)
+    /// Image of the model to be used in the graphics
+    QPixmap *image;
 
+    // TODO : AJ 2014-05-06 Change name with path (confusing with internet link)
+    /// Path to the image
+    QString urlImage;
+
+    /// List of options possible for model
+    QList<OptionModel> options;
+
+    /// Note : it is more easy to have the banner, musician and champion informations
+    /// in the model class because we don't want to enter them each time we make a regiment
+    /// If they are in the model, this is just a box to check at regiment creation.
+
+    /// Does the model have a banner ? True if yes, false if not.
     bool banner;
+
+    /// Points for the banner to be added in the regiment.
     int bannerPoints;
+
+    /// Does the model have a musician ? True if yes, false if not.
     bool musician;
+
+    /// Points for the musician to be added to the regiment.
     int musicianPoints;
+
+    /// Does the model have a champion ? True if yes, false if not.
     bool champion;
+
+    /// Stats of the champion that the model can be assigned to.
     StatsModel championStats;
 	
 	//! QDataStream & operator <<

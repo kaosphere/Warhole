@@ -5,15 +5,9 @@
 #include <QtCore>
 #include <QtWidgets>
 
-#include "model/modelabstract.h"
-#include "model/modelcavalry.h"
-#include "model/modelcharacter.h"
-#include "model/modelcharriot.h"
-#include "model/modelinfantery.h"
-#include "model/modelmonster.h"
-#include "model/modelwarmachine.h"
-#include "stats/statsmodel.h"
-#include "option/optionmodel.h"
+#include "game/model/modelabstract.h"
+#include "game/stats/statsmodel.h"
+#include "game/option/optionmodel.h"
 #include "recruitsgroup.h"
 #include "Utilities/QLogger/QLogger.h"
 

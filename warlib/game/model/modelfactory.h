@@ -4,7 +4,7 @@
 #include <QMap>
 #include <QString>
 #include "modelabstract.h"
-#include "paramsfromUI/paramsfromuimodel.h"
+#include "game/paramsfromUI/paramsfromuimodel.h"
 #include "Utilities/QLogger/QLogger.h"
 
 #include<QDebug>
