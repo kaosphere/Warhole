@@ -8,18 +8,18 @@
 
 #include <typeinfo>
 
-#include <option/optionmodel.h>
-#include <model/modelcavalry.h>
-#include <model/modelcharacter.h>
-#include <model/modelcharriot.h>
-#include <model/modelinfantery.h>
-#include <model/modelmonster.h>
-#include <model/modelwarmachine.h>
-#include <model/modelfactory.h>
+#include <game/option/optionmodel.h>
+#include <game/model/modelcavalry.h>
+#include <game/model/modelcharacter.h>
+#include <game/model/modelcharriot.h>
+#include <game/model/modelinfantery.h>
+#include <game/model/modelmonster.h>
+#include <game/model/modelwarmachine.h>
+#include <game/model/modelfactory.h>
 
-#include <stats/statsmodel.h>
+#include <game/stats/statsmodel.h>
 
-#include <paramsfromUI/paramsfromuimodel.h>
+#include <game/paramsfromUI/paramsfromuimodel.h>
 #include <Utilities/QLogger/QLogger.h>
 
 #include"defines.h"

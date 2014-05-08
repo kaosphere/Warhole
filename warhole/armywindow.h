@@ -8,10 +8,10 @@
 #include <QMessageBox>
 #include "defines.h"
 #include <QStandardItemModel>
-#include <model/modelfactory.h>
-#include <option/optionmodel.h>
-#include <regiment/regimentabstract.h>
-#include <army/army.h>
+#include <game/model/modelfactory.h>
+#include <game/option/optionmodel.h>
+#include <game/regiment/regimentabstract.h>
+#include <game/army/army.h>
 #include <Utilities/QLogger/QLogger.h>
 #include <Utilities/PdfExporter/pdfexporter.h>
 
