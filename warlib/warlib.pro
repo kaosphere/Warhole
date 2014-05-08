@@ -36,7 +36,9 @@ SOURCES += \
     game/historic/HistoricAbstractItem.cpp \
     game/historic/historic.cpp \
     core/messagequeue.cpp \
-    core/message.cpp
+    core/message.cpp \
+    game/game.cpp \
+    game/player.cpp
 	
 HEADERS += \
     game/stats/statsmodel.h \
@@ -63,7 +65,9 @@ HEADERS += \
     game/historic/HistoricAbstractItem.h \
     game/historic/historic.h \
     core/messagequeue.h \
-    core/message.h
+    core/message.h \
+    game/game.h \
+    game/player.h
 
 INSTALLS += target
 

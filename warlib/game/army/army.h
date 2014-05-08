@@ -2,6 +2,7 @@
 #define Army_H
 
 #include "game/regiment/regimentabstract.h"
+#include <QtCore>
 #include <QString>
 #include <QList>
 
@@ -28,6 +29,8 @@ public:
 
     friend QDataStream & operator << (QDataStream &, const Army &);
     friend QDataStream & operator >> (QDataStream &, Army &);
+
+    bool operator==(const Army& obj);
     
     QString displayInfo() const;
     QString displayShortInfo() const;

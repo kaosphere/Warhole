@@ -162,3 +162,11 @@ QString Army::displayInfo() const
     info << "////////////////////////////////////////////////////////" << endl;
     return s;
 }
+
+
+bool Army::operator ==(const Army &obj)
+{
+    if(name == obj.name && units == obj.units)
+        return true;
+    else return false;
+}
