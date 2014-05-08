@@ -209,11 +209,3 @@ bool Army::operator ==(const Army &obj)
         return true;
     else return false;
 }
-
-Army &Army::operator=(const Army & other)
-{
-    name = other.name;
-    units = other.units;
-
-    return *this;
-}

@@ -34,11 +34,7 @@ public:
     friend QDataStream & operator << (QDataStream &, const Army &);
     friend QDataStream & operator >> (QDataStream &, Army &);
 
-    friend QDataStream & operator << (QDataStream &, Army *);
-    friend QDataStream & operator >> (QDataStream &, Army *);
-
     bool operator==(const Army& obj);
-    Army &operator=(const Army&);
     
     QString displayInfo() const;
     QString displayShortInfo() const;

@@ -14,7 +14,7 @@ void Player::setName(const QString &value)
     name = value;
 }
 
-Army& Player::getArmy()
+Army Player::getArmy() const
 {
     return army;
 }

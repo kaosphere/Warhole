@@ -24,7 +24,7 @@ public:
     QString getName() const;
     void setName(const QString &value);
 
-    Army &getArmy();
+    Army getArmy() const;
     void setArmy(const Army &value);
 
     //! operator==
