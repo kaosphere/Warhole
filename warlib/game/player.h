@@ -6,6 +6,12 @@
 
 #include "army/army.h"
 
+//! Player
+/*!
+* Player class. Each time a player connects to the game, a new object is
+* created. It contains principally the army played by the player and its
+* state during the game. Each player is serialized and saved in the game.
+*/
 class Player
 {
 public:
@@ -18,7 +24,7 @@ public:
     QString getName() const;
     void setName(const QString &value);
 
-    Army getArmy() const;
+    Army &getArmy();
     void setArmy(const Army &value);
 
     //! operator==

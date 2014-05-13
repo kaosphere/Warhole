@@ -6,10 +6,14 @@
 #include <QString>
 #include <QList>
 
-class Army
+class Army : public QObject
 {
+    Q_OBJECT
+
 public:
-    Army();
+    Army(QObject *parent = 0);
+
+    virtual ~Army();
 
 	static void initArmySystem();
 
@@ -30,7 +34,11 @@ public:
     friend QDataStream & operator << (QDataStream &, const Army &);
     friend QDataStream & operator >> (QDataStream &, Army &);
 
+    friend QDataStream & operator << (QDataStream &, Army *);
+    friend QDataStream & operator >> (QDataStream &, Army *);
+
     bool operator==(const Army& obj);
+    Army &operator=(const Army&);
     
     QString displayInfo() const;
     QString displayShortInfo() const;
@@ -44,6 +52,6 @@ private:
     QList<RegimentAbstract> units;
 };
 
-Q_DECLARE_METATYPE(Army)
+Q_DECLARE_METATYPE(Army*)
 
 #endif // Army_H

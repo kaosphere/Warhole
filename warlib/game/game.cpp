@@ -35,22 +35,22 @@ void Game::setPlayerNumber(int value)
     playerNumber = value;
 }
 
-QList<Player> Game::getPlayers() const
+QList<Player *> Game::getPlayers() const
 {
     return players;
 }
 
-void Game::setPlayers(const QList<Player> &value)
+void Game::setPlayers(const QList<Player*> &value)
 {
     players = value;
 }
 
-void Game::addPlayer(Player &p)
+void Game::addPlayer(Player *p)
 {
     players.append(p);
 }
 
-void Game::removePlayer(const Player &p)
+void Game::removePlayer(Player *p)
 {
     players.removeOne(p);
 }

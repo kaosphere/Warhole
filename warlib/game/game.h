@@ -30,10 +30,10 @@ public:
     QString getInformation() const;
     void setInformation(const QString &value);
 
-    QList<Player> getPlayers() const;
-    void setPlayers(const QList<Player> &value);
-    void addPlayer(Player& p);
-    void removePlayer(const Player &p);
+    QList<Player*> getPlayers() const;
+    void setPlayers(const QList<Player*> &value);
+    void addPlayer(Player *p);
+    void removePlayer(Player *p);
 
     int getPlayerNumber() const;
     void setPlayerNumber(int value);
@@ -65,7 +65,7 @@ private:
     /*!
     * List of players that play in the game
     */
-    QList<Player> players; // Player* ?
+    QList<Player*> players; // Player* ?
 
     //! playerNumber
     /*!
