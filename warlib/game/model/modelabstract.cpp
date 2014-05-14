@@ -88,6 +88,7 @@ ModelAbstract::~ModelAbstract(){}
 
 void ModelAbstract::save(const QString path)
 {
+    Q_UNUSED(path);
     // We should never pass here
 }
 
@@ -105,6 +106,7 @@ QDataStream& ModelAbstract::serializeIn(QDataStream &in)
 
 ModelAbstract *ModelAbstract::setFromFile(const QString path)
 {
+    Q_UNUSED(path);
     return NULL;
 }
 
@@ -181,17 +183,20 @@ QString ModelAbstract::getBaseHtml()
 ModelAbstract *ModelAbstract::clone()
 {
     // We should never pass here
+    return NULL;
 }
 
 ModelAbstract *ModelAbstract::setFromUI(const ParamsfromUImodel *params)
 {
+    Q_UNUSED(params);
     //We should never pass here
+    return NULL;
 }
 
 
 void ModelAbstract::load(const QString path)
 {
-
+    Q_UNUSED(path);
 }
 
 

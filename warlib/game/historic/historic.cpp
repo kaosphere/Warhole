@@ -44,4 +44,5 @@ QString Historic::getHistoricString()
     {
         info << historicList[i]->getMessage() << endl;
     }
+    return s;
 }

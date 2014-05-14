@@ -53,8 +53,6 @@ QDataStream &operator <<(QDataStream & out, const HistoricAbstractItem & obj)
 
 QDataStream &operator >>(QDataStream & in, HistoricAbstractItem & obj)
 {
-    int size;
-
     in >> obj.message;
     in >> obj.timeStamp;
     in >> obj.source;
