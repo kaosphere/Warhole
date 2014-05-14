@@ -6,12 +6,10 @@
 #include <QString>
 #include <QList>
 
-class Army : public QObject
+class Army
 {
-    Q_OBJECT
-
 public:
-    Army(QObject *parent = 0);
+    Army();
 
     virtual ~Army();
 
@@ -48,6 +46,6 @@ private:
     QList<RegimentAbstract> units;
 };
 
-Q_DECLARE_METATYPE(Army*)
+Q_DECLARE_METATYPE(Army)
 
 #endif // Army_H

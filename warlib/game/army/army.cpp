@@ -1,7 +1,6 @@
 #include "army.h"
 
-Army::Army(QObject *parent) :
-    QObject(parent)
+Army::Army()
 {
     // fuck this is doing nothing.
 }
@@ -13,8 +12,8 @@ Army::~Army()
 
 void Army::initArmySystem()
 {
-    qRegisterMetaTypeStreamOperators<Army*>("Army");
-    qMetaTypeId<Army*>();
+    qRegisterMetaTypeStreamOperators<Army>("Army");
+    qMetaTypeId<Army>();
 }
 
 QString Army::getName() const
@@ -55,19 +54,19 @@ void Army::save(const QString& path)
 {
 	QFile::remove(path);
     QSettings savedFile(path, QSettings::IniFormat);
-    savedFile.setValue("Army", qVariantFromValue(this));
+    savedFile.setValue("Army", qVariantFromValue(*this));
     savedFile.sync();
 }
 
 void Army::load(const QString& path)
 {
-    Army* temp;
+    Army temp;
 
     QSettings readFile(path, QSettings::IniFormat);
-    temp = readFile.value("Army", qVariantFromValue(new Army())).value< Army*>();
+    temp = readFile.value("Army", qVariantFromValue(Army())).value<Army>();
 
-    name = temp->name;
-    units = temp->units;
+    name = temp.name;
+    units = temp.units;
 }
 
 QDataStream &operator <<(QDataStream & out, const Army & obj)
@@ -78,19 +77,6 @@ QDataStream &operator <<(QDataStream & out, const Army & obj)
     for(int i = 0; i < obj.units.size(); i++)
     {
         out << obj.units[i];
-    }
-
-    return out;
-}
-
-QDataStream &operator <<(QDataStream & out, Army * obj)
-{
-    out << SAVE_VERSION
-        << obj->name
-        << obj->units.size();
-    for(int i = 0; i < obj->units.size(); i++)
-    {
-        out << obj->units[i];
     }
 
     return out;
@@ -115,24 +101,6 @@ QDataStream &operator >>(QDataStream & in, Army & obj)
     return in;
 }
 
-QDataStream &operator >>(QDataStream & in, Army * obj)
-{
-    int nb;
-    int version = 0;
-
-    in >> version;
-    in >> obj->name;
-    in >> nb;
-
-    for(int i = 0 ; i < nb ; i++)
-    {
-        RegimentAbstract u;
-        in >> u;
-        obj->addUnit(u);
-    }
-
-    return in;
-}
 
 QString Army::displayShortInfo() const
 {
