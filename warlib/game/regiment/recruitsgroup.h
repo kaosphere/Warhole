@@ -15,11 +15,11 @@
 // and how many casualties the group has. The path is the direct link to a .unit
 // file.
 
-class RecruitsGroup
+class RecruitsGroup : public QObject
 {
 public:
-    RecruitsGroup();
-    RecruitsGroup(const int &n, const int &c, const QString& p);
+    RecruitsGroup(QObject* parent = 0);
+    RecruitsGroup(const int &n, const int &c, const QString& p, QObject* parent = 0);
     RecruitsGroup(const RecruitsGroup &copy);
     ~RecruitsGroup();
 

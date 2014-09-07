@@ -1,8 +1,14 @@
 #include "army.h"
 
-Army::Army()
+Army::Army(QObject* parent) : QObject(parent)
 {
     // fuck this is doing nothing.
+}
+
+Army::Army(const Army &copy) : QObject(copy.parent())
+{
+    name = copy.name;
+    units = copy.units;
 }
 
 Army::~Army()
@@ -176,4 +182,11 @@ bool Army::operator ==(const Army &obj)
     if(name == obj.name && units == obj.units)
         return true;
     else return false;
+}
+
+Army &Army::operator =(const Army &obj)
+{
+    name = obj.name;
+    units = obj.units;
+    return *this;
 }

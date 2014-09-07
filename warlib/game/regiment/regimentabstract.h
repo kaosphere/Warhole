@@ -13,15 +13,19 @@
 
 
 
-class RegimentAbstract
+class RegimentAbstract : public QObject
 {
+    Q_OBJECT
 public:
-    RegimentAbstract();
+    RegimentAbstract(QObject* parent = 0);
     RegimentAbstract(const QString& n,
                      const bool& s,
                      const QList<RecruitsGroup> g,
-                     const int& sc);
+                     const int& sc,
+                     QObject* parent = 0);
     RegimentAbstract(const RegimentAbstract& u);
+
+    ~RegimentAbstract();
 
     QList<RecruitsGroup> &getGroups();
     void setGroups(const QList<RecruitsGroup> &value);
@@ -38,6 +42,7 @@ public:
     friend QDataStream & operator >> (QDataStream &, RegimentAbstract &);
     
     bool operator==(const RegimentAbstract&);
+    RegimentAbstract& operator=(const RegimentAbstract& obj);
 
     void loadAllModels();
 	

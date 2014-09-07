@@ -24,17 +24,15 @@
 /*!
 * Main data structure storing model characteristics.
 * This is the base class for all types of models.
-* TODO AJ 2014-05-06 : this class should be a pure abstract class but serialization
-* prevents to do it. Find a way to do this more cleanly.
 */
-class ModelAbstract
+class ModelAbstract : public QObject
 {
 public:
 	//! Constructor.
 	/*!
 	Base constructor of ModelAbstract class
 	*/
-    explicit ModelAbstract();
+    explicit ModelAbstract(QObject* parent = 0);
 	
 	//! Constructor.
 	/*!
@@ -47,7 +45,7 @@ public:
 	* \param figSup DEPRECATED. TODO: Remove
 	*/
     ModelAbstract(const StatsModel& stat, const int &widthBase,
-                  const int &lengthBase, const int &unitP, const QString& url, bool figSup);
+                  const int &lengthBase, const int &unitP, const QString& url, bool figSup, QObject* parent = 0);
 	
 	//! A constructor.
 	/*!
@@ -76,7 +74,7 @@ public:
                   const QString &balisticS, const QString &strength, const QString &toughness,
                   const QString &wounds, const QString &init, const QString &attacks,
                   const QString &leadership, const QString &save, const QString &invSave, const int points, const int &widthBase,
-                  const int &lengthBase, const int &unitP, const QString& url, bool figSup);
+                  const int &lengthBase, const int &unitP, const QString& url, bool figSup, QObject* parent = 0);
 	
 	//! Copy Constructor.
 	/*!
@@ -95,48 +93,48 @@ public:
 	* VIRTUAL : Method that initiate the saving of the model object in a file.
 	* \param path File path of the file to be saved.
 	*/
-    virtual void save(const QString path);
+    virtual void save(const QString path) = 0;
 
     //! SerializeOut
     /*!
      * VIRTUAL : Method to serialize unknown modelabstract pointer.
      */
-    virtual QDataStream &serializeOut(QDataStream &out);
+    virtual QDataStream &serializeOut(QDataStream &out) = 0;
 
     //! SerializeIn
     /*!
      * VIRTUAL : Method to serialize unknown modelabstract pointer.
      * \param in QDataStream from which the data is read to feed the object.
      */
-    virtual QDataStream &serializeIn(QDataStream& in);
+    virtual QDataStream &serializeIn(QDataStream& in) = 0;
 	
 	//! setFromFile
 	/*!
 	* VIRTUAL : Method that loads a model from a previously saved file.
 	* \param path File path of the file to be loaded.
 	*/
-    virtual ModelAbstract* setFromFile(const QString path);
+    virtual ModelAbstract* setFromFile(const QString path) = 0;
     
     //! setFromUI
 	/*!
 	* VIRTUAL : Method that loads a model from a form in the UI.
 	* \param params parameter object containing every model possible parameters.
 	*/
-    virtual ModelAbstract* setFromUI(const ParamsfromUImodel* params);
+    virtual ModelAbstract* setFromUI(const ParamsfromUImodel* params) = 0;
     
     //! Load
 	/*!
 	* VIRTUAL : Method that initiate the loading of the model object from a file.
 	* \param path File path of the file to be loaded.
 	*/
-    virtual void load(const QString path);
+    virtual void load(const QString path) = 0;
     
     //! displayStringInfo
 	/*!
 	* VIRTUAL Method that returns a string summerizing the values in the object.
 	* \return String containing information.
 	*/
-    virtual QString displayStringInfo();
+    virtual QString displayStringInfo() = 0;
     
     //! displayBaseInfo
 	/*!
@@ -151,7 +149,7 @@ public:
 	* using HTML format. Used principally to export data as pdf files.
 	* \return String containing information using HTML.
 	*/
-    virtual QString getHtml();
+    virtual QString getHtml() = 0;
     
     //! getBaseHtml
 	/*!
@@ -166,7 +164,30 @@ public:
     * VIRTUAL : Method that returns a copy of the object. This is used to copy a pointer
     * to a derived class.
     */
-    virtual ModelAbstract* clone();
+    virtual ModelAbstract* clone() = 0;
+
+    //! operator=
+    /*!
+     * \brief Operator= overload
+     * \return
+     */
+    ModelAbstract& operator=(const ModelAbstract& other);
+
+    //! serializeInBase
+    /*!
+     * \brief Helper to serialize content of base class ModelAbstract
+     * \param in Data stream in which data is serialized
+     * \return Data stream serialized
+     */
+    QDataStream& serializeInBase(QDataStream& in);
+
+    //! serializeOutBase
+    /*!
+     * \brief Helper to serialize content of base class ModelAbstract
+     * \param out Data stream from which data is deserialized
+     * \return data stream
+     */
+    QDataStream& serializeOutBase(QDataStream& out) const;
 
     StatsModel getStats() const;
     void setStats(const StatsModel &value);

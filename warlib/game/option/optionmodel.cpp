@@ -1,10 +1,10 @@
 #include "optionmodel.h"
 
-OptionModel::OptionModel()
+OptionModel::OptionModel(QObject *parent) : QObject(parent)
 {
 }
 
-OptionModel::OptionModel(const QString &n, const int &pts, const bool &act, const QString &specRules, const bool& ro)
+OptionModel::OptionModel(const QString &n, const int &pts, const bool &act, const QString &specRules, const bool& ro, QObject *parent) : QObject(parent)
 {
     name = n;
     nbPoints = pts;
@@ -13,7 +13,7 @@ OptionModel::OptionModel(const QString &n, const int &pts, const bool &act, cons
     regimentOptions = ro;
 }
 
-OptionModel::OptionModel(const OptionModel &obj)
+OptionModel::OptionModel(const OptionModel &obj) : QObject(obj.parent())
 {
     name = obj.name;
     nbPoints = obj.nbPoints;

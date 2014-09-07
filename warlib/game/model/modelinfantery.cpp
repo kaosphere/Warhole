@@ -1,7 +1,7 @@
 #include "modelinfantery.h"
 
-ModelInfantery::ModelInfantery():
-    ModelAbstract()
+ModelInfantery::ModelInfantery(QObject *parent):
+    ModelAbstract(parent)
 {
 }
 
@@ -10,9 +10,9 @@ ModelInfantery::ModelInfantery(const QString &n, const QString &move, const QStr
                                const QString &wounds, const QString &init, const QString &attacks,
                                const QString &leadership, const QString &save, const QString &invSave, const int points,
                                const int &widthBase, const int &lengthBase, const int &unitP, const QString &urlImage,
-                               bool figSup, const QString &specRules, const ModelType &t) :
+                               bool figSup, const QString &specRules, const ModelType &t, QObject* parent) :
     ModelAbstract(n,move,weaponS,balisticS, strength, toughness, wounds, init, attacks, leadership, save,
-                  invSave, points, widthBase, lengthBase, unitP, urlImage, figSup)
+                  invSave, points, widthBase, lengthBase, unitP, urlImage, figSup, parent)
 {
     type = t;
     specialRules = specRules;
@@ -197,9 +197,9 @@ int ModelInfantery::computePoints()
 
 QDataStream & operator <<(QDataStream & out, const ModelInfantery & obj)
 {
-    out << SAVE_VERSION
-        << static_cast<ModelAbstract>(obj)
-        << obj.type
+    out << SAVE_VERSION;
+    obj.serializeOutBase(out);
+    out << obj.type
         << obj.specialRules;
     return out;
 }
@@ -210,7 +210,7 @@ QDataStream & operator >>(QDataStream & in, ModelInfantery & obj)
     int version = 0;
 
     in >> version;
-    in >> static_cast<ModelAbstract&>(obj);
+    obj.serializeInBase(in);
     in >> type;
     switch(type)
     {

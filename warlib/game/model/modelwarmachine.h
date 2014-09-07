@@ -10,16 +10,16 @@
 
 class ModelWarMachine : public ModelAbstract
 {
-
+    Q_OBJECT
 public:
-    ModelWarMachine();
+    ModelWarMachine(QObject* parent = 0);
 
     ModelWarMachine(const QString &n, const QString &move, const QString &weaponS, const QString &balisticS,
                     const QString &strength, const QString &toughness, const QString &wounds,
                     const QString &init, const QString &attacks, const QString &leadership,
                     const QString &save, const QString &invSave, const int points, const int &widthBase,
                     const int &lengthBase, const int &unitP, const QString& urlImage , bool figSup,
-                    const QString& specRules, const ModelType &t);
+                    const QString& specRules, const ModelType &t, QObject* parent);
     ModelWarMachine(const ModelWarMachine &copy);
 
     virtual ~ModelWarMachine();

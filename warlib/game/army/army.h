@@ -6,10 +6,12 @@
 #include <QString>
 #include <QList>
 
-class Army
+class Army : public QObject
 {
+    Q_OBJECT
 public:
-    Army();
+    Army(QObject* parent = 0);
+    Army(const Army& copy);
 
     virtual ~Army();
 
@@ -33,6 +35,7 @@ public:
     friend QDataStream & operator >> (QDataStream &, Army &);
 
     bool operator==(const Army& obj);
+    Army& operator=(const Army& obj);
     
     QString displayInfo() const;
     QString displayShortInfo() const;

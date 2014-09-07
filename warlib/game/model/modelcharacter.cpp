@@ -7,8 +7,8 @@ const QString ModelCharacter::LOG_ID_TRACE = "ModelCharacter_trace";
 const QString ModelCharacter::LOG_ID_WARN = "ModelCharacter_warn";
 const QString ModelCharacter::LOG_ID_ERR = "ModelCharacter_err";
 
-ModelCharacter::ModelCharacter():
-    ModelAbstract()
+ModelCharacter::ModelCharacter(QObject* parent):
+    ModelAbstract(parent)
 {
     QLoggerManager *manager = QLoggerManager::getInstance();
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
@@ -23,9 +23,9 @@ ModelCharacter::ModelCharacter(const QString &n, const QString &move, const QStr
                                const QString &leadership, const QString &save, const QString &invSave, const int points,
                                const int &widthBase, const int &lengthBase, const int &unitP, const QString &urlImage,
                                bool figSup, const QString &specRules, bool lord, bool general, bool mage,
-                               bool mounted, bool gb) :
+                               bool mounted, bool gb, QObject *parent) :
     ModelAbstract(n,move,weaponS,balisticS, strength, toughness, wounds, init, attacks, leadership, save,
-                  invSave, points, widthBase, lengthBase, unitP, urlImage, figSup)
+                  invSave, points, widthBase, lengthBase, unitP, urlImage, figSup, parent)
 {
     QLoggerManager *manager = QLoggerManager::getInstance();
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
@@ -265,9 +265,9 @@ void ModelCharacter::setHasGB(bool value)
 
 QDataStream & operator <<(QDataStream & out, const ModelCharacter & obj)
 {
-    out << SAVE_VERSION
-        << static_cast<ModelAbstract>(obj)
-        << obj.specialRules
+    out << SAVE_VERSION;
+    obj.serializeOutBase(out);
+    out << obj.specialRules
         << obj.isALord
         << obj.isTheGeneral
         << obj.isAMage
@@ -283,7 +283,7 @@ QDataStream & operator >>(QDataStream & in, ModelCharacter & obj)
     int version = 0;
 
     in >> version;
-    in >> static_cast<ModelAbstract&>(obj);
+    obj.serializeInBase(in);
     in >> obj.specialRules;
     in >> obj.isALord;
     in >> obj.isTheGeneral;

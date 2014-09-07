@@ -1,7 +1,7 @@
 #include "modelwarmachine.h"
 
-ModelWarMachine::ModelWarMachine():
-    ModelAbstract()
+ModelWarMachine::ModelWarMachine(QObject* parent):
+    ModelAbstract(parent)
 {
 }
 
@@ -10,9 +10,9 @@ ModelWarMachine::ModelWarMachine(const QString &n, const QString &move, const QS
                                  const QString &wounds, const QString &init, const QString &attacks,
                                  const QString &leadership, const QString &save, const QString &invSave, const int points,
                                  const int &widthBase, const int &lengthBase, const int &unitP, const QString &urlImage,
-                                 bool figSup, const QString &specRules, const ModelType &t) :
+                                 bool figSup, const QString &specRules, const ModelType &t, QObject *parent) :
     ModelAbstract(n,move,weaponS,balisticS, strength, toughness, wounds, init, attacks, leadership, save,
-        invSave, points, widthBase, lengthBase, unitP, urlImage, figSup)
+        invSave, points, widthBase, lengthBase, unitP, urlImage, figSup, parent)
 {
     type = t;
     specialRules = specRules;
@@ -229,9 +229,9 @@ void ModelWarMachine::clearCrew()
 
 QDataStream & operator <<(QDataStream & out, const ModelWarMachine & obj)
 {
-    out << SAVE_VERSION
-        << static_cast<ModelAbstract>(obj)
-        << obj.type
+    out << SAVE_VERSION;
+    obj.serializeOutBase(out);
+    out << obj.type
         << obj.specialRules
         << obj.crew.size();
 
@@ -250,6 +250,7 @@ QDataStream & operator >>(QDataStream & in, ModelWarMachine & obj)
     int version = 0;
 
     in >> version;
+    obj.serializeInBase(in);
     in >> static_cast<ModelAbstract&>(obj);
     in >> type;
     switch(type)

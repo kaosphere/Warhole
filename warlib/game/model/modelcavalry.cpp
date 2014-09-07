@@ -8,8 +8,8 @@ const QString ModelCavalry::LOG_ID_TRACE = "ModelCavalry_trace";
 const QString ModelCavalry::LOG_ID_WARN = "ModelCavalry_warn";
 const QString ModelCavalry::LOG_ID_ERR = "ModelCavalry_err";
 
-ModelCavalry::ModelCavalry():
-    ModelAbstract()
+ModelCavalry::ModelCavalry(QObject* parent):
+    ModelAbstract(parent)
 {
     QLoggerManager *manager = QLoggerManager::getInstance();
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
@@ -24,9 +24,9 @@ ModelCavalry::ModelCavalry(const QString &n, const QString &move, const QString 
                            const QString &wounds, const QString &init, const QString &attacks,
                            const QString &leadership, const QString &save, const QString &invSave, const int points,
                            const int &widthBase, const int &lengthBase, const int &unitP, const QString &urlImage,
-                           bool figSup, const QString &specRules, const ModelType &t) :
+                           bool figSup, const QString &specRules, const ModelType &t, QObject *parent) :
     ModelAbstract(n,move,weaponS,balisticS, strength, toughness, wounds, init, attacks, leadership, save,
-                  invSave, points, widthBase, lengthBase, unitP, urlImage, figSup)
+                  invSave, points, widthBase, lengthBase, unitP, urlImage, figSup, parent)
 {
     QLoggerManager *manager = QLoggerManager::getInstance();
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
@@ -179,9 +179,9 @@ ModelAbstract *ModelCavalry::clone()
 // Overloading of << operator
 QDataStream & operator << (QDataStream & out, const ModelCavalry & obj)
 {
-    out << SAVE_VERSION
-        << static_cast<ModelAbstract>(obj)
-        << obj.type
+    out << SAVE_VERSION;
+    obj.serializeOutBase(out);
+    out << obj.type
         << obj.specialRules
         << obj.mount;
 
@@ -195,7 +195,7 @@ QDataStream & operator >> (QDataStream & in, ModelCavalry & obj)
     int version = 0;
 
     in >> version;
-    in >> static_cast<ModelAbstract&>(obj);
+    obj.serializeInBase(in);
     in >> type;
     switch(type)
     {

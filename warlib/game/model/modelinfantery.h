@@ -9,15 +9,16 @@
 
 class ModelInfantery : public ModelAbstract
 {
+    Q_OBJECT
 public:
-    ModelInfantery();
+    ModelInfantery(QObject* parent = 0);
 
     ModelInfantery(const QString &n, const QString &move, const QString &weaponS, const QString &balisticS,
                   const QString &strength, const QString &toughness, const QString &wounds,
                   const QString &init, const QString &attacks, const QString &leadership,
                   const QString &save, const QString &invSave, const int points, const int &widthBase,
                   const int &lengthBase, const int &unitP, const QString& urlImage , bool figSup,
-                  const QString& specRules,const ModelType &t);
+                  const QString& specRules,const ModelType &t, QObject* parent = 0);
     ModelInfantery(const ModelInfantery &copy);
     virtual ~ModelInfantery();
 

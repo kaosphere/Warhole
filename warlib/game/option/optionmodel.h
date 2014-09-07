@@ -7,12 +7,13 @@
 
 #include "defines.h"
 
-class OptionModel
+class OptionModel : public QObject
 {
+    Q_OBJECT
 public:
-    explicit OptionModel();
+    explicit OptionModel(QObject* parent = 0);
 
-    OptionModel(const QString &n, const int& pts, const bool& act, const QString& specRules, const bool &ro);
+    OptionModel(const QString &n, const int& pts, const bool& act, const QString& specRules, const bool &ro, QObject* parent = 0);
 
     OptionModel(const OptionModel & obj);
 

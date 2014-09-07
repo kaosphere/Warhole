@@ -7,7 +7,7 @@ const QString RegimentAbstract::LOG_ID_TRACE = "RegimentAbstract_trace";
 const QString RegimentAbstract::LOG_ID_WARN = "RegimentAbstract_warn";
 const QString RegimentAbstract::LOG_ID_ERR = "RegimentAbstract_err";
 
-RegimentAbstract::RegimentAbstract()
+RegimentAbstract::RegimentAbstract(QObject *parent) : QObject(parent)
 {
     QLoggerManager *manager = QLoggerManager::getInstance();
 	manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
@@ -24,7 +24,7 @@ RegimentAbstract::RegimentAbstract()
 RegimentAbstract::RegimentAbstract(const QString &n,
                                    const bool &s,
                                    const QList<RecruitsGroup> g,
-                                   const int& sc)
+                                   const int& sc, QObject *parent) : QObject(parent)
 {
     QLoggerManager *manager = QLoggerManager::getInstance();
 	manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
@@ -39,7 +39,7 @@ RegimentAbstract::RegimentAbstract(const QString &n,
     startingCount = sc;
 }
 
-RegimentAbstract::RegimentAbstract(const RegimentAbstract &u)
+RegimentAbstract::RegimentAbstract(const RegimentAbstract &u) : QObject(u.parent())
 {
     QLoggerManager *manager = QLoggerManager::getInstance();
 	manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
@@ -52,6 +52,10 @@ RegimentAbstract::RegimentAbstract(const RegimentAbstract &u)
     skirmishers = u.skirmishers;
     groups = u.groups;
     startingCount = u.startingCount;
+}
+
+RegimentAbstract::~RegimentAbstract()
+{
 }
 
 bool RegimentAbstract::getSkirmishers() const
@@ -257,5 +261,15 @@ bool RegimentAbstract::operator==(const RegimentAbstract& obj)
 	{
 		return true;
 	}
-	else return false;
+    else return false;
+}
+
+RegimentAbstract &RegimentAbstract::operator =(const RegimentAbstract &obj)
+{
+    name = obj.name;
+    skirmishers = obj.skirmishers;
+    groups = obj.groups;
+    startingCount = obj.startingCount;
+
+    return *this;
 }

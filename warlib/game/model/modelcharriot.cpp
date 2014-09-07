@@ -1,8 +1,8 @@
 #include "modelcharriot.h"
 
 
-ModelCharriot::ModelCharriot():
-    ModelAbstract()
+ModelCharriot::ModelCharriot(QObject *parent):
+    ModelAbstract(parent)
 {
 }
 
@@ -11,9 +11,9 @@ ModelCharriot::ModelCharriot(const QString &n, const QString &move, const QStrin
                              const QString &wounds, const QString &init, const QString &attacks,
                              const QString &leadership, const QString &save, const QString &invSave, const int points,
                              const int &widthBase, const int &lengthBase, const int &unitP, const QString &urlImage,
-                             bool figSup, const QString &specRules,const ModelType &t) :
+                             bool figSup, const QString &specRules,const ModelType &t, QObject* parent) :
     ModelAbstract(n,move,weaponS,balisticS, strength, toughness, wounds, init, attacks, leadership, save,
-                  invSave, points, widthBase, lengthBase, unitP, urlImage, figSup)
+                  invSave, points, widthBase, lengthBase, unitP, urlImage, figSup, parent)
 {
     specialRules = specRules;
     type = t;
@@ -144,9 +144,9 @@ QDataStream & operator <<(QDataStream & out, const ModelCharriot & obj)
     int nb;
     nb = obj.crew.size();
 
-    out << SAVE_VERSION
-        << static_cast<ModelAbstract>(obj)
-        << obj.type
+    out << SAVE_VERSION;
+    obj.serializeOutBase(out);
+    out << obj.type
         << obj.specialRules
         << nb;
 
@@ -165,7 +165,7 @@ QDataStream & operator >>(QDataStream & in, ModelCharriot & obj)
     int version;
 
     in >> version;
-    in >> static_cast<ModelAbstract&>(obj);
+    obj.serializeInBase(in);
     in >> type;
     switch(type)
     {

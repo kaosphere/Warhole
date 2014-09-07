@@ -7,7 +7,7 @@ const QString RecruitsGroup::LOG_ID_TRACE = "RecruitsGroup_trace";
 const QString RecruitsGroup::LOG_ID_WARN = "RecruitsGroup_warm";
 const QString RecruitsGroup::LOG_ID_ERR = "RecruitsGroup_err";
 
-RecruitsGroup::RecruitsGroup()
+RecruitsGroup::RecruitsGroup(QObject *parent) : QObject(parent)
 {
     casualties = 0;
     nb = 0;
@@ -20,7 +20,7 @@ RecruitsGroup::RecruitsGroup()
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_WARN), QLogger::WarnLevel);
 }
 
-RecruitsGroup::RecruitsGroup(const int &n, const int &c, const QString& p)
+RecruitsGroup::RecruitsGroup(const int &n, const int &c, const QString& p, QObject *parent) : QObject(parent)
 {
     ModelFactory fac;
     casualties = c;
@@ -35,7 +35,7 @@ RecruitsGroup::RecruitsGroup(const int &n, const int &c, const QString& p)
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_WARN), QLogger::WarnLevel);
 }
 
-RecruitsGroup::RecruitsGroup(const RecruitsGroup& copy)
+RecruitsGroup::RecruitsGroup(const RecruitsGroup& copy) : QObject(copy.parent())
 {
     casualties = copy.casualties;
     nb = copy.nb;
@@ -56,8 +56,6 @@ RecruitsGroup::~RecruitsGroup()
 
 QDataStream & operator <<(QDataStream& out, const RecruitsGroup& obj)
 {
-    // Model is not in the serialization because we want the regiment to be bound with
-    // a .unit file which is susceptible to change over time
     out << SAVE_VERSION
         << obj.nb
         << obj.casualties

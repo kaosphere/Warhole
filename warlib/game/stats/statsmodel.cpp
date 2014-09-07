@@ -1,10 +1,10 @@
 #include "statsmodel.h"
 
-StatsModel::StatsModel()
+StatsModel::StatsModel(QObject *parent) : QObject(parent)
 {
 }
 
-StatsModel::StatsModel(const StatsModel &stat)
+StatsModel::StatsModel(const StatsModel &stat) : QObject(stat.parent())
 {
     name = stat.name;
     m = stat.m;
@@ -21,7 +21,20 @@ StatsModel::StatsModel(const StatsModel &stat)
     points = stat.points;
 }
 
-StatsModel::StatsModel(const QString &n, const QString &move, const QString &weaponS, const QString &balisticS, const QString &strength, const QString &toughness, const QString &wounds, const QString &init, const QString &attacks, const QString &leadership, const QString &save, const QString &invSave, int p)
+StatsModel::StatsModel(const QString &n,
+                       const QString &move,
+                       const QString &weaponS,
+                       const QString &balisticS,
+                       const QString &strength,
+                       const QString &toughness,
+                       const QString &wounds,
+                       const QString &init,
+                       const QString &attacks,
+                       const QString &leadership,
+                       const QString &save,
+                       const QString &invSave,
+                       int p,
+                       QObject *parent) : QObject(parent)
 {
     name = n;
     m = move;

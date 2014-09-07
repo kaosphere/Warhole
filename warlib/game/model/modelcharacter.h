@@ -10,15 +10,16 @@
 
 class ModelCharacter : public ModelAbstract
 {
+    Q_OBJECT
 public:
-    ModelCharacter();
+    ModelCharacter(QObject* parent = 0);
 
     ModelCharacter(const QString &n, const QString &move, const QString &weaponS, const QString &balisticS,
                   const QString &strength, const QString &toughness, const QString &wounds,
                   const QString &init, const QString &attacks, const QString &leadership,
                   const QString &save, const QString &invSave, const int points, const int &widthBase,
                   const int &lengthBase, const int &unitP, const QString& urlImage , bool figSup,
-                  const QString& specRules, bool lord, bool general, bool mage, bool mounted, bool gb);
+                  const QString& specRules, bool lord, bool general, bool mage, bool mounted, bool gb, QObject* parent = 0);
     ModelCharacter(const ModelCharacter &copy);
     virtual ~ModelCharacter();
 

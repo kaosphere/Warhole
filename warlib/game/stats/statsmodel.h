@@ -22,14 +22,15 @@
 /*!
 * This class holds all the common attributes of a model.
 */
-class StatsModel
+class StatsModel : public QObject
 {
+    Q_OBJECT
 public:
 	//! Constructor.
 	/*!
 	* Base constructor of StatsModel class
 	*/
-    StatsModel();
+    StatsModel(QObject* parent = 0);
     
     //! Copy Constructor.
 	/*!
@@ -57,7 +58,7 @@ public:
     StatsModel(const QString &n, const QString &move, const QString &weaponS, const QString &balisticS,
                const QString &strength, const QString &toughness, const QString &wounds,
                const QString &init, const QString &attacks, const QString &leadership,
-               const QString &save, const QString &invSave, int p);
+               const QString &save, const QString &invSave, int p, QObject* parent = 0);
 	
 	//! Destructor.
 	/*!

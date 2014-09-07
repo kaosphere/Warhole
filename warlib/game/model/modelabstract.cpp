@@ -1,6 +1,6 @@
 #include "modelabstract.h"
 
-ModelAbstract::ModelAbstract()
+ModelAbstract::ModelAbstract(QObject *parent) : QObject(parent)
 {
 }
 
@@ -9,7 +9,7 @@ ModelAbstract::ModelAbstract(const StatsModel &stat,
                              const int &lengthBase,
                              const int &unitP,
                              const QString &url,
-                             bool figSup)
+                             bool figSup, QObject* parent) : QObject (parent)
 {
     stats = stat;
     squareBaseW = widthBase;
@@ -40,7 +40,8 @@ ModelAbstract::ModelAbstract(const QString &n,
                              const int &lengthBase,
                              const int &unitP,
                              const QString &url,
-                             bool figSup)
+                             bool figSup,
+                             QObject *parent) : QObject(parent)
 {
     stats.setName(n);
     stats.setM(move);
@@ -68,7 +69,7 @@ ModelAbstract::ModelAbstract(const QString &n,
 
 }
 
-ModelAbstract::ModelAbstract(const ModelAbstract &copy)
+ModelAbstract::ModelAbstract(const ModelAbstract &copy) : QObject(copy.parent())
 {
     stats = copy.stats;
     urlImage = copy.urlImage;
@@ -84,36 +85,10 @@ ModelAbstract::ModelAbstract(const ModelAbstract &copy)
     championStats = copy.championStats;
 }
 
-ModelAbstract::~ModelAbstract(){}
-
-void ModelAbstract::save(const QString path)
+ModelAbstract::~ModelAbstract()
 {
-    Q_UNUSED(path);
-    // We should never pass here
 }
 
-QDataStream& ModelAbstract::serializeOut(QDataStream& out)
-{
-    // We Should never pass here
-    return out;
-}
-
-QDataStream& ModelAbstract::serializeIn(QDataStream &in)
-{
-    // We should never pass here
-    return in;
-}
-
-ModelAbstract *ModelAbstract::setFromFile(const QString path)
-{
-    Q_UNUSED(path);
-    return NULL;
-}
-
-QString ModelAbstract::displayStringInfo()
-{
-    return QString("ERROR");
-}
 
 QString ModelAbstract::displayBaseInfo()
 {
@@ -155,11 +130,6 @@ QString ModelAbstract::displayBaseInfo()
     return s;
 }
 
-QString ModelAbstract::getHtml()
-{
-    return QString("ERROR");
-}
-
 QString ModelAbstract::getBaseHtml()
 {
     QString html;
@@ -180,23 +150,23 @@ QString ModelAbstract::getBaseHtml()
     return html;
 }
 
-ModelAbstract *ModelAbstract::clone()
+ModelAbstract &ModelAbstract::operator =(const ModelAbstract &other)
 {
-    // We should never pass here
-    return NULL;
-}
+    stats = other.stats;
+    squareBaseW = other.squareBaseW;
+    squareBaseL = other.squareBaseL;
+    unitPower = other.unitPower;
+    figSupInd = other.figSupInd;
+    urlImage = other.urlImage;
+    options = other.options;
+    banner = other.banner;
+    bannerPoints = other.bannerPoints;
+    musician = other.musician;
+    musicianPoints = other.musicianPoints;
+    champion = other.champion;
+    championStats = other.championStats;
 
-ModelAbstract *ModelAbstract::setFromUI(const ParamsfromUImodel *params)
-{
-    Q_UNUSED(params);
-    //We should never pass here
-    return NULL;
-}
-
-
-void ModelAbstract::load(const QString path)
-{
-    Q_UNUSED(path);
+    return *this;
 }
 
 
@@ -385,6 +355,18 @@ int ModelAbstract::computeBasePoints()
             points += i->getNbPoints();
     }
     return points;
+}
+
+QDataStream &ModelAbstract::serializeInBase(QDataStream &in)
+{
+    in >> (*this);
+    return in;
+}
+
+QDataStream &ModelAbstract::serializeOutBase(QDataStream &out) const
+{
+    out << (*this);
+    return out;
 }
 
 QDataStream &operator <<(QDataStream & out, const ModelAbstract & obj)
