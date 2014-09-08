@@ -19,6 +19,11 @@ MainWindow::MainWindow(QWidget *parent)
     actionEditModel->setShortcut(QKeySequence("Ctrl+E"));
     connect(actionEditModel, SIGNAL(triggered()), this, SLOT(openEditModelWindow()));
 
+    QAction *actionManageMagicalObjects = new QAction(tr("&Gérer les objets magiques"), this);
+    menuFichier->addAction(actionManageMagicalObjects);
+    actionManageMagicalObjects->setShortcut(QKeySequence("Ctrl+O"));
+    connect(actionManageMagicalObjects, SIGNAL(triggered()), this, SLOT(openMagicalObjectWindow()));
+
     QAction *actionCreateArmy = new QAction(tr("&Créer une armée"), this);
     menuFichier->addAction(actionCreateArmy);
     actionCreateArmy->setShortcut(QKeySequence("Ctrl+A"));
@@ -43,6 +48,7 @@ MainWindow::~MainWindow()
     mod->deleteLater();
     arm->deleteLater();
     game->deleteLater();
+    obj->deleteLater();
 }
 
 
@@ -78,4 +84,10 @@ void MainWindow::openGameWindow()
 {
     game = new GameWindow();
     game->show();
+}
+
+void MainWindow::openMagicalObjectWindow()
+{
+    obj = new MagicalObjectWindow();
+    obj->show();
 }

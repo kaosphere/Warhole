@@ -26,7 +26,8 @@ SOURCES += main.cpp\
     armywindow.cpp \
     gamewindow.cpp \
     game/testgi.cpp \
-    game/fieldlimits.cpp
+    game/fieldlimits.cpp \
+    magicalobjectwindow.cpp
 
 HEADERS  += mainwindow.h \
     modelwindow.h \
@@ -35,7 +36,8 @@ HEADERS  += mainwindow.h \
     gamewindow.h \
     game/testgi.h \
     game/fieldlimits.h \
-    game/distances.h
+    game/distances.h \
+    magicalobjectwindow.h
 
 TRANSLATIONS = warhole_en.ts
 
@@ -43,7 +45,8 @@ TRANSLATIONS = warhole_en.ts
 FORMS += \
     modelwindow.ui \
     armywindow.ui \
-    gamewindow.ui
+    gamewindow.ui \
+    magicalobjectwindow.ui
 
 RESOURCES += \
     resources.qrc
