@@ -6,89 +6,39 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1025</width>
-    <height>627</height>
+    <width>800</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="QWidget" name="centralWidget">
+  <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
-     <widget class="QGraphicsView" name="graphicsView"/>
+     <widget class="QTextEdit" name="textEdit">
+      <property name="readOnly">
+       <bool>false</bool>
+      </property>
+      <property name="textInteractionFlags">
+       <set>Qt::TextEditable|Qt::TextSelectableByMouse</set>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>
-  <widget class="QMenuBar" name="menuBar">
+  <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1025</width>
-     <height>21</height>
+     <width>800</width>
+     <height>20</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuFichier">
-    <property name="title">
-     <string>Fichier</string>
-    </property>
-    <addaction name="separator"/>
-   </widget>
-   <addaction name="menuFichier"/>
   </widget>
-  <widget class="QToolBar" name="mainToolBar">
-   <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
-   <addaction name="actionExpTemplateSmall"/>
-   <addaction name="actionExpTemplateBig"/>
-   <addaction name="actionBlowTemplate"/>
-  </widget>
-  <widget class="QStatusBar" name="statusBar"/>
-  <action name="actionExpTemplateSmall">
-   <property name="icon">
-    <iconset resource="resources.qrc">
-     <normaloff>:/icons/ressources/exp_template_icon_small.png</normaloff>:/icons/ressources/exp_template_icon_small.png</iconset>
-   </property>
-   <property name="text">
-    <string>Petit Gabarit Explosion</string>
-   </property>
-   <property name="toolTip">
-    <string>Utiliser le petit gabarit d'explosion</string>
-   </property>
-  </action>
-  <action name="actionExpTemplateBig">
-   <property name="icon">
-    <iconset resource="resources.qrc">
-     <normaloff>:/icons/ressources/exp_template.png</normaloff>:/icons/ressources/exp_template.png</iconset>
-   </property>
-   <property name="text">
-    <string>Grand gabarit d'explosion</string>
-   </property>
-   <property name="toolTip">
-    <string>Utiliser le grand gabarit d'explosion</string>
-   </property>
-  </action>
-  <action name="actionBlowTemplate">
-   <property name="icon">
-    <iconset resource="resources.qrc">
-     <normaloff>:/icons/ressources/blowTemplate.png</normaloff>:/icons/ressources/blowTemplate.png</iconset>
-   </property>
-   <property name="text">
-    <string>Gabarit de souffle</string>
-   </property>
-   <property name="toolTip">
-    <string>Gabarit de souffle</string>
-   </property>
-  </action>
+  <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <layoutdefault spacing="6" margin="11"/>
- <resources>
-  <include location="resources.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

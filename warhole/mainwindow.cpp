@@ -1,8 +1,26 @@
 #include "mainwindow.h"
+#include "ui_mainwindow.h"
+#include <QLayout>
+
+using namespace QLogger;
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
+    : QMainWindow(parent), ui(new Ui::MainWindow)
 {
+    QLoggerManager *manager = QLoggerManager::getInstance();
+    manager->addDestination("./logs/lastrun.log", QStringList("General"), QLogger::TraceLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList("Info"), QLogger::InfoLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList("Warnings"), QLogger::WarnLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList("Errors"), QLogger::ErrorLevel);
+    manager->addDestination("./logs/errors.log", QStringList("Errors2"), QLogger::ErrorLevel);
+
+    // Connect signal from the logger to slot that update the text edit
+    QObject::connect(manager, SIGNAL(newLogWritten(QString)), this, SLOT(updateLogOutput(QString)));
+
+    ui->setupUi(this);
+
+    ui->textEdit->setReadOnly(true);
+
     QMenu *menuFichier = menuBar()->addMenu(tr("&Fichier"));
 
     QAction *actionLaunchGame = new QAction(tr("&Ecran de jeu"), this);
@@ -90,4 +108,9 @@ void MainWindow::openMagicalObjectWindow()
 {
     obj = new MagicalObjectWindow();
     obj->show();
+}
+
+void MainWindow::updateLogOutput(QString message)
+{
+    ui->textEdit->append(message);
 }

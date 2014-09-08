@@ -10,6 +10,11 @@
 #include "armywindow.h"
 #include "gamewindow.h"
 #include "magicalobjectwindow.h"
+#include "Utilities/QLogger/QLogger.h"
+
+namespace Ui {
+class MainWindow;
+}
 
 class MainWindow : public QMainWindow
 {
@@ -26,8 +31,10 @@ public slots:
    void openEditArmyWindow();
    void openGameWindow();
    void openMagicalObjectWindow();
+   void updateLogOutput(QString message);
 
 private:
+    Ui::MainWindow *ui;
     QWidget* s;
     QPushButton* p;
 

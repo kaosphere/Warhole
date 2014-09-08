@@ -46,7 +46,8 @@ FORMS += \
     modelwindow.ui \
     armywindow.ui \
     gamewindow.ui \
-    magicalobjectwindow.ui
+    magicalobjectwindow.ui \
+    mainwindow.ui
 
 RESOURCES += \
     resources.qrc
