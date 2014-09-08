@@ -105,6 +105,8 @@ namespace QLogger
         {
             log = new QLoggerWriter(fileDest,level);
             moduleDest.insert(module, log);
+            // connect signal from the writer to the one of the manager
+            QObject::connect(log,SIGNAL(newLogWritten(QString)), this, SIGNAL(newLogWritten(QString)));
             return true;
         }
 
@@ -120,6 +122,8 @@ namespace QLogger
             {
                 log = new QLoggerWriter(fileDest,level);
                 moduleDest.insert(module, log);
+                // connect signal from the writer to the manager
+                QObject::connect(log,SIGNAL(newLogWritten(QString)), this, SIGNAL(newLogWritten(QString)));
                 return true;
             }
         }
@@ -177,6 +181,7 @@ namespace QLogger
             QString text = QString("[%1] [%2] {%3} %4\n").arg(dtFormat).arg(module).arg(logLevel).arg(message);
             qDebug() << text;
             out << text;
+            emit newLogWritten(text);
             file.close();
         }
     }

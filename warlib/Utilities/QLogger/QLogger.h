@@ -132,6 +132,10 @@ namespace QLogger
 * @brief Maximum log level allowed for the file.
 */
             LogLevel m_level;
+
+        signals:
+            void newLogWritten(QString message);
+
     };
 
     /**
@@ -139,6 +143,7 @@ namespace QLogger
 */
     class QLoggerManager : public QThread
     {
+        Q_OBJECT
         public:
             /**
 * @brief Gets an instance to the QLoggerManager.
@@ -192,6 +197,9 @@ namespace QLogger
 * @brief Default builder of the class. It starts the thread.
 */
             QLoggerManager();
+
+        signals:
+            void newLogWritten(QString message);
     };
 }
 
