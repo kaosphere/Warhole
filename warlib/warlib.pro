@@ -8,7 +8,6 @@ QT       += widgets network printsupport
 
 TARGET = warlib
 
-
 TEMPLATE = lib
 CONFIG += staticlib
 
@@ -38,7 +37,8 @@ SOURCES += \
     core/messagequeue.cpp \
     core/message.cpp \
     game/game.cpp \
-    game/player.cpp
+    game/player.cpp \
+    game/magicalObject/magicalobject.cpp
 	
 HEADERS += \
     game/stats/statsmodel.h \
@@ -67,7 +67,8 @@ HEADERS += \
     core/messagequeue.h \
     core/message.h \
     game/game.h \
-    game/player.h
+    game/player.h \
+    game/magicalObject/magicalobject.h
 
 INSTALLS += target
 
