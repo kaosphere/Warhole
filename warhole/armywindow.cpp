@@ -677,6 +677,13 @@ void ArmyWindow::on_editRegButton_clicked()
         currentArmy.getUnits().removeAt(indexElementSelectionne.row());
         updateRegModel();
 
+        currentSelectedPath = ra.getGroups().first().getPath();
+
+        for(int i=0; i < model->rowCount(); ++i)
+        {
+            ui->treeViewExistingModels->setCurrentIndex(model->index(currentSelectedPath));
+        }
+
         loadRegimentInUI(ra);
     }
     else
