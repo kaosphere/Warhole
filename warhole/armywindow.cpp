@@ -62,7 +62,7 @@ ArmyWindow::ArmyWindow(QWidget *parent) :
 
     ui->viewOptions->setModel(options);
     ui->viewOptions2->setModel(regOptions);
-    // TODO : This is a hack to fix the fact that options rows are collapsable for an unknown readon
+    // TODO : This is a hack to fix the fact that options rows are collapsable for an unknown reason
     // investigate and fix properly.
     ui->viewOptions->setItemsExpandable(false);
     ui->viewOptions->setRootIsDecorated(false);
@@ -665,7 +665,7 @@ void ArmyWindow::on_pushButtonSave_clicked()
 
     currentArmy.setName(ui->lineEditName->text());
 
-    QString path = "armies/" + ui->comboBoxRace->itemText(ui->comboBoxRace->currentIndex()) +
+    QString path = ARMY_PATH + "/" + ui->comboBoxRace->itemText(ui->comboBoxRace->currentIndex()) +
             "/" + ui->lineEditName->text() +".army";
 
     QFile f;
