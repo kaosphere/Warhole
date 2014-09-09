@@ -30,6 +30,9 @@ public:
     ArmyWindow(QString fileName, QWidget *parent = 0);
     ~ArmyWindow();
 
+    void updateTreeView(QString raceDir);
+
+    void initArmyWindow();
 private slots:
     void on_comboBoxRace_currentIndexChanged(const QString &raceDir);
     void on_treeViewExistingModels_clicked(const QModelIndex &index);
@@ -47,6 +50,7 @@ private slots:
     void evaluateOptionsPoints();
     void evaluateRegimentOptionsPoints();
     void updateRegimentPoints();
+    void evaluateMagicalObjectPoints();
 
     void on_spinBoxNB_valueChanged(int arg1);
     void on_spinBoxPtsBanner_valueChanged(const QString &arg1);
@@ -77,11 +81,13 @@ private:
     QStandardItemModel* options;
     QStandardItemModel* regOptions;
     QStandardItemModel* reg;
+    QStandardItemModel* objects;
     QString currentSelectedPath;
     Army currentArmy;
     bool editing;
 
     static const QStringList OPTION_HEADER;
+    static const QStringList OBJECT_HEADER;
     void closeEvent(QCloseEvent *event);
 };
 

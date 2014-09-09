@@ -14,11 +14,34 @@ const QStringList ArmyWindow::OPTION_HEADER = QStringList()
                             << QObject::tr("Pts")
                             << QObject::tr("Règles");
 
+const QStringList ArmyWindow::OBJECT_HEADER = QStringList()
+                            << QObject::tr("Choisir")
+                            << QObject::tr("Nom")
+                            << QObject::tr("Pts")
+                            << QObject::tr("Règles");
+
 ArmyWindow::ArmyWindow(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ArmyWindow)
 {
+    initArmyWindow();
+}
 
+ArmyWindow::ArmyWindow(QString fileName, QWidget *parent) :
+    QWidget(parent),
+    ui(new Ui::ArmyWindow)
+{
+    initArmyWindow();
+
+    QLog_Info(LOG_ID_INFO, "ArmyWindow() : Entering ArmyWindow by loading constructor.");
+    QLog_Info(LOG_ID_INFO, "ArmyWindow() : File name to load : " + fileName);
+
+    changeRace = false;
+    load(fileName);
+}
+
+void ArmyWindow::initArmyWindow()
+{
     QLoggerManager *manager = QLoggerManager::getInstance();
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_INFO), QLogger::InfoLevel);
@@ -26,74 +49,6 @@ ArmyWindow::ArmyWindow(QWidget *parent) :
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_WARN), QLogger::WarnLevel);
 
     QLog_Info(LOG_ID_INFO, "ArmyWindow : Entering ArmyWindow by normal constructor.");
-    // Put list of existing races in comboBox
-    ui->setupUi(this);
-    // get list of existing races
-    QDir* modelDir = new QDir(MODEL_PATH);
-
-    if (modelDir->exists())    
-    {
-        existingRaces = modelDir->entryList();
-    }
-
-    if(existingRaces.isEmpty())
-    {
-        QLog_Info(LOG_ID_INFO, "ArmyWindow() : No race found.");
-        QMessageBox::warning(this, tr("Erreur"), tr("Aucune race existante ; commencez par créer des figurines"));
-    }
-
-    existingRaces.removeOne(".");
-    existingRaces.removeOne("..");
-
-    currentSelectedPath = "";
-
-    ui->comboBoxRace->addItems(existingRaces);
-
-    // Associate model to view
-    model = new QFileSystemModel(this);
-
-    options = new QStandardItemModel();
-    regOptions = new QStandardItemModel();
-
-    connect(options,SIGNAL(itemChanged(QStandardItem*)),this,SLOT(evaluateOptionsPoints()));
-    connect(regOptions,SIGNAL(itemChanged(QStandardItem*)),this,SLOT(evaluateRegimentOptionsPoints()));
-    options->setHorizontalHeaderLabels(OPTION_HEADER);
-    regOptions->setHorizontalHeaderLabels(OPTION_HEADER);
-
-    ui->viewOptions->setModel(options);
-    ui->viewOptions2->setModel(regOptions);
-    // TODO : This is a hack to fix the fact that options rows are collapsable for an unknown reason
-    // investigate and fix properly.
-    ui->viewOptions->setItemsExpandable(false);
-    ui->viewOptions->setRootIsDecorated(false);
-    ui->viewOptions2->setItemsExpandable(false);
-    ui->viewOptions2->setRootIsDecorated(false);
-
-    reg = new QStandardItemModel();
-
-    ui->armyView->setModel(reg);
-
-    ui->labelPointsArmy->setText("0");
-
-    changeRace = true;
-    editing = false;
-
-    setEnableChampionStats(false);
-}
-
-ArmyWindow::ArmyWindow(QString fileName, QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::ArmyWindow)
-{
-    QLoggerManager *manager = QLoggerManager::getInstance();
-    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
-    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_INFO), QLogger::InfoLevel);
-    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_ERR), QLogger::ErrorLevel);
-    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_WARN), QLogger::WarnLevel);
-
-    QLog_Info(LOG_ID_INFO, "ArmyWindow() : Entering ArmyWindow by loading constructor.");
-    QLog_Info(LOG_ID_INFO, "ArmyWindow() : File name to load : " + fileName);
-
     // Put list of existing races in comboBox
     ui->setupUi(this);
     // get list of existing races
@@ -114,27 +69,35 @@ ArmyWindow::ArmyWindow(QString fileName, QWidget *parent) :
     existingRaces.removeOne("..");
 
     currentSelectedPath = "";
-
     ui->comboBoxRace->addItems(existingRaces);
 
     // Associate model to view
     model = new QFileSystemModel(this);
 
     options = new QStandardItemModel();
-    options->setHorizontalHeaderLabels(OPTION_HEADER);
-
     regOptions = new QStandardItemModel();
+
+    objects = new QStandardItemModel();
+    ui->treeViewExistingObjects->setModel(objects);
+
+    connect(options,SIGNAL(itemChanged(QStandardItem*)),this,SLOT(evaluateOptionsPoints()));
+    connect(regOptions,SIGNAL(itemChanged(QStandardItem*)),this,SLOT(evaluateRegimentOptionsPoints()));
+    connect(objects, SIGNAL(itemChanged(QStandardItem*)), this, SLOT(evaluateMagicalObjectPoints()));
+
+    options->setHorizontalHeaderLabels(OPTION_HEADER);
     regOptions->setHorizontalHeaderLabels(OPTION_HEADER);
+    objects->setHorizontalHeaderLabels(OBJECT_HEADER);
 
     ui->viewOptions->setModel(options);
     ui->viewOptions2->setModel(regOptions);
-
-    // TODO : This is a hack to fix the fact that options rows are collapsable for an unknown readon
+    // TODO : This is a hack to fix the fact that options rows are collapsable for an unknown reason
     // investigate and fix properly.
     ui->viewOptions->setItemsExpandable(false);
     ui->viewOptions->setRootIsDecorated(false);
     ui->viewOptions2->setItemsExpandable(false);
     ui->viewOptions2->setRootIsDecorated(false);
+    ui->treeViewExistingObjects->setItemsExpandable(false);
+    ui->treeViewExistingObjects->setRootIsDecorated(false);
 
     reg = new QStandardItemModel();
 
@@ -142,20 +105,21 @@ ArmyWindow::ArmyWindow(QString fileName, QWidget *parent) :
 
     ui->labelPointsArmy->setText("0");
 
-    changeRace = false;
+    changeRace = true;
     editing = false;
 
     setEnableChampionStats(false);
-    load(fileName);
 }
 
 ArmyWindow::~ArmyWindow()
 {
     QLog_Info(LOG_ID_INFO, "~ArmyWindow() : Exiting ArmyWindow");
-    delete model;
-    delete options;
-    delete regOptions;
-    delete ma;
+    model->deleteLater();
+    options->deleteLater();
+    regOptions->deleteLater();
+    objects->deleteLater();
+    reg->deleteLater();
+    ma->deleteLater();
     delete ui;
 }
 
@@ -226,9 +190,44 @@ void ArmyWindow::on_comboBoxRace_currentIndexChanged(const QString &raceDir)
         ui->treeViewExistingModels->hideColumn(1);
         ui->treeViewExistingModels->hideColumn(2);
         ui->treeViewExistingModels->hideColumn(3);
+
+        updateTreeView(raceDir);
     }
 }
 
+void ArmyWindow::updateTreeView(QString raceDir)
+{
+    // get list of existing models to verify if some exist
+    QDir* modelDir = new QDir(MAGICAL_OBJECT_PATH + "/" + raceDir);
+    QStringList existingObjects;
+    MagicalObject obj;
+    objects->clear();
+
+    if (modelDir->exists())
+    {
+        existingObjects = modelDir->entryList();
+        for(int i = 0; i <existingObjects.size(); ++i)
+        {
+            QStringList pieces = existingObjects[i].split(".");
+            if(pieces.last() == "om")
+            {
+                obj.load(MAGICAL_OBJECT_PATH + "/" + raceDir + "/" + existingObjects[i]);
+
+                QList<QStandardItem *> newObject;
+                QStandardItem* checkBox = new QStandardItem(true);
+                checkBox->setCheckable(true);
+
+                newObject << checkBox
+                        <<new QStandardItem(obj.getName())
+                        <<new QStandardItem(QString::number(obj.getPoints()))
+                        <<new QStandardItem(obj.getSpecialRules());
+                objects->appendRow(newObject);
+            }
+        }
+    }
+
+    objects->setHorizontalHeaderLabels(OBJECT_HEADER);
+}
 
 void ArmyWindow::on_treeViewExistingModels_clicked(const QModelIndex &index)
 {
@@ -317,6 +316,7 @@ void ArmyWindow::clearRegimentDisplay()
     ui->regPtsLabel->clear();
     ui->labelPointsOptions->clear();
     ui->labelPointsOptionsReg->clear();
+    ui->labelPointsObjects->clear();
     ui->modelNameLabel->clear();
     ui->modelPtsLabel->clear();
     ui->checkBoxBanner->setChecked(false);
@@ -349,6 +349,12 @@ void ArmyWindow::clearRegimentDisplay()
 
     options->clear();
     regOptions->clear();
+
+    for(int i = 0; i<objects->rowCount(); i++)
+    {
+        QStandardItem* item = objects->item(i,0);
+        item->setCheckState(Qt::Unchecked);
+    }
 }
 
 void ArmyWindow::updateGlobalArmyPoints()
@@ -397,6 +403,18 @@ void ArmyWindow::on_addRegButton_clicked()
         regiment.getGroups().first().setNb(ui->spinBoxNB->value());
 
         regiment.getGroups()[0].getModel()->clearOptions();
+        regiment.getGroups().first().clearMagicalObjects();
+
+        for(int i = 0; i<objects->rowCount(); ++i)
+        {
+            MagicalObject m;
+            QStandardItem* item = objects->item(i,0);
+            if(item->checkState() == Qt::Checked)
+            {
+                m.load(MAGICAL_OBJECT_PATH + "/" + ui->comboBoxRace->currentText() + "/" + objects->item(i,1)->text() + ".om");
+                regiment.getGroups().first().addMagicalObject(m);
+            }
+        }
 
         for(int i = 0; i< options->rowCount(); i++)
         {
@@ -465,6 +483,7 @@ void ArmyWindow::on_addRegButton_clicked()
         updateRegModel();
 
         clearRegimentDisplay();
+        QLog_Info(LOG_ID_INFO, currentArmy.displayInfo());
     }
 }
 
@@ -518,6 +537,19 @@ void ArmyWindow::evaluateRegimentOptionsPoints()
     updateRegimentPoints();
 }
 
+void ArmyWindow::evaluateMagicalObjectPoints()
+{
+    int pts = 0;
+    for(int i = 0; i< objects->rowCount(); i++)
+    {
+        if(objects->item(i,0)->checkState() == Qt::Checked)
+            pts+= objects->item(i,2)->text().toUInt();
+    }
+    ui->labelPointsObjects->setText(QString::number(pts));
+
+    updateRegimentPoints();
+}
+
 void ArmyWindow::updateRegimentPoints()
 {
     if(regiment.getGroups().size() > 0)
@@ -529,6 +561,7 @@ void ArmyWindow::updateRegimentPoints()
         if (ui->checkBoxMusician->isChecked()) pts += ui->labelMusicianPts->text().toUInt();
         pts += ui->spinBoxNB->value() * ui->labelPointsOptions->text().toUInt();
         pts += ui->labelPointsOptionsReg->text().toUInt();
+        pts += ui->labelPointsObjects->text().toUInt();
         ui->regPtsLabel->setText(QString::number(pts));
     }
 }
@@ -592,8 +625,43 @@ void ArmyWindow::loadRegimentInUI(RegimentAbstract& r)
     options->setHorizontalHeaderLabels(OPTION_HEADER);
     regOptions->setHorizontalHeaderLabels(OPTION_HEADER);
 
+
+    // get list of existing models to verify if some exist
+    QDir* modelDir = new QDir(MAGICAL_OBJECT_PATH + "/" + ui->comboBoxRace->currentText());
+    QStringList existingObjects;
+    MagicalObject obj;
+    objects->clear();
+
+    if (modelDir->exists())
+    {
+        existingObjects = modelDir->entryList();
+        for(int i = 0; i <existingObjects.size(); ++i)
+        {
+            QStringList pieces = existingObjects[i].split(".");
+            if(pieces.last() == "om")
+            {
+                obj.load(MAGICAL_OBJECT_PATH + "/" + ui->comboBoxRace->currentText() + "/" + existingObjects[i]);
+
+                QList<QStandardItem *> newObject;
+                QStandardItem* checkBox = new QStandardItem(true);
+                checkBox->setCheckable(true);
+
+                if(r.getGroups().first().getObjects().contains(obj))
+                    checkBox->setCheckState(Qt::Checked);
+
+                newObject << checkBox
+                        <<new QStandardItem(obj.getName())
+                        <<new QStandardItem(QString::number(obj.getPoints()))
+                        <<new QStandardItem(obj.getSpecialRules());
+                objects->appendRow(newObject);
+            }
+        }
+    }
+
+
     evaluateOptionsPoints();
     evaluateRegimentOptionsPoints();
+    evaluateMagicalObjectPoints();
 }
 
 void ArmyWindow::on_editRegButton_clicked()
@@ -619,13 +687,13 @@ void ArmyWindow::on_editRegButton_clicked()
 
 void ArmyWindow::on_checkBoxBanner_toggled(bool checked)
 {
-    //ui->labelBannerPts->setEnabled(checked);
+    Q_UNUSED(checked);
     updateRegimentPoints();
 }
 
 void ArmyWindow::on_checkBoxMusician_toggled(bool checked)
 {
-    //ui->labelMusicianPts->setEnabled(checked);
+    Q_UNUSED(checked);
     updateRegimentPoints();
 }
 
@@ -707,6 +775,7 @@ void ArmyWindow::load(QString path)
         QString s = path.section('/',-2,-2);
         ui->comboBoxRace->setCurrentText(s);
         ui->lineEditName->setText(currentArmy.getName());
+        updateTreeView(s);
     }
     else
     {
@@ -742,20 +811,24 @@ void ArmyWindow::on_pushButtonExport_clicked()
 
 void ArmyWindow::on_spinBoxNB_valueChanged(int arg1)
 {
+    Q_UNUSED(arg1);
     updateRegimentPoints();
 }
 
 void ArmyWindow::on_spinBoxPtsBanner_valueChanged(const QString &arg1)
 {
+    Q_UNUSED(arg1);
     updateRegimentPoints();
 }
 
 void ArmyWindow::on_spinBoxPtsMusician_valueChanged(int arg1)
 {
+    Q_UNUSED(arg1);
     updateRegimentPoints();
 }
 
 void ArmyWindow::on_spinPoints_valueChanged(const int &arg1)
 {
+    Q_UNUSED(arg1);
     updateRegimentPoints();
 }
