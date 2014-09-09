@@ -41,6 +41,7 @@ RecruitsGroup::RecruitsGroup(const RecruitsGroup& copy) : QObject(copy.parent())
     nb = copy.nb;
     path = copy.path;
     model = copy.model->clone();
+    objects = copy.objects;
 
     QLoggerManager *manager = QLoggerManager::getInstance();
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
@@ -62,6 +63,12 @@ QDataStream & operator <<(QDataStream& out, const RecruitsGroup& obj)
         << obj.path;
     obj.model->serializeOut(out);
 
+    out << obj.objects.size();
+    for(int i = 0; i< obj.objects.size(); ++i)
+    {
+        out << obj.objects[i];
+    }
+
     return out;
 }
 
@@ -69,6 +76,8 @@ QDataStream & operator >>(QDataStream& in, RecruitsGroup& obj)
 {
     ModelFactory fac;
     int version = 0;
+    int  objectCount = 0;
+
     // Same comment that for other stream operator
     in >> version;
     in >> obj.nb;
@@ -78,6 +87,15 @@ QDataStream & operator >>(QDataStream& in, RecruitsGroup& obj)
     obj.model = fac.createEmptyModel(obj.path.section('/',-2,-2));
 
     obj.model->serializeIn(in);
+
+    in >> objectCount;
+
+    for(int i = 0; i< objectCount; ++i)
+    {
+        MagicalObject m;
+        in >> m;
+        obj.addMagicalObject(m);
+    }
 
     return in;
 }
@@ -112,11 +130,38 @@ void RecruitsGroup::loadPath()
         QLog_Error(LOG_ID_ERR, "loadPath() - Path is Empty.");
 }
 
+void RecruitsGroup::addMagicalObject(const MagicalObject &m)
+{
+    objects.append(m);
+}
+
+void RecruitsGroup::removeMagicalObject(const MagicalObject &m)
+{
+    objects.removeOne(m);
+}
+
+void RecruitsGroup::clearMagicalObjects()
+{
+    objects.clear();
+}
+
+QList<MagicalObject> RecruitsGroup::getObjects() const
+{
+    return objects;
+}
+
+void RecruitsGroup::setObjects(const QList<MagicalObject> &value)
+{
+    objects = value;
+}
+
+
 bool RecruitsGroup::operator==(const RecruitsGroup& obj) const
 {
     if(nb == obj.nb &&
        casualties == obj.casualties &&
-       path == obj.path)
+       path == obj.path &&
+       objects == obj.objects)
     {
         return true;
     }
@@ -129,6 +174,7 @@ RecruitsGroup &RecruitsGroup::operator =(const RecruitsGroup &copy)
     nb = copy.nb;
     path = copy.path;
     model = copy.model->clone();
+    objects = copy.objects;
 
     return *this;
 }
@@ -151,6 +197,10 @@ int RecruitsGroup::computePoints() const
         if(model->getBanner())
         {
             points += model->getBannerPoints();
+        }
+        for(int i = 0; i< objects.size(); ++i)
+        {
+            points += objects[i].getPoints();
         }
         return points;
 	}

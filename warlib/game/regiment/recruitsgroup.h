@@ -8,6 +8,7 @@
 #include <QString>
 #include <QDataStream>
 #include <Utilities/QLogger/QLogger.h>
+#include "game/magicalObject/magicalobject.h"
 
 // The RecruitsGroup represents a group of same type models inside a regiment
 // The class prevents to have to instanciate several exact same models for
@@ -45,6 +46,12 @@ public:
 
     void loadPath();
 
+    void addMagicalObject(const MagicalObject& m);
+    void removeMagicalObject(const MagicalObject& m);
+    void clearMagicalObjects();
+    QList<MagicalObject> getObjects() const;
+    void setObjects(const QList<MagicalObject> &value);
+
 private:
     static const QString LOG_ID_INFO;
     static const QString LOG_ID_TRACE;
@@ -55,6 +62,7 @@ private:
     int nb;
     int casualties;
     QString path;
+    QList<MagicalObject> objects;
 };
 
 #endif // RECRUITSGROUP_H
