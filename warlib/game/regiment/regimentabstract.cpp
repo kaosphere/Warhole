@@ -184,6 +184,14 @@ QString RegimentAbstract::getHtml()
             html += QString("<li>Champion (%1 pts)</li>\n")
                     .arg(groups[i].getModel()->getChampionStats().getPoints());
         }
+        int s = groups[i].getObjects().size();
+        if(s)
+        {
+            for(int k = 0; k<s; ++k)
+            {
+                html += groups[i].getObjects()[k].getHtml();
+            }
+        }
         html += "</td>\n";
     }
     html += "<td width=8%>\n";
@@ -210,6 +218,14 @@ QString RegimentAbstract::displayInfo() const
         info << groups[i].getNb() << " Number of models in the group :" << endl;
         info << groups[i].getModel()->displayStringInfo() << endl;
         info << groups[i].getPath() << endl;
+        int s = groups[i].getObjects().size();
+        if(s)
+        {
+            for(int k = 0; k<s; ++k)
+            {
+                info << groups[i].getObjects()[k].displayString();
+            }
+        }
     }
     info << "********************************************************" << endl;
     info << "********************************************************" << endl;
