@@ -256,16 +256,6 @@
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="QPushButton" name="duplicateButton">
-       <property name="toolTip">
-        <string>Permet de dupliquer le régiment sélectionné dans l'armée.</string>
-       </property>
-       <property name="text">
-        <string>Dupliquer</string>
-       </property>
-      </widget>
-     </item>
     </layout>
    </item>
    <item>
