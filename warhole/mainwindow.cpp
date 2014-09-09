@@ -14,6 +14,11 @@ MainWindow::MainWindow(QWidget *parent)
     manager->addDestination("./logs/lastrun.log", QStringList("Errors"), QLogger::ErrorLevel);
     manager->addDestination("./logs/errors.log", QStringList("Errors2"), QLogger::ErrorLevel);
 
+    mod = NULL;
+    obj = NULL;
+    arm = NULL;
+    game = NULL;
+
     // Connect signal from the logger to slot that update the text edit
     QObject::connect(manager, SIGNAL(newLogWritten(QString)), this, SLOT(updateLogOutput(QString)));
 
@@ -63,10 +68,10 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
-    mod->deleteLater();
-    arm->deleteLater();
-    game->deleteLater();
-    obj->deleteLater();
+    if(mod)mod->deleteLater();
+    if(arm)arm->deleteLater();
+    if(game)game->deleteLater();
+    if(obj)obj->deleteLater();
 }
 
 
