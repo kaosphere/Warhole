@@ -12,6 +12,7 @@
 #include <QObject>
 #include <QtCore>
 #include "defines.h"
+#include "Utilities/QLogger/QLogger.h"
 
 class MagicalObject : public QObject
 {
@@ -48,16 +49,26 @@ public:
     friend QDataStream & operator << (QDataStream &out, const MagicalObject &obj);
     friend QDataStream & operator >> (QDataStream &in, MagicalObject &obj);
 
+    void load(QString path);
+    void save(QString path);
+    static void initMagicalObjectSystem();
 private:
     QString name;
     int points;
     QString specialRules;
     bool cabalistic;
 
+    static const QString LOG_ID_INFO;
+    static const QString LOG_ID_TRACE;
+    static const QString LOG_ID_WARN;
+    static const QString LOG_ID_ERR;
+
 signals:
 
 public slots:
 
 };
+
+Q_DECLARE_METATYPE(MagicalObject)
 
 #endif // MAGICALOBJECT_H
