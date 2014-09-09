@@ -5,6 +5,7 @@
 #include <QtCore>
 #include <QString>
 #include <QList>
+#include "Utilities/QLogger/QLogger.h"
 
 class Army : public QObject
 {
@@ -47,6 +48,12 @@ public:
 private:
     QString name;
     QList<RegimentAbstract> units;
+
+    static const QString LOG_ID_INFO;
+    static const QString LOG_ID_TRACE;
+    static const QString LOG_ID_WARN;
+    static const QString LOG_ID_ERR;
+
 };
 
 Q_DECLARE_METATYPE(Army)

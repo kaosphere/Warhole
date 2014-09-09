@@ -1,12 +1,30 @@
 #include "army.h"
 
+using namespace QLogger;
+
+const QString Army::LOG_ID_INFO = "Army_info";
+const QString Army::LOG_ID_TRACE = "Army_trace";
+const QString Army::LOG_ID_WARN = "Army_warn";
+const QString Army::LOG_ID_ERR = "Army_err";
+
 Army::Army(QObject* parent) : QObject(parent)
 {
-    // fuck this is doing nothing.
+    QLoggerManager *manager = QLoggerManager::getInstance();
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_INFO), QLogger::InfoLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_ERR), QLogger::ErrorLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_WARN), QLogger::WarnLevel);
 }
 
 Army::Army(const Army &copy) : QObject(copy.parent())
 {
+    QLoggerManager *manager = QLoggerManager::getInstance();
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_INFO), QLogger::InfoLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_ERR), QLogger::ErrorLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_WARN), QLogger::WarnLevel);
+
+
     name = copy.name;
     units = copy.units;
 }
@@ -51,8 +69,6 @@ void Army::addUnit(const RegimentAbstract &u)
 
 void Army::removeUnit(const RegimentAbstract &u)
 {
-	// Since Army will not be used as a game descriptor, we don't care 
-	// removing one or the other if two regiments are identical
     units.removeOne(u);
 }
 
@@ -143,6 +159,8 @@ QString Army::getHtml()
     }
     html += QString("</body>\n");
     html += QString("</html>\n");
+
+    QLog_Info(LOG_ID_INFO, html);
     return html;
 }
 
