@@ -724,8 +724,8 @@ void ArmyWindow::on_pushButtonDuplicate_clicked()
 
 void ArmyWindow::on_pushButtonQuit_clicked()
 {
-    this->close();
-    this->deleteLater();
+    if(this->close())
+        this->deleteLater();
 }
 
 void ArmyWindow::on_pushButtonSave_clicked()
