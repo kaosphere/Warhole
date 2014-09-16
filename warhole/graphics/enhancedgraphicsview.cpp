@@ -48,8 +48,6 @@ void EnhancedGraphicsView::wheelEvent(QWheelEvent *event)
 {
     double factor = std::pow(4.0 / 3.0, (event->delta() / 240.0));
 
-    qDebug() << factor;
-
     if((factor*scaleFactor) <= MAX_SCALE_FACTOR && (factor*scaleFactor) >= MIN_SCALE_FACTOR)
     {
         scaleFactor *= factor;
