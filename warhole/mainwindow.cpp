@@ -32,35 +32,37 @@ MainWindow::MainWindow(QWidget *parent)
     menuFichier->addAction(actionLaunchGame);
     connect(actionLaunchGame, SIGNAL(triggered()), this, SLOT(openGameWindow()));
 
-    QAction *actionCreateModel = new QAction(tr("&Creer une figurine"), this);
-    menuFichier->addAction(actionCreateModel);
-    actionCreateModel->setShortcut(QKeySequence("Ctrl+C"));
-    connect(actionCreateModel, SIGNAL(triggered()), this, SLOT(openModelWindow()));
-
-    QAction *actionEditModel = new QAction(tr("&Editer une figurine"), this);
-    menuFichier->addAction(actionEditModel);
-    actionEditModel->setShortcut(QKeySequence("Ctrl+E"));
-    connect(actionEditModel, SIGNAL(triggered()), this, SLOT(openEditModelWindow()));
-
-    QAction *actionManageMagicalObjects = new QAction(tr("&Gérer les objets magiques"), this);
-    menuFichier->addAction(actionManageMagicalObjects);
-    actionManageMagicalObjects->setShortcut(QKeySequence("Ctrl+O"));
-    connect(actionManageMagicalObjects, SIGNAL(triggered()), this, SLOT(openMagicalObjectWindow()));
-
-    QAction *actionCreateArmy = new QAction(tr("&Créer une armée"), this);
-    menuFichier->addAction(actionCreateArmy);
-    actionCreateArmy->setShortcut(QKeySequence("Ctrl+A"));
-    connect(actionCreateArmy, SIGNAL(triggered()), this, SLOT(openArmyWindow()));
-
-    QAction *actionEditArmy = new QAction(tr("&Editer une armée"), this);
-    menuFichier->addAction(actionEditArmy);
-    actionEditArmy->setShortcut(QKeySequence("Ctrl+D"));
-    connect(actionEditArmy, SIGNAL(triggered()), this, SLOT(openEditArmyWindow()));
-
     QAction *actionQuitter = new QAction(tr("&Quitter"), this);
     menuFichier->addAction(actionQuitter);
     actionQuitter->setShortcut(QKeySequence("Ctrl+Q"));
     connect(actionQuitter, SIGNAL(triggered()), qApp, SLOT(quit()));
+
+    QMenu *menuManageModels = menuBar()->addMenu(tr("&Figurines"));
+
+    QAction *actionCreateModel = new QAction(tr("&Creer une figurine"), this);
+    menuManageModels->addAction(actionCreateModel);
+    actionCreateModel->setShortcut(QKeySequence("Ctrl+C"));
+    connect(actionCreateModel, SIGNAL(triggered()), this, SLOT(openModelWindow()));
+
+    QAction *actionEditModel = new QAction(tr("&Editer une figurine"), this);
+    menuManageModels->addAction(actionEditModel);
+    actionEditModel->setShortcut(QKeySequence("Ctrl+E"));
+    connect(actionEditModel, SIGNAL(triggered()), this, SLOT(openEditModelWindow()));
+
+    QAction *actionManageMagicalObjects = new QAction(tr("&Gérer les objets magiques"), this);
+    menuManageModels->addAction(actionManageMagicalObjects);
+    actionManageMagicalObjects->setShortcut(QKeySequence("Ctrl+O"));
+    connect(actionManageMagicalObjects, SIGNAL(triggered()), this, SLOT(openMagicalObjectWindow()));
+
+    QAction *actionCreateArmy = new QAction(tr("&Créer une armée"), this);
+    menuManageModels->addAction(actionCreateArmy);
+    actionCreateArmy->setShortcut(QKeySequence("Ctrl+A"));
+    connect(actionCreateArmy, SIGNAL(triggered()), this, SLOT(openArmyWindow()));
+
+    QAction *actionEditArmy = new QAction(tr("&Editer une armée"), this);
+    menuManageModels->addAction(actionEditArmy);
+    actionEditArmy->setShortcut(QKeySequence("Ctrl+D"));
+    connect(actionEditArmy, SIGNAL(triggered()), this, SLOT(openEditArmyWindow()));
 
     //s = new mainWidget(this);
     //setCentralWidget(s);
