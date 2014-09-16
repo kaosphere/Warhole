@@ -1,7 +1,20 @@
 #include "testgi.h"
 
+const QString testGI::LOG_ID_INFO = "testGI_info";
+const QString testGI::LOG_ID_TRACE = "testGI_trace";
+const QString testGI::LOG_ID_WARN = "testGI_warm";
+const QString testGI::LOG_ID_ERR = "testGI_err";
+
+using namespace QLogger;
+
 testGI::testGI()
 {
+    QLoggerManager *manager = QLoggerManager::getInstance();
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_INFO), QLogger::InfoLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_ERR), QLogger::ErrorLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_WARN), QLogger::WarnLevel);
+
     pressed = false;
     h = 60;
     w = 60;
@@ -12,20 +25,28 @@ testGI::testGI()
     deads=7;
 
     QPixmap* logoTmp = new QPixmap();
-    if(!logoTmp->load("..\\pix\\orcbanner.png"))
+    if(!logoTmp->load("..\\..\\pix\\orcbanner.png"))
     {
-        qDebug()<<"GAMEWINDOW : Can't load logo image";
+        QLog_Error(LOG_ID_ERR, "testGI : Can't load logo image");
     }
     logo = logoTmp->scaled((nbRectW*w)/2,
                            (nbRectH*h)/2);
 
     QPixmap* deadTmp = new QPixmap();
-    if(!deadTmp->load("..\\pix\\whiteskull.png"))
+    if(!deadTmp->load("..\\..\\pix\\whiteskull.png"))
     {
-        qDebug()<<"GAMEWINDOW : Can't load dead image";
+        QLog_Error(LOG_ID_ERR, "testGI : Can't load dead image");
     }
     dead = deadTmp->scaled(w, h);
 
+    QObject::connect((QObject*)this, SIGNAL(xChanged()), (QObject*)this, SIGNAL(objectCoordinateChanged()));
+    QObject::connect((QObject*)this, SIGNAL(yChanged()), (QObject*)this, SIGNAL(objectCoordinateChanged()));
+    QObject::connect((QObject*)this, SIGNAL(rotationChanged()), (QObject*)this, SIGNAL(objectCoordinateChanged()));
+
+}
+
+testGI::~testGI()
+{
 
 }
 
@@ -147,4 +168,6 @@ void testGI::setDeads(int value)
 {
     deads = value;
 }
+
+
 

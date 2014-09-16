@@ -25,19 +25,22 @@ SOURCES += main.cpp\
     modelwindow.cpp \
     armywindow.cpp \
     gamewindow.cpp \
-    game/testgi.cpp \
-    game/fieldlimits.cpp \
-    magicalobjectwindow.cpp
+    graphics/testgi.cpp \
+    graphics/fieldlimits.cpp \
+    magicalobjectwindow.cpp \
+    graphics/enhancedgraphicsview.cpp
 
 HEADERS  += mainwindow.h \
     modelwindow.h \
     armywindow.h \
     version.h \
     gamewindow.h \
-    game/testgi.h \
-    game/fieldlimits.h \
+    graphics/testgi.h \
+    graphics/fieldlimits.h \
     game/distances.h \
-    magicalobjectwindow.h
+    magicalobjectwindow.h \
+    graphics/distances.h \
+    graphics/enhancedgraphicsview.h
 
 TRANSLATIONS = warhole_en.ts
 

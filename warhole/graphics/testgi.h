@@ -9,10 +9,14 @@
 #include <QPointF>
 #include <QLinearGradient>
 
-class testGI : public QGraphicsItem
+#include "Utilities/QLogger/QLogger.h"
+
+class testGI : public QGraphicsObject
 {
+    Q_OBJECT
 public:
     testGI();
+    virtual ~testGI();
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
@@ -34,14 +38,23 @@ public:
     void setDeads(int value);
 
 signals:
-    
+    void objectChanged();
+    void objectCoordinateChanged();
+
 public slots:
+
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 
 private:
+    static const QString LOG_ID_TRACE;
+    static const QString LOG_ID_INFO;
+    static const QString LOG_ID_WARN;
+    static const QString LOG_ID_ERR;
+
+
     int nbRectW;
     int nbRectH;
     int h;

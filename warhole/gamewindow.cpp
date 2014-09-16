@@ -1,8 +1,12 @@
 #include "gamewindow.h"
 #include "ui_gamewindow.h"
 
-const double GameWindow::maxScaleFactor = 2;
-const double GameWindow::minScaleFactor = 0.2;
+const QString GameWindow::LOG_ID_INFO = "testGI_info";
+const QString GameWindow::LOG_ID_TRACE = "testGI_trace";
+const QString GameWindow::LOG_ID_WARN = "testGI_warm";
+const QString GameWindow::LOG_ID_ERR = "testGI_err";
+
+using namespace QLogger;
 
 GameWindow::GameWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -10,14 +14,16 @@ GameWindow::GameWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    //ui parameters
-    ui->graphicsView->setScene(&scene);
-    ui->graphicsView->installEventFilter(this);
-    ui->graphicsView->setDragMode(QGraphicsView::ScrollHandDrag);
+    QLoggerManager *manager = QLoggerManager::getInstance();
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_INFO), QLogger::InfoLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_ERR), QLogger::ErrorLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_WARN), QLogger::WarnLevel);
 
-    //zoom initialization
-    scaleFactor = 1.0;
-    scene.installEventFilter(this);
+    //ui parameters
+    view.setScene(&scene);
+
+    ui->horizontalLayout->addWidget(&view);
 
     //background of the game (To be removed afterwards)
     if(!background.load("C:/Users/Psycko/Documents/GitHub/Warhole/warhole/ressources/floor_grass5.jpg"))
@@ -32,63 +38,12 @@ GameWindow::GameWindow(QWidget *parent) :
     back = new BackGroundItem(5400,2700);
     scene.addItem(back);
     regiment = new testGI();
+    regiment2 = new testGI();
+    scene.addItem(regiment2);
     scene.addItem(regiment);
+    QObject::connect(regiment, SIGNAL(objectCoordinateChanged()), this, SLOT(graphicalObjectCoordinateUpdate()));
+    QObject::connect(regiment2, SIGNAL(objectCoordinateChanged()), this, SLOT(graphicalObjectCoordinateUpdate()));
 }
-
-void GameWindow::setSceneZoomFactor(double zoomFactor)
-{
-    QMatrix mat = ui->graphicsView->matrix();
-    ui->graphicsView->setMatrix(QMatrix(zoomFactor, mat.m12(), mat.m21(), zoomFactor, mat.dx(), mat.dy()));
-}
-
-void GameWindow::resetZoom()
-{
-    scaleFactor = 1;
-    QMatrix mat = ui->graphicsView->matrix();
-    ui->graphicsView->setMatrix(QMatrix(scaleFactor, mat.m12(), mat.m21(), scaleFactor, mat.dx(), mat.dy()));
-}
-
-//zooming/dezooming with the mouse wheel
-void GameWindow::wheelEvent(QGraphicsSceneWheelEvent *event)
-{
-    const int degrees = event->delta() / 8;
-    int steps = degrees / 15;
-    QMatrix matrix;
-
-    if(steps>0 && scaleFactor<maxScaleFactor)
-    {
-        scaleFactor*=1.2;
-    }
-    else if(steps<0 && scaleFactor>minScaleFactor)
-    {
-        scaleFactor/=1.2;
-    }
-    ui->graphicsView->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
-    QMatrix mat = ui->graphicsView->matrix();
-    ui->graphicsView->setMatrix(QMatrix(scaleFactor, mat.m12(), mat.m21(), scaleFactor, mat.dx(), mat.dy()));
-}
-
-//event filter to prevent wheel event to scroll instead of zooming
-bool GameWindow::eventFilter(QObject *object, QEvent *event)
-{
-   if(event->type() == QEvent::GraphicsSceneWheel)
-   {
-      event->setAccepted(true);
-      //qDebug("Mouse wheel detected !");
-      QGraphicsSceneWheelEvent *whl = dynamic_cast<QGraphicsSceneWheelEvent *>(event);
-      if(whl!=0)
-      {
-         wheelEvent(whl);
-      }
-      return true;
-    }
-    else
-    {
-       // standard event processing
-       return QObject::eventFilter(object, event);
-    }
-}
-
 
 //drag and drop on the scene
 void GameWindow::mousePressEvent(QGraphicsSceneWheelEvent *event)
@@ -99,6 +54,12 @@ void GameWindow::mousePressEvent(QGraphicsSceneWheelEvent *event)
     QDrag *drag = new QDrag(event->widget());
     drag->setMimeData(data);
     drag->start();
+}
+
+void GameWindow::graphicalObjectCoordinateUpdate()
+{
+    QLog_Info(LOG_ID_INFO, "X : " + QString::number(qobject_cast<QGraphicsObject*>(sender())->scenePos().x()) +
+                           ", Y : " + QString::number(qobject_cast<QGraphicsObject*>(sender())->scenePos().y()));
 }
 
 GameWindow::~GameWindow()

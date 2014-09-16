@@ -14,9 +14,11 @@
 #include <QDrag>
 #include <QPixmap>
 #include <QException>
+#include <QHBoxLayout>
 
-#include "game/testgi.h"
-#include "game/fieldlimits.h"
+#include "graphics/testgi.h"
+#include "graphics/fieldlimits.h"
+#include "graphics/enhancedgraphicsview.h"
 
 
 namespace Ui {
@@ -30,25 +32,26 @@ class GameWindow : public QMainWindow
 public:
     explicit GameWindow(QWidget *parent = 0);
     ~GameWindow();
-    void wheelEvent(QGraphicsSceneWheelEvent *event);
     void mousePressEvent(QGraphicsSceneWheelEvent *event);
-    bool eventFilter(QObject *object, QEvent *event);
-    void setSceneZoomFactor(double zoomFactor);
-    void resetZoom();
     
+public slots:
+    void graphicalObjectCoordinateUpdate();
 private slots:
 
 private:
+    static const QString LOG_ID_TRACE;
+    static const QString LOG_ID_INFO;
+    static const QString LOG_ID_WARN;
+    static const QString LOG_ID_ERR;
+
     Ui::GameWindow *ui;
     QGraphicsScene scene;
+    EnhancedGraphicsView view;
     BackGroundItem* back;
     QBrush* backGroundBrush;
-    double scaleFactor;
     QPixmap background;
     testGI* regiment;
-
-    static const double maxScaleFactor;
-    static const double minScaleFactor;
+    testGI* regiment2;
 };
 
 #endif // GAMEWINDOW_H
