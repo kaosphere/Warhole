@@ -11,9 +11,8 @@
 
 #include "Utilities/QLogger/QLogger.h"
 
-class testGI : public QGraphicsObject
+class testGI : public QGraphicsItem
 {
-    Q_OBJECT
 public:
     testGI();
     virtual ~testGI();
@@ -38,15 +37,13 @@ public:
     void setDeads(int value);
 
 signals:
-    void objectChanged();
-    void objectCoordinateChanged();
 
 public slots:
-
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+    void mouseMoveEvent(QGraphicsSceneMouseEvent* event);
 
 private:
     static const QString LOG_ID_TRACE;

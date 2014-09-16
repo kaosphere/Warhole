@@ -41,14 +41,6 @@ GameWindow::GameWindow(QWidget *parent) :
     regiment2 = new testGI();
     scene.addItem(regiment2);
     scene.addItem(regiment);
-    QObject::connect(regiment, SIGNAL(objectCoordinateChanged()), this, SLOT(graphicalObjectCoordinateUpdate()));
-    QObject::connect(regiment2, SIGNAL(objectCoordinateChanged()), this, SLOT(graphicalObjectCoordinateUpdate()));
-}
-
-void GameWindow::graphicalObjectCoordinateUpdate()
-{
-    QLog_Info(LOG_ID_INFO, "X : " + QString::number(qobject_cast<QGraphicsObject*>(sender())->scenePos().x()) +
-                           ", Y : " + QString::number(qobject_cast<QGraphicsObject*>(sender())->scenePos().y()));
 }
 
 GameWindow::~GameWindow()

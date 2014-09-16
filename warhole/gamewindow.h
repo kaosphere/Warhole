@@ -34,7 +34,7 @@ public:
     ~GameWindow();
     
 public slots:
-    void graphicalObjectCoordinateUpdate();
+
 private slots:
 
 private:

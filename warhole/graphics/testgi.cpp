@@ -38,11 +38,6 @@ testGI::testGI()
         QLog_Error(LOG_ID_ERR, "testGI : Can't load dead image");
     }
     dead = deadTmp->scaled(w, h);
-
-    QObject::connect((QObject*)this, SIGNAL(xChanged()), (QObject*)this, SIGNAL(objectCoordinateChanged()));
-    QObject::connect((QObject*)this, SIGNAL(yChanged()), (QObject*)this, SIGNAL(objectCoordinateChanged()));
-    QObject::connect((QObject*)this, SIGNAL(rotationChanged()), (QObject*)this, SIGNAL(objectCoordinateChanged()));
-
 }
 
 testGI::~testGI()
@@ -116,6 +111,14 @@ void testGI::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     pressed = false;
     update();
     QGraphicsItem::mouseReleaseEvent(event);
+}
+
+void testGI::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+    QLog_Info(LOG_ID_INFO, "X : " + QString::number(scenePos().x()) +
+                           ", Y : " + QString::number(scenePos().y()));
+
+    QGraphicsItem::mouseMoveEvent(event);
 }
 
 int testGI::getW() const
