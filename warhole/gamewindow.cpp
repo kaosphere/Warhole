@@ -45,17 +45,6 @@ GameWindow::GameWindow(QWidget *parent) :
     QObject::connect(regiment2, SIGNAL(objectCoordinateChanged()), this, SLOT(graphicalObjectCoordinateUpdate()));
 }
 
-//drag and drop on the scene
-void GameWindow::mousePressEvent(QGraphicsSceneWheelEvent *event)
-{
-    QMimeData *data = new QMimeData;
-    //data->setColor(Qt::green);
-
-    QDrag *drag = new QDrag(event->widget());
-    drag->setMimeData(data);
-    drag->start();
-}
-
 void GameWindow::graphicalObjectCoordinateUpdate()
 {
     QLog_Info(LOG_ID_INFO, "X : " + QString::number(qobject_cast<QGraphicsObject*>(sender())->scenePos().x()) +

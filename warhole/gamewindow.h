@@ -32,7 +32,6 @@ class GameWindow : public QMainWindow
 public:
     explicit GameWindow(QWidget *parent = 0);
     ~GameWindow();
-    void mousePressEvent(QGraphicsSceneWheelEvent *event);
     
 public slots:
     void graphicalObjectCoordinateUpdate();
@@ -47,9 +46,11 @@ private:
     Ui::GameWindow *ui;
     QGraphicsScene scene;
     EnhancedGraphicsView view;
+
     BackGroundItem* back;
     QBrush* backGroundBrush;
     QPixmap background;
+
     testGI* regiment;
     testGI* regiment2;
 };
