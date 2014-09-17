@@ -28,7 +28,8 @@ SOURCES += main.cpp\
     graphics/testgi.cpp \
     graphics/fieldlimits.cpp \
     magicalobjectwindow.cpp \
-    graphics/enhancedgraphicsview.cpp
+    graphics/enhancedgraphicsview.cpp \
+    graphics/regimentgraphics.cpp
 
 HEADERS  += mainwindow.h \
     modelwindow.h \
@@ -40,7 +41,8 @@ HEADERS  += mainwindow.h \
     game/distances.h \
     magicalobjectwindow.h \
     graphics/distances.h \
-    graphics/enhancedgraphicsview.h
+    graphics/enhancedgraphicsview.h \
+    graphics/regimentgraphics.h
 
 TRANSLATIONS = warhole_en.ts
 
