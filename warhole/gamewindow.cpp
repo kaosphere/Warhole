@@ -28,7 +28,7 @@ GameWindow::GameWindow(QWidget *parent) :
     //background of the game (To be removed afterwards)
     if(!background.load("C:/Users/Psycko/Documents/GitHub/Warhole/warhole/ressources/floor_grass5.jpg"))
     {
-        qDebug()<<"GAMEWINDOW : Can't load background image";
+        QLog_Error(LOG_ID_ERR, "GAMEWINDOW : Can't load background image");
     }
 
     backGroundBrush = new QBrush(QColor(51,102,0));
