@@ -26,14 +26,28 @@ protected:
 private:
     void initRegimentGraphics();
 
+    void initModels();
+
+    void paintClassicRegiment(QPainter *painter);
+    void paintSkirmishRegiment(QPainter *painter);
+
     static const QString LOG_ID_TRACE;
     static const QString LOG_ID_INFO;
     static const QString LOG_ID_WARN;
     static const QString LOG_ID_ERR;
 
+    static const int DEFAULT_REGIMENT_WIDTH;
+
     RegimentAbstract regiment;
 
-    QList<QGraphicsItem> models;
+    //! regimentWidth.
+    /*!
+    * Stores the number of models wide of the regiment to be displayed.
+    * Default value is 5 models wide.
+    */
+    int regimentWidth;
+
+    QHash<int, QGraphicsItem> models;
 
 
 private slots:
