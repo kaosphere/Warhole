@@ -21,6 +21,11 @@ RegimentGraphics::RegimentGraphics(const RegimentAbstract &r)
     regiment = r;
 }
 
+RegimentGraphics::~RegimentGraphics()
+{
+
+}
+
 void RegimentGraphics::initRegimentGraphics()
 {
     QLoggerManager *manager = QLoggerManager::getInstance();
@@ -39,38 +44,37 @@ void RegimentGraphics::initRegimentGraphics()
 void RegimentGraphics::initModels()
 {
     models.clear();
-    int k = 0;
     for(int i=0; i < regiment.getGroups().size(); ++i)
     {
         // Add only rectangle for living models
-        int nb = regiment.getGroups()[i].getNb() - regiment.getGroups()[i].getCasualties();
-        for(int j = 0; j < i; ++j)
+        int nb = regiment.getGroups().at(i).getNb() - regiment.getGroups().at(i).getCasualties();
+        for(int j = 0; j < nb; ++j)
         {
             // Add a rectangle item for each model in the regiment
-            QGraphicsRectItem* r = new QGraphicsRectItem(k * 50,
+            ModelGraphics* r = new ModelGraphics(((i*j)+j) * 50,
                                 0,
-                                regiment.getGroups()[i].getModel()->getSquareBaseW(),
-                                regiment.getGroups()[i].getModel()->getSquareBaseL(),
+                                regiment.getGroups().at(i).getModel()->getSquareBaseW(),
+                                regiment.getGroups().at(i).getModel()->getSquareBaseL(),
+                                regiment.getGroups().at(i).getModel()->getStats().getName(),
                                 this);
-            models[k++] = r;
+            models.append(r);
         }
     }
 }
 
 QRectF RegimentGraphics::boundingRect() const
 {
-
+    // Dumb
+    return QRect(-80,80,80,80);
 }
 
 void RegimentGraphics::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-
-
     // Paint all rectangles
-    QHash<int, QGraphicsRectItem>::const_iterator i = models.constBegin();
-     while (i != models.constEnd()) {
-         i.value().paint();
-     }
+    // Paint all models
+    QList<ModelGraphics*>::iterator i;
+     for (i = models.begin(); i != models.end(); ++i)
+         (*i)->paint(painter, option, widget);
 }
 
 void RegimentGraphics::mouseMoveEvent(QGraphicsSceneMouseEvent *event)

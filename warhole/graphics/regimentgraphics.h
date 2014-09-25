@@ -3,6 +3,7 @@
 
 #include <QGraphicsItem>
 
+#include "modelgraphics.h"
 #include "game/regiment/regimentabstract.h"
 #include "Utilities/QLogger/QLogger.h"
 
@@ -47,7 +48,7 @@ private:
     */
     int regimentWidth;
 
-    QHash<int, QGraphicsItem> models;
+    QList<ModelGraphics*> models;
 
 
 private slots:
