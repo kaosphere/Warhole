@@ -19,6 +19,7 @@
 #include "graphics/testgi.h"
 #include "graphics/fieldlimits.h"
 #include "graphics/enhancedgraphicsview.h"
+#include "game/game.h"
 
 
 namespace Ui {
@@ -53,6 +54,9 @@ private:
 
     testGI* regiment;
     testGI* regiment2;
+    void initGameWindow();
+
+    Game game;
 };
 
 #endif // GAMEWINDOW_H

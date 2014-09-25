@@ -12,6 +12,11 @@ GameWindow::GameWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::GameWindow)
 {
+    initGameWindow();
+}
+
+void GameWindow::initGameWindow()
+{
     ui->setupUi(this);
 
     QLoggerManager *manager = QLoggerManager::getInstance();

@@ -30,8 +30,17 @@
      <string>Fichier</string>
     </property>
     <addaction name="separator"/>
+    <addaction name="actionOpen_Army"/>
+   </widget>
+   <widget class="QMenu" name="menuGame">
+    <property name="title">
+     <string>Game</string>
+    </property>
+    <addaction name="actionHost_Game"/>
+    <addaction name="actionConnect_to_a_game_2"/>
    </widget>
    <addaction name="menuFichier"/>
+   <addaction name="menuGame"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -45,6 +54,18 @@
    <addaction name="actionBlowTemplate"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
+  <widget class="QDockWidget" name="dockWidget">
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents">
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QTreeView" name="treeViewArmy"/>
+     </item>
+    </layout>
+   </widget>
+  </widget>
   <action name="actionExpTemplateSmall">
    <property name="icon">
     <iconset resource="resources.qrc">
@@ -79,6 +100,26 @@
    </property>
    <property name="toolTip">
     <string>Gabarit de souffle</string>
+   </property>
+  </action>
+  <action name="actionOpen_Army">
+   <property name="text">
+    <string>Open Army</string>
+   </property>
+  </action>
+  <action name="actionConnect_to_a_game">
+   <property name="text">
+    <string>Connect to a game</string>
+   </property>
+  </action>
+  <action name="actionHost_Game">
+   <property name="text">
+    <string>Host Game</string>
+   </property>
+  </action>
+  <action name="actionConnect_to_a_game_2">
+   <property name="text">
+    <string>Connect to a game</string>
    </property>
   </action>
  </widget>
