@@ -32,7 +32,7 @@ public:
 
     QList<Player> getPlayers() const;
     void setPlayers(const QList<Player> &value);
-    void addPlayer(Player& p);
+    bool addPlayer(Player& p);
     void removePlayer(const Player &p);
 
     int getPlayerNumber() const;
@@ -44,11 +44,17 @@ public:
     Historic getHistoric() const;
     void setHistoric(const Historic &value);
 
+    bool addArmyToPlayer(Army a, QString playerName);
 signals:
     
 public slots:
 
 private:
+    static const QString LOG_ID_INFO;
+    static const QString LOG_ID_TRACE;
+    static const QString LOG_ID_WARN;
+    static const QString LOG_ID_ERR;
+
     //! name
     /*!
     * Name of the game

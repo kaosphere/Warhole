@@ -1,8 +1,20 @@
 #include "game.h"
 
+using namespace QLogger;
+
+const QString Game::LOG_ID_INFO = "Game_info";
+const QString Game::LOG_ID_TRACE = "Game_trace";
+const QString Game::LOG_ID_WARN = "Game_warn";
+const QString Game::LOG_ID_ERR = "Game_err";
+
 Game::Game(QObject *parent) :
     QObject(parent)
 {
+    QLoggerManager *manager = QLoggerManager::getInstance();
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_INFO), QLogger::InfoLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_ERR), QLogger::ErrorLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_WARN), QLogger::WarnLevel);
 }
 
 QString Game::getName() const
@@ -45,14 +57,45 @@ void Game::setPlayers(const QList<Player> &value)
     players = value;
 }
 
-void Game::addPlayer(Player &p)
+bool Game::addPlayer(Player &p)
 {
-    players.append(p);
+    bool nameTaken = true;
+    // Add player if the name isn't already taken
+    for(int i = 0; i< players.size(); ++i)
+    {
+        if(players.at(i).getName() == p.getName())
+        {
+            nameTaken = false;
+            players.append(p);
+            return true;
+        }
+    }
+    if(nameTaken)
+    {
+        QLog_Error(LOG_ID_ERR, "addPlayer() : Player name : " + p.getName() + " is already used.");
+        return false;
+    }
 }
 
 void Game::removePlayer(const Player &p)
 {
     players.removeOne(p);
+}
+
+bool Game::addArmyToPlayer(Army a, QString playerName)
+{
+    bool playerFound = false;
+    for(int i = 0; i<players.size(); ++i)
+    {
+        if(players.at(i).getName() == playerName)
+        {
+            players[i].setArmy(a);
+            playerFound = true;
+            return playerFound;
+        }
+    }
+    QLog_Error(LOG_ID_ERR, "addArmyToPlayer() : Couldn't find player " + playerName + ". Can't add Army.");
+    return playerFound;
 }
 
 QString Game::getInformation() const
