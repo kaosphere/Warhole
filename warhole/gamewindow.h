@@ -34,6 +34,9 @@ public:
     explicit GameWindow(QWidget *parent = 0);
     ~GameWindow();
     
+    bool addPlayerToGame(Player p);
+    bool addArmyToPlayer(Army a, QString playerName);
+
 public slots:
 
 private slots:

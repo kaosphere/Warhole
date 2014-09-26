@@ -52,3 +52,13 @@ GameWindow::~GameWindow()
 {
     delete ui;
 }
+
+bool GameWindow::addPlayerToGame(Player p)
+{
+    return game.addPlayer(p);
+}
+
+bool GameWindow::addArmyToPlayer(Army a, QString playerName)
+{
+    return game.addArmyToPlayer(a, playerName);
+}
