@@ -19,6 +19,8 @@ RegimentGraphics::RegimentGraphics(const RegimentAbstract &r)
     initRegimentGraphics();
 
     regiment = r;
+
+    initModels();
 }
 
 RegimentGraphics::~RegimentGraphics()
@@ -36,6 +38,9 @@ void RegimentGraphics::initRegimentGraphics()
 
     // Redraw regiment if the regimentAbstract object is replaced
     QObject::connect(this, SIGNAL(regimentUpdated()), this, SLOT(updateRegiment()));
+
+   // Allow the item to be dragged and dropped
+    setFlag(ItemIsMovable);
 
     // Set default regiment width
     regimentWidth = DEFAULT_REGIMENT_WIDTH;
@@ -65,7 +70,7 @@ void RegimentGraphics::initModels()
 QRectF RegimentGraphics::boundingRect() const
 {
     // Dumb
-    return QRect(-80,80,80,80);
+    return QRect(0,80,80,80);
 }
 
 void RegimentGraphics::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
