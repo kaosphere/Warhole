@@ -12,13 +12,13 @@ GameWindow::GameWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::GameWindow)
 {
+    ui->setupUi(this);
+
     initGameWindow();
 }
 
 void GameWindow::initGameWindow()
 {
-    ui->setupUi(this);
-
     QLoggerManager *manager = QLoggerManager::getInstance();
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_INFO), QLogger::InfoLevel);
@@ -29,6 +29,9 @@ void GameWindow::initGameWindow()
     view.setScene(&scene);
 
     ui->horizontalLayout->addWidget(&view);
+
+    armyModel = new QStandardItemModel(this);
+    ui->treeViewArmy->setModel(armyModel);
 
     //background of the game (To be removed afterwards)
     if(!background.load("C:/Users/Psycko/Documents/GitHub/Warhole/warhole/ressources/floor_grass5.jpg"))
@@ -46,11 +49,41 @@ void GameWindow::initGameWindow()
     regiment2 = new testGI();
     scene.addItem(regiment2);
     scene.addItem(regiment);
+
+    connect(ui->actionOpen_Army, SIGNAL(triggered()), this, SLOT(openArmyMenuClicked()));
 }
 
 GameWindow::~GameWindow()
 {
     delete ui;
+}
+
+void GameWindow::loadArmy()
+{
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open army"), ARMY_PATH, tr("Model files (*.army)"));
+
+    QLog_Info(LOG_ID_INFO, "loadArmy(): Path of army to be loaded : " + fileName);
+    if(!fileName.isEmpty())
+    {
+        army.load(fileName);
+        QLog_Info(LOG_ID_INFO, "Army loaded : ");
+        QLog_Info(LOG_ID_INFO, army.displayInfo());
+    }
+
+    updateArmyList();
+}
+
+void GameWindow::updateArmyList()
+{
+    armyModel->clear();
+    for(int i=0; i<army.getUnits().size(); ++i)
+    {
+        QList<QStandardItem *> newRegiment;
+        newRegiment<<new QStandardItem(QString::number(army.getUnits().at(i).computeTotalNb()))
+                <<new QStandardItem(army.getUnits().at(i).getName())
+                <<new QStandardItem(QString::number(army.getUnits().at(i).computePoints()));
+        armyModel->appendRow(newRegiment);
+    }
 }
 
 bool GameWindow::addPlayerToGame(Player p)
@@ -61,4 +94,9 @@ bool GameWindow::addPlayerToGame(Player p)
 bool GameWindow::addArmyToPlayer(Army a, QString playerName)
 {
     return game.addArmyToPlayer(a, playerName);
+}
+
+void GameWindow::openArmyMenuClicked()
+{
+    loadArmy();
 }

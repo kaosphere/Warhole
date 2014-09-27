@@ -37,7 +37,10 @@ public:
     bool addPlayerToGame(Player p);
     bool addArmyToPlayer(Army a, QString playerName);
 
+    void loadArmy();
+    void updateArmyList();
 public slots:
+    void openArmyMenuClicked();
 
 private slots:
 
@@ -50,6 +53,7 @@ private:
     Ui::GameWindow *ui;
     QGraphicsScene scene;
     EnhancedGraphicsView view;
+    QStandardItemModel* armyModel;
 
     BackGroundItem* back;
     QBrush* backGroundBrush;
@@ -60,6 +64,7 @@ private:
     void initGameWindow();
 
     Game game;
+    Army army;
 };
 
 #endif // GAMEWINDOW_H
