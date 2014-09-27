@@ -26,12 +26,20 @@ void GameWindow::initGameWindow()
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_WARN), QLogger::WarnLevel);
 
     //ui parameters
+    //View and scene
     view.setScene(&scene);
-
     ui->horizontalLayout->addWidget(&view);
 
+
+    //Tree view of army
     armyModel = new QStandardItemModel(this);
     ui->treeViewArmy->setModel(armyModel);
+    ui->treeViewArmy->setContextMenuPolicy((Qt::CustomContextMenu));
+    QObject::connect(ui->treeViewArmy,
+                     SIGNAL(customContextMenuRequested(QPoint)),
+                     SLOT(openArmyModelContextMenu(QPoint)));
+
+
 
     //background of the game (To be removed afterwards)
     if(!background.load("C:/Users/Psycko/Documents/GitHub/Warhole/warhole/ressources/floor_grass5.jpg"))
@@ -45,10 +53,11 @@ void GameWindow::initGameWindow()
 
     back = new BackGroundItem(5400,2700);
     scene.addItem(back);
-    regiment = new testGI();
-    regiment2 = new testGI();
-    scene.addItem(regiment2);
-    scene.addItem(regiment);
+
+
+    //Actions
+    actionDeploy = new QAction(tr("Déployer"), this);
+    connect(actionDeploy, SIGNAL(triggered()),this,SLOT(deployRegiment()));
 
     connect(ui->actionOpen_Army, SIGNAL(triggered()), this, SLOT(openArmyMenuClicked()));
 }
@@ -56,6 +65,9 @@ void GameWindow::initGameWindow()
 GameWindow::~GameWindow()
 {
     delete ui;
+    delete back;
+    armyModel->deleteLater();
+    actionDeploy->deleteLater();
 }
 
 void GameWindow::loadArmy()
@@ -84,6 +96,26 @@ void GameWindow::updateArmyList()
                 <<new QStandardItem(QString::number(army.getUnits().at(i).computePoints()));
         armyModel->appendRow(newRegiment);
     }
+}
+
+void GameWindow::openArmyModelContextMenu(QPoint pos)
+{
+    indexArmy =ui->treeViewArmy->indexAt(pos);
+
+    if(indexArmy.isValid())
+    {
+        QMenu *menu=new QMenu(this);
+        menu->addAction(actionDeploy);
+        menu->popup(ui->treeViewArmy->viewport()->mapToGlobal(pos));
+    }
+}
+
+void GameWindow::deployRegiment()
+{
+    // Create new regimentGraphics with selected one
+    RegimentGraphics* r = new RegimentGraphics(
+                army.getUnits().at(indexArmy.row()));
+    scene.addItem(r);
 }
 
 bool GameWindow::addPlayerToGame(Player p)

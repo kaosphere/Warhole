@@ -20,6 +20,7 @@
 #include "graphics/fieldlimits.h"
 #include "graphics/enhancedgraphicsview.h"
 #include "game/game.h"
+#include "graphics/regimentgraphics.h"
 
 
 namespace Ui {
@@ -39,8 +40,11 @@ public:
 
     void loadArmy();
     void updateArmyList();
+
 public slots:
     void openArmyMenuClicked();
+    void openArmyModelContextMenu(QPoint pos);
+    void deployRegiment();
 
 private slots:
 
@@ -59,9 +63,12 @@ private:
     QBrush* backGroundBrush;
     QPixmap background;
 
-    testGI* regiment;
-    testGI* regiment2;
+    QAction* actionDeploy;
+    QModelIndex indexArmy;
+
     void initGameWindow();
+
+    QList<RegimentGraphics*> regimentsGraphics;
 
     Game game;
     Army army;
