@@ -73,8 +73,8 @@ bool Game::addPlayer(Player &p)
     if(nameTaken)
     {
         QLog_Error(LOG_ID_ERR, "addPlayer() : Player name : " + p.getName() + " is already used.");
-        return false;
     }
+    return false;
 }
 
 void Game::removePlayer(const Player &p)
