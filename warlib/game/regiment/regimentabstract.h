@@ -49,8 +49,8 @@ public:
     int getStartingCount() const;
     void setStartingCount(int value);
 
-    int computePoints();
-    int computeTotalNb();
+    int computePoints() const;
+    int computeTotalNb() const;
 
     QString displayInfo() const;
     QString displayShortInfo() const;

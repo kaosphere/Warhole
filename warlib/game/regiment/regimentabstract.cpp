@@ -109,7 +109,7 @@ void RegimentAbstract::setStartingCount(int value)
     startingCount = value;
 }
 
-int RegimentAbstract::computePoints()
+int RegimentAbstract::computePoints() const
 {
     int points = 0;
     QList<RecruitsGroup>::const_iterator i = groups.constBegin();
@@ -120,7 +120,7 @@ int RegimentAbstract::computePoints()
     return points;
 }
 
-int RegimentAbstract::computeTotalNb()
+int RegimentAbstract::computeTotalNb() const
 {
 	int nb = 0;
 	QList<RecruitsGroup>::const_iterator i = groups.constBegin();
