@@ -56,10 +56,10 @@ void RegimentGraphics::initModels()
         for(int j = 0; j < nb; ++j)
         {
             // Add a rectangle item for each model in the regiment
-            ModelGraphics* r = new ModelGraphics(((i*j)+j) * 50,
-                                0,
-                                regiment.getGroups().at(i).getModel()->getSquareBaseW(),
-                                regiment.getGroups().at(i).getModel()->getSquareBaseL(),
+            ModelGraphics* r = new ModelGraphics(((i*j)+j)%regimentWidth * regiment.getGroups().at(i).getModel()->getSquareBaseW() * ONE_MILLIMETER,
+                                (((i*j)+j)/regimentWidth) * regiment.getGroups().at(i).getModel()->getSquareBaseL() * ONE_MILLIMETER,
+                                regiment.getGroups().at(i).getModel()->getSquareBaseW() * ONE_MILLIMETER,
+                                regiment.getGroups().at(i).getModel()->getSquareBaseL() * ONE_MILLIMETER,
                                 regiment.getGroups().at(i).getModel()->getStats().getName(),
                                 this);
             models.append(r);
@@ -69,8 +69,24 @@ void RegimentGraphics::initModels()
 
 QRectF RegimentGraphics::boundingRect() const
 {
+    int nb = regiment.getGroupsConst().first().getNb() - regiment.getGroupsConst().first().getCasualties();
     // Dumb
-    return QRect(0,80,80,80);
+    return QRect(0,
+                 0,
+                 regimentWidth*regiment.getGroupsConst().first().getModel()->getSquareBaseW() * ONE_MILLIMETER,
+                 ((nb/regimentWidth)+1)*regiment.getGroupsConst().first().getModel()->getSquareBaseL() * ONE_MILLIMETER);
+}
+
+QPainterPath RegimentGraphics::shape() const
+{
+    QPainterPath path;
+
+    for(int i=0; i < models.size(); ++i)
+    {
+        path.addRect(models.at(i)->boundingRect());
+    }
+
+    return path;
 }
 
 void RegimentGraphics::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)

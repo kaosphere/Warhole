@@ -4,6 +4,7 @@
 #include <QGraphicsItem>
 
 #include "modelgraphics.h"
+#include "distances.h"
 #include "game/regiment/regimentabstract.h"
 #include "Utilities/QLogger/QLogger.h"
 
@@ -21,6 +22,7 @@ public:
     RegimentAbstract getRegiment() const;
     void setRegiment(const RegimentAbstract &value);
 
+    virtual QPainterPath shape() const;
 protected:
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent* event);
 
