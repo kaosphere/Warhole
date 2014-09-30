@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QStringList>
+#include "core/warlibexception.h"
 
 const int SAVE_VERSION(1);
 

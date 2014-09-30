@@ -74,7 +74,7 @@ void Army::removeUnit(const RegimentAbstract &u)
 
 void Army::save(const QString& path)
 {
-	QFile::remove(path);
+    if(!QFile::remove(path)) throw WarlibException(0,tr("QFile::remove() failed for an un"), EXCEPTION_LOW);
     QSettings savedFile(path, QSettings::IniFormat);
     savedFile.setValue("Army", qVariantFromValue(*this));
     savedFile.sync();

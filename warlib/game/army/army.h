@@ -6,6 +6,7 @@
 #include <QString>
 #include <QList>
 #include "Utilities/QLogger/QLogger.h"
+#include "core/warlibexception.h"
 
 class Army : public QObject
 {
