@@ -68,7 +68,8 @@ HEADERS += \
     core/message.h \
     game/game.h \
     game/player.h \
-    game/magicalObject/magicalobject.h
+    game/magicalObject/magicalobject.h \
+    core/warlibexception.h
 
 INSTALLS += target
 
