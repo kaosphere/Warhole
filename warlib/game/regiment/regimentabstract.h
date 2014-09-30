@@ -28,6 +28,7 @@ public:
     ~RegimentAbstract();
 
     QList<RecruitsGroup> &getGroups();
+    QList<RecruitsGroup> getGroupsConst() const;
     void setGroups(const QList<RecruitsGroup> &value);
     void addGroup(const RecruitsGroup& r);
     void removeGroup(const RecruitsGroup& r);

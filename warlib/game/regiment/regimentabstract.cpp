@@ -83,6 +83,11 @@ QList<RecruitsGroup>& RegimentAbstract::getGroups()
     return groups;
 }
 
+QList<RecruitsGroup> RegimentAbstract::getGroupsConst() const
+{
+    return groups;
+}
+
 void RegimentAbstract::setGroups(const QList<RecruitsGroup> &value)
 {
     groups = value;
