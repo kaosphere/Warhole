@@ -165,7 +165,7 @@ void  ModelCavalry::load(QString path)
 
 void ModelCavalry::save(QString path)
 {
-    if(!QFile::remove(path)) throw WarlibException(0,tr("QFile::remove() failed for an un"), EXCEPTION_LOW);
+    QFile::remove(path);
     QSettings savedFile(path, QSettings::IniFormat);
     savedFile.setValue("ModelCavalry", qVariantFromValue(*this));
     savedFile.sync();

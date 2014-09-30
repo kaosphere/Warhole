@@ -123,7 +123,7 @@ void ModelCharriot::load(QString path)
 
 void ModelCharriot::save(QString path)
 {
-    if(!QFile::remove(path)) throw WarlibException(0,tr("QFile::remove() failed for an un"), EXCEPTION_LOW);
+    QFile::remove(path);
     QSettings savedFile(path, QSettings::IniFormat);
     savedFile.setValue("ModelCharriot", qVariantFromValue(*this));
     savedFile.sync();
