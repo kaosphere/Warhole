@@ -30,7 +30,8 @@ SOURCES += main.cpp\
     magicalobjectwindow.cpp \
     graphics/enhancedgraphicsview.cpp \
     graphics/regimentgraphics.cpp \
-    graphics/modelgraphics.cpp
+    graphics/modelgraphics.cpp \
+    graphics/rulergraphics.cpp
 
 HEADERS  += mainwindow.h \
     modelwindow.h \
@@ -44,7 +45,8 @@ HEADERS  += mainwindow.h \
     graphics/distances.h \
     graphics/enhancedgraphicsview.h \
     graphics/regimentgraphics.h \
-    graphics/modelgraphics.h
+    graphics/modelgraphics.h \
+    graphics/rulergraphics.h
 
 TRANSLATIONS = warhole_en.ts
 
