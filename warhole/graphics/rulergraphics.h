@@ -4,6 +4,9 @@
 #include <QGraphicsObject>
 #include <QLinearGradient>
 #include <QPainter>
+#include <QtCore>
+#include <QMenu>
+#include <QGraphicsSceneContextMenuEvent>
 
 #include "distances.h"
 
@@ -24,6 +27,9 @@ public:
     int getWidth() const;
     void setWidth(int value);
 
+    void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
+public slots:
+
 private:
     //! length.
     /*!
@@ -39,6 +45,12 @@ private:
 
     static const int DEFAULT_RULER_LENGTH;
     static const int DEFAULT_RULER_WIDTH;
+    static const int GRADUATION_SIZE;
+    static const int GRADUATION_NUMBER_WIDTH;
+    static const int GRADUATION_NUMBER_HIGHT;
+    static const int PEN_WIDTH;
+
+    QAction* actionRemoveRuler;
 
     void initRulerGraphics();
 };

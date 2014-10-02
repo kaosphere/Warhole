@@ -2,6 +2,10 @@
 
 const int RulerGraphics::DEFAULT_RULER_LENGTH = 6;
 const int RulerGraphics::DEFAULT_RULER_WIDTH = ONE_INCH;
+const int RulerGraphics::GRADUATION_SIZE = ONE_INCH/5;
+const int RulerGraphics::GRADUATION_NUMBER_WIDTH = RulerGraphics::DEFAULT_RULER_WIDTH/2;
+const int RulerGraphics::GRADUATION_NUMBER_HIGHT = RulerGraphics::DEFAULT_RULER_WIDTH/2;
+const int RulerGraphics::PEN_WIDTH = 3;
 
 RulerGraphics::RulerGraphics()
 {
@@ -19,6 +23,9 @@ void RulerGraphics::initRulerGraphics()
 {
     width = DEFAULT_RULER_WIDTH;
 
+    actionRemoveRuler = new QAction(tr("Retirer"), this);
+    connect(actionRemoveRuler, SIGNAL(triggered()),this, SLOT(deleteLater()));
+
     setFlag(ItemIsMovable);
 }
 
@@ -29,18 +36,18 @@ RulerGraphics::~RulerGraphics()
 
 QRectF RulerGraphics::boundingRect() const
 {
-    return QRect(0,
-                 0,
-                 length*ONE_INCH,
-                 width);
+    return QRect(-PEN_WIDTH,
+                 -PEN_WIDTH,
+                 length*ONE_INCH + PEN_WIDTH,
+                 width + PEN_WIDTH);
 }
 
 void RulerGraphics::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     QRectF rec = boundingRect();
-    QLinearGradient gradient(0, length*ONE_INCH, width, 0);
+    QLinearGradient gradient(0, 0, 0, width);
     gradient.setColorAt(0, QColor::fromRgb(qRgba(221, 209, 92, 0.8)));
-    gradient.setColorAt(1, QColor::fromRgb(qRgba(240, 238, 151, 0.8)));
+    gradient.setColorAt(1, QColor::fromRgb(qRgba(80, 80, 20, 0.8)));
 
     QBrush brush(gradient);
     QPen pen(QColor(0,20,40),3);
@@ -49,6 +56,23 @@ void RulerGraphics::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
 
     painter->setPen(pen);
     painter->drawRect(rec);
+
+    QFont font;
+    font.setPixelSize(36);
+    painter->setFont(font);
+
+    // Draw ruler graduation
+    for(int i = 1; i< length; ++i)
+    {
+        painter->drawLine(i*ONE_INCH,0,i*ONE_INCH, GRADUATION_SIZE);
+        painter->drawLine(i*ONE_INCH,width-GRADUATION_SIZE,i*ONE_INCH,width);
+        painter->drawText(i*ONE_INCH - GRADUATION_NUMBER_HIGHT/2,
+                          width/2 - GRADUATION_NUMBER_WIDTH/2,
+                          GRADUATION_NUMBER_WIDTH,
+                          GRADUATION_NUMBER_HIGHT,
+                          Qt::AlignHCenter || Qt::AlignVCenter,
+                          QString::number(i));
+    }
 }
 
 int RulerGraphics::getLength() const
@@ -69,6 +93,13 @@ int RulerGraphics::getWidth() const
 void RulerGraphics::setWidth(int value)
 {
     width = value;
+}
+
+void RulerGraphics::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
+{
+    QMenu *menu = new QMenu;
+    menu->addAction(actionRemoveRuler);
+    menu->popup(event->screenPos());
 }
 
 
