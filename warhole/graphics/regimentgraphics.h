@@ -12,8 +12,8 @@ class RegimentGraphics : public QGraphicsObject
 {
     Q_OBJECT
 public:
-    RegimentGraphics();
-    RegimentGraphics(const RegimentAbstract& r);
+    RegimentGraphics(QGraphicsItem* parent = 0);
+    RegimentGraphics(const RegimentAbstract& r, QGraphicsItem* parent = 0);
     virtual ~RegimentGraphics();
 
     QRectF boundingRect() const;

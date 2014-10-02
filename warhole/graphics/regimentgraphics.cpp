@@ -9,12 +9,13 @@ const QString RegimentGraphics::LOG_ID_ERR = "RegimentGraphics_err";
 
 const int RegimentGraphics::DEFAULT_REGIMENT_WIDTH = 5;
 
-RegimentGraphics::RegimentGraphics()
+RegimentGraphics::RegimentGraphics(QGraphicsItem *parent) : QGraphicsObject(parent)
 {
     initRegimentGraphics();
 }
 
-RegimentGraphics::RegimentGraphics(const RegimentAbstract &r)
+RegimentGraphics::RegimentGraphics(const RegimentAbstract &r, QGraphicsItem *parent) :
+    QGraphicsObject(parent)
 {
     initRegimentGraphics();
 
