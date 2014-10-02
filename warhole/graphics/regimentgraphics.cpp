@@ -52,11 +52,13 @@ void RegimentGraphics::initModels()
     for(int i=0; i < regiment.getGroups().size(); ++i)
     {
         // Add only rectangle for living models
-        int nb = regiment.getGroups().at(i).getNb() - regiment.getGroups().at(i).getCasualties();
+        int nb = regiment.computeTotalNb();
         for(int j = 0; j < nb; ++j)
         {
             // Add a rectangle item for each model in the regiment
+            // X position is the number of the model modulo the regiment width
             ModelGraphics* r = new ModelGraphics(((i*j)+j)%regimentWidth * regiment.getGroups().at(i).getModel()->getSquareBaseW() * ONE_MILLIMETER,
+                                // Y position is the number of the model divided by regiment width
                                 (((i*j)+j)/regimentWidth) * regiment.getGroups().at(i).getModel()->getSquareBaseL() * ONE_MILLIMETER,
                                 regiment.getGroups().at(i).getModel()->getSquareBaseW() * ONE_MILLIMETER,
                                 regiment.getGroups().at(i).getModel()->getSquareBaseL() * ONE_MILLIMETER,
@@ -69,8 +71,7 @@ void RegimentGraphics::initModels()
 
 QRectF RegimentGraphics::boundingRect() const
 {
-    int nb = regiment.getGroupsConst().first().getNb() - regiment.getGroupsConst().first().getCasualties();
-    // Dumb
+    int nb = regiment.computeTotalNb();
     return QRect(0,
                  0,
                  regimentWidth*regiment.getGroupsConst().first().getModel()->getSquareBaseW() * ONE_MILLIMETER,
@@ -91,11 +92,26 @@ QPainterPath RegimentGraphics::shape() const
 
 void RegimentGraphics::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+    int nb = regiment.computeTotalNb();
+    QLinearGradient gradient(0,
+                             ((nb/regimentWidth)+1)*regiment.getGroupsConst().first().getModel()->getSquareBaseL() * ONE_MILLIMETER,
+                             regimentWidth*regiment.getGroupsConst().first().getModel()->getSquareBaseW() * ONE_MILLIMETER,
+                             0);
+    gradient.setColorAt(0, QColor::fromRgb(qRgba(6, 52, 69, 0)));
+    gradient.setColorAt(1, QColor::fromRgb(qRgba(9, 85, 112, 0)));
+
+    QBrush brush(gradient);
+    QPen pen(QColor(0,20,40),3);
+
     // Paint all rectangles
     // Paint all models
     QList<ModelGraphics*>::iterator i;
      for (i = models.begin(); i != models.end(); ++i)
+     {
+         (*i)->setBrush(brush);
+         (*i)->setPen(pen);
          (*i)->paint(painter, option, widget);
+     }
 }
 
 void RegimentGraphics::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
