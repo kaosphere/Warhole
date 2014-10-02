@@ -21,6 +21,7 @@
 #include "graphics/enhancedgraphicsview.h"
 #include "game/game.h"
 #include "graphics/regimentgraphics.h"
+#include "graphics/rulergraphics.h"
 
 
 namespace Ui {
@@ -41,10 +42,15 @@ public:
     void loadArmy();
     void updateArmyList();
 
+    void addRulerToScene(int l);
 public slots:
     void openArmyMenuClicked();
     void openArmyModelContextMenu(QPoint pos);
     void deployRegiment();
+    void add6InchesRuler();
+    void add12InchesRuler();
+    void add18InchesRuler();
+    void add24InchesRuler();
 
 private slots:
 

@@ -54,8 +54,16 @@ void GameWindow::initGameWindow()
     back = new BackGroundItem(5400,2700);
     scene.addItem(back);
 
+    RulerGraphics* ruler = new RulerGraphics();
+    scene.addItem(ruler);
+
 
     //Actions
+    connect(ui->actionRuler_6_inches, SIGNAL(triggered()),this, SLOT(add6InchesRuler()));
+    connect(ui->actionRuler_12_inches, SIGNAL(triggered()),this, SLOT(add12InchesRuler()));
+    connect(ui->actionRuler_18_inches, SIGNAL(triggered()),this, SLOT(add18InchesRuler()));
+    connect(ui->actionRuler_24_inches, SIGNAL(triggered()),this, SLOT(add24InchesRuler()));
+
     actionDeploy = new QAction(tr("Déployer"), this);
     connect(actionDeploy, SIGNAL(triggered()),this,SLOT(deployRegiment()));
 
@@ -116,6 +124,33 @@ void GameWindow::deployRegiment()
     RegimentGraphics* r = new RegimentGraphics(
                 army.getUnits().at(indexArmy.row()));
     scene.addItem(r);
+}
+
+void GameWindow::add6InchesRuler()
+{
+    addRulerToScene(6);
+}
+
+void GameWindow::add12InchesRuler()
+{
+    addRulerToScene(12);
+}
+
+void GameWindow::add18InchesRuler()
+{
+    addRulerToScene(18);
+}
+
+void GameWindow::add24InchesRuler()
+{
+    addRulerToScene(24);
+}
+
+void GameWindow::addRulerToScene(int l)
+{
+    RulerGraphics* r = new RulerGraphics(l);
+    scene.addItem(r);
+    r->setPos(back->getW()/2, back->getH()/2);
 }
 
 bool GameWindow::addPlayerToGame(Player p)
