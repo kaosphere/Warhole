@@ -3,5 +3,9 @@
         <file>ressources/exp_template.png</file>
         <file>ressources/exp_template_icon_small.png</file>
         <file>ressources/blowTemplate.png</file>
+        <file>ressources/ruler-icon-6.gif</file>
+        <file>ressources/ruler-icon-12.gif</file>
+        <file>ressources/ruler-icon-18.gif</file>
+        <file>ressources/ruler-icon-24.gif</file>
     </qresource>
 </RCC>
