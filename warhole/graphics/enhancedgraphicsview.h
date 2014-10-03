@@ -56,6 +56,8 @@ protected:
     * to perform a zoom instead of scrolling the view.
     */
     virtual void wheelEvent(QWheelEvent *event);
+    void keyPressEvent(QKeyEvent *event);
+    void keyReleaseEvent(QKeyEvent *event);
 
 private:
     //! scaleBy.
@@ -82,6 +84,9 @@ private:
     * Minimum factor of scaling that can be applied to the view.
     */
     static const double MIN_SCALE_FACTOR;
+
+    bool pan;
+    QPointF lastPos;
 
     static const QString LOG_ID_TRACE;
     static const QString LOG_ID_INFO;

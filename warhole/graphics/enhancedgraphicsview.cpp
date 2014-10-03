@@ -21,7 +21,9 @@ EnhancedGraphicsView::EnhancedGraphicsView(QWidget *parent) : QGraphicsView(pare
     // init scale factor
     scaleFactor = 1.0;
 
-    setDragMode(ScrollHandDrag);
+    pan = false;
+
+    setDragMode(RubberBandDrag);
 
     setRenderHints(QPainter::Antialiasing|
                    QPainter::TextAntialiasing);
@@ -32,6 +34,24 @@ EnhancedGraphicsView::EnhancedGraphicsView(QWidget *parent) : QGraphicsView(pare
 EnhancedGraphicsView::~EnhancedGraphicsView()
 {
 
+}
+
+void EnhancedGraphicsView::keyPressEvent(QKeyEvent *event)
+{
+    if(event->key() == Qt::Key_Control)
+    {
+        setDragMode(ScrollHandDrag);
+    }
+    QGraphicsView::keyPressEvent(event);
+}
+
+void EnhancedGraphicsView::keyReleaseEvent(QKeyEvent *event)
+{
+    if(event->key() == Qt::Key_Control)
+    {
+        setDragMode(RubberBandDrag);
+    }
+    QGraphicsView::keyReleaseEvent(event);
 }
 
 void EnhancedGraphicsView::zoomIn()
@@ -53,9 +73,13 @@ void EnhancedGraphicsView::wheelEvent(QWheelEvent *event)
         scaleFactor *= factor;
         scaleBy(factor);
     }
+    QGraphicsView::wheelEvent(event);
 }
 
 void EnhancedGraphicsView::scaleBy(double factor)
 {
     scale(factor, factor);
 }
+
+
+
