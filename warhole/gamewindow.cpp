@@ -40,7 +40,6 @@ void GameWindow::initGameWindow()
                      SLOT(openArmyModelContextMenu(QPoint)));
 
 
-
     //background of the game (To be removed afterwards)
     if(!background.load("C:/Users/Psycko/Documents/GitHub/Warhole/warhole/ressources/floor_grass5.jpg"))
     {
@@ -53,10 +52,6 @@ void GameWindow::initGameWindow()
 
     back = new BackGroundItem(5400,2700);
     scene.addItem(back);
-
-    RulerGraphics* ruler = new RulerGraphics();
-    scene.addItem(ruler);
-
 
     //Actions
     connect(ui->actionRuler_6_inches, SIGNAL(triggered()),this, SLOT(add6InchesRuler()));
