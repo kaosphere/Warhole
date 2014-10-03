@@ -43,6 +43,7 @@ public:
     void updateArmyList();
 
     void addRulerToScene(int l);
+
 public slots:
     void openArmyMenuClicked();
     void openArmyModelContextMenu(QPoint pos);

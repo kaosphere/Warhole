@@ -7,6 +7,8 @@
 #include <QtCore>
 #include <QMenu>
 #include <QGraphicsSceneContextMenuEvent>
+#include <QKeyEvent>
+#include <QCursor>
 
 #include "distances.h"
 
@@ -28,6 +30,9 @@ public:
     void setWidth(int value);
 
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
+    void keyPressEvent(QKeyEvent *event);
+    void keyReleaseEvent(QKeyEvent *event);
+    void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 public slots:
 
 private:
@@ -51,6 +56,9 @@ private:
     static const int PEN_WIDTH;
 
     QAction* actionRemoveRuler;
+    bool rot;
+    bool firstRot;
+    QPointF initialPos;
 
     void initRulerGraphics();
 };

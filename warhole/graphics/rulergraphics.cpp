@@ -26,7 +26,12 @@ void RulerGraphics::initRulerGraphics()
     actionRemoveRuler = new QAction(tr("Retirer"), this);
     connect(actionRemoveRuler, SIGNAL(triggered()),this, SLOT(deleteLater()));
 
+    rot = false;
+    firstRot = true;
+
     setFlag(ItemIsMovable);
+    setFlag(ItemIsSelectable);
+    setFlag(ItemIsFocusable);
 }
 
 RulerGraphics::~RulerGraphics()
@@ -102,4 +107,42 @@ void RulerGraphics::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
     menu->popup(event->screenPos());
 }
 
+void RulerGraphics::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+    if(rot)
+    {
+        if(firstRot)
+        {
+            initialPos = event->scenePos();
+            firstRot = false;
+        }
+        int cX = boundingRect().center().x();
+        int cY = boundingRect().center().y();
+        qreal angle = event->scenePos().manhattanLength() - initialPos.manhattanLength();
+        setTransform(transform() * QTransform().translate(cX, cY).rotate(rotation() + angle / 100).translate(-cX, -cY));
+    }
+    else
+    {
+        QGraphicsItem::mouseMoveEvent(event);
+    }
+}
+
+void RulerGraphics::keyPressEvent(QKeyEvent *event)
+{
+    if(event->key() == Qt::Key_R)
+    {
+        rot = true;
+    }
+    QGraphicsItem::keyPressEvent(event);
+}
+
+void RulerGraphics::keyReleaseEvent(QKeyEvent *event)
+{
+    if(event->key() == Qt::Key_R && !event->isAutoRepeat())
+    {
+        rot = false;
+        firstRot = true;
+    }
+    QGraphicsItem::keyReleaseEvent(event);
+}
 
