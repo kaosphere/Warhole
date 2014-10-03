@@ -52,6 +52,8 @@ private:
 
     QList<ModelGraphics*> models;
 
+    QPen* childrenPen;
+
 
 private slots:
     void updateRegiment();
