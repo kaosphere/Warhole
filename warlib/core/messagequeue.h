@@ -14,7 +14,7 @@
 * the data to be processed by the command manager, and the network
 * interfaced. The newMessageAvailable() signal is emitted when a new
 * message is added to the list. A mutex protects the message list
-* from being modified by different threads at the same time.s
+* from being modified by different threads at the same time.
 */
 class MessageQueue : public QObject
 {
@@ -28,9 +28,10 @@ public:
 
     QList<Message> getMessageList();
     void setMessageList(const QList<Message> &value);
-    void addMessage(Message &m);
+    void addMessage(const Message &m);
     void removeMessage(Message &m);
     void clearMessages();
+    Message getAndRemoveFirstMessage();
 
 signals:
     //! newMessageAvailable

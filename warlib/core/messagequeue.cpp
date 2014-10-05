@@ -17,7 +17,7 @@ void MessageQueue::setMessageList(const QList<Message> &value)
     messageList = value;
 }
 
-void MessageQueue::addMessage(Message &m)
+void MessageQueue::addMessage(const Message &m)
 {
     // Protect the message list
     QMutexLocker locker(&mutex);
@@ -39,5 +39,13 @@ void MessageQueue::clearMessages()
 {
     QMutexLocker locker(&mutex);
     messageList.clear();
+}
+
+Message MessageQueue::getAndRemoveFirstMessage()
+{
+    QMutexLocker locker(&mutex);
+    Message m = messageList.first();
+    messageList.removeOne(m);
+    return m;
 }
 
