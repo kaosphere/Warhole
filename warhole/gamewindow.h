@@ -22,6 +22,9 @@
 #include "game/game.h"
 #include "graphics/regimentgraphics.h"
 #include "graphics/rulergraphics.h"
+#include "chatwidget.h"
+#include "core/network/networkthread.h"
+#include "core/messagequeue.h"
 
 
 namespace Ui {
@@ -41,7 +44,6 @@ public:
 
     void loadArmy();
     void updateArmyList();
-
     void addRulerToScene(int l);
 
 public slots:
@@ -52,8 +54,13 @@ public slots:
     void add12InchesRuler();
     void add18InchesRuler();
     void add24InchesRuler();
+    void printNetworkState(QString state);
 
 private slots:
+
+    void on_actionHost_Game_triggered();
+
+    void on_actionConnect_to_a_game_2_triggered();
 
 private:
     static const QString LOG_ID_TRACE;
@@ -73,9 +80,15 @@ private:
     QAction* actionDeploy;
     QModelIndex indexArmy;
 
+    ChatWidget* cw;
+
     void initGameWindow();
 
     QList<RegimentGraphics*> regimentsGraphics;
+
+    NetworkThread* netThread;
+    MessageQueue inQueue;
+    MessageQueue outQueue;
 
     Game game;
     Army army;

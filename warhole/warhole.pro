@@ -31,7 +31,13 @@ SOURCES += main.cpp\
     graphics/enhancedgraphicsview.cpp \
     graphics/regimentgraphics.cpp \
     graphics/modelgraphics.cpp \
-    graphics/rulergraphics.cpp
+    graphics/rulergraphics.cpp \
+    chatwidget.cpp \
+    core/network/networkinterface.cpp \
+    core/network/networkserver.cpp \
+    core/network/networkclient.cpp \
+    core/network/client.cpp \
+    core/network/networkthread.cpp
 
 HEADERS  += mainwindow.h \
     modelwindow.h \
@@ -46,7 +52,13 @@ HEADERS  += mainwindow.h \
     graphics/enhancedgraphicsview.h \
     graphics/regimentgraphics.h \
     graphics/modelgraphics.h \
-    graphics/rulergraphics.h
+    graphics/rulergraphics.h \
+    chatwidget.h \
+    core/network/networkinterface.h \
+    core/network/networkserver.h \
+    core/network/networkclient.h \
+    core/network/client.h \
+    core/network/networkthread.h
 
 TRANSLATIONS = warhole_en.ts
 

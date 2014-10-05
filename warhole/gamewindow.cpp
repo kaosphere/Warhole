@@ -30,6 +30,10 @@ void GameWindow::initGameWindow()
     view.setScene(&scene);
     ui->horizontalLayout->addWidget(&view);
 
+    // Chat widget
+    cw = new ChatWidget(this);
+    ui->dockWidget_2->setWidget(cw);
+
 
     //Tree view of army
     armyModel = new QStandardItemModel(this);
@@ -63,6 +67,8 @@ void GameWindow::initGameWindow()
     connect(actionDeploy, SIGNAL(triggered()),this,SLOT(deployRegiment()));
 
     connect(ui->actionOpen_Army, SIGNAL(triggered()), this, SLOT(openArmyMenuClicked()));
+
+    netThread = NULL;
 }
 
 GameWindow::~GameWindow()
@@ -71,6 +77,8 @@ GameWindow::~GameWindow()
     delete back;
     armyModel->deleteLater();
     actionDeploy->deleteLater();
+    cw->deleteLater();
+    if (netThread) netThread->deleteLater();
 }
 
 void GameWindow::loadArmy()
@@ -161,4 +169,30 @@ bool GameWindow::addArmyToPlayer(Army a, QString playerName)
 void GameWindow::openArmyMenuClicked()
 {
     loadArmy();
+}
+
+void GameWindow::on_actionHost_Game_triggered()
+{
+    if(netThread)
+    {
+        delete netThread;
+    }
+    netThread = new NetworkThread(SERVER, &outQueue, &inQueue, this);
+    connect(netThread, SIGNAL(networkStateChanged(QString)),this, SLOT(printNetworkState(QString)));
+}
+
+void GameWindow::on_actionConnect_to_a_game_2_triggered()
+{
+    if(netThread)
+    {
+        delete netThread;
+    }
+    netThread = new NetworkThread(CLIENT, &outQueue, &inQueue, this, cw->getIpString(), cw->getPort());
+    connect(netThread, SIGNAL(networkStateChanged(QString)),this, SLOT(printNetworkState(QString)));
+}
+
+void GameWindow::printNetworkState(QString state)
+{
+    QLog_Info(LOG_ID_INFO, "on passe dans la slut");
+    cw->appendString(state);
 }

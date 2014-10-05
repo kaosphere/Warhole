@@ -22,7 +22,7 @@
      <x>0</x>
      <y>0</y>
      <width>1025</width>
-     <height>20</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFichier">
@@ -75,6 +75,12 @@
     </layout>
    </widget>
   </widget>
+  <widget class="QDockWidget" name="dockWidget_2">
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents_2"/>
+  </widget>
   <action name="actionExpTemplateSmall">
    <property name="icon">
     <iconset resource="resources.qrc">
@@ -114,11 +120,6 @@
   <action name="actionOpen_Army">
    <property name="text">
     <string>Open Army</string>
-   </property>
-  </action>
-  <action name="actionConnect_to_a_game">
-   <property name="text">
-    <string>Connect to a game</string>
    </property>
   </action>
   <action name="actionHost_Game">
