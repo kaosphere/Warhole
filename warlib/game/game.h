@@ -45,6 +45,9 @@ public:
     void setHistoric(const Historic &value);
 
     bool addArmyToPlayer(Army a, QString playerName);
+    int getPoints() const;
+    void setPoints(int value);
+
 signals:
     
 public slots:
@@ -85,12 +88,18 @@ private:
     */
     bool spectators;
 
-    //! name
+    //! historic
     /*!
     * Historic of the events of the whole game. For more info on Historic
     * @see Historic documentation.
     */
     Historic historic;
+
+    //! points
+    /*!
+    * Number of points for the players to pick in the game (only informative)
+    */
+    int points;
 };
 
 #endif // GAME_H

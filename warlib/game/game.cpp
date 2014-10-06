@@ -117,3 +117,14 @@ void Game::setHistoric(const Historic &value)
 {
     historic = value;
 }
+
+
+int Game::getPoints() const
+{
+    return points;
+}
+
+void Game::setPoints(int value)
+{
+    points = value;
+}
