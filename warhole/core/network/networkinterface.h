@@ -13,15 +13,16 @@
 
 #define NET_PORT 50885
 
+
 class NetworkInterface : public QObject
 {
     Q_OBJECT
 public:
-    explicit NetworkInterface(MessageQueue* in, QObject *parent = 0);
+    explicit NetworkInterface(MessageQueue* in, MessageQueue *out, QObject *parent = 0);
 
     ~NetworkInterface();
 
-    virtual void send(const Message& m) = 0;
+    virtual QString getState() const = 0;
     
     MessageQueue *getInQueue() const;
     void setInQueue(MessageQueue *value);
@@ -34,9 +35,11 @@ signals:
     
 public slots:
     virtual void receiveData() = 0;
+    virtual void send() = 0;
 
 protected:
     MessageQueue* inQueue;
+    MessageQueue* outQueue;
 
 private:
 

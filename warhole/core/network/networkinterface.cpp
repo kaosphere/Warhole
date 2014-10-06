@@ -7,7 +7,7 @@ const QString NetworkInterface::LOG_ID_TRACE = "NetworkInterface_trace";
 const QString NetworkInterface::LOG_ID_WARN = "NetworkInterface_warm";
 const QString NetworkInterface::LOG_ID_ERR = "NetworkInterface_err";
 
-NetworkInterface::NetworkInterface(MessageQueue *in, QObject *parent) :
+NetworkInterface::NetworkInterface(MessageQueue *in, MessageQueue *out, QObject *parent) :
     QObject(parent)
 {
     QLoggerManager *manager = QLoggerManager::getInstance();
@@ -36,6 +36,7 @@ NetworkInterface::NetworkInterface(MessageQueue *in, QObject *parent) :
 NetworkInterface::~NetworkInterface()
 {
     if(inQueue) delete inQueue;
+    if(outQueue) delete outQueue;
 }
 
 MessageQueue *NetworkInterface::getInQueue() const
@@ -46,4 +47,14 @@ MessageQueue *NetworkInterface::getInQueue() const
 void NetworkInterface::setInQueue(MessageQueue *value)
 {
     inQueue = value;
+}
+
+MessageQueue *NetworkInterface::getOutQueue() const
+{
+    return outQueue;
+}
+
+void NetworkInterface::setOutQueue(MessageQueue *value)
+{
+    outQueue = value;
 }
