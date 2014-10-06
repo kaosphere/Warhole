@@ -25,8 +25,10 @@ void GameWindow::initGameWindow()
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_ERR), QLogger::ErrorLevel);
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_WARN), QLogger::WarnLevel);
 
+    ///////////////////////////////////////////
     //ui parameters
     //View and scene
+    ///////////////////////////////////////////
     view.setScene(&scene);
     ui->horizontalLayout->addWidget(&view);
 
@@ -34,8 +36,9 @@ void GameWindow::initGameWindow()
     cw = new ChatWidget(this);
     ui->dockWidget_2->setWidget(cw);
 
-
+    ///////////////////////////////////////////
     //Tree view of army
+    ///////////////////////////////////////////
     armyModel = new QStandardItemModel(this);
     ui->treeViewArmy->setModel(armyModel);
     ui->treeViewArmy->setContextMenuPolicy((Qt::CustomContextMenu));
@@ -43,8 +46,9 @@ void GameWindow::initGameWindow()
                      SIGNAL(customContextMenuRequested(QPoint)),
                      SLOT(openArmyModelContextMenu(QPoint)));
 
-
+    ///////////////////////////////////////////
     //background of the game (To be removed afterwards)
+    ///////////////////////////////////////////
     if(!background.load("C:/Users/Psycko/Documents/GitHub/Warhole/warhole/ressources/floor_grass5.jpg"))
     {
         QLog_Error(LOG_ID_ERR, "GAMEWINDOW : Can't load background image");
@@ -57,7 +61,9 @@ void GameWindow::initGameWindow()
     back = new BackGroundItem(5400,2700);
     scene.addItem(back);
 
+    ///////////////////////////////////////////
     //Actions
+    ///////////////////////////////////////////
     connect(ui->actionRuler_6_inches, SIGNAL(triggered()),this, SLOT(add6InchesRuler()));
     connect(ui->actionRuler_12_inches, SIGNAL(triggered()),this, SLOT(add12InchesRuler()));
     connect(ui->actionRuler_18_inches, SIGNAL(triggered()),this, SLOT(add18InchesRuler()));
@@ -68,7 +74,12 @@ void GameWindow::initGameWindow()
 
     connect(ui->actionOpen_Army, SIGNAL(triggered()), this, SLOT(openArmyMenuClicked()));
 
-    netThread = NULL;
+    ///////////////////////////////////////////
+    // Network interface
+    ///////////////////////////////////////////
+    netInterface = NULL;
+
+    game = new Game();
 }
 
 GameWindow::~GameWindow()
@@ -78,7 +89,7 @@ GameWindow::~GameWindow()
     armyModel->deleteLater();
     actionDeploy->deleteLater();
     cw->deleteLater();
-    if (netThread) netThread->deleteLater();
+    if (netInterface) netInterface->deleteLater();
 }
 
 void GameWindow::loadArmy()
@@ -156,43 +167,62 @@ void GameWindow::addRulerToScene(int l)
     r->setPos(back->getW()/2, back->getH()/2);
 }
 
-bool GameWindow::addPlayerToGame(Player p)
-{
-    return game.addPlayer(p);
-}
-
-bool GameWindow::addArmyToPlayer(Army a, QString playerName)
-{
-    return game.addArmyToPlayer(a, playerName);
-}
-
 void GameWindow::openArmyMenuClicked()
 {
     loadArmy();
 }
 
+void GameWindow::createNetworkInterface(NetworkType t)
+{
+    if(netInterface)
+    {
+        delete netInterface;
+    }
+
+    switch(t)
+    {
+    case SERVER:
+        netInterface = new NetworkServer(&inQueue, &outQueue, this);
+        break;
+    case CLIENT:
+        netInterface = new NetworkClient(&inQueue, &outQueue, this);
+        break;
+    default:
+        //TODO error
+        break;
+    }
+
+    connect(netInterface, SIGNAL(stateChanged(QString)),this, SLOT(printNetworkState(QString)));
+    connect(&outQueue, SIGNAL(newMessageAvailable()), netInterface, SLOT(send()));
+    printNetworkState(netInterface->getState());
+}
+
 void GameWindow::on_actionHost_Game_triggered()
 {
-    if(netThread)
+    GameConfiguratorDialog d;
+    d.setModal(true);
+    d.setG(game);
+    if(d.exec())
     {
-        delete netThread;
+        createNetworkInterface(SERVER);
+        printNetworkState(tr("<strong><font color=\"blue\"> Partie créée :</strong></font>\n") +
+             "- " + game->getName() + "\n" +
+             "- " + game->getInformation() + "\n" +
+             "- " + QString::number(game->getPlayerNumber()) + tr(" joueurs max.\n") +
+             "- " + QString::number(game->getPoints()) + tr(" points\n"));
+        if(game->getSpectators())
+             printNetworkState(tr("- Spéctateurs autorisés."));
+        else
+             printNetworkState(tr("- Spéctateurs non autorisés."));
     }
-    netThread = new NetworkThread(SERVER, &outQueue, &inQueue, this);
-    connect(netThread, SIGNAL(networkStateChanged(QString)),this, SLOT(printNetworkState(QString)));
 }
 
 void GameWindow::on_actionConnect_to_a_game_2_triggered()
 {
-    if(netThread)
-    {
-        delete netThread;
-    }
-    netThread = new NetworkThread(CLIENT, &outQueue, &inQueue, this, cw->getIpString(), cw->getPort());
-    connect(netThread, SIGNAL(networkStateChanged(QString)),this, SLOT(printNetworkState(QString)));
+    createNetworkInterface(CLIENT);
 }
 
 void GameWindow::printNetworkState(QString state)
 {
-    QLog_Info(LOG_ID_INFO, "on passe dans la slut");
     cw->appendString(state);
 }

@@ -42,7 +42,6 @@ NetworkThread::NetworkThread(NetworkType n,
                 break;
             case CLIENT:
                 netInterface = new NetworkClient(inQueue, ip, port, this);
-                QLog_Info(LOG_ID_INFO, "Connecting Client with ip : " + ip);
                 break;
             default:
                 // TODO make another error handling

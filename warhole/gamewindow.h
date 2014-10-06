@@ -25,7 +25,7 @@
 #include "chatwidget.h"
 #include "core/network/networkthread.h"
 #include "core/messagequeue.h"
-
+#include "gameconfiguratordialog.h"
 
 namespace Ui {
 class GameWindow;
@@ -46,6 +46,7 @@ public:
     void updateArmyList();
     void addRulerToScene(int l);
 
+    void createNetworkInterface(NetworkType t);
 public slots:
     void openArmyMenuClicked();
     void openArmyModelContextMenu(QPoint pos);
@@ -86,11 +87,11 @@ private:
 
     QList<RegimentGraphics*> regimentsGraphics;
 
-    NetworkThread* netThread;
+    NetworkInterface* netInterface;
     MessageQueue inQueue;
     MessageQueue outQueue;
 
-    Game game;
+    Game* game;
     Army army;
 };
 
