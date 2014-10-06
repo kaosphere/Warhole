@@ -10,11 +10,12 @@ class NetworkClient : public NetworkInterface
     Q_OBJECT
 public:
     explicit NetworkClient(MessageQueue* in,
-                           QString ip,
-                           int port,
-                           QObject *parent = 0);
+                           MessageQueue* out,
+                           QObject *parent = 0,
+                           QString ip = "127.0.0.1",
+                           int port = 50885);
 
-    virtual void send(const Message &m);
+    virtual QString getState() const;
 
     void sendToServer(const Message& m);
 
@@ -25,10 +26,13 @@ public:
     void setMessageSize(const quint16 &value);
 
     void connection(QString ip, int port);
+    void setClientState(const QString &value);
+
 signals:
     void clientStateChanged(QString state);
     
 public slots:
+    virtual void send();
     virtual void receiveData();
     void connected();
     void deconnected();

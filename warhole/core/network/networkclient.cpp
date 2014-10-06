@@ -7,8 +7,8 @@ const QString NetworkClient::LOG_ID_TRACE = "NetworkClient_trace";
 const QString NetworkClient::LOG_ID_WARN = "NetworkClient_warm";
 const QString NetworkClient::LOG_ID_ERR = "NetworkClient_err";
 
-NetworkClient::NetworkClient(MessageQueue *in, QString ip, int port, QObject *parent) :
-    NetworkInterface(in, parent)
+NetworkClient::NetworkClient(MessageQueue *in, MessageQueue* out, QObject *parent, QString ip, int port) :
+    NetworkInterface(in, out, parent)
 {
     QLoggerManager *manager = QLoggerManager::getInstance();
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
@@ -33,17 +33,22 @@ NetworkClient::NetworkClient(MessageQueue *in, QString ip, int port, QObject *pa
 void NetworkClient::connection(QString ip, int port)
 {
     // On annonce sur la fenêtre qu'on est en train de se connecter
-    clientState = (tr("<em><font color=\"DimGray\">Tentative de connexion en cours...</em></font>"));
-    emit stateChanged(clientState);
+    setClientState(tr("<em><font color=\"DimGray\">Tentative de connexion en cours...</em></font>"));
+
     //boutonConnexion->setEnabled(false);
 
     sock->abort(); // On désactive les connexions précédentes s'il y en a
     sock->connectToHost(ip, port); // On se connecte au serveur demandé
 }
 
-void NetworkClient::send(const Message& m)
+void NetworkClient::send()
 {
-    sendToServer(m);
+    //TODO protect null pointer
+    while(outQueue->isMessageListEmpty())
+    {
+        Message m = outQueue->getAndRemoveFirstMessage();
+        sendToServer(m);
+    }
 }
 
 void NetworkClient::sendToServer(const Message& m)
@@ -67,7 +72,7 @@ void NetworkClient::receiveData()
     if (messageSize == 0)
     {
         if (sock->bytesAvailable() < (int)sizeof(quint16))
-             return;
+            return;
 
         in >> messageSize;
     }
@@ -106,14 +111,12 @@ void NetworkClient::receiveData()
 
 void NetworkClient::connected()
 {
-    clientState = tr("<em><font color=\"DimGray\">Connexion réussie !</em></font>");
-    emit clientStateChanged(clientState);
+    setClientState(tr("<em><font color=\"DimGray\">Connexion réussie !</em></font>"));
 }
 
 void NetworkClient::deconnected()
 {
-    clientState = tr("<em><font color=\"DimGray\">Connection au serveur perdue.</em></font>");
-    emit clientStateChanged(clientState);
+    setClientState(tr("<em><font color=\"DimGray\">Connection au serveur perdue.</em></font>"));
 }
 
 // This slot is called when an error is detected
@@ -121,19 +124,18 @@ void NetworkClient::errorSocket(QAbstractSocket::SocketError erreur)
 {
     switch(erreur)
     {
-        case QAbstractSocket::HostNotFoundError:
-            clientState = (tr("<em><font color=\"Red\">ERREUR : le serveur n'a pas pu être trouvé. Vérifiez l'IP et le port.</em></font>"));
-            break;
-        case QAbstractSocket::ConnectionRefusedError:
-            clientState = (tr("<em><font color=\"Red\">ERREUR : le serveur a refusé la connexion. Vérifiez si le programme \"serveur\" a bien été lancé. Vérifiez aussi l'IP et le port.</em></font>"));
-            break;
-        case QAbstractSocket::RemoteHostClosedError:
-            clientState = (tr("<em><font color=\"Red\">ERREUR : le serveur a coupé la connexion.</em></font>"));
-            break;
-        default:
-            clientState = (tr("<em>ERREUR : ") + sock->errorString() + tr("</em>"));
+    case QAbstractSocket::HostNotFoundError:
+        setClientState(tr("<em><font color=\"Red\">ERREUR : le serveur n'a pas pu être trouvé. Vérifiez l'IP et le port.</em></font>"));
+        break;
+    case QAbstractSocket::ConnectionRefusedError:
+        setClientState(tr("<em><font color=\"Red\">ERREUR : le serveur a refusé la connexion. Vérifiez si le programme \"serveur\" a bien été lancé. Vérifiez aussi l'IP et le port.</em></font>"));
+        break;
+    case QAbstractSocket::RemoteHostClosedError:
+        setClientState(tr("<em><font color=\"Red\">ERREUR : le serveur a coupé la connexion.</em></font>"));
+        break;
+    default:
+        setClientState(tr("<em>ERREUR : ") + sock->errorString() + tr("</em>"));
     }
-    emit clientStateChanged(clientState);
 }
 
 QTcpSocket* NetworkClient::getSock() const
@@ -154,4 +156,15 @@ quint16 NetworkClient::getMessageSize() const
 void NetworkClient::setMessageSize(const quint16 &value)
 {
     messageSize = value;
+}
+
+QString NetworkClient::getState() const
+{
+    return clientState;
+}
+
+void NetworkClient::setClientState(const QString &value)
+{
+    clientState = value;
+    emit clientStateChanged(clientState);
 }
