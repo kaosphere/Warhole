@@ -33,6 +33,7 @@ public:
     void clearMessages();
     Message getAndRemoveFirstMessage();
 
+    bool isMessageListEmpty();
 signals:
     //! newMessageAvailable
     /*!

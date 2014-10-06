@@ -49,3 +49,8 @@ Message MessageQueue::getAndRemoveFirstMessage()
     return m;
 }
 
+bool MessageQueue::isMessageListEmpty()
+{
+    return messageList.isEmpty();
+}
+
