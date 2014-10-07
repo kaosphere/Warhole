@@ -30,6 +30,7 @@ void GameConfiguratorDialog::on_buttonBox_accepted()
     if(g)
     {
         g->setName(ui->lineEdit->text());
+        g->setMe(ui->lineEditNickName->text() + "_SERVER");
         g->setInformation(ui->textEdit->toPlainText());
         g->setSpectators(ui->checkBox->isChecked());
         g->setPlayerNumber(ui->spinBoxPlayerNb->value());
