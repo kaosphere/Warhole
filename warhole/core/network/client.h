@@ -18,12 +18,16 @@ public:
 
     bool operator=(const Client& other);
 
+    QString getName() const;
+    void setName(const QString &value);
+
 signals:
     void donnees();
     void disco();
 
 private:
     QTcpSocket* sock;
+    QString name;
     quint16 messageSize;
 };
 

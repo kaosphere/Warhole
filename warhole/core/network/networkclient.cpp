@@ -61,6 +61,8 @@ void NetworkClient::sendToServer(const Message& m)
     QDataStream out(&packet, QIODevice::WriteOnly);
 
     out << (quint16) 0; // On écrit 0 au début du paquet pour réserver la place pour écrire la taille
+    out << m.getMessageSender();
+    out << (int)m.getDest();
     out << m.getData(); // On ajoute le message à la suite
     out.device()->seek(0); // On se replace au début du paquet
     out << (quint16) (packet.size() - sizeof(quint16)); // On écrase le 0 qu'on avait réservé par la longueur du message
@@ -71,6 +73,7 @@ void NetworkClient::sendToServer(const Message& m)
 void NetworkClient::receiveData()
 {
     QDataStream in(sock);
+    QString name;
 
     if (messageSize == 0)
     {
@@ -87,8 +90,16 @@ void NetworkClient::receiveData()
     // Si on arrive jusqu'à cette ligne, on peut récupérer le message entier
     Message m;
     QByteArray d;
+    int dest;
+
+    in >> name;
     in >> d;
+    in >> dest;
+    m.setMessageSender(name);
+    m.setDest(dest);
     m.setData(d);
+
+    qDebug() << "Client message received from " + m.getMessageSender() + " with dest " + QString::number(dest);
 
     try
     {
@@ -114,12 +125,12 @@ void NetworkClient::receiveData()
 
 void NetworkClient::connected()
 {
-    setClientState(tr("<em><font color=\"DimGray\">Connexion réussie !</em></font>"));
+    emit networkEvent(CLIENT_IS_CONNECTED, "");
 }
 
 void NetworkClient::deconnected()
 {
-    setClientState(tr("<em><font color=\"DimGray\">Connection au serveur perdue.</em></font>"));
+    emit networkEvent(CLIENT_IS_DISCONNECTED, "");
 }
 
 // This slot is called when an error is detected

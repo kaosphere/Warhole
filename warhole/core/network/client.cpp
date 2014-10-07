@@ -44,3 +44,14 @@ bool Client::operator =(const Client &other)
         return false;
 }
 
+QString Client::getName() const
+{
+    return name;
+}
+
+void Client::setName(const QString &value)
+{
+    name = value;
+}
+
+

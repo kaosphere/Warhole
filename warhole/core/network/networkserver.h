@@ -14,7 +14,7 @@ class NetworkServer : public NetworkInterface
 public:
     explicit NetworkServer(MessageQueue* in, MessageQueue *out, QObject *parent = 0);
 
-    void sendToAll(const Message& m);
+    void sendToAll(const QByteArray& m, QString sender = "");
 
     QList<Client*> getClients() const;
     void setClients(const QList<Client*> &value);
@@ -24,6 +24,7 @@ public:
     virtual QString getState() const;
     void setServerState(const QString &value);
 
+    void sendBackToSender(const QByteArray &m, QString sender);
 signals:
     void serverStateChanged(QString state);
     
@@ -43,6 +44,7 @@ private:
     QString serverState;
     QTcpServer *serveur;
     
+    QByteArray fillPacketWithMessage(const Message &m);
 };
 
 #endif // NETWORKSERVER_H

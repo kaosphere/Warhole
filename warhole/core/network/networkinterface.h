@@ -13,6 +13,13 @@
 
 #define NET_PORT 50885
 
+enum NetworkEvent{
+    CLIENT_IS_CONNECTED,
+    CLIENT_IS_DISCONNECTED,
+    CLIENT_ERROR,
+    SERVER_IS_LAUNCHED,
+    SERVER_ERROR
+};
 
 class NetworkInterface : public QObject
 {
@@ -32,6 +39,7 @@ public:
 
 signals:
     void stateChanged(QString state);
+    void networkEvent(NetworkEvent event, QString details);
     
 public slots:
     virtual void receiveData() = 0;

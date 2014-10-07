@@ -5,9 +5,13 @@
 
 #include "core/messagequeue.h"
 #include "game/game.h"
+#include "core/network/networkinterface.h"
 
 enum CommandType{
+    SERVER_INFO_REQUEST,
     SERVER_INFO,
+    GLOBAL_UPDATE_REQUEST,
+    GLOBAL_UPDATE,
     CHAT_MESSAGE,
     NEW_RULER,
     RULER_POSITION_CHANGE,
@@ -30,13 +34,26 @@ signals:
 public slots:
     void processIncomingMessage();
     void enQueueChatMessage(QString player, QString message);
+    void handleNetworkEvent(NetworkEvent e, QString details);
 
 private:
+    static const QString LOG_ID_INFO;
+    static const QString LOG_ID_TRACE;
+    static const QString LOG_ID_WARN;
+    static const QString LOG_ID_ERR;
+
     MessageQueue* outQueue;
     MessageQueue* inQueue;
-
     Game* game;
-    
+    //QMap<int, RegimentGraphics>* regimentMap;
+
+
+    void addMessageToOutQueue(const Message &m);
+    void addMessageToInQueue(const Message &m);
+    void handleServerInfoRequest(MessageDestination dest, QString sender);
+    void handleServerInfo(QByteArray &data);
+    void enQueueServerInfoRequest();
+    void handleNewChatMessage(QByteArray &data);
 };
 
 #endif // COMMANDMANAGER_H
