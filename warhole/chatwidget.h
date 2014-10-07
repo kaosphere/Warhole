@@ -12,6 +12,7 @@
 #include <QTextEdit>
 #include <QMessageBox>
 #include <QSpinBox>
+#include <QTextStream>
 
 
 class ChatWidget : public QWidget
@@ -34,10 +35,12 @@ private:
     QPushButton* send;
 
 signals:
+    void newMessageToSend(QString name, QString msg);
     
 public slots:
     void connectionSlot();
     void sendSlot();
+    void printNewChatMessage(QString sender, QString msg);
     
 };
 

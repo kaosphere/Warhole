@@ -25,7 +25,7 @@ ChatWidget::ChatWidget(QWidget *parent) :
     msg = new QLineEdit();
     QObject::connect(msg, SIGNAL(returnPressed()),this,SLOT(sendSlot()));
     send = new QPushButton(tr("Envoyer"));
-    QObject::connect(connect, SIGNAL(clicked()),this,SLOT(sendSlot()));
+    QObject::connect(send, SIGNAL(clicked()),this,SLOT(sendSlot()));
 
     h->addWidget(ipserv);
     h->addWidget(ip);
@@ -61,7 +61,7 @@ void ChatWidget::sendSlot()
 {
     if(!nick->text().isEmpty())
     {
-        //netClient->sendData(nick->text(),msg->text());
+        emit newMessageToSend(nick->text(), msg->text());
         msg->clear(); // On vide la zone d'écriture du message
         msg->setFocus(); // Et on remet le curseur à l'intérieur
     }
@@ -69,6 +69,14 @@ void ChatWidget::sendSlot()
     {
         QMessageBox::critical(this, "Erreur", "Avant de pouvoir chatter, entrez un pseudo.");
     }
+}
+
+void ChatWidget::printNewChatMessage(QString sender, QString msg)
+{
+    QString s;
+    QTextStream stream(&s);
+    stream << "<strong>" << sender << " : </strong>" << msg;
+    appendString(s);
 }
 
 QString ChatWidget::getIpString()

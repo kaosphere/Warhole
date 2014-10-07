@@ -26,6 +26,7 @@
 #include "core/network/networkthread.h"
 #include "core/messagequeue.h"
 #include "gameconfiguratordialog.h"
+#include "core/commandManager/commandmanager.h"
 
 namespace Ui {
 class GameWindow;
@@ -60,7 +61,6 @@ public slots:
 private slots:
 
     void on_actionHost_Game_triggered();
-
     void on_actionConnect_to_a_game_2_triggered();
 
 private:
@@ -88,10 +88,11 @@ private:
     QList<RegimentGraphics*> regimentsGraphics;
 
     NetworkInterface* netInterface;
+    CommandManager* comManager;
     MessageQueue inQueue;
     MessageQueue outQueue;
 
-    Game* game;
+    Game game;
     Army army;
 };
 

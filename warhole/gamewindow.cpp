@@ -79,7 +79,9 @@ void GameWindow::initGameWindow()
     ///////////////////////////////////////////
     netInterface = NULL;
 
-    game = new Game();
+    comManager = new CommandManager(&inQueue, &outQueue, &game, this);
+    connect(comManager, SIGNAL(newChatMessageAvailable(QString,QString)), cw, SLOT(printNewChatMessage(QString,QString)));
+    connect(cw, SIGNAL(newMessageToSend(QString,QString)),comManager, SLOT(enQueueChatMessage(QString,QString)));
 }
 
 GameWindow::~GameWindow()
