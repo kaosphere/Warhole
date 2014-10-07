@@ -4,6 +4,20 @@
 #include <QByteArray>
 #include <QtCore>
 
+//! MessageDestination
+/*!
+* This enum is used by the server only to know who to answer or
+* transfer messages when he receives one.
+* ALL will be transfered to every client.
+* ALL_BU_ME will be transfered to every client instead of the sender.
+* ME will be answered only to the sender.
+*/
+enum MessageDestination{
+    ALL = 0,
+    ALL_BUT_ME,
+    ME
+};
+
 //! Message class
 /*!
 * The message class contains data that goes through the network
@@ -42,6 +56,10 @@ public:
     QString getMessageSender() const;
     void setMessageSender(const QString &value);
 
+    MessageDestination getDest() const;
+    void setDest(const MessageDestination &value);
+
+    void setDest(const int &value);
 private:
     //! data
     /*!
@@ -54,6 +72,8 @@ private:
     * User that sended the message
     */
     QString messageSender;
+
+    MessageDestination dest;
 };
 
 #endif // MESSAGE_H
