@@ -18,6 +18,9 @@ NetworkServer::NetworkServer(MessageQueue *in, MessageQueue *out, QObject *paren
 
     connect(this, SIGNAL(serverStateChanged(QString)), this, SIGNAL(stateChanged(QString)));
 
+    inQueue = in;
+    outQueue = out;
+
     // Gestion du serveur
     try
     {

@@ -27,6 +27,9 @@ NetworkClient::NetworkClient(MessageQueue *in, MessageQueue* out, QObject *paren
 
     messageSize = 0;
 
+    inQueue = in;
+    outQueue = out;
+
     connection(ip, port);
 }
 
@@ -44,7 +47,7 @@ void NetworkClient::connection(QString ip, int port)
 void NetworkClient::send()
 {
     //TODO protect null pointer
-    while(outQueue->isMessageListEmpty())
+    while(!outQueue->isMessageListEmpty())
     {
         Message m = outQueue->getAndRemoveFirstMessage();
         sendToServer(m);
