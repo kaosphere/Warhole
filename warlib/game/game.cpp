@@ -128,3 +128,14 @@ void Game::setPoints(int value)
 {
     points = value;
 }
+
+QString Game::getMe() const
+{
+    return me;
+}
+
+void Game::setMe(const QString &value)
+{
+    me = value;
+}
+

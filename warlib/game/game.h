@@ -48,6 +48,9 @@ public:
     int getPoints() const;
     void setPoints(int value);
 
+    QString getMe() const;
+    void setMe(const QString &value);
+
 signals:
     
 public slots:
@@ -63,6 +66,12 @@ private:
     * Name of the game
     */
     QString name;
+
+    //! me
+    /*!
+     * Name of the player owning this application
+     */
+    QString me;
 
     //! information
     /*!
