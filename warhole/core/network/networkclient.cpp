@@ -93,8 +93,8 @@ void NetworkClient::receiveData()
     int dest;
 
     in >> name;
-    in >> d;
     in >> dest;
+    in >> d;
     m.setMessageSender(name);
     m.setDest(dest);
     m.setData(d);

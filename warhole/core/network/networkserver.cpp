@@ -105,8 +105,8 @@ void NetworkServer::receiveData()
     Message m;
     QByteArray d;
     in >> name;
-    in >> d;
     in >> dest;
+    in >> d;
     m.setMessageSender(name);
     m.setDest(dest);
     m.setData(d);
