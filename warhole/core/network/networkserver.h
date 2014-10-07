@@ -14,7 +14,7 @@ class NetworkServer : public NetworkInterface
 public:
     explicit NetworkServer(MessageQueue* in, MessageQueue *out, QObject *parent = 0);
 
-    void sendToAll(const QByteArray& m, QString sender = "");
+    void sendToAll(const QByteArray& m);
 
     QList<Client*> getClients() const;
     void setClients(const QList<Client*> &value);

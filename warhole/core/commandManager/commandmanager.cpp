@@ -93,14 +93,12 @@ void CommandManager::enQueueChatMessage(QString player, QString message)
     addMessageToOutQueue(m);
 }
 
-void CommandManager::handleNewChatMessage(QByteArray& data)
+void CommandManager::handleNewChatMessage(QDataStream& data)
 {
-    QDataStream s(data);
-
     QString senderName;
-    s >> senderName;
+    data >> senderName;
     QString msg;
-    s >> msg;
+    data >> msg;
     emit newChatMessageAvailable(senderName, msg);
 }
 
@@ -162,7 +160,7 @@ void CommandManager::processIncomingMessage()
     {
     case CHAT_MESSAGE:
         QLog_Info(LOG_ID_INFO, "processIncomingMessage() : Chat message received from " + m.getMessageSender());
-        handleNewChatMessage(data);
+        handleNewChatMessage(stream);
         break;
 
     case SERVER_INFO_REQUEST:

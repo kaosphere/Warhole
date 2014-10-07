@@ -53,7 +53,7 @@ private:
     void handleServerInfoRequest(MessageDestination dest, QString sender);
     void handleServerInfo(QByteArray &data);
     void enQueueServerInfoRequest();
-    void handleNewChatMessage(QByteArray &data);
+    void handleNewChatMessage(QDataStream& data);
 };
 
 #endif // COMMANDMANAGER_H

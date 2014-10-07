@@ -136,13 +136,15 @@ void NetworkServer::receiveData()
     // If the message if with dest ALL or ALL_BUT_ME, automatically retransfer to clients
     if(m.getDest() == ALL)
     {
+        qDebug() << "Network server : on passe dans le all case";
         QByteArray packet = fillPacketWithMessage(m);
         sendToAll(packet);
     }
     else if(m.getDest() == ALL_BUT_ME)
     {
         QByteArray packet = fillPacketWithMessage(m);
-        sendToAll(packet, m.getMessageSender());
+        //TODO create new sendToAllButMe function
+        sendToAll(packet);
     }
     else if(m.getDest() != ME)
     {
@@ -182,13 +184,12 @@ void NetworkServer::deconnectionClient()
 }
 
 
-void NetworkServer::sendToAll(const QByteArray& m, QString sender)
+void NetworkServer::sendToAll(const QByteArray& m)
 {
     // Send message to all clients (but sender if a sender is defined
     for(int i = 0; i < clients.size(); ++i)
     {
-        if(sender != clients[i]->getName())
-            clients[i]->getSocket()->write(m);
+         clients[i]->getSocket()->write(m);
     }
 }
 
@@ -244,7 +245,8 @@ void NetworkServer::send()
             // TODO error handling
             break;
         case ALL_BUT_ME:
-            sendToAll(packet, m.getMessageSender());
+            // TODO add function all but me
+            sendToAll(packet);
             if(!m.getMessageSender().contains("_SERVER"))
             {
                 if(inQueue) inQueue->addMessage(m);
