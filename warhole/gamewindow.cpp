@@ -196,6 +196,7 @@ void GameWindow::createNetworkInterface(NetworkType t)
 
     connect(netInterface, SIGNAL(stateChanged(QString)),this, SLOT(printNetworkState(QString)));
     connect(&outQueue, SIGNAL(newMessageAvailable()), netInterface, SLOT(send()));
+    connect(netInterface, SIGNAL(networkEvent(NetworkEvent, QString)), comManager, SLOT(handleNetworkEvent(NetworkEvent, QString)));
     printNetworkState(netInterface->getState());
 }
 
@@ -203,16 +204,17 @@ void GameWindow::on_actionHost_Game_triggered()
 {
     GameConfiguratorDialog d;
     d.setModal(true);
-    d.setG(game);
+    d.setG(&game);
     if(d.exec())
     {
         createNetworkInterface(SERVER);
-        printNetworkState(tr("<strong><font color=\"blue\"> Partie créée :</strong></font>\n") +
-             "- " + game->getName() + "\n" +
-             "- " + game->getInformation() + "\n" +
-             "- " + QString::number(game->getPlayerNumber()) + tr(" joueurs max.\n") +
-             "- " + QString::number(game->getPoints()) + tr(" points\n"));
-        if(game->getSpectators())
+        // TODO ugly
+        printNetworkState(tr("<strong><font color=\"blue\"> Partie créée :</strong></font>") +
+             "- " + game.getName() + "\n" +
+             "- " + game.getInformation() + "\n" +
+             "- " + QString::number(game.getPlayerNumber()) + tr(" joueurs max.\n") +
+             "- " + QString::number(game.getPoints()) + tr(" points\n"));
+        if(game.getSpectators())
              printNetworkState(tr("- Spéctateurs autorisés."));
         else
              printNetworkState(tr("- Spéctateurs non autorisés."));
