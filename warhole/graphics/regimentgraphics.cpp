@@ -83,6 +83,16 @@ void RegimentGraphics::initModels()
         }
     }
 }
+int RegimentGraphics::getRegimentID() const
+{
+    return regimentID;
+}
+
+void RegimentGraphics::setRegimentID(int value)
+{
+    regimentID = value;
+}
+
 
 QRectF RegimentGraphics::boundingRect() const
 {

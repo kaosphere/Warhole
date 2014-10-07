@@ -23,6 +23,9 @@ public:
     void setRegiment(const RegimentAbstract &value);
 
     virtual QPainterPath shape() const;
+    int getRegimentID() const;
+    void setRegimentID(int value);
+
 protected:
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent* event);
 
@@ -53,6 +56,8 @@ private:
     QList<ModelGraphics*> models;
 
     QPen* childrenPen;
+
+    int regimentID;
 
 
 private slots:
