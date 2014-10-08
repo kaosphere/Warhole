@@ -40,7 +40,8 @@ SOURCES += main.cpp\
     gameconfiguratordialog.cpp \
     connecttoserverdialog.cpp \
     chatwidgetform.cpp \
-    statsdisplayform.cpp
+    statsdisplayform.cpp \
+    core/gamecontroller.cpp
 
 HEADERS  += mainwindow.h \
     modelwindow.h \
@@ -64,7 +65,8 @@ HEADERS  += mainwindow.h \
     gameconfiguratordialog.h \
     connecttoserverdialog.h \
     chatwidgetform.h \
-    statsdisplayform.h
+    statsdisplayform.h \
+    core/gamecontroller.h
 
 TRANSLATIONS = warhole_en.ts
 

@@ -35,6 +35,8 @@ void GameWindow::initGameWindow()
     // Chat widget
     cw = new ChatWidgetForm(this);
     ui->dockWidget_2->setWidget(cw);
+    connect(cw, SIGNAL(newMessageToSend(QString)), &controller, SIGNAL(newChatMessageToSend(QString)));
+    connect(&controller, SIGNAL(newChatMessageToPrint(QString,QString)), cw, SLOT(printNewChatMessage(QString,QString)));
 
     // Display stats widget
     sd = new StatsDisplayForm(this);
@@ -77,15 +79,6 @@ void GameWindow::initGameWindow()
     connect(actionDeploy, SIGNAL(triggered()),this,SLOT(deployRegiment()));
 
     connect(ui->actionOpen_Army, SIGNAL(triggered()), this, SLOT(openArmyMenuClicked()));
-
-    ///////////////////////////////////////////
-    // Network interface
-    ///////////////////////////////////////////
-    netInterface = NULL;
-
-    comManager = new CommandManager(&inQueue, &outQueue, &game, this);
-    connect(comManager, SIGNAL(newChatMessageAvailable(QString, QString)), cw, SLOT(printNewChatMessage(QString, QString)));
-    connect(cw, SIGNAL(newMessageToSend(QString)),comManager, SLOT(enQueueChatMessage(QString)));
 }
 
 GameWindow::~GameWindow()
@@ -95,7 +88,6 @@ GameWindow::~GameWindow()
     armyModel->deleteLater();
     actionDeploy->deleteLater();
     cw->deleteLater();
-    if (netInterface) netInterface->deleteLater();
 }
 
 void GameWindow::loadArmy()
@@ -178,55 +170,24 @@ void GameWindow::openArmyMenuClicked()
     loadArmy();
 }
 
-void GameWindow::createNetworkInterface(NetworkType t, QString ip = "")
-{
-    if(netInterface)
-    {
-        delete netInterface;
-    }
-
-    switch(t)
-    {
-    case SERVER:
-        netInterface = new NetworkServer(&inQueue, &outQueue, this);
-        break;
-    case CLIENT:
-        netInterface = new NetworkClient(&inQueue, &outQueue, this, ip);
-        break;
-    default:
-        //TODO error
-        break;
-    }
-
-    connect(netInterface, SIGNAL(stateChanged(QString)),this, SLOT(printNetworkState(QString)));
-    connect(&outQueue, SIGNAL(newMessageAvailable()), netInterface, SLOT(send()));
-    connect(netInterface, SIGNAL(networkEvent(NetworkEvent, QString)), comManager, SLOT(handleNetworkEvent(NetworkEvent, QString)));
-    printNetworkState(netInterface->getState());
-}
-
 void GameWindow::on_actionHost_Game_triggered()
 {
     GameConfiguratorDialog d;
     d.setModal(true);
-    d.setG(&game);
+    d.setG(controller.getGamePtr());
     if(d.exec())
     {
-        createNetworkInterface(SERVER);
+        controller.createNetworkInterface(SERVER);
         // TODO ugly
         printNetworkState(tr("<strong><font color=\"blue\"> Partie créée :</strong></font>\n\r") +
-             "- " + game.getName() + "\n\r" +
-             "- " + game.getInformation() + "\n\r" +
-             "- " + QString::number(game.getPlayerNumber()) + tr(" joueurs max.\n\r") +
-             "- " + QString::number(game.getPoints()) + tr(" points\n\r"));
-        if(game.getSpectators())
+             "- " + controller.getGame().getName() + "\n\r" +
+             "- " + controller.getGame().getInformation() + "\n\r" +
+             "- " + QString::number(controller.getGame().getPlayerNumber()) + tr(" joueurs max.\n\r") +
+             "- " + QString::number(controller.getGame().getPoints()) + tr(" points\n\r"));
+        if(controller.getGame().getSpectators())
              printNetworkState(tr("- Spéctateurs autorisés.\n\r"));
         else
              printNetworkState(tr("- Spéctateurs non autorisés.\n\r"));
-
-
-        // Add server to the list of players
-        Player p(game.getMe(), true);
-        game.addPlayer(p);
     }
 }
 
@@ -235,11 +196,11 @@ void GameWindow::on_actionConnect_to_a_game_2_triggered()
     ClientInfo info;
     ConnectToServerDialog d;
     d.setModal(true);
-    d.setG(&game);
+    d.setG(controller.getGamePtr());
     d.setInfo(&info);
     if(d.exec())
     {
-        createNetworkInterface(CLIENT, info.ip);
+        controller.createNetworkInterface(CLIENT, info.ip);
     }
 }
 

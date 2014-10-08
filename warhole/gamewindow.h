@@ -22,13 +22,13 @@
 #include "game/game.h"
 #include "graphics/regimentgraphics.h"
 #include "graphics/rulergraphics.h"
-#include "core/network/networkthread.h"
 #include "core/messagequeue.h"
 #include "gameconfiguratordialog.h"
 #include "connecttoserverdialog.h"
 #include "core/commandManager/commandmanager.h"
 #include "chatwidgetform.h"
 #include "statsdisplayform.h"
+#include "core/gamecontroller.h"
 
 
 namespace Ui {
@@ -98,12 +98,8 @@ private:
 
     QList<RegimentGraphics*> regimentsGraphics;
 
-    NetworkInterface* netInterface;
-    CommandManager* comManager;
-    MessageQueue inQueue;
-    MessageQueue outQueue;
+    GameController controller;
 
-    Game game;
     Army army;
 };
 

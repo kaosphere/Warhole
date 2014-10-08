@@ -21,6 +21,8 @@ enum NetworkEvent{
     SERVER_ERROR
 };
 
+enum NetworkType { SERVER, CLIENT };
+
 class NetworkInterface : public QObject
 {
     Q_OBJECT
