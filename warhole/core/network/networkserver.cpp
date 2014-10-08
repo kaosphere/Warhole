@@ -111,7 +111,12 @@ void NetworkServer::receiveData()
     m.setDest(dest);
     m.setData(d);
 
-    qDebug() << "Server message received from " + m.getMessageSender() + " with dest " + QString::number((int)m.getDest());
+    if(c->getName().isEmpty())
+    {
+        // It's the first time we receive a message from this client
+        // set his name, and add it to the connected clients list
+        c->setName(name);
+    }
 
     // Put in inQueue
     try

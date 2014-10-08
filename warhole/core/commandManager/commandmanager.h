@@ -12,6 +12,7 @@ enum CommandType{
     SERVER_INFO,
     GLOBAL_UPDATE_REQUEST,
     GLOBAL_UPDATE,
+    PLAYER_LIST_UPDATE,
     CHAT_MESSAGE,
     NEW_RULER,
     RULER_POSITION_CHANGE,
@@ -28,12 +29,15 @@ class CommandManager : public QObject
 public:
     explicit CommandManager(MessageQueue* iq, MessageQueue* oq, Game* g, QObject *parent = 0);
 
+
 signals:
     void newChatMessageAvailable(QString sender,QString msg);
+    void refreshPlayerList();
     
 public slots:
     void processIncomingMessage();
     void enQueueChatMessage(QString message);
+    void enQueuePlayerListRefreshMessage();
     void handleNetworkEvent(NetworkEvent e, QString details);
 
 private:
@@ -54,6 +58,7 @@ private:
     void handleServerInfo(QByteArray &data);
     void enQueueServerInfoRequest();
     void handleNewChatMessage(const Message& m, QDataStream& data);
+    void handlePlayerListRefreshMessage(const Message &m, QDataStream &data);
 };
 
 #endif // COMMANDMANAGER_H
