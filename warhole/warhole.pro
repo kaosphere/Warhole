@@ -39,7 +39,8 @@ SOURCES += main.cpp\
     core/commandManager/commandmanager.cpp \
     gameconfiguratordialog.cpp \
     connecttoserverdialog.cpp \
-    chatwidgetform.cpp
+    chatwidgetform.cpp \
+    statsdisplayform.cpp
 
 HEADERS  += mainwindow.h \
     modelwindow.h \
@@ -62,7 +63,8 @@ HEADERS  += mainwindow.h \
     core/commandManager/commandmanager.h \
     gameconfiguratordialog.h \
     connecttoserverdialog.h \
-    chatwidgetform.h
+    chatwidgetform.h \
+    statsdisplayform.h
 
 TRANSLATIONS = warhole_en.ts
 
@@ -75,7 +77,8 @@ FORMS += \
     mainwindow.ui \
     gameconfiguratordialog.ui \
     connecttoserverdialog.ui \
-    chatwidgetform.ui
+    chatwidgetform.ui \
+    statsdisplayform.ui
 
 RESOURCES += \
     resources.qrc

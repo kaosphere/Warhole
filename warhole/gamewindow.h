@@ -22,13 +22,14 @@
 #include "game/game.h"
 #include "graphics/regimentgraphics.h"
 #include "graphics/rulergraphics.h"
-#include "chatwidget.h"
 #include "core/network/networkthread.h"
 #include "core/messagequeue.h"
 #include "gameconfiguratordialog.h"
 #include "connecttoserverdialog.h"
 #include "core/commandManager/commandmanager.h"
 #include "chatwidgetform.h"
+#include "statsdisplayform.h"
+
 
 namespace Ui {
 class GameWindow;
@@ -91,6 +92,7 @@ private:
     QModelIndex indexArmy;
 
     ChatWidgetForm* cw;
+    StatsDisplayForm* sd;
 
     void initGameWindow();
 

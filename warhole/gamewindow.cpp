@@ -36,6 +36,10 @@ void GameWindow::initGameWindow()
     cw = new ChatWidgetForm(this);
     ui->dockWidget_2->setWidget(cw);
 
+    // Display stats widget
+    sd = new StatsDisplayForm(this);
+    ui->dockWidget_3->setWidget(sd);
+
     ///////////////////////////////////////////
     //Tree view of army
     ///////////////////////////////////////////
