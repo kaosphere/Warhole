@@ -80,8 +80,8 @@ void GameWindow::initGameWindow()
     netInterface = NULL;
 
     comManager = new CommandManager(&inQueue, &outQueue, &game, this);
-    connect(comManager, SIGNAL(newChatMessageAvailable(QString,QString)), cw, SLOT(printNewChatMessage(QString,QString)));
-    connect(cw, SIGNAL(newMessageToSend(QString,QString)),comManager, SLOT(enQueueChatMessage(QString,QString)));
+    connect(comManager, SIGNAL(newChatMessageAvailable(QString, QString)), cw, SLOT(printNewChatMessage(QString, QString)));
+    connect(cw, SIGNAL(newMessageToSend(QString)),comManager, SLOT(enQueueChatMessage(QString)));
 }
 
 GameWindow::~GameWindow()

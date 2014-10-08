@@ -73,17 +73,16 @@ void CommandManager::handleNetworkEvent(NetworkEvent e, QString details)
     }
 }
 
-void CommandManager::enQueueChatMessage(QString player, QString message)
+void CommandManager::enQueueChatMessage(QString message)
 {
     QLog_Info(LOG_ID_INFO, "enQueueChatMessage() : sending chat message to all.");
     Message m;
-    m.setMessageSender(player);
+    m.setMessageSender(game->getMe());
     m.setDest(ALL);
     QByteArray data;
     QDataStream stream(&data, QIODevice::ReadWrite);
 
     stream << CHAT_MESSAGE
-           << player
            << message;
 
     m.setData(data);
@@ -93,13 +92,11 @@ void CommandManager::enQueueChatMessage(QString player, QString message)
     addMessageToOutQueue(m);
 }
 
-void CommandManager::handleNewChatMessage(QDataStream& data)
+void CommandManager::handleNewChatMessage(const Message& m, QDataStream& data)
 {
-    QString senderName;
-    data >> senderName;
     QString msg;
     data >> msg;
-    emit newChatMessageAvailable(senderName, msg);
+    emit newChatMessageAvailable(m.getMessageSender(), msg);
 }
 
 void CommandManager::enQueueServerInfoRequest()
@@ -160,7 +157,7 @@ void CommandManager::processIncomingMessage()
     {
     case CHAT_MESSAGE:
         QLog_Info(LOG_ID_INFO, "processIncomingMessage() : Chat message received from " + m.getMessageSender());
-        handleNewChatMessage(stream);
+        handleNewChatMessage(m, stream);
         break;
 
     case SERVER_INFO_REQUEST:

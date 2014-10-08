@@ -35,7 +35,7 @@ private:
     QPushButton* send;
 
 signals:
-    void newMessageToSend(QString name, QString msg);
+    void newMessageToSend(QString msg);
     
 public slots:
     void connectionSlot();

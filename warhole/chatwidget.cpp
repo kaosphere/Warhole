@@ -61,7 +61,7 @@ void ChatWidget::sendSlot()
 {
     if(!nick->text().isEmpty())
     {
-        emit newMessageToSend(nick->text(), msg->text());
+        emit newMessageToSend(msg->text());
         msg->clear(); // On vide la zone d'écriture du message
         msg->setFocus(); // Et on remet le curseur à l'intérieur
     }

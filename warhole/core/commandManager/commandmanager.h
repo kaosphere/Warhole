@@ -29,11 +29,11 @@ public:
     explicit CommandManager(MessageQueue* iq, MessageQueue* oq, Game* g, QObject *parent = 0);
 
 signals:
-    void newChatMessageAvailable(QString player, QString msg);
+    void newChatMessageAvailable(QString sender,QString msg);
     
 public slots:
     void processIncomingMessage();
-    void enQueueChatMessage(QString player, QString message);
+    void enQueueChatMessage(QString message);
     void handleNetworkEvent(NetworkEvent e, QString details);
 
 private:
@@ -53,7 +53,7 @@ private:
     void handleServerInfoRequest(MessageDestination dest, QString sender);
     void handleServerInfo(QByteArray &data);
     void enQueueServerInfoRequest();
-    void handleNewChatMessage(QDataStream& data);
+    void handleNewChatMessage(const Message& m, QDataStream& data);
 };
 
 #endif // COMMANDMANAGER_H
