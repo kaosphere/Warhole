@@ -28,6 +28,7 @@
 #include "gameconfiguratordialog.h"
 #include "connecttoserverdialog.h"
 #include "core/commandManager/commandmanager.h"
+#include "chatwidgetform.h"
 
 namespace Ui {
 class GameWindow;
@@ -89,7 +90,7 @@ private:
     QAction* actionDeploy;
     QModelIndex indexArmy;
 
-    ChatWidget* cw;
+    ChatWidgetForm* cw;
 
     void initGameWindow();
 

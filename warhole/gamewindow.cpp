@@ -33,7 +33,7 @@ void GameWindow::initGameWindow()
     ui->horizontalLayout->addWidget(&view);
 
     // Chat widget
-    cw = new ChatWidget(this);
+    cw = new ChatWidgetForm(this);
     ui->dockWidget_2->setWidget(cw);
 
     ///////////////////////////////////////////
@@ -218,6 +218,11 @@ void GameWindow::on_actionHost_Game_triggered()
              printNetworkState(tr("- Spéctateurs autorisés.\n\r"));
         else
              printNetworkState(tr("- Spéctateurs non autorisés.\n\r"));
+
+
+        // Add server to the list of players
+        Player p(game.getMe(), true);
+        game.addPlayer(p);
     }
 }
 
