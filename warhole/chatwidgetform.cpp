@@ -38,8 +38,11 @@ void ChatWidgetForm::refreshPlayerListDisplay(QList<Player> l)
     players->clear();
     for(int i = 0; i < l.size(); ++i)
     {
-        QStandardItem* item = new QStandardItem(l.at(i).getName());
-        players->appendRow(item);
+        if(l.at(i).getConnected())
+        {
+            QStandardItem* item = new QStandardItem(l.at(i).getName());
+            players->appendRow(item);
+        }
     }
 }
 
