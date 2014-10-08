@@ -23,6 +23,8 @@ class Game : public QObject
     Q_OBJECT
 public:
     explicit Game(QObject *parent = 0);
+
+    Game(const Game& other);
     
     QString getName() const;
     void setName(const QString &value);
@@ -44,12 +46,13 @@ public:
     Historic getHistoric() const;
     void setHistoric(const Historic &value);
 
-    bool addArmyToPlayer(Army a, QString playerName);
     int getPoints() const;
     void setPoints(int value);
 
     QString getMe() const;
     void setMe(const QString &value);
+
+    Game &operator=(const Game& other);
 
 signals:
     

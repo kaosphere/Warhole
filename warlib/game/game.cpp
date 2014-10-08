@@ -17,6 +17,19 @@ Game::Game(QObject *parent) :
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_WARN), QLogger::WarnLevel);
 }
 
+Game::Game(const Game &other) :
+    QObject(other.parent())
+{
+    name = other.name;
+    spectators = other.spectators;
+    playerNumber = other.playerNumber;
+    players = other.players;
+    information = other.information;
+    me = other.me;
+    historic = other.historic;
+    points = other.points;
+}
+
 QString Game::getName() const
 {
     return name;
@@ -82,22 +95,6 @@ void Game::removePlayer(const Player &p)
     players.removeOne(p);
 }
 
-bool Game::addArmyToPlayer(Army a, QString playerName)
-{
-    bool playerFound = false;
-    for(int i = 0; i<players.size(); ++i)
-    {
-        if(players.at(i).getName() == playerName)
-        {
-            players[i].setArmy(a);
-            playerFound = true;
-            return playerFound;
-        }
-    }
-    QLog_Error(LOG_ID_ERR, "addArmyToPlayer() : Couldn't find player " + playerName + ". Can't add Army.");
-    return playerFound;
-}
-
 QString Game::getInformation() const
 {
     return information;
@@ -137,5 +134,19 @@ QString Game::getMe() const
 void Game::setMe(const QString &value)
 {
     me = value;
+}
+
+Game &Game::operator=(const Game &other)
+{
+    name = other.name;
+    spectators = other.spectators;
+    playerNumber = other.playerNumber;
+    players = other.players;
+    information = other.information;
+    me = other.me;
+    historic = other.historic;
+    points = other.points;
+
+    return (*this);
 }
 
