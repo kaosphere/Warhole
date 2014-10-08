@@ -32,14 +32,14 @@ SOURCES += main.cpp\
     graphics/regimentgraphics.cpp \
     graphics/modelgraphics.cpp \
     graphics/rulergraphics.cpp \
-    chatwidget.cpp \
     core/network/networkinterface.cpp \
     core/network/networkserver.cpp \
     core/network/networkclient.cpp \
     core/network/client.cpp \
     core/commandManager/commandmanager.cpp \
     gameconfiguratordialog.cpp \
-    connecttoserverdialog.cpp
+    connecttoserverdialog.cpp \
+    chatwidgetform.cpp
 
 HEADERS  += mainwindow.h \
     modelwindow.h \
@@ -55,14 +55,14 @@ HEADERS  += mainwindow.h \
     graphics/regimentgraphics.h \
     graphics/modelgraphics.h \
     graphics/rulergraphics.h \
-    chatwidget.h \
     core/network/networkinterface.h \
     core/network/networkserver.h \
     core/network/networkclient.h \
     core/network/client.h \
     core/commandManager/commandmanager.h \
     gameconfiguratordialog.h \
-    connecttoserverdialog.h
+    connecttoserverdialog.h \
+    chatwidgetform.h
 
 TRANSLATIONS = warhole_en.ts
 
@@ -74,7 +74,8 @@ FORMS += \
     magicalobjectwindow.ui \
     mainwindow.ui \
     gameconfiguratordialog.ui \
-    connecttoserverdialog.ui
+    connecttoserverdialog.ui \
+    chatwidgetform.ui
 
 RESOURCES += \
     resources.qrc
