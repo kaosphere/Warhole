@@ -20,12 +20,14 @@ public:
     void setG(Game *value);
 
 private slots:
-    void on_buttonBox_accepted();
+    void on_pushButton_clicked();
+
+    void on_pushButton_2_clicked();
 
 private:
     Ui::GameConfiguratorDialog *ui;
     Game* g;
-
+    bool validConditions;
 };
 
 #endif // GAMECONFIGURATORDIALOG_H

@@ -38,7 +38,8 @@ SOURCES += main.cpp\
     core/network/networkclient.cpp \
     core/network/client.cpp \
     core/commandManager/commandmanager.cpp \
-    gameconfiguratordialog.cpp
+    gameconfiguratordialog.cpp \
+    connecttoserverdialog.cpp
 
 HEADERS  += mainwindow.h \
     modelwindow.h \
@@ -60,7 +61,8 @@ HEADERS  += mainwindow.h \
     core/network/networkclient.h \
     core/network/client.h \
     core/commandManager/commandmanager.h \
-    gameconfiguratordialog.h
+    gameconfiguratordialog.h \
+    connecttoserverdialog.h
 
 TRANSLATIONS = warhole_en.ts
 
@@ -71,7 +73,8 @@ FORMS += \
     gamewindow.ui \
     magicalobjectwindow.ui \
     mainwindow.ui \
-    gameconfiguratordialog.ui
+    gameconfiguratordialog.ui \
+    connecttoserverdialog.ui
 
 RESOURCES += \
     resources.qrc

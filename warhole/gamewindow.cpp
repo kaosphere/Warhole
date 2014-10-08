@@ -174,7 +174,7 @@ void GameWindow::openArmyMenuClicked()
     loadArmy();
 }
 
-void GameWindow::createNetworkInterface(NetworkType t)
+void GameWindow::createNetworkInterface(NetworkType t, QString ip = "")
 {
     if(netInterface)
     {
@@ -187,7 +187,7 @@ void GameWindow::createNetworkInterface(NetworkType t)
         netInterface = new NetworkServer(&inQueue, &outQueue, this);
         break;
     case CLIENT:
-        netInterface = new NetworkClient(&inQueue, &outQueue, this);
+        netInterface = new NetworkClient(&inQueue, &outQueue, this, ip);
         break;
     default:
         //TODO error
@@ -209,21 +209,29 @@ void GameWindow::on_actionHost_Game_triggered()
     {
         createNetworkInterface(SERVER);
         // TODO ugly
-        printNetworkState(tr("<strong><font color=\"blue\"> Partie créée :</strong></font>") +
-             "- " + game.getName() + "\n" +
-             "- " + game.getInformation() + "\n" +
-             "- " + QString::number(game.getPlayerNumber()) + tr(" joueurs max.\n") +
-             "- " + QString::number(game.getPoints()) + tr(" points\n"));
+        printNetworkState(tr("<strong><font color=\"blue\"> Partie créée :</strong></font>\n\r") +
+             "- " + game.getName() + "\n\r" +
+             "- " + game.getInformation() + "\n\r" +
+             "- " + QString::number(game.getPlayerNumber()) + tr(" joueurs max.\n\r") +
+             "- " + QString::number(game.getPoints()) + tr(" points\n\r"));
         if(game.getSpectators())
-             printNetworkState(tr("- Spéctateurs autorisés."));
+             printNetworkState(tr("- Spéctateurs autorisés.\n\r"));
         else
-             printNetworkState(tr("- Spéctateurs non autorisés."));
+             printNetworkState(tr("- Spéctateurs non autorisés.\n\r"));
     }
 }
 
 void GameWindow::on_actionConnect_to_a_game_2_triggered()
 {
-    createNetworkInterface(CLIENT);
+    ClientInfo info;
+    ConnectToServerDialog d;
+    d.setModal(true);
+    d.setG(&game);
+    d.setInfo(&info);
+    if(d.exec())
+    {
+        createNetworkInterface(CLIENT, info.ip);
+    }
 }
 
 void GameWindow::printNetworkState(QString state)

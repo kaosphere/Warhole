@@ -26,11 +26,19 @@
 #include "core/network/networkthread.h"
 #include "core/messagequeue.h"
 #include "gameconfiguratordialog.h"
+#include "connecttoserverdialog.h"
 #include "core/commandManager/commandmanager.h"
 
 namespace Ui {
 class GameWindow;
 }
+
+class ClientInfo
+{
+public:
+    QString ip;
+    int port;
+};
 
 class GameWindow : public QMainWindow
 {
@@ -47,7 +55,7 @@ public:
     void updateArmyList();
     void addRulerToScene(int l);
 
-    void createNetworkInterface(NetworkType t);
+    void createNetworkInterface(NetworkType t, QString ip);
 public slots:
     void openArmyMenuClicked();
     void openArmyModelContextMenu(QPoint pos);

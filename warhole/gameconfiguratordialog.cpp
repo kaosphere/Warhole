@@ -6,6 +6,7 @@ GameConfiguratorDialog::GameConfiguratorDialog(QWidget *parent) :
     ui(new Ui::GameConfiguratorDialog)
 {
     ui->setupUi(this);
+    validConditions = false;
 }
 
 GameConfiguratorDialog::~GameConfiguratorDialog()
@@ -25,8 +26,13 @@ void GameConfiguratorDialog::setG(Game *value)
     g = value;
 }
 
-void GameConfiguratorDialog::on_buttonBox_accepted()
+void GameConfiguratorDialog::on_pushButton_clicked()
 {
+    if(ui->lineEditNickName->text().isEmpty())
+    {
+        QMessageBox::warning(this, tr("Pseudo"), tr("Veuillez entrer un pseudo valide"));
+        return;
+    }
     if(g)
     {
         g->setName(ui->lineEdit->text());
@@ -35,6 +41,12 @@ void GameConfiguratorDialog::on_buttonBox_accepted()
         g->setSpectators(ui->checkBox->isChecked());
         g->setPlayerNumber(ui->spinBoxPlayerNb->value());
         g->setPoints(ui->spinBoxPts->value());
+        this->accept();
     }
     // TODO error handling
+}
+
+void GameConfiguratorDialog::on_pushButton_2_clicked()
+{
+    this->reject();
 }
