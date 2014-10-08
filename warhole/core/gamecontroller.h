@@ -7,6 +7,7 @@
 #include "network/networkclient.h"
 #include "network/networkserver.h"
 #include "game/game.h"
+#include "PlayerAdmninistrator/playeradministrator.h"
 
 class GameController : public QObject
 {
@@ -23,12 +24,14 @@ public:
 signals:
     void newChatMessageToPrint(QString, QString);
     void newChatMessageToSend(QString);
+    void refreshPlayerListDisplay(QList<Player>);
 
 public slots:
 
 private:
     NetworkInterface* netInterface;
     CommandManager* comManager;
+    PlayerAdministrator playerAdmin;
     MessageQueue inQueue;
     MessageQueue outQueue;
     Game game;

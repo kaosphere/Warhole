@@ -14,6 +14,12 @@ GameController::GameController(QObject *parent) :
     comManager = new CommandManager(&inQueue, &outQueue, &game, this);
     connect(comManager, SIGNAL(newChatMessageAvailable(QString, QString)), this, SIGNAL(newChatMessageToPrint(QString,QString)));
     connect(this, SIGNAL(newChatMessageToSend(QString)), comManager, SLOT(enQueueChatMessage(QString)));
+
+    ///////////////////////////////////////////
+    // Player Administrator
+    ///////////////////////////////////////////
+    connect(&playerAdmin, SIGNAL(playerListChanged(QList<Player>)), comManager, SLOT(enQueuePlayerListRefreshMessage(QList<Player>)));
+    connect(comManager, SIGNAL(refreshPlayerList(QList<Player>)), this, SIGNAL(refreshPlayerListDisplay(QList<Player>)));
 }
 
 void GameController::createNetworkInterface(NetworkType t, QString ip)
@@ -22,6 +28,7 @@ void GameController::createNetworkInterface(NetworkType t, QString ip)
     {
     case SERVER:
         netInterface = new NetworkServer(&inQueue, &outQueue, this);
+        connect(netInterface, SIGNAL(newPlayerConnected(Client)), &playerAdmin, SLOT(handleNewPlayerConnection(Client)));
         break;
     case CLIENT:
         netInterface = new NetworkClient(&inQueue, &outQueue, this, ip);

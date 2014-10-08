@@ -136,7 +136,7 @@ void CommandManager::handleServerInfo(QByteArray& data)
     // TODO do something with data
 }
 
-void CommandManager::enQueuePlayerListRefreshMessage()
+void CommandManager::enQueuePlayerListRefreshMessage(QList<Player> l)
 {
     Message m;
     m.setDest(ALL_BUT_ME);
@@ -146,10 +146,10 @@ void CommandManager::enQueuePlayerListRefreshMessage()
     QDataStream s(&data, QIODevice::WriteOnly);
 
     s << PLAYER_LIST_UPDATE;
-    s << game->getPlayers().size();
-    for(int i = 0; i < game->getPlayers().size(); ++i)
+    s << l.size();
+    for(int i = 0; i < l.size(); ++i)
     {
-        s << game->getPlayers().at(i);
+        s << l.at(i);
     }
 
     m.setData(data);
@@ -160,6 +160,7 @@ void CommandManager::enQueuePlayerListRefreshMessage()
 void CommandManager::handlePlayerListRefreshMessage(const Message& m, QDataStream& data)
 {
     int size;
+    QList<Player> l;
 
     data >> size;
 
@@ -167,13 +168,9 @@ void CommandManager::handlePlayerListRefreshMessage(const Message& m, QDataStrea
     {
         Player p;
         data >> p;
-        if(!game->getPlayers().contains(p))
-        {
-            game->addPlayer(p);
-        }
+        l.append(p);
     }
-
-    emit refreshPlayerList();
+    emit refreshPlayerList(l);
 }
 
 void CommandManager::processIncomingMessage()

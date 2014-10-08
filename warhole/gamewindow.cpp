@@ -79,6 +79,12 @@ void GameWindow::initGameWindow()
     connect(actionDeploy, SIGNAL(triggered()),this,SLOT(deployRegiment()));
 
     connect(ui->actionOpen_Army, SIGNAL(triggered()), this, SLOT(openArmyMenuClicked()));
+
+
+    /////////////////////////////////////////////
+    //GameController
+    /////////////////////////////////////////////
+    connect(&controller, SIGNAL(refreshPlayerListDisplay(QList<Player>)), cw, SLOT(refreshPlayerListDisplay(QList<Player>)));
 }
 
 GameWindow::~GameWindow()

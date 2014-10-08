@@ -6,6 +6,13 @@ Client::Client()
     messageSize = 0;
 }
 
+Client::Client(const Client &other):
+    QObject(other.parent())
+{
+    sock = other.sock;
+    name = other.name;
+}
+
 Client::Client(QTcpSocket* s, quint16 t)
 {
     sock = s;

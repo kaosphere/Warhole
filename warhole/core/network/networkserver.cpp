@@ -116,6 +116,7 @@ void NetworkServer::receiveData()
         // It's the first time we receive a message from this client
         // set his name, and add it to the connected clients list
         c->setName(name);
+        emit newPlayerConnected(*c);
     }
 
     // Put in inQueue

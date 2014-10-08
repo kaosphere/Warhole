@@ -10,6 +10,7 @@
 #include "core/messagequeue.h"
 #include "core/warlibexception.h"
 #include "Utilities/QLogger/QLogger.h"
+#include "client.h"
 
 #define NET_PORT 50885
 
@@ -42,6 +43,7 @@ public:
 signals:
     void stateChanged(QString state);
     void networkEvent(NetworkEvent event, QString details);
+    void newPlayerConnected(Client c);
     
 public slots:
     virtual void receiveData() = 0;

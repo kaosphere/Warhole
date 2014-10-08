@@ -7,6 +7,9 @@ ChatWidgetForm::ChatWidgetForm(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    players = new QStandardItemModel();
+    ui->treeView->setModel(players);
+
     QObject::connect(ui->lineEdit, SIGNAL(returnPressed()),this,SLOT(on_pushButton_clicked()));
 }
 
@@ -28,6 +31,16 @@ void ChatWidgetForm::printNewChatMessage(QString sender, QString msg)
     QTextStream stream(&s);
     stream << "<strong>" << sender << " : </strong>" << msg;
     appendString(s);
+}
+
+void ChatWidgetForm::refreshPlayerListDisplay(QList<Player> l)
+{
+    players->clear();
+    for(int i = 0; i < l.size(); ++i)
+    {
+        QStandardItem* item = new QStandardItem(l.at(i).getName());
+        players->appendRow(item);
+    }
 }
 
 void ChatWidgetForm::appendString(QString s)

@@ -3,6 +3,8 @@
 
 #include <QWidget>
 #include <QTextStream>
+#include <QStandardItemModel>
+#include "game/player.h"
 
 namespace Ui {
 class ChatWidgetForm;
@@ -20,12 +22,14 @@ public:
 private slots:
     void on_pushButton_clicked();
     void printNewChatMessage(QString sender, QString msg);
+    void refreshPlayerListDisplay(QList<Player> l);
 
 signals:
     void newMessageToSend(QString m);
 
 private:
     Ui::ChatWidgetForm *ui;
+    QStandardItemModel* players;
 };
 
 #endif // CHATWIDGETFORM_H

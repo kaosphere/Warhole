@@ -32,12 +32,12 @@ public:
 
 signals:
     void newChatMessageAvailable(QString sender,QString msg);
-    void refreshPlayerList();
+    void refreshPlayerList(QList<Player> l);
     
 public slots:
     void processIncomingMessage();
     void enQueueChatMessage(QString message);
-    void enQueuePlayerListRefreshMessage();
+    void enQueuePlayerListRefreshMessage(QList<Player> l);
     void handleNetworkEvent(NetworkEvent e, QString details);
 
 private:

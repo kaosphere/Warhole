@@ -9,6 +9,7 @@ class Client : public QObject
     Q_OBJECT
 public:
     Client();
+    Client(const Client& other);
     Client(QTcpSocket* s, quint16 t);
     QTcpSocket* getSocket();
     void setSocket(QTcpSocket* s);
