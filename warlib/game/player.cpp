@@ -44,8 +44,7 @@ void Player::setName(const QString &value)
 bool Player::operator ==(const Player &obj)
 {
     if(name == obj.name &&
-       hostAddress == obj.hostAddress &&
-       connected == obj.connected)
+       hostAddress == obj.hostAddress)
         return true;
     else return false;
 }
