@@ -22,6 +22,12 @@ GameController::GameController(QObject *parent) :
     connect(comManager, SIGNAL(refreshPlayerList(QList<Player>)), this, SIGNAL(refreshPlayerListDisplay(QList<Player>)));
 }
 
+GameController::~GameController()
+{
+    comManager->deleteLater();
+    netInterface->deleteLater();
+}
+
 void GameController::createNetworkInterface(NetworkType t, QString ip)
 {
     switch(t)
@@ -29,6 +35,7 @@ void GameController::createNetworkInterface(NetworkType t, QString ip)
     case SERVER:
         netInterface = new NetworkServer(&inQueue, &outQueue, this);
         connect(netInterface, SIGNAL(newPlayerConnected(Client)), &playerAdmin, SLOT(handleNewPlayerConnection(Client)));
+        connect(netInterface, SIGNAL(playerDisconnected(Client)), &playerAdmin, SLOT(handlePlayerDisconnection(Client)));
         connect(&playerAdmin, SIGNAL(playerListChanged(QList<Player>)), SIGNAL(refreshPlayerListDisplay(QList<Player>)));
         break;
     case CLIENT:

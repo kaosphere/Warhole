@@ -13,6 +13,11 @@ Client::Client(const Client &other):
     name = other.name;
 }
 
+Client::~Client()
+{
+
+}
+
 Client::Client(QTcpSocket* s, quint16 t)
 {
     sock = s;

@@ -44,6 +44,7 @@ signals:
     void stateChanged(QString state);
     void networkEvent(NetworkEvent event, QString details);
     void newPlayerConnected(Client c);
+    void playerDisconnected(Client c);
     
 public slots:
     virtual void receiveData() = 0;

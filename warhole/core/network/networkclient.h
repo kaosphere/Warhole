@@ -14,6 +14,7 @@ public:
                            QObject *parent = 0,
                            QString ip = "127.0.0.1",
                            int port = 50885);
+    ~NetworkClient();
 
     virtual QString getState() const;
 
@@ -27,6 +28,7 @@ public:
 
     void connection(QString ip, int port);
     void setClientState(const QString &value);
+
 
 signals:
     void clientStateChanged(QString state);

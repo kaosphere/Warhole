@@ -9,6 +9,7 @@ class Client : public QObject
     Q_OBJECT
 public:
     Client();
+    ~Client();
     Client(const Client& other);
     Client(QTcpSocket* s, quint16 t);
     QTcpSocket* getSocket();
@@ -21,6 +22,8 @@ public:
 
     QString getName() const;
     void setName(const QString &value);
+
+public slots:
 
 signals:
     void donnees();

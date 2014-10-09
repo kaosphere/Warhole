@@ -47,7 +47,10 @@ NetworkServer::NetworkServer(MessageQueue *in, MessageQueue *out, QObject *paren
     }
 }
 
-
+NetworkServer::~NetworkServer()
+{
+    //serveur->deleteLater();
+}
 
 QList<Client*> NetworkServer::getClients() const
 {
@@ -182,7 +185,11 @@ void NetworkServer::deconnectionClient()
     if (c == 0) // Si par hasard on n'a pas trouvé le client à l'origine du signal, on arrête la méthode
         return;
 
+    QLog_Info(LOG_ID_INFO, "deconnectionClient() : Player " + c->getName() +
+              " disconnection detected.");
+
     // send notification
+    emit playerDisconnected(*c);
 
     clients.removeOne(c);
 

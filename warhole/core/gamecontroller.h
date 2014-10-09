@@ -14,12 +14,14 @@ class GameController : public QObject
     Q_OBJECT
 public:
     explicit GameController(QObject *parent = 0);
+    virtual ~GameController();
 
     void createNetworkInterface(NetworkType t, QString ip = "");
 
     Game getGame() const;
     Game* getGamePtr();
     void setGame(const Game &value);
+
 
 signals:
     void newChatMessageToPrint(QString, QString);

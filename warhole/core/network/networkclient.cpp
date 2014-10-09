@@ -33,6 +33,11 @@ NetworkClient::NetworkClient(MessageQueue *in, MessageQueue* out, QObject *paren
     connection(ip, port);
 }
 
+NetworkClient::~NetworkClient()
+{
+    sock->deleteLater();
+}
+
 void NetworkClient::connection(QString ip, int port)
 {
     // On annonce sur la fenêtre qu'on est en train de se connecter
@@ -99,7 +104,7 @@ void NetworkClient::receiveData()
     m.setDest(dest);
     m.setData(d);
 
-    qDebug() << "Client message received from " + m.getMessageSender() + " with dest " + QString::number(dest);
+    QLog_Info(LOG_ID_INDO, "Client message received from " + m.getMessageSender() + " with dest " + QString::number(dest));
 
     try
     {

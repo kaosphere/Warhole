@@ -13,6 +13,7 @@ class NetworkServer : public NetworkInterface
     Q_OBJECT
 public:
     explicit NetworkServer(MessageQueue* in, MessageQueue *out, QObject *parent = 0);
+    virtual ~NetworkServer();
 
     void sendToAll(const QByteArray& m);
 
