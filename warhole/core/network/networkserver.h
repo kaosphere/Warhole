@@ -24,12 +24,8 @@ public:
     void addClient(Client* c);
     void removeClient(Client *c);
 
-    virtual QString getState() const;
-    void setServerState(const QString &value);
-
     void sendBackToSender(const QByteArray &m, QString sender);
 signals:
-    void serverStateChanged(QString state);
     
 public slots:
     void receiveData();
@@ -44,7 +40,6 @@ private:
     static const QString LOG_ID_ERR;
 
     QList<Client*> clients;
-    QString serverState;
     QTcpServer *serveur;
     
     QByteArray fillPacketWithMessage(const Message &m);

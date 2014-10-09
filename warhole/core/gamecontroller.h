@@ -28,6 +28,7 @@ signals:
     void newChatMessageToPrint(QString, QString);
     void newChatMessageToSend(QString);
     void refreshPlayerListDisplay(QList<Player>);
+    void networkEvent(QString);
 
 public slots:
 

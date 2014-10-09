@@ -41,7 +41,7 @@ NetworkClient::~NetworkClient()
 void NetworkClient::connection(QString ip, int port)
 {
     // On annonce sur la fenêtre qu'on est en train de se connecter
-    setClientState(tr("<em><font color=\"DimGray\">Tentative de connexion en cours...</em></font>"));
+    emit networkEvent(tr("<em><font color=\"DimGray\">Tentative de connexion en cours...</em></font>"));
 
     //boutonConnexion->setEnabled(false);
     QLog_Info(LOG_ID_INFO, "connection() : atempting connection to " + ip + " on port " + QString::number(port));
@@ -52,6 +52,7 @@ void NetworkClient::connection(QString ip, int port)
 void NetworkClient::disconnection()
 {
     // Deactivate current connection
+    QLog_Info(LOG_ID_INFO, "disconnection() : ending connection to server.");
     sock->abort();
 }
 
@@ -141,12 +142,13 @@ void NetworkClient::receiveData()
 
 void NetworkClient::connected()
 {
-    emit networkEvent(CLIENT_IS_CONNECTED, "");
+    emit networkEvent(tr("<em><font color=\"DimGray\">Connection au serveur réussie.</em></font>"));
+    emit firstConnectionToServer();
 }
 
 void NetworkClient::deconnected()
 {
-    emit networkEvent(CLIENT_IS_DISCONNECTED, "");
+    emit networkEvent(tr("<em><font color=\"DimGray\">Déconnecté du serveur.</em></font>"));
 }
 
 // This slot is called when an error is detected
@@ -157,19 +159,19 @@ void NetworkClient::errorSocket(QAbstractSocket::SocketError erreur)
     {
     case QAbstractSocket::HostNotFoundError:
         QLog_Info(LOG_ID_ERR, "errorSocket() : server not found");
-        setClientState(tr("<em><font color=\"Red\">ERREUR : le serveur n'a pas pu être trouvé. Vérifiez l'IP et le port.</em></font>"));
+        emit networkEvent(tr("<em><font color=\"Red\">ERREUR : le serveur n'a pas pu être trouvé. Vérifiez l'IP et le port.</em></font>"));
         break;
     case QAbstractSocket::ConnectionRefusedError:
         QLog_Info(LOG_ID_ERR, "errorSocket() : server rejected connection.");
-        setClientState(tr("<em><font color=\"Red\">ERREUR : le serveur a refusé la connexion. Vérifiez si le programme \"serveur\" a bien été lancé. Vérifiez aussi l'IP et le port.</em></font>"));
+        emit networkEvent(tr("<em><font color=\"Red\">ERREUR : le serveur a refusé la connexion. Vérifiez si le programme \"serveur\" a bien été lancé. Vérifiez aussi l'IP et le port.</em></font>"));
         break;
     case QAbstractSocket::RemoteHostClosedError:
         QLog_Info(LOG_ID_ERR, "errorSocket() : server ended connection.");
-        setClientState(tr("<em><font color=\"Red\">ERREUR : le serveur a coupé la connexion.</em></font>"));
+        emit networkEvent(tr("<em><font color=\"Red\">ERREUR : le serveur a coupé la connexion.</em></font>"));
         break;
     default:
         QLog_Info(LOG_ID_ERR, "errorSocket() : other error : " + sock->errorString());
-        setClientState(tr("<em>ERREUR : ") + sock->errorString() + tr("</em>"));
+        emit networkEvent(tr("<em><font color=\"Red\">ERREUR : ") + sock->errorString() + tr("</em></font>"));
     }
 }
 
@@ -191,15 +193,4 @@ quint16 NetworkClient::getMessageSize() const
 void NetworkClient::setMessageSize(const quint16 &value)
 {
     messageSize = value;
-}
-
-QString NetworkClient::getState() const
-{
-    return clientState;
-}
-
-void NetworkClient::setClientState(const QString &value)
-{
-    clientState = value;
-    emit clientStateChanged(clientState);
 }

@@ -16,8 +16,6 @@ public:
                            int port = 50885);
     ~NetworkClient();
 
-    virtual QString getState() const;
-
     void sendToServer(const Message& m);
 
     QTcpSocket* getSock() const;
@@ -27,12 +25,9 @@ public:
     void setMessageSize(const quint16 &value);
 
     void connection(QString ip, int port);
-    void setClientState(const QString &value);
-
 
     void disconnection();
 signals:
-    void clientStateChanged(QString state);
     
 public slots:
     virtual void send();
@@ -49,7 +44,6 @@ private:
 
     QTcpSocket* sock;
     quint16 messageSize;
-    QString clientState;
 };
 
 #endif // NETWORKCLIENT_H

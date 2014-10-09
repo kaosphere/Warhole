@@ -35,16 +35,16 @@ NetworkServer::NetworkServer(MessageQueue *in, MessageQueue *out, QObject *paren
         {
             QLog_Info(LOG_ID_INFO, "NetworkServer() : Server started on port " + QString::number(serveur->serverPort()));
             // Si le serveur a été démarré correctement
-            setServerState(tr("Le serveur a été démarré sur le port <strong>") +
-                           QString::number(serveur->serverPort()) +
-                           tr("</strong>.<br />Des clients peuvent maintenant se connecter."));
-            emit serverStateChanged(serverState);
+            emit networkEvent(tr("<em><font color=\"DimGray\">Le serveur a été démarré sur le port <strong>") +
+                              QString::number(serveur->serverPort()) +
+                              tr("</strong>.<br />Des clients peuvent maintenant se connecter.</em></font>"));
             connect(serveur, SIGNAL(newConnection()), this, SLOT(newClientConnected()));
         }
     }
     catch(const WarlibException& e)
     {
         QLog_Error(LOG_ID_ERR, e.what());
+        QLog_Info(LOG_ID_ERR, "<em><font color=\"Red\">ERREUR : Le serveur n'a pas pu être démarré. Raison : " + serveur->errorString());
     }
 }
 
@@ -124,6 +124,7 @@ void NetworkServer::receiveData()
         // set his name, and add it to the connected clients list
         QLog_Info(LOG_ID_INFO, "receiveData() : first time we receive a message from client " + name);
         c->setName(name);
+        emit networkEvent(tr("<em><font color=\"DimGray\"><strong>")+ name + tr("</strong> s'est connecté Ã la partie.</font></em>"));
         emit newPlayerConnected(*c);
     }
 
@@ -181,8 +182,6 @@ void NetworkServer::newClientConnected()
 
     QLog_Info(LOG_ID_INFO, "newClientConnected() : un nouveau client s'est connecté au réseau");
 
-    setServerState(tr("Un nouveau client s'est connecté"));
-
     connect((QObject*)newClient, SIGNAL(donnees()), this, SLOT(receiveData()));
     connect((QObject*)newClient, SIGNAL(disco()), this, SLOT(deconnectionClient()));
 }
@@ -198,6 +197,7 @@ void NetworkServer::deconnectionClient()
               " disconnection detected.");
 
     // send notification
+    emit networkEvent(tr("<em><font color=\"DimGray\"><strong>") + c->getName() + tr("</strong> s'est déconnecté.</font></em>"));
     emit playerDisconnected(*c);
 
     clients.removeOne(c);
@@ -304,13 +304,3 @@ void NetworkServer::send()
     }
 }
 
-QString NetworkServer::getState() const
-{
-    return serverState;
-}
-
-void NetworkServer::setServerState(const QString &value)
-{
-    serverState = value;
-    emit serverStateChanged(serverState);
-}

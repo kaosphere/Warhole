@@ -56,36 +56,6 @@ void CommandManager::addMessageToOutQueue(const Message& m)
     }
 }
 
-void CommandManager::handleNetworkEvent(NetworkEvent e, QString details)
-{
-    switch(e)
-    {
-    case CLIENT_IS_CONNECTED:
-        emit newChatMessageAvailable("client", "Connexion au serveur résussie.");
-        // Create a message to be sent to the server resquesting game parameters
-        // and global update of the game
-        enQueueServerInfoRequest();
-        break;
-
-    case CLIENT_IS_DISCONNECTED:
-        emit newChatMessageAvailable("client", "Connexion au serveur interrompue.");
-        break;
-
-    case CLIENT_ERROR:
-        emit newChatMessageAvailable("client", "Connexion au serveur résussie.");
-        break;
-
-    case SERVER_IS_LAUNCHED:
-        break;
-
-    case SERVER_ERROR:
-        break;
-
-    default:
-        QLog_Error(LOG_ID_ERR, "handleNetworkEvent() : network event not recognized");
-        break;
-    }
-}
 
 void CommandManager::enQueueChatMessage(QString message)
 {

@@ -37,8 +37,8 @@ signals:
 public slots:
     void processIncomingMessage();
     void enQueueChatMessage(QString message);
+    void enQueueServerInfoRequest();
     void enQueuePlayerListRefreshMessage(QList<Player> l);
-    void handleNetworkEvent(NetworkEvent e, QString details);
 
 private:
     static const QString LOG_ID_INFO;
@@ -56,7 +56,6 @@ private:
     void addMessageToInQueue(const Message &m);
     void handleServerInfoRequest(MessageDestination dest, QString sender);
     void handleServerInfo(QByteArray &data);
-    void enQueueServerInfoRequest();
     void handleNewChatMessage(const Message& m, QDataStream& data);
     void handlePlayerListRefreshMessage(const Message &m, QDataStream &data);
 };

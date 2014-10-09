@@ -85,16 +85,21 @@ void GameWindow::initGameWindow()
     //GameController
     /////////////////////////////////////////////
     connect(&controller, SIGNAL(refreshPlayerListDisplay(QList<Player>)), cw, SLOT(refreshPlayerListDisplay(QList<Player>)));
+    connect(&controller, SIGNAL(networkEvent(QString)), this, SLOT(printSpecialMessage(QString)));
 }
 
 GameWindow::~GameWindow()
 {
     delete ui;
     delete back;
-    controller.disconnectNetworkInterface();
     armyModel->deleteLater();
     actionDeploy->deleteLater();
     cw->deleteLater();
+}
+
+void GameWindow::closeEvent(QCloseEvent *)
+{
+    controller.disconnectNetworkInterface();
 }
 
 void GameWindow::loadArmy()
@@ -186,15 +191,15 @@ void GameWindow::on_actionHost_Game_triggered()
     {
         controller.createNetworkInterface(SERVER);
         // TODO ugly
-        printNetworkState(tr("<strong><font color=\"blue\"> Partie créée :</strong></font>\n\r") +
+        printSpecialMessage(tr("<strong><font color=\"blue\"> Partie créée :</strong></font>\n\r") +
              "- " + controller.getGame().getName() + "\n\r" +
              "- " + controller.getGame().getInformation() + "\n\r" +
              "- " + QString::number(controller.getGame().getPlayerNumber()) + tr(" joueurs max.\n\r") +
              "- " + QString::number(controller.getGame().getPoints()) + tr(" points\n\r"));
         if(controller.getGame().getSpectators())
-             printNetworkState(tr("- Spéctateurs autorisés.\n\r"));
+             printSpecialMessage(tr("- Spéctateurs autorisés.\n\r"));
         else
-             printNetworkState(tr("- Spéctateurs non autorisés.\n\r"));
+             printSpecialMessage(tr("- Spéctateurs non autorisés.\n\r"));
     }
 }
 
@@ -211,7 +216,7 @@ void GameWindow::on_actionConnect_to_a_game_2_triggered()
     }
 }
 
-void GameWindow::printNetworkState(QString state)
+void GameWindow::printSpecialMessage(QString state)
 {
     cw->appendString(state);
 }

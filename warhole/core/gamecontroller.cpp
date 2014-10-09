@@ -41,6 +41,7 @@ void GameController::createNetworkInterface(NetworkType t, QString ip)
         break;
     case CLIENT:
         netInterface = new NetworkClient(&inQueue, &outQueue, this, ip);
+        connect(netInterface, SIGNAL(firstConnectionToServer()), comManager, SLOT(enQueueServerInfoRequest()));
         break;
     default:
         //TODO error
@@ -50,7 +51,7 @@ void GameController::createNetworkInterface(NetworkType t, QString ip)
     // TODO handle this more cleanly
     //connect(netInterface, SIGNAL(stateChanged(QString)),comManager, SIGNAL(newChatMessageToPrint(QString,QString)));
     connect(&outQueue, SIGNAL(newMessageAvailable()), netInterface, SLOT(send()));
-    connect(netInterface, SIGNAL(networkEvent(NetworkEvent, QString)), comManager, SLOT(handleNetworkEvent(NetworkEvent, QString)));
+    connect(netInterface, SIGNAL(networkEvent(QString)), this, SIGNAL(networkEvent(QString)));
     //printNetworkState(netInterface->getState());
 }
 

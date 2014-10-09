@@ -58,6 +58,7 @@ public:
     void addRulerToScene(int l);
 
     void createNetworkInterface(NetworkType t, QString ip);
+    virtual void closeEvent(QCloseEvent *);
 public slots:
     void openArmyMenuClicked();
     void openArmyModelContextMenu(QPoint pos);
@@ -66,7 +67,7 @@ public slots:
     void add12InchesRuler();
     void add18InchesRuler();
     void add24InchesRuler();
-    void printNetworkState(QString state);
+    void printSpecialMessage(QString state);
 
 private slots:
 

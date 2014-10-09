@@ -14,14 +14,6 @@
 
 #define NET_PORT 50885
 
-enum NetworkEvent{
-    CLIENT_IS_CONNECTED,
-    CLIENT_IS_DISCONNECTED,
-    CLIENT_ERROR,
-    SERVER_IS_LAUNCHED,
-    SERVER_ERROR
-};
-
 enum NetworkType { SERVER, CLIENT };
 
 class NetworkInterface : public QObject
@@ -32,8 +24,6 @@ public:
 
     ~NetworkInterface();
 
-    virtual QString getState() const = 0;
-
     virtual void disconnection() = 0;
     
     MessageQueue *getInQueue() const;
@@ -43,10 +33,10 @@ public:
     void setOutQueue(MessageQueue *value);
 
 signals:
-    void stateChanged(QString state);
-    void networkEvent(NetworkEvent event, QString details);
+    void networkEvent(QString details);
     void newPlayerConnected(Client c);
     void playerDisconnected(Client c);
+    void firstConnectionToServer();
     
 public slots:
     virtual void receiveData() = 0;
