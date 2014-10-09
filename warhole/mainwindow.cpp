@@ -119,5 +119,5 @@ void MainWindow::openMagicalObjectWindow()
 
 void MainWindow::updateLogOutput(QString message)
 {
-    ui->textEdit->append(message);
+    ui->textEdit->insertPlainText(message);
 }
