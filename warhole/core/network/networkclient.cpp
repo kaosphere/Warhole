@@ -35,7 +35,7 @@ NetworkClient::NetworkClient(MessageQueue *in, MessageQueue* out, QObject *paren
 
 NetworkClient::~NetworkClient()
 {
-    sock->deleteLater();
+
 }
 
 void NetworkClient::connection(QString ip, int port)
@@ -47,6 +47,12 @@ void NetworkClient::connection(QString ip, int port)
 
     sock->abort(); // On désactive les connexions précédentes s'il y en a
     sock->connectToHost(ip, port); // On se connecte au serveur demandé
+}
+
+void NetworkClient::disconnection()
+{
+    // Deactivate current connection
+    sock->abort();
 }
 
 void NetworkClient::send()
@@ -104,7 +110,7 @@ void NetworkClient::receiveData()
     m.setDest(dest);
     m.setData(d);
 
-    QLog_Info(LOG_ID_INDO, "Client message received from " + m.getMessageSender() + " with dest " + QString::number(dest));
+    QLog_Info(LOG_ID_INFO, "Client message received from " + m.getMessageSender() + " with dest " + QString::number(dest));
 
     try
     {

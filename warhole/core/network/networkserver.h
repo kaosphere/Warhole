@@ -17,6 +17,8 @@ public:
 
     void sendToAll(const QByteArray& m);
 
+    virtual void disconnection();
+
     QList<Client*> getClients() const;
     void setClients(const QList<Client*> &value);
     void addClient(Client* c);

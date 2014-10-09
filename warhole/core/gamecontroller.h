@@ -17,6 +17,7 @@ public:
     virtual ~GameController();
 
     void createNetworkInterface(NetworkType t, QString ip = "");
+    void disconnectNetworkInterface();
 
     Game getGame() const;
     Game* getGamePtr();

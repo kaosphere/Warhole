@@ -30,6 +30,9 @@ void CommandManager::addMessageToInQueue(const Message& m)
 {
     if(inQueue)
     {
+        QLog_Info(LOG_ID_INFO,"Adding Message to InQueue with sender : "  + m.getMessageSender() +
+                  " Destination : " + QString::number(m.getDest()) + " Data : "
+                  + QString::number(m.getData().toUShort()));
         inQueue->addMessage(m);
     }
     else
@@ -42,6 +45,9 @@ void CommandManager::addMessageToOutQueue(const Message& m)
 {
     if(outQueue)
     {
+        QLog_Info(LOG_ID_INFO,"Adding Message to outQueue with sender : "  + m.getMessageSender() +
+                  " Destination : " + QString::number(m.getDest()) + " Data : "
+                  + QString::number(m.getData().toUShort()));
         outQueue->addMessage(m);
     }
     else
@@ -196,8 +202,11 @@ void CommandManager::processIncomingMessage()
         if(inQueue)
         {
             m = inQueue->getAndRemoveFirstMessage();
+            QLog_Info(LOG_ID_INFO, "processIncomingMessage() : Still " + QString::number(inQueue->getMessageList().size()) +
+                      " message to be handled.");
         }
-
+        QLog_Info(LOG_ID_INFO, "processIncomingMessage() : New Message to process. Sender : " + m.getMessageSender() +
+                  " Destination : " + QString::number(m.getDest()) + " Data : " + QString::number(m.getData().toUShort()));
 
         QByteArray data = m.getData();
         QDataStream stream(data);
@@ -228,6 +237,7 @@ void CommandManager::processIncomingMessage()
         case PLAYER_LIST_UPDATE:
             QLog_Info(LOG_ID_INFO, "processIncomingMessage() : Player list update received.");
             handlePlayerListRefreshMessage(m, stream);
+            break;
 
         default:
             QLog_Error(LOG_ID_ERR, "processIncomingMessage() : network message type not recognized");

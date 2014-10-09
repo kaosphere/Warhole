@@ -33,6 +33,8 @@ public:
     ~NetworkInterface();
 
     virtual QString getState() const = 0;
+
+    virtual void disconnection() = 0;
     
     MessageQueue *getInQueue() const;
     void setInQueue(MessageQueue *value);

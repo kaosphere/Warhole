@@ -33,6 +33,7 @@ NetworkServer::NetworkServer(MessageQueue *in, MessageQueue *out, QObject *paren
         }
         else
         {
+            QLog_Info(LOG_ID_INFO, "NetworkServer() : Server started on port " + QString::number(serveur->serverPort()));
             // Si le serveur a été démarré correctement
             setServerState(tr("Le serveur a été démarré sur le port <strong>") +
                            QString::number(serveur->serverPort()) +
@@ -114,10 +115,14 @@ void NetworkServer::receiveData()
     m.setDest(dest);
     m.setData(d);
 
+    QLog_Info(LOG_ID_INFO, "receiveData() : message received from "+ m.getMessageSender() +
+              " Destination : " + QString::number(m.getDest()) + " Data : " + QString::number(m.getData().toUShort()));
+
     if(c->getName().isEmpty())
     {
         // It's the first time we receive a message from this client
         // set his name, and add it to the connected clients list
+        QLog_Info(LOG_ID_INFO, "receiveData() : first time we receive a message from client " + name);
         c->setName(name);
         emit newPlayerConnected(*c);
     }
@@ -145,12 +150,13 @@ void NetworkServer::receiveData()
     // If the message if with dest ALL or ALL_BUT_ME, automatically retransfer to clients
     if(m.getDest() == ALL)
     {
-        qDebug() << "Network server : on passe dans le all case";
+        QLog_Info(LOG_ID_INFO, "receiveData() : message destination is ALL, transfering to every clients");
         QByteArray packet = fillPacketWithMessage(m);
         sendToAll(packet);
     }
     else if(m.getDest() == ALL_BUT_ME)
     {
+        QLog_Info(LOG_ID_INFO, "receiveData() : message destination is ALL_BUT_ME, transfering to every clients instead of sender");
         QByteArray packet = fillPacketWithMessage(m);
         //TODO create new sendToAllButMe function
         sendToAll(packet);
@@ -172,6 +178,9 @@ void NetworkServer::newClientConnected()
     QTcpSocket *newClientSocket = serveur->nextPendingConnection();
     Client* newClient = new Client(newClientSocket, 0);
     clients << newClient;
+
+    QLog_Info(LOG_ID_INFO, "newClientConnected() : un nouveau client s'est connecté au réseau");
+
     setServerState(tr("Un nouveau client s'est connecté"));
 
     connect((QObject*)newClient, SIGNAL(donnees()), this, SLOT(receiveData()));
@@ -202,8 +211,17 @@ void NetworkServer::sendToAll(const QByteArray& m)
     // Send message to all clients (but sender if a sender is defined
     for(int i = 0; i < clients.size(); ++i)
     {
+         QLog_Info(LOG_ID_INFO, "sendToAll() : sending message to " + clients[i]->getName());
          clients[i]->getSocket()->write(m);
+         // Be sure to send packet now
+         clients[i]->getSocket()->flush();
     }
+}
+
+void NetworkServer::disconnection()
+{
+    QLog_Info(LOG_ID_INFO, "disconnection() : Closing server...");
+    serveur->close();
 }
 
 void NetworkServer::sendBackToSender(const QByteArray& m, QString sender)
@@ -213,7 +231,12 @@ void NetworkServer::sendBackToSender(const QByteArray& m, QString sender)
     for(int i = 0; i < clients.size(); ++i)
     {
         if(sender == clients[i]->getName())
+        {
             clients[i]->getSocket()->write(m);
+            // Be sure to send packet now
+            clients[i]->getSocket()->flush();
+            QLog_Info(LOG_ID_INFO, "sendBackToSender() : sending message to " + clients[i]->getName());
+        }
     }
 }
 
@@ -245,9 +268,14 @@ void NetworkServer::send()
     {
         m = outQueue->getAndRemoveFirstMessage();
 
-        QByteArray packet = fillPacketWithMessage(m);
-        qDebug() << "send() : " + QString::number((int)m.getDest());
+        QLog_Info(LOG_ID_INFO, "send() : handling message from outQueue");
+        QLog_Info(LOG_ID_INFO, "send() : still " + QString::number(outQueue->getMessageList().size()) +
+                  " messages in outQueue");
 
+        QByteArray packet = fillPacketWithMessage(m);
+
+        // Also add the command to the in message queue so that the server
+        // gets the changed too
         switch(m.getDest())
         {
         case ALL:
@@ -267,7 +295,6 @@ void NetworkServer::send()
             // If
             break;
         case ME:
-            qDebug() << "passing in ME case";
             sendBackToSender(packet, m.getMessageSender());
             break;
         default:
@@ -275,9 +302,6 @@ void NetworkServer::send()
             break;
         }
     }
-
-        // Also add the command to the in message queue so that the server
-        // gets the changed too
 }
 
 QString NetworkServer::getState() const

@@ -25,7 +25,6 @@ GameController::GameController(QObject *parent) :
 GameController::~GameController()
 {
     comManager->deleteLater();
-    netInterface->deleteLater();
 }
 
 void GameController::createNetworkInterface(NetworkType t, QString ip)
@@ -51,6 +50,11 @@ void GameController::createNetworkInterface(NetworkType t, QString ip)
     connect(&outQueue, SIGNAL(newMessageAvailable()), netInterface, SLOT(send()));
     connect(netInterface, SIGNAL(networkEvent(NetworkEvent, QString)), comManager, SLOT(handleNetworkEvent(NetworkEvent, QString)));
     //printNetworkState(netInterface->getState());
+}
+
+void GameController::disconnectNetworkInterface()
+{
+    netInterface->disconnection();
 }
 
 Game GameController::getGame() const

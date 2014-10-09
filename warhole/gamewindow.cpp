@@ -91,6 +91,7 @@ GameWindow::~GameWindow()
 {
     delete ui;
     delete back;
+    controller.disconnectNetworkInterface();
     armyModel->deleteLater();
     actionDeploy->deleteLater();
     cw->deleteLater();

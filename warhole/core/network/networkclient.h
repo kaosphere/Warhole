@@ -30,6 +30,7 @@ public:
     void setClientState(const QString &value);
 
 
+    void disconnection();
 signals:
     void clientStateChanged(QString state);
     
