@@ -36,6 +36,8 @@ void GameController::createNetworkInterface(NetworkType t, QString ip)
         connect(netInterface, SIGNAL(newPlayerConnected(Client)), &playerAdmin, SLOT(handleNewPlayerConnection(Client)));
         connect(netInterface, SIGNAL(playerDisconnected(Client)), &playerAdmin, SLOT(handlePlayerDisconnection(Client)));
         connect(&playerAdmin, SIGNAL(playerListChanged(QList<Player>)), SIGNAL(refreshPlayerListDisplay(QList<Player>)));
+        // Add server to the player list
+        playerAdmin.authorizePlayer(Player(game.getMe(), "127.0.0.1", true));
         break;
     case CLIENT:
         netInterface = new NetworkClient(&inQueue, &outQueue, this, ip);

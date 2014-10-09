@@ -44,7 +44,7 @@ void NetworkClient::connection(QString ip, int port)
     setClientState(tr("<em><font color=\"DimGray\">Tentative de connexion en cours...</em></font>"));
 
     //boutonConnexion->setEnabled(false);
-
+    QLog_Info(LOG_ID_INFO, "connection() : atempting connection to " + ip + " on port " + QString::number(port));
     sock->abort(); // On désactive les connexions précédentes s'il y en a
     sock->connectToHost(ip, port); // On se connecte au serveur demandé
 }
@@ -67,6 +67,9 @@ void NetworkClient::send()
 
 void NetworkClient::sendToServer(const Message& m)
 {
+    QLog_Info(LOG_ID_INFO, "sendToServer() : sending to server with sender "+ m.getMessageSender() +
+              " Destination : " + QString::number(m.getDest()) + " Data : " + QString::number(m.getData().toUShort()));
+
     // Préparation du paquet
     QByteArray packet;
     QDataStream out(&packet, QIODevice::WriteOnly);
@@ -79,6 +82,8 @@ void NetworkClient::sendToServer(const Message& m)
     out << (quint16) (packet.size() - sizeof(quint16)); // On écrase le 0 qu'on avait réservé par la longueur du message
 
     sock->write(packet); // On envoie le paquet
+    // Ensure to send the data right away
+    sock->flush();
 }
 
 void NetworkClient::receiveData()
@@ -147,18 +152,23 @@ void NetworkClient::deconnected()
 // This slot is called when an error is detected
 void NetworkClient::errorSocket(QAbstractSocket::SocketError erreur)
 {
+    QLog_Info(LOG_ID_ERR, "errorSocket() : " + sock->errorString());
     switch(erreur)
     {
     case QAbstractSocket::HostNotFoundError:
+        QLog_Info(LOG_ID_ERR, "errorSocket() : server not found");
         setClientState(tr("<em><font color=\"Red\">ERREUR : le serveur n'a pas pu être trouvé. Vérifiez l'IP et le port.</em></font>"));
         break;
     case QAbstractSocket::ConnectionRefusedError:
+        QLog_Info(LOG_ID_ERR, "errorSocket() : server rejected connection.");
         setClientState(tr("<em><font color=\"Red\">ERREUR : le serveur a refusé la connexion. Vérifiez si le programme \"serveur\" a bien été lancé. Vérifiez aussi l'IP et le port.</em></font>"));
         break;
     case QAbstractSocket::RemoteHostClosedError:
+        QLog_Info(LOG_ID_ERR, "errorSocket() : server ended connection.");
         setClientState(tr("<em><font color=\"Red\">ERREUR : le serveur a coupé la connexion.</em></font>"));
         break;
     default:
+        QLog_Info(LOG_ID_ERR, "errorSocket() : other error : " + sock->errorString());
         setClientState(tr("<em>ERREUR : ") + sock->errorString() + tr("</em>"));
     }
 }
