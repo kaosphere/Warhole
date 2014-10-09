@@ -13,7 +13,6 @@ public:
 
     QList<Player> getPlayerList() const;
     void authorizePlayer(const Player& p);
-    void disconnectPlayer(QString p);
 
 signals:
     void playerListChanged(QList<Player> l);
@@ -21,6 +20,7 @@ signals:
 
 public slots:
     void handleNewPlayerConnection(Client c);
+    void handlePlayerDisconnection(Client c);
     void setPlayerList(const QList<Player> &value);
 
 private:

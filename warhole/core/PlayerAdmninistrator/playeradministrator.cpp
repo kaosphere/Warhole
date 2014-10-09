@@ -29,25 +29,33 @@ void PlayerAdministrator::setPlayerList(const QList<Player> &value)
 
 void PlayerAdministrator::authorizePlayer(const Player &p)
 {
+    QLog_Info(LOG_ID_INFO, "authorizePlayer() : Authorizing player " + p.getName());
     if(playerList.contains(p))
     {
+        QLog_Info(LOG_ID_INFO, "authorizePlayer() : Player " + p.getName() +
+                  " was already in the player list, reconnect him.");
         // If player was already in the list, just reconnect him
         playerList[playerList.indexOf(p)].setConnected(true);
         emit playerListChanged(playerList);
     }
     else
     {
+        QLog_Info(LOG_ID_INFO, "authorizePlayer() : Player " + p.getName() +
+                  " was not found in the player list, add him.");
         bool nameTaken = false;
         // Verify that no one in the game already has this name
         for(int i = 0; i < playerList.size(); ++i)
         {
             if(playerList.at(i).getName() == p.getName())
             {
+                QLog_Info(LOG_ID_INFO, "authorizePlayer() : Player namefound in the list");
                 nameTaken = true;
             }
         }
         if(!nameTaken)
         {
+            QLog_Info(LOG_ID_INFO, "authorizePlayer() : Player name " + p.getName() +
+                      " is free, add him to the list.");
             playerList.append(p);
             emit playerListChanged(playerList);
         }
@@ -55,6 +63,8 @@ void PlayerAdministrator::authorizePlayer(const Player &p)
         {
             Player p2(p);
             p2.setName(p.getName() + "_2");
+            QLog_Info(LOG_ID_INFO, "authorizePlayer() : Player name " + p.getName() +
+                      " is already taken, inform him to change name for " + p2.getName());
             playerList.append(p2);
 
             // Notify the player that he has to change name
@@ -64,21 +74,24 @@ void PlayerAdministrator::authorizePlayer(const Player &p)
     }
 }
 
-void PlayerAdministrator::disconnectPlayer(QString p)
-{
-    for(int i = 0; i < playerList.size(); ++i)
-    {
-        if(playerList.at(i).getName() == p)
-        {
-            playerList[i].setConnected(false);
-            emit playerListChanged(playerList);
-        }
-    }
-}
-
 void PlayerAdministrator::handleNewPlayerConnection(Client c)
 {
     Player p(c.getName(), c.getSocket()->localAddress().toString(), true);
+    QLog_Info(LOG_ID_INFO, "handleNewPlayerConnection() : New player connected : " +
+              p.getName() + " Ip : " + p.getHostAddress());
     authorizePlayer(p);
+}
+
+void PlayerAdministrator::handlePlayerDisconnection(Client c)
+{
+    Player p(c.getName(), c.getSocket()->localAddress().toString(), false);
+    QLog_Info(LOG_ID_INFO, "handleNewPlayerConnection() : Player disconnected : " +
+              p.getName() + " Ip : " + p.getHostAddress());
+    if(playerList.contains(p))
+    {
+        QLog_Info(LOG_ID_INFO, "handleNewPlayerConnection() : Player found in list, remove him from player list.");
+        playerList[playerList.indexOf(p)].setConnected(false);
+        emit playerListChanged(playerList);
+    }
 }
 

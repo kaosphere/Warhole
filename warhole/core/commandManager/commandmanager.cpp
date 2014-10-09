@@ -32,6 +32,10 @@ void CommandManager::addMessageToInQueue(const Message& m)
     {
         inQueue->addMessage(m);
     }
+    else
+    {
+        QLog_Error(LOG_ID_ERR, "addMessageToInQueue : inQueue pointer is null");
+    }
 }
 
 void CommandManager::addMessageToOutQueue(const Message& m)
@@ -39,6 +43,10 @@ void CommandManager::addMessageToOutQueue(const Message& m)
     if(outQueue)
     {
         outQueue->addMessage(m);
+    }
+    else
+    {
+        QLog_Error(LOG_ID_ERR, "addMessageToOutQueue : outQueue pointer is null");
     }
 }
 
@@ -177,45 +185,54 @@ void CommandManager::processIncomingMessage()
 {
     Message m;
 
-    if(inQueue)
+    if(!inQueue)
     {
-        m = inQueue->getAndRemoveFirstMessage();
+        QLog_Error(LOG_ID_ERR, "processIncomingMessage() : Inqueue pointer is null");
+        return;
     }
 
-
-    QByteArray data = m.getData();
-    QDataStream stream(data);
-
-    // Get command type
-    int command;
-    stream >> command;
-
-    // TODO log each type of message received
-    switch(command)
+    while(!inQueue->isMessageListEmpty())
     {
-    case CHAT_MESSAGE:
-        QLog_Info(LOG_ID_INFO, "processIncomingMessage() : Chat message received from " + m.getMessageSender());
-        handleNewChatMessage(m, stream);
-        break;
+        if(inQueue)
+        {
+            m = inQueue->getAndRemoveFirstMessage();
+        }
 
-    case SERVER_INFO_REQUEST:
-        QLog_Info(LOG_ID_INFO, "processIncomingMessage() : Server info request received from " + m.getMessageSender() +
-                  " with dest : " + QString::number((int)m.getDest()));
-        handleServerInfoRequest(m.getDest(), m.getMessageSender());
-        break;
 
-    case SERVER_INFO:
-        QLog_Info(LOG_ID_INFO, "processIncomingMessage() : Server info received from server.");
-        handleServerInfo(data);
-        break;
+        QByteArray data = m.getData();
+        QDataStream stream(data);
 
-    case PLAYER_LIST_UPDATE:
-        QLog_Info(LOG_ID_INFO, "processIncomingMessage() : Player list update received.");
-        handlePlayerListRefreshMessage(m, stream);
+        // Get command type
+        int command;
+        stream >> command;
 
-    default:
-        QLog_Error(LOG_ID_ERR, "processIncomingMessage() : network message type not recognized");
-        break;
+        // TODO log each type of message received
+        switch(command)
+        {
+        case CHAT_MESSAGE:
+            QLog_Info(LOG_ID_INFO, "processIncomingMessage() : Chat message received from " + m.getMessageSender());
+            handleNewChatMessage(m, stream);
+            break;
 
+        case SERVER_INFO_REQUEST:
+            QLog_Info(LOG_ID_INFO, "processIncomingMessage() : Server info request received from " + m.getMessageSender() +
+                      " with dest : " + QString::number((int)m.getDest()));
+            handleServerInfoRequest(m.getDest(), m.getMessageSender());
+            break;
+
+        case SERVER_INFO:
+            QLog_Info(LOG_ID_INFO, "processIncomingMessage() : Server info received from server.");
+            handleServerInfo(data);
+            break;
+
+        case PLAYER_LIST_UPDATE:
+            QLog_Info(LOG_ID_INFO, "processIncomingMessage() : Player list update received.");
+            handlePlayerListRefreshMessage(m, stream);
+
+        default:
+            QLog_Error(LOG_ID_ERR, "processIncomingMessage() : network message type not recognized");
+            break;
+
+        }
     }
 }
