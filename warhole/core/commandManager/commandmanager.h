@@ -29,16 +29,17 @@ class CommandManager : public QObject
 public:
     explicit CommandManager(MessageQueue* iq, MessageQueue* oq, Game* g, QObject *parent = 0);
 
-
 signals:
     void newChatMessageAvailable(QString sender,QString msg);
     void refreshPlayerList(QList<Player> l);
+    void createRuler(int l);
     
 public slots:
     void processIncomingMessage();
     void enQueueChatMessage(QString message);
     void enQueueServerInfoRequest();
     void enQueuePlayerListRefreshMessage(QList<Player> l);
+    void enQueueCreateRulerMessage(int l);
 
 private:
     static const QString LOG_ID_INFO;
@@ -58,6 +59,7 @@ private:
     void handleServerInfo(QByteArray &data);
     void handleNewChatMessage(const Message& m, QDataStream& data);
     void handlePlayerListRefreshMessage(const Message &m, QDataStream &data);
+    void handleCreateRulerMessage(const Message &m, QDataStream &data);
 };
 
 #endif // COMMANDMANAGER_H

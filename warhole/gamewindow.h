@@ -55,7 +55,6 @@ public:
 
     void loadArmy();
     void updateArmyList();
-    void addRulerToScene(int l);
 
     void createNetworkInterface(NetworkType t, QString ip);
     virtual void closeEvent(QCloseEvent *);
@@ -68,11 +67,15 @@ public slots:
     void add18InchesRuler();
     void add24InchesRuler();
     void printSpecialMessage(QString state);
+    void addRulerToScene(int l);
 
 private slots:
 
     void on_actionHost_Game_triggered();
     void on_actionConnect_to_a_game_2_triggered();
+
+signals:
+    void requestNewRuler(int l);
 
 private:
     static const QString LOG_ID_TRACE;

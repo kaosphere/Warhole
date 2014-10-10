@@ -16,8 +16,6 @@ NetworkServer::NetworkServer(MessageQueue *in, MessageQueue *out, QObject *paren
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_ERR), QLogger::ErrorLevel);
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_WARN), QLogger::WarnLevel);
 
-    connect(this, SIGNAL(serverStateChanged(QString)), this, SIGNAL(stateChanged(QString)));
-
     inQueue = in;
     outQueue = out;
 

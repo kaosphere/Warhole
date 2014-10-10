@@ -157,6 +157,33 @@ void CommandManager::handlePlayerListRefreshMessage(const Message& m, QDataStrea
     emit refreshPlayerList(l);
 }
 
+void CommandManager::enQueueCreateRulerMessage(int l)
+{
+    Message m;
+    m.setDest(ALL);
+    m.setMessageSender(game->getMe());
+
+    QByteArray data;
+    QDataStream s(&data, QIODevice::WriteOnly);
+
+    s << NEW_RULER;
+    s << l;
+
+    m.setData(data);
+
+    addMessageToOutQueue(m);
+}
+
+void CommandManager::handleCreateRulerMessage(const Message &m, QDataStream& data)
+{
+    int length;
+
+    data >> length;
+
+    emit createRuler(length);
+}
+
+
 void CommandManager::processIncomingMessage()
 {
     Message m;
@@ -207,6 +234,11 @@ void CommandManager::processIncomingMessage()
         case PLAYER_LIST_UPDATE:
             QLog_Info(LOG_ID_INFO, "processIncomingMessage() : Player list update received.");
             handlePlayerListRefreshMessage(m, stream);
+            break;
+
+        case NEW_RULER:
+            QLog_Info(LOG_ID_INFO, "processIncomingMessage() : New ruler message received.");
+            handleCreateRulerMessage(m, stream);
             break;
 
         default:

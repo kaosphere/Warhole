@@ -70,10 +70,12 @@ void GameWindow::initGameWindow()
     ///////////////////////////////////////////
     //Actions
     ///////////////////////////////////////////
-    connect(ui->actionRuler_6_inches, SIGNAL(triggered()),this, SLOT(add6InchesRuler()));
+    connect(ui->actionRuler_6_inches, SIGNAL(triggered()), this, SLOT(add12InchesRuler()));
     connect(ui->actionRuler_12_inches, SIGNAL(triggered()),this, SLOT(add12InchesRuler()));
     connect(ui->actionRuler_18_inches, SIGNAL(triggered()),this, SLOT(add18InchesRuler()));
     connect(ui->actionRuler_24_inches, SIGNAL(triggered()),this, SLOT(add24InchesRuler()));
+    connect(this, SIGNAL(requestNewRuler(int)), &controller, SIGNAL(addRulerToGameSceneRequest(int)));
+    connect(&controller, SIGNAL(addRulerToGameScene(int)), this, SLOT(addRulerToScene(int)));
 
     actionDeploy = new QAction(tr("Déployer"), this);
     connect(actionDeploy, SIGNAL(triggered()),this,SLOT(deployRegiment()));
@@ -152,22 +154,22 @@ void GameWindow::deployRegiment()
 
 void GameWindow::add6InchesRuler()
 {
-    addRulerToScene(6);
+    emit requestNewRuler(6);
 }
 
 void GameWindow::add12InchesRuler()
 {
-    addRulerToScene(12);
+    emit requestNewRuler(12);
 }
 
 void GameWindow::add18InchesRuler()
 {
-    addRulerToScene(18);
+    emit requestNewRuler(18);
 }
 
 void GameWindow::add24InchesRuler()
 {
-    addRulerToScene(24);
+    emit requestNewRuler(24);
 }
 
 void GameWindow::addRulerToScene(int l)
