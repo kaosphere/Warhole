@@ -16,7 +16,10 @@ GameController::GameController(QObject *parent) :
     connect(this, SIGNAL(newChatMessageToSend(QString)), comManager, SLOT(enQueueChatMessage(QString)));
 
     connect(this, SIGNAL(addRulerToGameSceneRequest(int)), comManager, SLOT(enQueueCreateRulerMessage(int)));
-    connect(comManager, SIGNAL(createRuler(int)), this, SIGNAL(addRulerToGameScene(int)));
+    connect(comManager, SIGNAL(createRuler(QString, int)), this, SIGNAL(addRulerToGameScene(QString, int)));
+
+    connect(this, SIGNAL(rulerMoved(QString, QTransform)), comManager, SLOT(enQueueRulerMoveMessage(QString, QTransform)));
+    connect(comManager, SIGNAL(moveRuler(QString,QTransform)), this, SIGNAL(moveRuler(QString, QTransform)));
 
     ///////////////////////////////////////////
     // Player Administrator

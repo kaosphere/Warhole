@@ -29,8 +29,11 @@ signals:
     void newChatMessageToSend(QString);
     void refreshPlayerListDisplay(QList<Player>);
     void networkEvent(QString);
-    void addRulerToGameScene(int l);
+    void addRulerToGameScene(QString id, int l);
     void addRulerToGameSceneRequest(int l);
+    void rulerMoved(QString, QTransform);
+    void moveRuler(QString, QTransform);
+
 
 public slots:
 

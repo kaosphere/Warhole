@@ -13,9 +13,10 @@ RulerGraphics::RulerGraphics()
     initRulerGraphics();
 }
 
-RulerGraphics::RulerGraphics(const int &l)
+RulerGraphics::RulerGraphics(const int &l, const QString& i)
 {
     length = l;
+    id = i;
     initRulerGraphics();
 }
 
@@ -120,9 +121,11 @@ void RulerGraphics::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         int cY = boundingRect().center().y();
         qreal angle = event->scenePos().manhattanLength() - initialPos.manhattanLength();
         setTransform(transform() * QTransform().translate(cX, cY).rotate(rotation() + angle / 100).translate(-cX, -cY));
+        emit rulerMoved(id, transform());
     }
     else
     {
+        emit rulerMoved(id, transform());
         QGraphicsItem::mouseMoveEvent(event);
     }
 }
@@ -144,5 +147,15 @@ void RulerGraphics::keyReleaseEvent(QKeyEvent *event)
         firstRot = true;
     }
     QGraphicsItem::keyReleaseEvent(event);
+}
+
+QString RulerGraphics::getId() const
+{
+    return id;
+}
+
+void RulerGraphics::setId(const QString &value)
+{
+    id = value;
 }
 

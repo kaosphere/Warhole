@@ -1,10 +1,10 @@
 #include "gamewindow.h"
 #include "ui_gamewindow.h"
 
-const QString GameWindow::LOG_ID_INFO = "testGI_info";
-const QString GameWindow::LOG_ID_TRACE = "testGI_trace";
-const QString GameWindow::LOG_ID_WARN = "testGI_warm";
-const QString GameWindow::LOG_ID_ERR = "testGI_err";
+const QString GameWindow::LOG_ID_INFO = "GameWindow_info";
+const QString GameWindow::LOG_ID_TRACE = "GameWindow_trace";
+const QString GameWindow::LOG_ID_WARN = "GameWindow_warm";
+const QString GameWindow::LOG_ID_ERR = "GameWindow_err";
 
 using namespace QLogger;
 
@@ -75,7 +75,7 @@ void GameWindow::initGameWindow()
     connect(ui->actionRuler_18_inches, SIGNAL(triggered()),this, SLOT(add18InchesRuler()));
     connect(ui->actionRuler_24_inches, SIGNAL(triggered()),this, SLOT(add24InchesRuler()));
     connect(this, SIGNAL(requestNewRuler(int)), &controller, SIGNAL(addRulerToGameSceneRequest(int)));
-    connect(&controller, SIGNAL(addRulerToGameScene(int)), this, SLOT(addRulerToScene(int)));
+    connect(&controller, SIGNAL(addRulerToGameScene(QString, int)), this, SLOT(addRulerToScene(QString, int)));
 
     actionDeploy = new QAction(tr("Déployer"), this);
     connect(actionDeploy, SIGNAL(triggered()),this,SLOT(deployRegiment()));
@@ -87,6 +87,7 @@ void GameWindow::initGameWindow()
     //GameController
     /////////////////////////////////////////////
     connect(&controller, SIGNAL(refreshPlayerListDisplay(QList<Player>)), cw, SLOT(refreshPlayerListDisplay(QList<Player>)));
+    connect(&controller, SIGNAL(moveRuler(QString,QTransform)), this, SLOT(moveRuler(QString,QTransform)));
     connect(&controller, SIGNAL(networkEvent(QString)), this, SLOT(printSpecialMessage(QString)));
 }
 
@@ -172,11 +173,28 @@ void GameWindow::add24InchesRuler()
     emit requestNewRuler(24);
 }
 
-void GameWindow::addRulerToScene(int l)
+void GameWindow::addRulerToScene(QString id, int l)
 {
-    RulerGraphics* r = new RulerGraphics(l);
+    RulerGraphics* r = new RulerGraphics(l, id);
+    connect(r, SIGNAL(rulerMoved(QString, QTransform)), &controller, SIGNAL(rulerMoved(QString, QTransform)));
     scene.addItem(r);
     r->setPos(back->getW()/2, back->getH()/2);
+
+    // Assume that id will be unique for now
+    toolItemList[id] = r;
+}
+
+void GameWindow::moveRuler(QString id, QTransform matrix)
+{
+    if(toolItemList.contains(id))
+    {
+        QLog_Info(LOG_ID_INFO, "moveRuler() : ruler with ID " + id + " found, now moving it.");
+        toolItemList[id]->setTransform(matrix);
+    }
+    else
+    {
+        QLog_Error(LOG_ID_ERR, "moveRuler() : ruler with ID " + id + " not found is item list.");
+    }
 }
 
 void GameWindow::openArmyMenuClicked()

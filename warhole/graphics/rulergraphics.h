@@ -17,7 +17,7 @@ class RulerGraphics : public QGraphicsObject
     Q_OBJECT
 public:
     RulerGraphics();
-    RulerGraphics(const int& l);
+    RulerGraphics(const int& l, const QString &id);
     virtual ~RulerGraphics();
 
     QRectF boundingRect() const;
@@ -33,7 +33,13 @@ public:
     void keyPressEvent(QKeyEvent *event);
     void keyReleaseEvent(QKeyEvent *event);
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+    QString getId() const;
+    void setId(const QString &value);
+
 public slots:
+
+signals:
+    void rulerMoved(QString, QTransform);
 
 private:
     //! length.
@@ -41,6 +47,8 @@ private:
     * Length of the ruler expressed in inches
     */
     int length;
+
+    QString id;
 
     //! width.
     /*!

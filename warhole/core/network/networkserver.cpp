@@ -157,8 +157,7 @@ void NetworkServer::receiveData()
     {
         QLog_Info(LOG_ID_INFO, "receiveData() : message destination is ALL_BUT_ME, transfering to every clients instead of sender");
         QByteArray packet = fillPacketWithMessage(m);
-        //TODO create new sendToAllButMe function
-        sendToAll(packet);
+        sendToAllButMe(packet, m.getMessageSender());
     }
     else if(m.getDest() != ME)
     {
@@ -203,6 +202,21 @@ void NetworkServer::deconnectionClient()
     c->deleteLater();
 }
 
+
+void NetworkServer::sendToAllButMe(const QByteArray& m, QString sender)
+{
+    // Send message to all clients (but sender if a sender is defined
+    for(int i = 0; i < clients.size(); ++i)
+    {
+        if(sender != clients[i]->getName())
+        {
+            clients[i]->getSocket()->write(m);
+            // Be sure to send packet now
+            clients[i]->getSocket()->flush();
+            QLog_Info(LOG_ID_INFO, "sendToAllButMe() : sending message to " + clients[i]->getName());
+        }
+    }
+}
 
 void NetworkServer::sendToAll(const QByteArray& m)
 {

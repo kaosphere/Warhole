@@ -122,6 +122,7 @@ void CommandManager::handleServerInfo(QByteArray& data)
 
 void CommandManager::enQueuePlayerListRefreshMessage(QList<Player> l)
 {
+    QLog_Info(LOG_ID_INFO, "handleServerInfoRequest() : sending player list to all clients");
     Message m;
     m.setDest(ALL_BUT_ME);
     m.setMessageSender(game->getMe());
@@ -143,6 +144,7 @@ void CommandManager::enQueuePlayerListRefreshMessage(QList<Player> l)
 
 void CommandManager::handlePlayerListRefreshMessage(const Message& m, QDataStream& data)
 {
+    QLog_Info(LOG_ID_INFO, "handleServerInfoRequest() : refreshing player list");
     int size;
     QList<Player> l;
 
@@ -167,20 +169,68 @@ void CommandManager::enQueueCreateRulerMessage(int l)
     QDataStream s(&data, QIODevice::WriteOnly);
 
     s << NEW_RULER;
+    QString id = IdGenerator::generateRandomID(IdGenerator::ID_SIZE);
+    s << id;
     s << l;
 
     m.setData(data);
 
+    QLog_Info(LOG_ID_INFO, "handleServerInfoRequest() : sending new ruler message with ID " +
+              id + " with length " + QString::number(l));
+
     addMessageToOutQueue(m);
 }
+
+
 
 void CommandManager::handleCreateRulerMessage(const Message &m, QDataStream& data)
 {
     int length;
+    QString id;
 
+    data >> id;
     data >> length;
 
-    emit createRuler(length);
+    QLog_Info(LOG_ID_INFO, "handleServerInfoRequest() : received new ruler message with ID " +
+              id + " with length " + QString::number(length));
+
+
+    emit createRuler(id,length);
+}
+
+void CommandManager::enQueueRulerMoveMessage(QString i, QTransform matrix)
+{
+    Message m;
+    m.setDest(ALL_BUT_ME);
+    m.setMessageSender(game->getMe());
+
+    QByteArray data;
+    QDataStream s(&data, QIODevice::WriteOnly);
+
+    s << RULER_POSITION_CHANGE;
+
+    s << i;
+    s << matrix;
+
+    m.setData(data);
+
+    QLog_Info(LOG_ID_INFO, "handleServerInfoRequest() : ruler move message with ID " + i);
+
+    addMessageToOutQueue(m);
+}
+
+void CommandManager::handleRulerMoveMessage(const Message& m, QDataStream& data)
+{
+    QString id;
+    QTransform matrix;
+
+    data >> id;
+    data >> matrix;
+
+    QLog_Info(LOG_ID_INFO, "handleServerInfoRequest() : received ruler moved message with ID " + id);
+
+
+    emit moveRuler(id,matrix);
 }
 
 
@@ -239,6 +289,11 @@ void CommandManager::processIncomingMessage()
         case NEW_RULER:
             QLog_Info(LOG_ID_INFO, "processIncomingMessage() : New ruler message received.");
             handleCreateRulerMessage(m, stream);
+            break;
+
+        case RULER_POSITION_CHANGE:
+            QLog_Info(LOG_ID_INFO, "processIncomingMessage() : Ruler moved message received.");
+            handleRulerMoveMessage(m, stream);
             break;
 
         default:

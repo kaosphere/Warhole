@@ -25,6 +25,7 @@ public:
     void removeClient(Client *c);
 
     void sendBackToSender(const QByteArray &m, QString sender);
+    void sendToAllButMe(const QByteArray &m, QString sender);
 signals:
     
 public slots:

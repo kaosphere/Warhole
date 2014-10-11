@@ -6,6 +6,7 @@
 #include "core/messagequeue.h"
 #include "game/game.h"
 #include "core/network/networkinterface.h"
+#include "Utilities/RandomIdGenerator/idgenerator.h"
 
 enum CommandType{
     SERVER_INFO_REQUEST,
@@ -29,10 +30,12 @@ class CommandManager : public QObject
 public:
     explicit CommandManager(MessageQueue* iq, MessageQueue* oq, Game* g, QObject *parent = 0);
 
+
 signals:
     void newChatMessageAvailable(QString sender,QString msg);
     void refreshPlayerList(QList<Player> l);
-    void createRuler(int l);
+    void createRuler(QString id, int l);
+    void moveRuler(QString id, QTransform matrix);
     
 public slots:
     void processIncomingMessage();
@@ -40,6 +43,7 @@ public slots:
     void enQueueServerInfoRequest();
     void enQueuePlayerListRefreshMessage(QList<Player> l);
     void enQueueCreateRulerMessage(int l);
+    void enQueueRulerMoveMessage(QString i, QTransform matrix);
 
 private:
     static const QString LOG_ID_INFO;
@@ -60,6 +64,7 @@ private:
     void handleNewChatMessage(const Message& m, QDataStream& data);
     void handlePlayerListRefreshMessage(const Message &m, QDataStream &data);
     void handleCreateRulerMessage(const Message &m, QDataStream &data);
+    void handleRulerMoveMessage(const Message &m, QDataStream &data);
 };
 
 #endif // COMMANDMANAGER_H

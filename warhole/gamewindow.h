@@ -29,6 +29,7 @@
 #include "chatwidgetform.h"
 #include "statsdisplayform.h"
 #include "core/gamecontroller.h"
+#include "Utilities/RandomIdGenerator/idgenerator.h"
 
 
 namespace Ui {
@@ -67,7 +68,8 @@ public slots:
     void add18InchesRuler();
     void add24InchesRuler();
     void printSpecialMessage(QString state);
-    void addRulerToScene(int l);
+    void addRulerToScene(QString id, int l);
+    void moveRuler(QString id, QTransform matrix);
 
 private slots:
 
@@ -99,6 +101,8 @@ private:
     StatsDisplayForm* sd;
 
     void initGameWindow();
+
+    QMap<QString, QGraphicsItem*> toolItemList;
 
     QList<RegimentGraphics*> regimentsGraphics;
 
