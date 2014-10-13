@@ -69,7 +69,7 @@ public slots:
     void add24InchesRuler();
     void printSpecialMessage(QString state);
     void addRulerToScene(QString id, int l);
-    void moveRuler(QString id, QTransform matrix);
+    void moveRuler(QString id, QPointF p, QTransform matrix);
 
 private slots:
 

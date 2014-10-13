@@ -23,6 +23,7 @@ RulerGraphics::RulerGraphics(const int &l, const QString& i)
 void RulerGraphics::initRulerGraphics()
 {
     width = DEFAULT_RULER_WIDTH;
+    cnt = 1;
 
     actionRemoveRuler = new QAction(tr("Retirer"), this);
     connect(actionRemoveRuler, SIGNAL(triggered()),this, SLOT(deleteLater()));
@@ -121,11 +122,19 @@ void RulerGraphics::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         int cY = boundingRect().center().y();
         qreal angle = event->scenePos().manhattanLength() - initialPos.manhattanLength();
         setTransform(transform() * QTransform().translate(cX, cY).rotate(rotation() + angle / 100).translate(-cX, -cY));
-        emit rulerMoved(id, transform());
+        if((++cnt)%6 == 0)
+        {
+            cnt = 1;
+            emit rulerMoved(id, pos(), transform());
+        }
     }
     else
     {
-        emit rulerMoved(id, transform());
+        if((++cnt)%6 == 0)
+        {
+            cnt = 1;
+            emit rulerMoved(id, pos(), transform());
+        }
         QGraphicsItem::mouseMoveEvent(event);
     }
 }
@@ -147,6 +156,15 @@ void RulerGraphics::keyReleaseEvent(QKeyEvent *event)
         firstRot = true;
     }
     QGraphicsItem::keyReleaseEvent(event);
+}
+
+void RulerGraphics::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+    // End of movement, send final position
+    qDebug() << "Finalizing movement";
+    emit rulerMoved(id, pos(), transform());
+
+    QGraphicsItem::mouseReleaseEvent(event);
 }
 
 QString RulerGraphics::getId() const

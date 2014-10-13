@@ -35,7 +35,7 @@ signals:
     void newChatMessageAvailable(QString sender,QString msg);
     void refreshPlayerList(QList<Player> l);
     void createRuler(QString id, int l);
-    void moveRuler(QString id, QTransform matrix);
+    void moveRuler(QString id, QPointF p, QTransform a);
     
 public slots:
     void processIncomingMessage();
@@ -43,7 +43,7 @@ public slots:
     void enQueueServerInfoRequest();
     void enQueuePlayerListRefreshMessage(QList<Player> l);
     void enQueueCreateRulerMessage(int l);
-    void enQueueRulerMoveMessage(QString i, QTransform matrix);
+    void enQueueRulerMoveMessage(QString i, QPointF p, QTransform matrix);
 
 private:
     static const QString LOG_ID_INFO;

@@ -87,7 +87,7 @@ void GameWindow::initGameWindow()
     //GameController
     /////////////////////////////////////////////
     connect(&controller, SIGNAL(refreshPlayerListDisplay(QList<Player>)), cw, SLOT(refreshPlayerListDisplay(QList<Player>)));
-    connect(&controller, SIGNAL(moveRuler(QString,QTransform)), this, SLOT(moveRuler(QString,QTransform)));
+    connect(&controller, SIGNAL(moveRuler(QString,QPointF, QTransform)), this, SLOT(moveRuler(QString,QPointF, QTransform)));
     connect(&controller, SIGNAL(networkEvent(QString)), this, SLOT(printSpecialMessage(QString)));
 }
 
@@ -176,7 +176,7 @@ void GameWindow::add24InchesRuler()
 void GameWindow::addRulerToScene(QString id, int l)
 {
     RulerGraphics* r = new RulerGraphics(l, id);
-    connect(r, SIGNAL(rulerMoved(QString, QTransform)), &controller, SIGNAL(rulerMoved(QString, QTransform)));
+    connect(r, SIGNAL(rulerMoved(QString, QPointF, QTransform)), &controller, SIGNAL(rulerMoved(QString, QPointF, QTransform)));
     scene.addItem(r);
     r->setPos(back->getW()/2, back->getH()/2);
 
@@ -184,11 +184,12 @@ void GameWindow::addRulerToScene(QString id, int l)
     toolItemList[id] = r;
 }
 
-void GameWindow::moveRuler(QString id, QTransform matrix)
+void GameWindow::moveRuler(QString id, QPointF p, QTransform matrix)
 {
     if(toolItemList.contains(id))
     {
         QLog_Info(LOG_ID_INFO, "moveRuler() : ruler with ID " + id + " found, now moving it.");
+        toolItemList[id]->setPos(p);
         toolItemList[id]->setTransform(matrix);
     }
     else

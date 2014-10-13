@@ -36,10 +36,11 @@ public:
     QString getId() const;
     void setId(const QString &value);
 
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 public slots:
 
 signals:
-    void rulerMoved(QString, QTransform);
+    void rulerMoved(QString, QPointF, QTransform);
 
 private:
     //! length.
@@ -55,6 +56,8 @@ private:
     * Length of the ruler expressed in pixels
     */
     int width;
+
+    int cnt;
 
     static const int DEFAULT_RULER_LENGTH;
     static const int DEFAULT_RULER_WIDTH;

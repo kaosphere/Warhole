@@ -31,8 +31,8 @@ signals:
     void networkEvent(QString);
     void addRulerToGameScene(QString id, int l);
     void addRulerToGameSceneRequest(int l);
-    void rulerMoved(QString, QTransform);
-    void moveRuler(QString, QTransform);
+    void rulerMoved(QString, QPointF, QTransform);
+    void moveRuler(QString, QPointF, QTransform);
 
 
 public slots:

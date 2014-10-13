@@ -198,7 +198,7 @@ void CommandManager::handleCreateRulerMessage(const Message &m, QDataStream& dat
     emit createRuler(id,length);
 }
 
-void CommandManager::enQueueRulerMoveMessage(QString i, QTransform matrix)
+void CommandManager::enQueueRulerMoveMessage(QString i, QPointF p, QTransform matrix)
 {
     Message m;
     m.setDest(ALL_BUT_ME);
@@ -210,6 +210,7 @@ void CommandManager::enQueueRulerMoveMessage(QString i, QTransform matrix)
     s << RULER_POSITION_CHANGE;
 
     s << i;
+    s << p;
     s << matrix;
 
     m.setData(data);
@@ -222,15 +223,17 @@ void CommandManager::enQueueRulerMoveMessage(QString i, QTransform matrix)
 void CommandManager::handleRulerMoveMessage(const Message& m, QDataStream& data)
 {
     QString id;
+    QPointF point;
     QTransform matrix;
 
     data >> id;
+    data >> point;
     data >> matrix;
 
     QLog_Info(LOG_ID_INFO, "handleServerInfoRequest() : received ruler moved message with ID " + id);
 
 
-    emit moveRuler(id,matrix);
+    emit moveRuler(id,point,matrix);
 }
 
 
@@ -244,8 +247,8 @@ void CommandManager::processIncomingMessage()
         return;
     }
 
-    while(!inQueue->isMessageListEmpty())
-    {
+    //while(!inQueue->isMessageListEmpty())
+    //{
         if(inQueue)
         {
             m = inQueue->getAndRemoveFirstMessage();
@@ -301,5 +304,5 @@ void CommandManager::processIncomingMessage()
             break;
 
         }
-    }
+    //}
 }
