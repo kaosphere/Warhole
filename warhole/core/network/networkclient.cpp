@@ -24,6 +24,7 @@ NetworkClient::NetworkClient(MessageQueue *in, MessageQueue* out, QObject *paren
     QObject::connect(sock, SIGNAL(connected()), this, SLOT(connected()));
     QObject::connect(sock, SIGNAL(disconnected()), this, SLOT(deconnected()));
     QObject::connect(sock, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(errorSocket(QAbstractSocket::SocketError)));
+    QObject::connect(sock, SIGNAL(bytesWritten(qint64)), this, SLOT(printBufferInfo(qint64)));
 
     messageSize = 0;
 
@@ -83,8 +84,9 @@ void NetworkClient::sendToServer(const Message& m)
     out << (quint16) (packet.size() - sizeof(quint16)); // On écrase le 0 qu'on avait réservé par la longueur du message
 
     sock->write(packet); // On envoie le paquet
+
     // Ensure to send the data right away
-    sock->flush();
+    //sock->flush();
 }
 
 void NetworkClient::receiveData()
@@ -92,52 +94,55 @@ void NetworkClient::receiveData()
     QDataStream in(sock);
     QString name;
 
-    if (messageSize == 0)
+    do
     {
-        if (sock->bytesAvailable() < (int)sizeof(quint16))
+        if (messageSize == 0)
+        {
+            if (sock->bytesAvailable() < (int)sizeof(quint16))
+                return;
+
+            in >> messageSize;
+        }
+
+        if (sock->bytesAvailable() < messageSize)
             return;
 
-        in >> messageSize;
-    }
 
-    if (sock->bytesAvailable() < messageSize)
-        return;
+        // Si on arrive jusqu'à cette ligne, on peut récupérer le message entier
+        Message m;
+        QByteArray d;
+        int dest;
 
+        in >> name;
+        in >> dest;
+        in >> d;
+        m.setMessageSender(name);
+        m.setDest(dest);
+        m.setData(d);
 
-    // Si on arrive jusqu'à cette ligne, on peut récupérer le message entier
-    Message m;
-    QByteArray d;
-    int dest;
+        QLog_Info(LOG_ID_INFO, "Client message received from " + m.getMessageSender() + " with dest " + QString::number(dest));
 
-    in >> name;
-    in >> dest;
-    in >> d;
-    m.setMessageSender(name);
-    m.setDest(dest);
-    m.setData(d);
-
-    QLog_Info(LOG_ID_INFO, "Client message received from " + m.getMessageSender() + " with dest " + QString::number(dest));
-
-    try
-    {
-        if(!inQueue)
+        try
         {
-            throw(WarlibException(EXCEPTION_CRITICAL,
-                                  tr("inQueue pointer is NULL"),
-                                  0));
+            if(!inQueue)
+            {
+                throw(WarlibException(EXCEPTION_CRITICAL,
+                                      tr("inQueue pointer is NULL"),
+                                      0));
+            }
+            else
+            {
+                inQueue->addMessage(m);
+            }
         }
-        else
+        catch(const WarlibException& e)
         {
-            inQueue->addMessage(m);
+            QLog_Error(LOG_ID_ERR, "receiveData() : " + QString::fromStdString(e.what()));
         }
-    }
-    catch(const WarlibException& e)
-    {
-        QLog_Error(LOG_ID_ERR, "receiveData() : " + QString::fromStdString(e.what()));
-    }
 
-    // On remet la taille du message à 0 pour pouvoir recevoir de futurs messages
-    messageSize = 0;
+        // On remet la taille du message à 0 pour pouvoir recevoir de futurs messages
+        messageSize = 0;
+    }while(sock->bytesAvailable());
 }
 
 void NetworkClient::connected()
@@ -173,6 +178,12 @@ void NetworkClient::errorSocket(QAbstractSocket::SocketError erreur)
         QLog_Info(LOG_ID_ERR, "errorSocket() : other error : " + sock->errorString());
         emit networkEvent(tr("<em><font color=\"Red\">ERREUR : ") + sock->errorString() + tr("</em></font>"));
     }
+}
+
+void NetworkClient::printBufferInfo(quint64 n)
+{
+    QLog_Info(LOG_ID_INFO, " printBufferInfo() : Bytes written : " + QString::number(n) +
+            ". Bytes to write : " + QString::number(sock->bytesToWrite()));
 }
 
 QTcpSocket* NetworkClient::getSock() const

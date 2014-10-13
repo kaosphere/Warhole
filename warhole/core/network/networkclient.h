@@ -35,6 +35,7 @@ public slots:
     void connected();
     void deconnected();
     void errorSocket(QAbstractSocket::SocketError erreur);
+    void printBufferInfo(quint64 n);
     
 private:
     static const QString LOG_ID_INFO;

@@ -4,6 +4,8 @@
 #include <QtGui>
 #include <QtNetwork>
 
+#include "Utilities/QLogger/QLogger.h"
+
 class Client : public QObject
 {
     Q_OBJECT
@@ -24,12 +26,18 @@ public:
     void setName(const QString &value);
 
 public slots:
+    void printBufferInfo(quint64 n);
 
 signals:
     void donnees();
     void disco();
 
 private:
+    static const QString LOG_ID_INFO;
+    static const QString LOG_ID_TRACE;
+    static const QString LOG_ID_WARN;
+    static const QString LOG_ID_ERR;
+
     QTcpSocket* sock;
     QString name;
     quint16 messageSize;

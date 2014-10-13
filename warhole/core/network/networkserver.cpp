@@ -89,86 +89,80 @@ void NetworkServer::receiveData()
     // Si tout va bien, on continue : on récupère le message
     QDataStream in(s);
 
-    if (c->getMessageSize() == 0) // Si on ne connaît pas encore la taille du message, on essaie de la récupérer
-    {
-        if (s->bytesAvailable() < (int)sizeof(quint16)) // On n'a pas reçu la taille du message en entier
+    do
+        {
+
+        if (c->getMessageSize() == 0) // Si on ne connaît pas encore la taille du message, on essaie de la récupérer
+        {
+            if (s->bytesAvailable() < (int)sizeof(quint16)) // On n'a pas reçu la taille du message en entier
+                return;
+
+            in >> tailleMsg; // Si on a reçu la taille du message en entier, on la récupère
+            c->setMessageSize(tailleMsg);
+        }
+
+        // Si on connaît la taille du message, on vérifie si on a reçu le message en entier
+        if (s->bytesAvailable() < c->getMessageSize()) // Si on n'a pas encore tout reçu, on arrête la méthode
             return;
 
-        in >> tailleMsg; // Si on a reçu la taille du message en entier, on la récupère
-        c->setMessageSize(tailleMsg);
-    }
 
-    // Si on connaît la taille du message, on vérifie si on a reçu le message en entier
-    if (s->bytesAvailable() < c->getMessageSize()) // Si on n'a pas encore tout reçu, on arrête la méthode
-        return;
+        // Si ces lignes s'exécutent, c'est qu'on a reçu tout le message : on peut le récupérer !
+        Message m;
+        QByteArray d;
+        in >> name;
+        in >> dest;
+        in >> d;
+        m.setMessageSender(name);
+        m.setDest(dest);
+        m.setData(d);
 
+        QLog_Info(LOG_ID_INFO, "receiveData() : message received from "+ m.getMessageSender() +
+                  " Destination : " + QString::number(m.getDest()) + " Data : " + QString::number(m.getData().toUShort()));
 
-    // Si ces lignes s'exécutent, c'est qu'on a reçu tout le message : on peut le récupérer !
-    Message m;
-    QByteArray d;
-    in >> name;
-    in >> dest;
-    in >> d;
-    m.setMessageSender(name);
-    m.setDest(dest);
-    m.setData(d);
-
-    QLog_Info(LOG_ID_INFO, "receiveData() : message received from "+ m.getMessageSender() +
-              " Destination : " + QString::number(m.getDest()) + " Data : " + QString::number(m.getData().toUShort()));
-
-    if(c->getName().isEmpty())
-    {
-        // It's the first time we receive a message from this client
-        // set his name, and add it to the connected clients list
-        QLog_Info(LOG_ID_INFO, "receiveData() : first time we receive a message from client " + name);
-        c->setName(name);
-        emit networkEvent(tr("<em><font color=\"DimGray\"><strong>")+ name + tr("</strong> s'est connecté Ã la partie.</font></em>"));
-        emit newPlayerConnected(*c);
-    }
-
-    // Put in inQueue
-    try
-    {
-        if(!inQueue)
+        if(c->getName().isEmpty())
         {
-            throw(WarlibException(EXCEPTION_CRITICAL,
-                                  tr("inQueue pointer is NULL"),
-                                  0));
+            // It's the first time we receive a message from this client
+            // set his name, and add it to the connected clients list
+            QLog_Info(LOG_ID_INFO, "receiveData() : first time we receive a message from client " + name);
+            c->setName(name);
+            emit networkEvent(tr("<em><font color=\"DimGray\"><strong>")+ name + tr("</strong> s'est connecté Ã la partie.</font></em>"));
+            emit newPlayerConnected(*c);
         }
-        else
+
+        // Put in inQueue
+        try
         {
-            inQueue->addMessage(m);
+            if(!inQueue)
+            {
+                throw(WarlibException(EXCEPTION_CRITICAL,
+                                      tr("inQueue pointer is NULL"),
+                                      0));
+            }
+            else
+            {
+                inQueue->addMessage(m);
+            }
         }
-    }
-    catch(const WarlibException& e)
-    {
-        QLog_Error(LOG_ID_ERR, "receiveData() : " + QString::fromStdString(e.what()));
-    }
+        catch(const WarlibException& e)
+        {
+            QLog_Error(LOG_ID_ERR, "receiveData() : " + QString::fromStdString(e.what()));
+        }
 
+        // Transfer message to every one
+        if(m.getDest() != ME)
+        {
+            if(outQueue)
+            {
+                outQueue->addMessage(m);
+            }
+        }
 
-    // If the message if with dest ALL or ALL_BUT_ME, automatically retransfer to clients
-    if(m.getDest() == ALL)
-    {
-        QLog_Info(LOG_ID_INFO, "receiveData() : message destination is ALL, transfering to every clients");
-        QByteArray packet = fillPacketWithMessage(m);
-        sendToAll(packet);
-    }
-    else if(m.getDest() == ALL_BUT_ME)
-    {
-        QLog_Info(LOG_ID_INFO, "receiveData() : message destination is ALL_BUT_ME, transfering to every clients instead of sender");
-        QByteArray packet = fillPacketWithMessage(m);
-        sendToAllButMe(packet, m.getMessageSender());
-    }
-    else if(m.getDest() != ME)
-    {
-        QLog_Error(LOG_ID_ERR, "receiveData() : Can't identify received destination.");
-    }
+        // Do nothig if dest is ME, because it means that a special answer is need, and will
+        // be treated by command manager
 
-    // Do nothig if dest is ME, because it means that a special answer is need, and will
-    // be treated by command manager
-
-    // set message size to 0 to be able to receive new packets from this client
-    c->setMessageSize(0);
+        // set message size to 0 to be able to receive new packets from this client
+        c->setMessageSize(0);
+    }while(c->getSocket()->bytesAvailable());
 }
 
 void NetworkServer::newClientConnected()
@@ -212,7 +206,7 @@ void NetworkServer::sendToAllButMe(const QByteArray& m, QString sender)
         {
             clients[i]->getSocket()->write(m);
             // Be sure to send packet now
-            clients[i]->getSocket()->flush();
+            //clients[i]->getSocket()->flush();
             QLog_Info(LOG_ID_INFO, "sendToAllButMe() : sending message to " + clients[i]->getName());
         }
     }
@@ -226,7 +220,7 @@ void NetworkServer::sendToAll(const QByteArray& m)
          QLog_Info(LOG_ID_INFO, "sendToAll() : sending message to " + clients[i]->getName());
          clients[i]->getSocket()->write(m);
          // Be sure to send packet now
-         clients[i]->getSocket()->flush();
+         //clients[i]->getSocket()->flush();
     }
 }
 
@@ -246,7 +240,7 @@ void NetworkServer::sendBackToSender(const QByteArray& m, QString sender)
         {
             clients[i]->getSocket()->write(m);
             // Be sure to send packet now
-            clients[i]->getSocket()->flush();
+            //clients[i]->getSocket()->flush();
             QLog_Info(LOG_ID_INFO, "sendBackToSender() : sending message to " + clients[i]->getName());
         }
     }
@@ -286,27 +280,29 @@ void NetworkServer::send()
 
         QByteArray packet = fillPacketWithMessage(m);
 
+        if(m.getMessageSender().contains("_SERVER") && m.getDest() == ALL)
+        {
+            // If server is sending this message to everyone, in queue in its proper inqueue
+            QLog_Info(LOG_ID_INFO, "send() : message to be sent to all, also add my message to my queue.");
+            if(inQueue) inQueue->addMessage(m);
+        }
+
         // Also add the command to the in message queue so that the server
         // gets the changed too
         switch(m.getDest())
         {
         case ALL:
             // send message to every clients
+            QLog_Info(LOG_ID_INFO, "send() : sending to all...");
             sendToAll(packet);
-            // Put in own inQueue to get the update
-            if(inQueue) inQueue->addMessage(m);
-            // TODO error handling
             break;
         case ALL_BUT_ME:
-            // TODO add function all but me
-            sendToAll(packet);
-            if(!m.getMessageSender().contains("_SERVER"))
-            {
-                if(inQueue) inQueue->addMessage(m);
-            }
+            QLog_Info(LOG_ID_INFO, "send() : sending to all but " + m.getMessageSender());
+            sendToAllButMe(packet, m.getMessageSender());
             // If
             break;
         case ME:
+            QLog_Info(LOG_ID_INFO, "send() : sending to " + m.getMessageSender());
             sendBackToSender(packet, m.getMessageSender());
             break;
         default:

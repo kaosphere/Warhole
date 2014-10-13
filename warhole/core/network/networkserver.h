@@ -26,7 +26,9 @@ public:
 
     void sendBackToSender(const QByteArray &m, QString sender);
     void sendToAllButMe(const QByteArray &m, QString sender);
+
 signals:
+    void socketBytesWritten(quint64 n);
     
 public slots:
     void receiveData();
