@@ -24,6 +24,9 @@ void RoundTemplateGraphics::initRoundTemplateGraphics()
     setFlag(ItemIsSelectable);
     setFlag(ItemIsFocusable);
 
+    actionRemoveTemplate = new QAction(tr("Retirer"), this);
+    connect(actionRemoveTemplate, SIGNAL(triggered()),this, SLOT(removeTemplate()));
+
     setOpacity(0.7);
     setZValue(1);
 }
@@ -79,6 +82,18 @@ void RoundTemplateGraphics::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     // Finalize movement
     emit templateMoved(id, pos());
     QGraphicsItem::mouseReleaseEvent(event);
+}
+
+void RoundTemplateGraphics::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
+{
+    QMenu *menu = new QMenu;
+    menu->addAction(actionRemoveTemplate);
+    menu->popup(event->screenPos());
+}
+
+void RoundTemplateGraphics::removeTemplate()
+{
+    emit removeTemplateRequest(id);
 }
 
 QString RoundTemplateGraphics::getId() const

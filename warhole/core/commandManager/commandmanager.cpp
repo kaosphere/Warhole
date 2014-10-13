@@ -262,10 +262,42 @@ void CommandManager::handleRemoveRulerMessage(const Message& m, QDataStream& dat
 
     data >> id;
 
-    QLog_Info(LOG_ID_INFO, "handleServerInfoRequest() : received remove ruler message with ID " + id);
+    QLog_Info(LOG_ID_INFO, "handleRemoveRulerMessage() : received remove ruler message with ID " + id);
 
     emit removeRuler(id);
 }
+
+void CommandManager::enQueueRemoveTemplateMessage(QString i)
+{
+    Message m;
+    m.setDest(ALL);
+    m.setMessageSender(game->getMe());
+
+    QByteArray data;
+    QDataStream s(&data, QIODevice::WriteOnly);
+
+    s << ROUND_TEMPLATE_REMOVE;
+
+    s << i;
+
+    m.setData(data);
+
+    QLog_Info(LOG_ID_INFO, "enQueueRemoveTemplateMessage() : template remove message with ID " + i);
+
+    addMessageToOutQueue(m);
+}
+
+void CommandManager::handleRemoveTemplateMessage(const Message& m, QDataStream& data)
+{
+    QString id;
+
+    data >> id;
+
+    QLog_Info(LOG_ID_INFO, "handleRemoveTemplateMessage() : received remove template message with ID " + id);
+
+    emit removeTemplate(id);
+}
+
 
 void CommandManager::enqueueCreateRoundTemplateMessage(int d)
 {
@@ -414,6 +446,11 @@ void CommandManager::processIncomingMessage()
         case ROUND_TEMPLATE_POSITION_CHANGE:
             QLog_Info(LOG_ID_INFO, "processIncomingMessage() : Template moved message received.");
             handleTemplateMoveMessage(m, stream);
+            break;
+
+        case ROUND_TEMPLATE_REMOVE:
+            QLog_Info(LOG_ID_INFO, "processIncomingMessage() : Template remove message received.");
+            handleRemoveTemplateMessage(m, stream);
             break;
 
         default:

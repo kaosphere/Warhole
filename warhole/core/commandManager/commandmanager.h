@@ -34,6 +34,7 @@ public:
     explicit CommandManager(MessageQueue* iq, MessageQueue* oq, Game* g, QObject *parent = 0);
 
 
+
 signals:
     void newChatMessageAvailable(QString sender,QString msg);
     void refreshPlayerList(QList<Player> l);
@@ -42,6 +43,7 @@ signals:
     void removeRuler(QString id);
     void createRoundTemplate(QString id, int d);
     void moveTemplate(QString id, QPointF p);
+    void removeTemplate(QString);
     
 public slots:
     void processIncomingMessage();
@@ -53,6 +55,7 @@ public slots:
     void enqueueCreateRoundTemplateMessage(int d);
     void enQueueTemplateMoveMessage(QString id, QPointF p);
     void enQueueRemoveRulerMessage(QString i);
+    void enQueueRemoveTemplateMessage(QString i);
 
 private:
     static const QString LOG_ID_INFO;
@@ -77,6 +80,7 @@ private:
     void handleCreateRoundTemplateMessage(const Message &m, QDataStream& data);
     void handleTemplateMoveMessage(const Message &m, QDataStream &data);
     void handleRemoveRulerMessage(const Message &m, QDataStream &data);
+    void handleRemoveTemplateMessage(const Message &m, QDataStream &data);
 };
 
 #endif // COMMANDMANAGER_H

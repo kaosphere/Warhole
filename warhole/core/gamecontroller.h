@@ -39,6 +39,8 @@ signals:
     void moveTemplate(QString, QPointF);
     void removeRulerRequest(QString);
     void removeRuler(QString);
+    void removeTemplateRequest(QString);
+    void removeTemplate(QString);
 
 
 public slots:

@@ -125,7 +125,7 @@ void NetworkServer::receiveData()
             // set his name, and add it to the connected clients list
             QLog_Info(LOG_ID_INFO, "receiveData() : first time we receive a message from client " + name);
             c->setName(name);
-            emit networkEvent(tr("<em><font color=\"DimGray\"><strong>")+ name + tr("</strong> s'est connecté Ã la partie.</font></em>"));
+            emit networkEvent(tr("<em><font color=\"DimGray\"><strong>")+ name + tr("</strong> s'est connecté à la partie.</font></em>"));
             emit newPlayerConnected(*c);
         }
 

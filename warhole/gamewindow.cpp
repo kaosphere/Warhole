@@ -70,13 +70,14 @@ void GameWindow::initGameWindow()
     ///////////////////////////////////////////
     //Actions
     ///////////////////////////////////////////
-    connect(ui->actionRuler_6_inches, SIGNAL(triggered()), this, SLOT(add12InchesRuler()));
+    connect(ui->actionRuler_6_inches, SIGNAL(triggered()), this, SLOT(add6InchesRuler()));
     connect(ui->actionRuler_12_inches, SIGNAL(triggered()),this, SLOT(add12InchesRuler()));
     connect(ui->actionRuler_18_inches, SIGNAL(triggered()),this, SLOT(add18InchesRuler()));
     connect(ui->actionRuler_24_inches, SIGNAL(triggered()),this, SLOT(add24InchesRuler()));
     connect(this, SIGNAL(requestNewRuler(int)), &controller, SIGNAL(addRulerToGameSceneRequest(int)));
     connect(&controller, SIGNAL(addRulerToGameScene(QString, int)), this, SLOT(addRulerToScene(QString, int)));
     connect(&controller, SIGNAL(removeRuler(QString)), this, SLOT(removeRulerFromScene(QString)));
+    connect(&controller, SIGNAL(removeTemplate(QString)), this, SLOT(removeRulerFromScene(QString)));
 
     connect(this, SIGNAL(requestNewRoundTemplate(int)), &controller, SIGNAL(addRoundTemplateToGameSceneRequest(int)));
     connect(&controller, SIGNAL(addRoundTemplateScene(QString,int)), this, SLOT(addRoundTemplateToScene(QString, int)));
@@ -209,7 +210,7 @@ void GameWindow::removeRulerFromScene(QString id)
 {
     if(toolItemList.contains(id))
     {
-        QLog_Info(LOG_ID_INFO, "moveRuler() : ruler with ID " + id + " found, now removing it.");
+        QLog_Info(LOG_ID_INFO, "moveRuler() : ruler (or template) with ID " + id + " found, now removing it.");
         QGraphicsItem* r = toolItemList[id];
         scene.removeItem(r);
         delete r;
@@ -275,6 +276,7 @@ void GameWindow::addRoundTemplateToScene(QString id, int d)
 {
     RoundTemplateGraphics* r = new RoundTemplateGraphics(d, id);
     connect(r, SIGNAL(templateMoved(QString,QPointF)), &controller, SIGNAL(templateMoved(QString, QPointF)));
+    connect(r, SIGNAL(removeTemplateRequest(QString)), &controller, SIGNAL(removeTemplateRequest(QString)));
     scene.addItem(r);
     r->setPos(back->getW()/2, back->getH()/2);
 

@@ -30,6 +30,9 @@ GameController::GameController(QObject *parent) :
     connect(this, SIGNAL(removeRulerRequest(QString)), comManager, SLOT(enQueueRemoveRulerMessage(QString)));
     connect(comManager, SIGNAL(removeRuler(QString)), this, SIGNAL(removeRuler(QString)));
 
+    connect(this, SIGNAL(removeTemplateRequest(QString)), comManager, SLOT(enQueueRemoveTemplateMessage(QString)));
+    connect(comManager, SIGNAL(removeTemplate(QString)), this, SIGNAL(removeTemplate(QString)));
+
     ///////////////////////////////////////////
     // Player Administrator
     ///////////////////////////////////////////

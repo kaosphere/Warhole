@@ -4,6 +4,8 @@
 #include <QGraphicsObject>
 #include <QtCore>
 #include <QLinearGradient>
+#include <QMenu>
+#include <QGraphicsSceneContextMenuEvent>
 #include <QPainter>
 #include "distances.h"
 
@@ -27,14 +29,20 @@ public:
     void initRoundTemplateGraphics();
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+
+    void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
+
+
 signals:
     void templateMoved(QString, QPointF);
+    void removeTemplateRequest(QString);
     
 public slots:
-
+    void removeTemplate();
 private:
     int diameter;
     QString id;
+    QAction* actionRemoveTemplate;
     
 };
 
