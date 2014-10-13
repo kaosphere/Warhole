@@ -230,12 +230,114 @@ void CommandManager::handleRulerMoveMessage(const Message& m, QDataStream& data)
     data >> point;
     data >> matrix;
 
-    QLog_Info(LOG_ID_INFO, "handleServerInfoRequest() : received ruler moved message with ID " + id);
+    QLog_Info(LOG_ID_INFO, "handleRulerMoveMessage() : received ruler moved message with ID " + id);
 
 
     emit moveRuler(id,point,matrix);
 }
 
+void CommandManager::enQueueRemoveRulerMessage(QString i)
+{
+    Message m;
+    m.setDest(ALL);
+    m.setMessageSender(game->getMe());
+
+    QByteArray data;
+    QDataStream s(&data, QIODevice::WriteOnly);
+
+    s << RULER_REMOVE;
+
+    s << i;
+
+    m.setData(data);
+
+    QLog_Info(LOG_ID_INFO, "enQueueRemoveRulerMessage() : ruler remove message with ID " + i);
+
+    addMessageToOutQueue(m);
+}
+
+void CommandManager::handleRemoveRulerMessage(const Message& m, QDataStream& data)
+{
+    QString id;
+
+    data >> id;
+
+    QLog_Info(LOG_ID_INFO, "handleServerInfoRequest() : received remove ruler message with ID " + id);
+
+    emit removeRuler(id);
+}
+
+void CommandManager::enqueueCreateRoundTemplateMessage(int d)
+{
+    Message m;
+    m.setDest(ALL);
+    m.setMessageSender(game->getMe());
+
+    QByteArray data;
+    QDataStream s(&data, QIODevice::WriteOnly);
+
+    s << NEW_ROUND_TEMPLATE;
+
+    QString id = IdGenerator::generateRandomID(IdGenerator::ID_SIZE);
+    s << id;
+    s << d;
+
+    m.setData(data);
+
+    QLog_Info(LOG_ID_INFO, "handleServerInfoRequest() : new round template created with ID " + id);
+
+    addMessageToOutQueue(m);
+}
+
+void CommandManager::handleCreateRoundTemplateMessage(const Message &m, QDataStream &data)
+{
+    int diameter;
+    QString id;
+
+    data >> id;
+    data >> diameter;
+
+    QLog_Info(LOG_ID_INFO, "handleServerInfoRequest() : received new ruler message with ID " +
+              id + " with diameter " + QString::number(diameter));
+
+
+    emit createRoundTemplate(id,diameter);
+}
+
+void CommandManager::enQueueTemplateMoveMessage(QString id, QPointF p)
+{
+    Message m;
+    m.setDest(ALL_BUT_ME);
+    m.setMessageSender(game->getMe());
+
+    QByteArray data;
+    QDataStream s(&data, QIODevice::WriteOnly);
+
+    s << ROUND_TEMPLATE_POSITION_CHANGE;
+
+    s << id;
+    s << p;
+
+    m.setData(data);
+
+    QLog_Info(LOG_ID_INFO, "handleServerInfoRequest() : template move message with ID " + id);
+
+    addMessageToOutQueue(m);
+}
+
+
+void CommandManager::handleTemplateMoveMessage(const Message &m, QDataStream &data)
+{
+    QString id;
+    QPointF point;
+
+    data >> id;
+    data >> point;
+
+    QLog_Info(LOG_ID_INFO, "handleServerInfoRequest() : received template moved message with ID " + id);
+
+    emit moveTemplate(id,point);
+}
 
 void CommandManager::processIncomingMessage()
 {
@@ -297,6 +399,21 @@ void CommandManager::processIncomingMessage()
         case RULER_POSITION_CHANGE:
             QLog_Info(LOG_ID_INFO, "processIncomingMessage() : Ruler moved message received.");
             handleRulerMoveMessage(m, stream);
+            break;
+
+        case RULER_REMOVE:
+            QLog_Info(LOG_ID_INFO, "processIncomingMessage() : Ruler remove message received.");
+            handleRemoveRulerMessage(m, stream);
+            break;
+
+        case NEW_ROUND_TEMPLATE:
+            QLog_Info(LOG_ID_INFO, "processIncomingMessage() : New Round template received.");
+            handleCreateRoundTemplateMessage(m, stream);
+            break;
+
+        case ROUND_TEMPLATE_POSITION_CHANGE:
+            QLog_Info(LOG_ID_INFO, "processIncomingMessage() : Template moved message received.");
+            handleTemplateMoveMessage(m, stream);
             break;
 
         default:

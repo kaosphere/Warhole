@@ -33,6 +33,12 @@ signals:
     void addRulerToGameSceneRequest(int l);
     void rulerMoved(QString, QPointF, QTransform);
     void moveRuler(QString, QPointF, QTransform);
+    void addRoundTemplateToGameSceneRequest(int d);
+    void addRoundTemplateScene(QString i, int d);
+    void templateMoved(QString, QPointF);
+    void moveTemplate(QString, QPointF);
+    void removeRulerRequest(QString);
+    void removeRuler(QString);
 
 
 public slots:

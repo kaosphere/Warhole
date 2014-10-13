@@ -16,8 +16,8 @@ class RulerGraphics : public QGraphicsObject
 {
     Q_OBJECT
 public:
-    RulerGraphics();
-    RulerGraphics(const int& l, const QString &id);
+    RulerGraphics(QGraphicsItem *parent = 0);
+    RulerGraphics(const int& l, const QString &id, QGraphicsItem* parent = 0);
     virtual ~RulerGraphics();
 
     QRectF boundingRect() const;
@@ -37,10 +37,13 @@ public:
     void setId(const QString &value);
 
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+
 public slots:
+    void removeRulerRequest();
 
 signals:
     void rulerMoved(QString, QPointF, QTransform);
+    void removeRuler(QString);
 
 private:
     //! length.

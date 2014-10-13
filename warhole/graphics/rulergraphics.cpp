@@ -7,13 +7,14 @@ const int RulerGraphics::GRADUATION_NUMBER_WIDTH = RulerGraphics::DEFAULT_RULER_
 const int RulerGraphics::GRADUATION_NUMBER_HIGHT = RulerGraphics::DEFAULT_RULER_WIDTH/2;
 const int RulerGraphics::PEN_WIDTH = 3;
 
-RulerGraphics::RulerGraphics()
+RulerGraphics::RulerGraphics(QGraphicsItem* parent) : QGraphicsObject(parent)
 {
     length = DEFAULT_RULER_LENGTH;
     initRulerGraphics();
 }
 
-RulerGraphics::RulerGraphics(const int &l, const QString& i)
+RulerGraphics::RulerGraphics(const int &l, const QString& i, QGraphicsItem *parent) :
+    QGraphicsObject(parent)
 {
     length = l;
     id = i;
@@ -26,7 +27,7 @@ void RulerGraphics::initRulerGraphics()
     cnt = 1;
 
     actionRemoveRuler = new QAction(tr("Retirer"), this);
-    connect(actionRemoveRuler, SIGNAL(triggered()),this, SLOT(deleteLater()));
+    connect(actionRemoveRuler, SIGNAL(triggered()),this, SLOT(removeRulerRequest()));
 
     rot = false;
     firstRot = true;
@@ -38,7 +39,6 @@ void RulerGraphics::initRulerGraphics()
 
 RulerGraphics::~RulerGraphics()
 {
-
 }
 
 QRectF RulerGraphics::boundingRect() const
@@ -177,3 +177,7 @@ void RulerGraphics::setId(const QString &value)
     id = value;
 }
 
+void RulerGraphics::removeRulerRequest()
+{
+    emit removeRuler(id);
+}

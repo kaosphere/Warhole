@@ -21,6 +21,15 @@ GameController::GameController(QObject *parent) :
     connect(this, SIGNAL(rulerMoved(QString, QPointF, QTransform)), comManager, SLOT(enQueueRulerMoveMessage(QString, QPointF, QTransform)));
     connect(comManager, SIGNAL(moveRuler(QString, QPointF, QTransform)), this, SIGNAL(moveRuler(QString, QPointF, QTransform)));
 
+    connect(this, SIGNAL(addRoundTemplateToGameSceneRequest(int)), comManager, SLOT(enqueueCreateRoundTemplateMessage(int)));
+    connect(comManager, SIGNAL(createRoundTemplate(QString,int)), this, SIGNAL(addRoundTemplateScene(QString, int)));
+
+    connect(this, SIGNAL(templateMoved(QString,QPointF)), comManager, SLOT(enQueueTemplateMoveMessage(QString, QPointF)));
+    connect(comManager, SIGNAL(moveTemplate(QString,QPointF)), this, SIGNAL(moveTemplate(QString,QPointF)));
+
+    connect(this, SIGNAL(removeRulerRequest(QString)), comManager, SLOT(enQueueRemoveRulerMessage(QString)));
+    connect(comManager, SIGNAL(removeRuler(QString)), this, SIGNAL(removeRuler(QString)));
+
     ///////////////////////////////////////////
     // Player Administrator
     ///////////////////////////////////////////

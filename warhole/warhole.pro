@@ -42,7 +42,8 @@ SOURCES += main.cpp\
     chatwidgetform.cpp \
     statsdisplayform.cpp \
     core/gamecontroller.cpp \
-    core/PlayerAdmninistrator/playeradministrator.cpp
+    core/PlayerAdmninistrator/playeradministrator.cpp \
+    graphics/roundtemplategraphics.cpp
 
 HEADERS  += mainwindow.h \
     modelwindow.h \
@@ -68,7 +69,8 @@ HEADERS  += mainwindow.h \
     chatwidgetform.h \
     statsdisplayform.h \
     core/gamecontroller.h \
-    core/PlayerAdmninistrator/playeradministrator.h
+    core/PlayerAdmninistrator/playeradministrator.h \
+    graphics/roundtemplategraphics.h
 
 TRANSLATIONS = warhole_en.ts
 

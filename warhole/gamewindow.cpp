@@ -76,6 +76,11 @@ void GameWindow::initGameWindow()
     connect(ui->actionRuler_24_inches, SIGNAL(triggered()),this, SLOT(add24InchesRuler()));
     connect(this, SIGNAL(requestNewRuler(int)), &controller, SIGNAL(addRulerToGameSceneRequest(int)));
     connect(&controller, SIGNAL(addRulerToGameScene(QString, int)), this, SLOT(addRulerToScene(QString, int)));
+    connect(&controller, SIGNAL(removeRuler(QString)), this, SLOT(removeRulerFromScene(QString)));
+
+    connect(this, SIGNAL(requestNewRoundTemplate(int)), &controller, SIGNAL(addRoundTemplateToGameSceneRequest(int)));
+    connect(&controller, SIGNAL(addRoundTemplateScene(QString,int)), this, SLOT(addRoundTemplateToScene(QString, int)));
+
 
     actionDeploy = new QAction(tr("Déployer"), this);
     connect(actionDeploy, SIGNAL(triggered()),this,SLOT(deployRegiment()));
@@ -89,6 +94,7 @@ void GameWindow::initGameWindow()
     connect(&controller, SIGNAL(refreshPlayerListDisplay(QList<Player>)), cw, SLOT(refreshPlayerListDisplay(QList<Player>)));
     connect(&controller, SIGNAL(moveRuler(QString,QPointF, QTransform)), this, SLOT(moveRuler(QString,QPointF, QTransform)));
     connect(&controller, SIGNAL(networkEvent(QString)), this, SLOT(printSpecialMessage(QString)));
+    connect(&controller, SIGNAL(moveTemplate(QString,QPointF)), this, SLOT(moveTemplate(QString, QPointF)));
 }
 
 GameWindow::~GameWindow()
@@ -177,6 +183,7 @@ void GameWindow::addRulerToScene(QString id, int l)
 {
     RulerGraphics* r = new RulerGraphics(l, id);
     connect(r, SIGNAL(rulerMoved(QString, QPointF, QTransform)), &controller, SIGNAL(rulerMoved(QString, QPointF, QTransform)));
+    connect(r, SIGNAL(removeRuler(QString)), &controller, SIGNAL(removeRulerRequest(QString)));
     scene.addItem(r);
     r->setPos(back->getW()/2, back->getH()/2);
 
@@ -195,6 +202,18 @@ void GameWindow::moveRuler(QString id, QPointF p, QTransform matrix)
     else
     {
         QLog_Error(LOG_ID_ERR, "moveRuler() : ruler with ID " + id + " not found is item list.");
+    }
+}
+
+void GameWindow::removeRulerFromScene(QString id)
+{
+    if(toolItemList.contains(id))
+    {
+        QLog_Info(LOG_ID_INFO, "moveRuler() : ruler with ID " + id + " found, now removing it.");
+        QGraphicsItem* r = toolItemList[id];
+        scene.removeItem(r);
+        delete r;
+        toolItemList.remove(id);
     }
 }
 
@@ -241,3 +260,39 @@ void GameWindow::printSpecialMessage(QString state)
 {
     cw->appendString(state);
 }
+
+void GameWindow::on_actionExpTemplateSmall_triggered()
+{
+    emit requestNewRoundTemplate(3);
+}
+
+void GameWindow::on_actionExpTemplateBig_triggered()
+{
+    emit requestNewRoundTemplate(5);
+}
+
+void GameWindow::addRoundTemplateToScene(QString id, int d)
+{
+    RoundTemplateGraphics* r = new RoundTemplateGraphics(d, id);
+    connect(r, SIGNAL(templateMoved(QString,QPointF)), &controller, SIGNAL(templateMoved(QString, QPointF)));
+    scene.addItem(r);
+    r->setPos(back->getW()/2, back->getH()/2);
+
+    // Assume that id will be unique for now
+    toolItemList[id] = r;
+}
+
+void GameWindow::moveTemplate(QString id, QPointF p)
+{
+    if(toolItemList.contains(id))
+    {
+        QLog_Info(LOG_ID_INFO, "moveTemplate() : template with ID " + id + " found, now moving it.");
+        toolItemList[id]->setPos(p);
+    }
+    else
+    {
+        QLog_Error(LOG_ID_ERR, "moveTemplate() : template with ID " + id + " not found is item list.");
+    }
+}
+
+

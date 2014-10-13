@@ -30,6 +30,7 @@
 #include "statsdisplayform.h"
 #include "core/gamecontroller.h"
 #include "Utilities/RandomIdGenerator/idgenerator.h"
+#include "graphics/roundtemplategraphics.h"
 
 
 namespace Ui {
@@ -59,6 +60,7 @@ public:
 
     void createNetworkInterface(NetworkType t, QString ip);
     virtual void closeEvent(QCloseEvent *);
+
 public slots:
     void openArmyMenuClicked();
     void openArmyModelContextMenu(QPoint pos);
@@ -70,14 +72,22 @@ public slots:
     void printSpecialMessage(QString state);
     void addRulerToScene(QString id, int l);
     void moveRuler(QString id, QPointF p, QTransform matrix);
+    void addRoundTemplateToScene(QString id, int d);
+    void moveTemplate(QString id, QPointF p);
+    void removeRulerFromScene(QString id);
 
 private slots:
 
     void on_actionHost_Game_triggered();
     void on_actionConnect_to_a_game_2_triggered();
 
+    void on_actionExpTemplateSmall_triggered();
+
+    void on_actionExpTemplateBig_triggered();
+
 signals:
     void requestNewRuler(int l);
+    void requestNewRoundTemplate(int d);
 
 private:
     static const QString LOG_ID_TRACE;

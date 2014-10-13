@@ -18,6 +18,9 @@ enum CommandType{
     NEW_RULER,
     RULER_POSITION_CHANGE,
     RULER_REMOVE,
+    NEW_ROUND_TEMPLATE,
+    ROUND_TEMPLATE_POSITION_CHANGE,
+    ROUND_TEMPLATE_REMOVE,
     NEW_REGIMENT,
     REGIMENT_MOVE,
     REGIMENT_INFO_CHANGE,
@@ -36,6 +39,9 @@ signals:
     void refreshPlayerList(QList<Player> l);
     void createRuler(QString id, int l);
     void moveRuler(QString id, QPointF p, QTransform a);
+    void removeRuler(QString id);
+    void createRoundTemplate(QString id, int d);
+    void moveTemplate(QString id, QPointF p);
     
 public slots:
     void processIncomingMessage();
@@ -44,6 +50,9 @@ public slots:
     void enQueuePlayerListRefreshMessage(QList<Player> l);
     void enQueueCreateRulerMessage(int l);
     void enQueueRulerMoveMessage(QString i, QPointF p, QTransform matrix);
+    void enqueueCreateRoundTemplateMessage(int d);
+    void enQueueTemplateMoveMessage(QString id, QPointF p);
+    void enQueueRemoveRulerMessage(QString i);
 
 private:
     static const QString LOG_ID_INFO;
@@ -65,6 +74,9 @@ private:
     void handlePlayerListRefreshMessage(const Message &m, QDataStream &data);
     void handleCreateRulerMessage(const Message &m, QDataStream &data);
     void handleRulerMoveMessage(const Message &m, QDataStream &data);
+    void handleCreateRoundTemplateMessage(const Message &m, QDataStream& data);
+    void handleTemplateMoveMessage(const Message &m, QDataStream &data);
+    void handleRemoveRulerMessage(const Message &m, QDataStream &data);
 };
 
 #endif // COMMANDMANAGER_H
