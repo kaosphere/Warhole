@@ -140,6 +140,7 @@ void GameWindow::updateArmyList()
     }
 }
 
+
 void GameWindow::openArmyModelContextMenu(QPoint pos)
 {
     indexArmy =ui->treeViewArmy->indexAt(pos);

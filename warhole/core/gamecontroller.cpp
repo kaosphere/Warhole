@@ -75,7 +75,8 @@ void GameController::createNetworkInterface(NetworkType t, QString ip)
 
 void GameController::disconnectNetworkInterface()
 {
-    netInterface->disconnection();
+    if(netInterface)
+        netInterface->disconnection();
 }
 
 Game GameController::getGame() const

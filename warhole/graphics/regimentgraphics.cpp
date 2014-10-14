@@ -75,6 +75,7 @@ void RegimentGraphics::initModels()
                                 regiment.getGroups().at(i).getModel()->getSquareBaseW() * ONE_MILLIMETER,
                                 regiment.getGroups().at(i).getModel()->getSquareBaseL() * ONE_MILLIMETER,
                                 regiment.getGroups().at(i).getModel()->getStats().getName(),
+                                regiment.getGroups().at(i).getModel()->getImage(),
                                 this);
             r->setBrush(brush);
             r->setPen(*childrenPen);
