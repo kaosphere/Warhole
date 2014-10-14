@@ -71,6 +71,7 @@ ModelWarMachine *ModelWarMachine::setFromUI(const ParamsfromUImodel *params)
     tmp->setUnitPower(params->getUnitP());
     tmp->setFigSupInd(params->getFigSup());
     tmp->setUrlImage(params->getUrlImage());
+    tmp->setImage(new QPixmap(params->getUrlImage()));
     tmp->setOptions(params->getOptions());
 
     // modelwarmachine params
@@ -96,7 +97,10 @@ void ModelWarMachine::load(QString path)
 
     urlImage = temp.getUrlImage();
 
-    //image->load(urlImage);
+    if(temp.getImage())
+    {
+        image = new QPixmap(*(temp.getImage()));
+    }
 
     figSupInd = temp.getFigSupInd();
     specialRules = temp.getSpecialRules();
@@ -147,7 +151,7 @@ QString ModelWarMachine::displayStringInfo()
         break;
     }
     info << endl << "====================================================" << endl;
-    info << "Model Cavalry : " << endl;
+    info << "Model War Machine : " << endl;
     info << displayBaseInfo();
     info << "====================================================" << endl;
     info << QString(QString::fromUtf8("Règles additionnelles : ")) << endl;
@@ -251,7 +255,7 @@ QDataStream & operator >>(QDataStream & in, ModelWarMachine & obj)
 
     in >> version;
     obj.serializeInBase(in);
-    in >> static_cast<ModelAbstract&>(obj);
+    //in >> static_cast<ModelAbstract&>(obj);
     in >> type;
     switch(type)
     {

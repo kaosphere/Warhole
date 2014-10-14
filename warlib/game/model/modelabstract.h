@@ -285,7 +285,7 @@ protected:
 
     // TODO : AJ 2014-05-06 This one isn't used : to be removed. (isn't even serialized)
     /// Image of the model to be used in the graphics
-    QPixmap *image;
+    QPixmap* image;
 
     // TODO : AJ 2014-05-06 Change name with path (confusing with internet link)
     /// Path to the image

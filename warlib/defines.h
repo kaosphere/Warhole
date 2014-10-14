@@ -5,7 +5,7 @@
 #include <QStringList>
 #include "core/warlibexception.h"
 
-const int SAVE_VERSION(1);
+const int SAVE_VERSION(2);
 
 const QString MODEL_PATH("models");
 const QString ARMY_PATH("armies");
@@ -27,6 +27,5 @@ const QString WARMACHINE_STRING("Machine de Guerre");
 #define UNKNOWN 99
 
 enum ModelType { BASE, SPECIAL, RARE };
-
 
 #endif // DEFINES_H

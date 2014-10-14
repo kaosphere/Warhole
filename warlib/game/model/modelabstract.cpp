@@ -2,6 +2,7 @@
 
 ModelAbstract::ModelAbstract(QObject *parent) : QObject(parent)
 {
+    image = NULL;
 }
 
 ModelAbstract::ModelAbstract(const StatsModel &stat,
@@ -73,6 +74,7 @@ ModelAbstract::ModelAbstract(const ModelAbstract &copy) : QObject(copy.parent())
 {
     stats = copy.stats;
     urlImage = copy.urlImage;
+    image = copy.image;
     squareBaseW = copy.squareBaseW;
     squareBaseL = copy.squareBaseL;
     unitPower = copy.unitPower;
@@ -87,6 +89,8 @@ ModelAbstract::ModelAbstract(const ModelAbstract &copy) : QObject(copy.parent())
 
 ModelAbstract::~ModelAbstract()
 {
+    if(image)
+        delete image;
 }
 
 
@@ -158,6 +162,7 @@ ModelAbstract &ModelAbstract::operator =(const ModelAbstract &other)
     unitPower = other.unitPower;
     figSupInd = other.figSupInd;
     urlImage = other.urlImage;
+    image = other.image;
     options = other.options;
     banner = other.banner;
     bannerPoints = other.bannerPoints;
@@ -371,14 +376,27 @@ QDataStream &ModelAbstract::serializeOutBase(QDataStream &out) const
 
 QDataStream &operator <<(QDataStream & out, const ModelAbstract & obj)
 {
+    bool i;
     out << SAVE_VERSION
         << obj.stats
         << obj.squareBaseW
         << obj.squareBaseL
         << obj.unitPower
         << obj.figSupInd
-        << obj.urlImage
-        << obj.options.size();
+        << obj.urlImage;
+
+    if(obj.image)
+    {
+        i = true;
+        out << i;
+        out << *(obj.image);
+    }
+    else
+    {
+        i = false;
+        out << i;
+    }
+    out << obj.options.size();
 
     for(int i = 0 ; i < obj.options.size() ; i++)
     {
@@ -399,6 +417,8 @@ QDataStream &operator >>(QDataStream & in, ModelAbstract & obj)
 {
     int nb;
     int version = 0;
+    bool i = false;
+    QPixmap p;
 
     in >> version;
     in >> obj.stats;
@@ -407,6 +427,16 @@ QDataStream &operator >>(QDataStream & in, ModelAbstract & obj)
     in >> obj.unitPower;
     in >> obj.figSupInd;
     in >> obj.urlImage;
+
+    if(version >= 2)
+    {
+        in >> i;
+        if(i)
+        {
+            in >> p;
+            obj.image = new QPixmap(p);
+        }
+    }
 
     in >> nb;
 

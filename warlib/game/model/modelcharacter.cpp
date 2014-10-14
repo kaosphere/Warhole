@@ -104,6 +104,7 @@ ModelCharacter *ModelCharacter::setFromUI(const ParamsfromUImodel *params)
     tmp->setUnitPower(params->getUnitP());
     tmp->setFigSupInd(params->getFigSup());
     tmp->setUrlImage(params->getUrlImage());
+    tmp->setImage(new QPixmap(params->getUrlImage()));
     tmp->setOptions(params->getOptions());
     
     // ModelCharacter params
@@ -134,7 +135,10 @@ void ModelCharacter::load(QString path)
     
     urlImage = temp.getUrlImage();
     
-    //image->load(urlImage);
+    if(temp.getImage())
+    {
+        image = new QPixmap(*(temp.getImage()));
+    }
     
     figSupInd = temp.getFigSupInd();
     specialRules = temp.getSpecialRules();

@@ -73,6 +73,7 @@ ModelCharriot *ModelCharriot::setFromUI(const ParamsfromUImodel *params)
     tmp->setUnitPower(params->getUnitP());
     tmp->setFigSupInd(params->getFigSup());
     tmp->setUrlImage(params->getUrlImage());
+    tmp->setImage(new QPixmap(params->getUrlImage()));
     tmp->setOptions(params->getOptions());
 
     // ModelCharriot params
@@ -104,7 +105,10 @@ void ModelCharriot::load(QString path)
     
     urlImage = temp.getUrlImage();
     
-    //image->load(urlImage);
+    if(temp.getImage())
+    {
+        image = new QPixmap(*(temp.getImage()));
+    }
     
     figSupInd = temp.getFigSupInd();
     specialRules = temp.getSpecialRules();
