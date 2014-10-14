@@ -38,7 +38,8 @@ SOURCES += \
     core/message.cpp \
     game/game.cpp \
     game/player.cpp \
-    game/magicalObject/magicalobject.cpp
+    game/magicalObject/magicalobject.cpp \
+    Utilities/RandomIdGenerator/idgenerator.cpp
 	
 HEADERS += \
     game/stats/statsmodel.h \
@@ -69,7 +70,8 @@ HEADERS += \
     game/game.h \
     game/player.h \
     game/magicalObject/magicalobject.h \
-    core/warlibexception.h
+    core/warlibexception.h \
+    Utilities/RandomIdGenerator/idgenerator.h
 
 INSTALLS += target
 
