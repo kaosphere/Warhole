@@ -99,6 +99,7 @@ void GameWindow::initGameWindow()
     connect(&controller, SIGNAL(moveRuler(QString,QPointF, QTransform)), this, SLOT(moveRuler(QString,QPointF, QTransform)));
     connect(&controller, SIGNAL(networkEvent(QString)), this, SLOT(printSpecialMessage(QString)));
     connect(&controller, SIGNAL(moveTemplate(QString,QPointF)), this, SLOT(moveTemplate(QString, QPointF)));
+    connect(&controller, SIGNAL(moveRegiment(QString,QPointF,QTransform)), this, SLOT(moveRegiment(QString, QPointF, QTransform)));
 }
 
 GameWindow::~GameWindow()
@@ -165,10 +166,6 @@ void GameWindow::deployRegiment()
     // Remove the regiment deployed from the army list
     army.removeUnit(army.getUnits().at(indexArmy.row()));
     updateArmyList();
-    // Create new regimentGraphics with selected one
-    /*RegimentGraphics* r = new RegimentGraphics(
-                army.getUnits().at(indexArmy.row()));
-    scene.addItem(r);*/
 }
 
 void GameWindow::addRegimentToGameScene(QString id, QString owner, RegimentAbstract r)
@@ -187,10 +184,13 @@ void GameWindow::addRegimentToGameScene(QString id, QString owner, RegimentAbstr
         rg->setRegimentID(id);
         rg->setOwner(owner);
 
+        connect(rg, SIGNAL(regimentMoved(QString,QPointF,QTransform)), &controller, SIGNAL(regimentMoved(QString, QPointF, QTransform)));
+
         regimentMap[id] = rg;
         scene.addItem(rg);
     }
 }
+
 
 void GameWindow::add6InchesRuler()
 {
@@ -235,6 +235,20 @@ void GameWindow::moveRuler(QString id, QPointF p, QTransform matrix)
     else
     {
         QLog_Error(LOG_ID_ERR, "moveRuler() : ruler with ID " + id + " not found is item list.");
+    }
+}
+
+void GameWindow::moveRegiment(QString id, QPointF p, QTransform matrix)
+{
+    if(regimentMap.contains(id))
+    {
+        QLog_Info(LOG_ID_INFO, "moveRegiment() : regiment with ID " + id + " found, now moving it.");
+        regimentMap[id]->setPos(p);
+        regimentMap[id]->setTransform(matrix);
+    }
+    else
+    {
+        QLog_Error(LOG_ID_ERR, "moveRegiment() : regiment with ID " + id + " not found is item list.");
     }
 }
 

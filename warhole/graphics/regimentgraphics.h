@@ -33,9 +33,6 @@ public:
     void setIsOwnedByMe(bool value);
 
 
-signals:
-    void ownerChanged();
-
 protected:
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent* event);
 
@@ -86,6 +83,9 @@ private slots:
     void updateRegiment();
 
 signals:
+
+    void ownerChanged();
+
     //! regimentDataChanged.
     /*!
     * This signal is sent when a value has changed in the regiment.
@@ -96,7 +96,7 @@ signals:
     /*!
     * This signal is sent when the graphic regiment is moved.
     */
-    void regimentMoved();
+    void regimentMoved(QString, QPointF, QTransform);
 
     //! regimentUpdated.
     /*!

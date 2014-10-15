@@ -61,6 +61,7 @@ public:
     void createNetworkInterface(NetworkType t, QString ip);
     virtual void closeEvent(QCloseEvent *);
 
+
 public slots:
     void openArmyMenuClicked();
     void openArmyModelContextMenu(QPoint pos);
@@ -76,6 +77,7 @@ public slots:
     void moveTemplate(QString id, QPointF p);
     void removeRulerFromScene(QString id);
     void addRegimentToGameScene(QString id, QString owner, RegimentAbstract r);
+    void moveRegiment(QString id, QPointF p, QTransform matrix);
 
 private slots:
 

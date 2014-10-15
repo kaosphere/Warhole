@@ -158,7 +158,7 @@ void RegimentGraphics::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     // Signal that the object has been moved by the mouse
     // This permits not to create infinite loop if we cast the signal
     // when the coordinates are changed
-    emit(SIGNAL(regimentMoved()));
+    emit regimentMoved(regimentID, pos(), transform());
     
     QGraphicsItem::mouseMoveEvent(event);
 }
