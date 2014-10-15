@@ -39,7 +39,14 @@ SOURCES += \
     game/game.cpp \
     game/player.cpp \
     game/magicalObject/magicalobject.cpp \
-    Utilities/RandomIdGenerator/idgenerator.cpp
+    Utilities/RandomIdGenerator/idgenerator.cpp \
+    core/gamecontroller.cpp \
+    core/PlayerAdmninistrator/playeradministrator.cpp \
+    core/network/networkserver.cpp \
+    core/network/networkinterface.cpp \
+    core/network/networkclient.cpp \
+    core/network/client.cpp \
+    core/commandManager/commandmanager.cpp
 	
 HEADERS += \
     game/stats/statsmodel.h \
@@ -71,7 +78,14 @@ HEADERS += \
     game/player.h \
     game/magicalObject/magicalobject.h \
     core/warlibexception.h \
-    Utilities/RandomIdGenerator/idgenerator.h
+    Utilities/RandomIdGenerator/idgenerator.h \
+    core/gamecontroller.h \
+    core/PlayerAdmninistrator/playeradministrator.h \
+    core/network/networkserver.h \
+    core/network/networkinterface.h \
+    core/network/networkclient.h \
+    core/network/client.h \
+    core/commandManager/commandmanager.h
 
 INSTALLS += target
 
