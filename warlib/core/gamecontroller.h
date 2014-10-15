@@ -43,6 +43,8 @@ signals:
     void removeTemplate(QString);
     void addRegimentRequest(QString, RegimentAbstract);
     void createRegiment(QString, QString, RegimentAbstract);
+    void regimentMoved(QString, QPointF, QTransform);
+    void moveRegiment(QString, QPointF, QTransform);
 
 
 public slots:

@@ -43,6 +43,7 @@ signals:
     void moveTemplate(QString id, QPointF p);
     void removeTemplate(QString);
     void createRegiment(QString, QString, RegimentAbstract);
+    void moveRegiment(QString, QPointF, QTransform);
     
 public slots:
     void processIncomingMessage();
@@ -56,6 +57,7 @@ public slots:
     void enQueueRemoveRulerMessage(QString i);
     void enQueueRemoveTemplateMessage(QString i);
     void enqueueNewRegimentMessage(QString o, RegimentAbstract r);
+    void enqueueRegimentMoveMessage(QString i, QPointF p, QTransform matrix);
 
 private:
     static const QString LOG_ID_INFO;
@@ -82,6 +84,7 @@ private:
     void handleRemoveRulerMessage(const Message &m, QDataStream &data);
     void handleRemoveTemplateMessage(const Message &m, QDataStream &data);
     void handleNewRegimentMessage(const Message &m, QDataStream &data);
+    void handleRegimentMoveMessage(const Message &m, QDataStream &data);
 };
 
 #endif // COMMANDMANAGER_H

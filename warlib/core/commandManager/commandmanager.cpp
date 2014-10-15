@@ -412,6 +412,45 @@ void CommandManager::handleNewRegimentMessage(const Message &m, QDataStream &dat
     emit createRegiment(id, owner, r);
 }
 
+void CommandManager::enqueueRegimentMoveMessage(QString i, QPointF p , QTransform matrix)
+{
+    Message m;
+    m.setDest(ALL_BUT_ME);
+    m.setMessageSender(game->getMe());
+
+    QByteArray data;
+    QDataStream s(&data, QIODevice::WriteOnly);
+
+    s << REGIMENT_MOVE;
+
+    s << i;
+    s << p;
+    s << matrix;
+
+    m.setData(data);
+
+    QLog_Info(LOG_ID_INFO, "enqueueRegimentMoveMessage() : regiment move message with ID " + i);
+
+    addMessageToOutQueue(m);
+}
+
+
+void CommandManager::handleRegimentMoveMessage(const Message& m, QDataStream &data)
+{
+    QString id;
+    QPointF point;
+    QTransform matrix;
+
+    data >> id;
+    data >> point;
+    data >> matrix;
+
+    QLog_Info(LOG_ID_INFO, "handleRegimentMoveMessage() : received regiment moved message with ID " + id);
+
+
+    emit moveRegiment(id,point,matrix);
+}
+
 void CommandManager::processIncomingMessage()
 {
     Message m;
@@ -497,6 +536,11 @@ void CommandManager::processIncomingMessage()
         case NEW_REGIMENT:
             QLog_Info(LOG_ID_INFO, "processIncomingMessage() : New regiment message received.");
             handleNewRegimentMessage(m, stream);
+            break;
+
+        case REGIMENT_MOVE:
+            QLog_Info(LOG_ID_INFO, "processIncomingMessage() : New regiment move message received.");
+            handleRegimentMoveMessage(m, stream);
             break;
 
         default:
