@@ -32,17 +32,10 @@ SOURCES += main.cpp\
     graphics/regimentgraphics.cpp \
     graphics/modelgraphics.cpp \
     graphics/rulergraphics.cpp \
-    core/network/networkinterface.cpp \
-    core/network/networkserver.cpp \
-    core/network/networkclient.cpp \
-    core/network/client.cpp \
-    core/commandManager/commandmanager.cpp \
     gameconfiguratordialog.cpp \
     connecttoserverdialog.cpp \
     chatwidgetform.cpp \
     statsdisplayform.cpp \
-    core/gamecontroller.cpp \
-    core/PlayerAdmninistrator/playeradministrator.cpp \
     graphics/roundtemplategraphics.cpp
 
 HEADERS  += mainwindow.h \
@@ -59,17 +52,10 @@ HEADERS  += mainwindow.h \
     graphics/regimentgraphics.h \
     graphics/modelgraphics.h \
     graphics/rulergraphics.h \
-    core/network/networkinterface.h \
-    core/network/networkserver.h \
-    core/network/networkclient.h \
-    core/network/client.h \
-    core/commandManager/commandmanager.h \
     gameconfiguratordialog.h \
     connecttoserverdialog.h \
     chatwidgetform.h \
     statsdisplayform.h \
-    core/gamecontroller.h \
-    core/PlayerAdmninistrator/playeradministrator.h \
     graphics/roundtemplategraphics.h
 
 TRANSLATIONS = warhole_en.ts
