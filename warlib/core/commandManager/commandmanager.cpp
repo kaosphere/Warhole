@@ -85,7 +85,7 @@ void CommandManager::handleNewChatMessage(const Message& m, QDataStream& data)
 
 void CommandManager::enQueueServerInfoRequest()
 {
-    QLog_Info(LOG_ID_INFO, "handleServerInfoRequest() : sending server info request to server.");
+    QLog_Info(LOG_ID_INFO, "enQueueServerInfoRequest() : sending server info request to server.");
     Message m;
     m.setDest(ME);
     m.setMessageSender(game->getMe());
@@ -122,7 +122,7 @@ void CommandManager::handleServerInfo(QByteArray& data)
 
 void CommandManager::enQueuePlayerListRefreshMessage(QList<Player> l)
 {
-    QLog_Info(LOG_ID_INFO, "handleServerInfoRequest() : sending player list to all clients");
+    QLog_Info(LOG_ID_INFO, "enQueuePlayerListRefreshMessage() : sending player list to all clients");
     Message m;
     m.setDest(ALL_BUT_ME);
     m.setMessageSender(game->getMe());
@@ -144,7 +144,7 @@ void CommandManager::enQueuePlayerListRefreshMessage(QList<Player> l)
 
 void CommandManager::handlePlayerListRefreshMessage(const Message& m, QDataStream& data)
 {
-    QLog_Info(LOG_ID_INFO, "handleServerInfoRequest() : refreshing player list");
+    QLog_Info(LOG_ID_INFO, "handlePlayerListRefreshMessage() : refreshing player list");
     int size;
     QList<Player> l;
 
@@ -175,7 +175,7 @@ void CommandManager::enQueueCreateRulerMessage(int l)
 
     m.setData(data);
 
-    QLog_Info(LOG_ID_INFO, "handleServerInfoRequest() : sending new ruler message with ID " +
+    QLog_Info(LOG_ID_INFO, "enQueueCreateRulerMessage() : sending new ruler message with ID " +
               id + " with length " + QString::number(l));
 
     addMessageToOutQueue(m);
@@ -191,7 +191,7 @@ void CommandManager::handleCreateRulerMessage(const Message &m, QDataStream& dat
     data >> id;
     data >> length;
 
-    QLog_Info(LOG_ID_INFO, "handleServerInfoRequest() : received new ruler message with ID " +
+    QLog_Info(LOG_ID_INFO, "handleCreateRulerMessage() : received new ruler message with ID " +
               id + " with length " + QString::number(length));
 
 
@@ -215,7 +215,7 @@ void CommandManager::enQueueRulerMoveMessage(QString i, QPointF p, QTransform ma
 
     m.setData(data);
 
-    QLog_Info(LOG_ID_INFO, "handleServerInfoRequest() : ruler move message with ID " + i);
+    QLog_Info(LOG_ID_INFO, "enQueueRulerMoveMessage() : ruler move message with ID " + i);
 
     addMessageToOutQueue(m);
 }
@@ -316,7 +316,7 @@ void CommandManager::enqueueCreateRoundTemplateMessage(int d)
 
     m.setData(data);
 
-    QLog_Info(LOG_ID_INFO, "handleServerInfoRequest() : new round template created with ID " + id);
+    QLog_Info(LOG_ID_INFO, "enqueueCreateRoundTemplateMessage() : new round template created with ID " + id);
 
     addMessageToOutQueue(m);
 }
@@ -329,7 +329,7 @@ void CommandManager::handleCreateRoundTemplateMessage(const Message &m, QDataStr
     data >> id;
     data >> diameter;
 
-    QLog_Info(LOG_ID_INFO, "handleServerInfoRequest() : received new ruler message with ID " +
+    QLog_Info(LOG_ID_INFO, "handleCreateRoundTemplateMessage() : received new ruler message with ID " +
               id + " with diameter " + QString::number(diameter));
 
 
@@ -352,7 +352,7 @@ void CommandManager::enQueueTemplateMoveMessage(QString id, QPointF p)
 
     m.setData(data);
 
-    QLog_Info(LOG_ID_INFO, "handleServerInfoRequest() : template move message with ID " + id);
+    QLog_Info(LOG_ID_INFO, "enQueueTemplateMoveMessage() : template move message with ID " + id);
 
     addMessageToOutQueue(m);
 }
@@ -366,9 +366,50 @@ void CommandManager::handleTemplateMoveMessage(const Message &m, QDataStream &da
     data >> id;
     data >> point;
 
-    QLog_Info(LOG_ID_INFO, "handleServerInfoRequest() : received template moved message with ID " + id);
+    QLog_Info(LOG_ID_INFO, "handleTemplateMoveMessage() : received template moved message with ID " + id);
 
     emit moveTemplate(id,point);
+}
+
+
+void CommandManager::enqueueNewRegimentMessage(QString o, RegimentAbstract r)
+{
+    Message m;
+    m.setDest(ALL);
+    m.setMessageSender(game->getMe());
+
+    QByteArray data;
+    QDataStream s(&data, QIODevice::WriteOnly);
+
+    s << NEW_REGIMENT;
+    QString id = IdGenerator::generateRandomID(IdGenerator::ID_SIZE);
+    s << id;
+    s << o;
+    s << r;
+
+    m.setData(data);
+
+    QLog_Info(LOG_ID_INFO, "enqueueNewRegimentMessage() : new regiment message with ID " + id);
+
+    addMessageToOutQueue(m);
+}
+
+void CommandManager::handleNewRegimentMessage(const Message &m, QDataStream &data)
+{
+    QString id;
+    QString owner;
+    // TODO : pointer?
+    RegimentAbstract r;
+
+    data >> id;
+    data >> owner;
+    data >> r;
+
+    QLog_Info(LOG_ID_INFO, "handleNewRegimentMessage() : received new regiment message with ID " + id +
+              " and owner " + owner);
+    QLog_Info(LOG_ID_INFO, "handleNewRegimentMessage() : regiment received : \n" + r.displayShortInfo());
+
+    emit createRegiment(id, owner, r);
 }
 
 void CommandManager::processIncomingMessage()
@@ -451,6 +492,11 @@ void CommandManager::processIncomingMessage()
         case ROUND_TEMPLATE_REMOVE:
             QLog_Info(LOG_ID_INFO, "processIncomingMessage() : Template remove message received.");
             handleRemoveTemplateMessage(m, stream);
+            break;
+
+        case NEW_REGIMENT:
+            QLog_Info(LOG_ID_INFO, "processIncomingMessage() : New regiment message received.");
+            handleNewRegimentMessage(m, stream);
             break;
 
         default:

@@ -72,7 +72,9 @@ ModelMonster *ModelMonster::setFromUI(const ParamsfromUImodel *params)
     tmp->setUnitPower(params->getUnitP());
     tmp->setFigSupInd(params->getFigSup());
     tmp->setUrlImage(params->getUrlImage());
-    tmp->setImage(new QPixmap(params->getUrlImage()));
+    QPixmap p;
+    p.load(params->getUrlImage());
+    tmp->setImage(p);
     tmp->setOptions(params->getOptions());
 
     // ModelMonster params
@@ -96,9 +98,9 @@ void ModelMonster::load(QString path)
 
     urlImage = temp.getUrlImage();
 
-    if(temp.getImage())
+    if(!temp.getImage().isNull())
     {
-        image = new QPixmap(*(temp.getImage()));
+        image = temp.getImage();
     }
 
     figSupInd = temp.getFigSupInd();

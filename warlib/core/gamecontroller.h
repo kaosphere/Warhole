@@ -41,6 +41,8 @@ signals:
     void removeRuler(QString);
     void removeTemplateRequest(QString);
     void removeTemplate(QString);
+    void addRegimentRequest(QString, RegimentAbstract);
+    void createRegiment(QString, QString, RegimentAbstract);
 
 
 public slots:

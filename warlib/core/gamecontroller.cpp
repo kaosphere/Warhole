@@ -33,6 +33,9 @@ GameController::GameController(QObject *parent) :
     connect(this, SIGNAL(removeTemplateRequest(QString)), comManager, SLOT(enQueueRemoveTemplateMessage(QString)));
     connect(comManager, SIGNAL(removeTemplate(QString)), this, SIGNAL(removeTemplate(QString)));
 
+    connect(this, SIGNAL(addRegimentRequest(QString, RegimentAbstract)), comManager,SLOT(enqueueNewRegimentMessage(QString, RegimentAbstract)));
+    connect(comManager, SIGNAL(createRegiment(QString,QString,RegimentAbstract)), this, SIGNAL(createRegiment(QString, QString, RegimentAbstract)));
+
     ///////////////////////////////////////////
     // Player Administrator
     ///////////////////////////////////////////

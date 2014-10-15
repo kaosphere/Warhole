@@ -2,7 +2,6 @@
 
 ModelAbstract::ModelAbstract(QObject *parent) : QObject(parent)
 {
-    image = NULL;
 }
 
 ModelAbstract::ModelAbstract(const StatsModel &stat,
@@ -17,7 +16,7 @@ ModelAbstract::ModelAbstract(const StatsModel &stat,
     squareBaseL = lengthBase;
     unitPower = unitP;
     
-    image = new QPixmap(urlImage);
+    image.load(urlImage);
 
     urlImage = url;
     
@@ -62,7 +61,7 @@ ModelAbstract::ModelAbstract(const QString &n,
     squareBaseL = lengthBase;
     unitPower = unitP;
 
-    image = new QPixmap(urlImage);
+    image.load(urlImage);
 
     urlImage = url;
 
@@ -89,8 +88,6 @@ ModelAbstract::ModelAbstract(const ModelAbstract &copy) : QObject(copy.parent())
 
 ModelAbstract::~ModelAbstract()
 {
-    if(image)
-        delete image;
 }
 
 
@@ -196,12 +193,12 @@ void ModelAbstract::setUnitPower(int value)
     unitPower = value;
 }
 
-QPixmap *ModelAbstract::getImage() const
+QPixmap &ModelAbstract::getImage()
 {
     return image;
 }
 
-void ModelAbstract::setImage(QPixmap *value)
+void ModelAbstract::setImage(QPixmap value)
 {
     image = value;
 }
@@ -385,11 +382,11 @@ QDataStream &operator <<(QDataStream & out, const ModelAbstract & obj)
         << obj.figSupInd
         << obj.urlImage;
 
-    if(obj.image)
+    if(!obj.image.isNull())
     {
         i = true;
         out << i;
-        out << *(obj.image);
+        out << obj.image;
     }
     else
     {
@@ -418,7 +415,6 @@ QDataStream &operator >>(QDataStream & in, ModelAbstract & obj)
     int nb;
     int version = 0;
     bool i = false;
-    QPixmap p;
 
     in >> version;
     in >> obj.stats;
@@ -433,8 +429,7 @@ QDataStream &operator >>(QDataStream & in, ModelAbstract & obj)
         in >> i;
         if(i)
         {
-            in >> p;
-            obj.image = new QPixmap(p);
+            in >> obj.image;
         }
     }
 

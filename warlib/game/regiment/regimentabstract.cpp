@@ -150,9 +150,9 @@ QString RegimentAbstract::displayShortInfo() const
     for(int i = 0; i < groups.size() ; ++i)
 	{
         info << "*******************************************************" << endl;
-        info << groups[i].getNb() << " Number of models in the group :" << endl;
+        info << "Number of models in the group : " << groups[i].getNb() << endl;
         info << groups[i].getModel()->getStats().getName() << endl;
-        info << groups[i].getPath() << endl;
+        //info << groups[i].getPath() << endl;
     }
     info << "********************************************************" << endl;
     info << "********************************************************" << endl;
@@ -222,7 +222,7 @@ QString RegimentAbstract::displayInfo() const
         info << "*******************************************************" << endl;
         info << groups[i].getNb() << " Number of models in the group :" << endl;
         info << groups[i].getModel()->displayStringInfo() << endl;
-        info << groups[i].getPath() << endl;
+        //info << groups[i].getPath() << endl;
         int s = groups[i].getObjects().size();
         if(s)
         {
