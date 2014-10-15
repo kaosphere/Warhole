@@ -85,6 +85,9 @@ void GameWindow::initGameWindow()
 
     actionDeploy = new QAction(tr("Déployer"), this);
     connect(actionDeploy, SIGNAL(triggered()),this,SLOT(deployRegiment()));
+    // Deployment signals
+    connect(this, SIGNAL(newRegimentRequest(QString, RegimentAbstract)), &controller, SIGNAL(addRegimentRequest(QString, RegimentAbstract)));
+    connect(&controller, SIGNAL(createRegiment(QString,QString,RegimentAbstract)), this, SLOT(addRegimentToGameScene(QString, QString, RegimentAbstract)));
 
     connect(ui->actionOpen_Army, SIGNAL(triggered()), this, SLOT(openArmyMenuClicked()));
 
@@ -127,6 +130,7 @@ void GameWindow::loadArmy()
     updateArmyList();
 }
 
+
 void GameWindow::updateArmyList()
 {
     armyModel->clear();
@@ -155,10 +159,37 @@ void GameWindow::openArmyModelContextMenu(QPoint pos)
 
 void GameWindow::deployRegiment()
 {
+    RegimentAbstract r = army.getUnits().at(indexArmy.row());
+    emit newRegimentRequest(controller.getGame().getMe(), r);
+
+    // Remove the regiment deployed from the army list
+    army.removeUnit(army.getUnits().at(indexArmy.row()));
+    updateArmyList();
     // Create new regimentGraphics with selected one
-    RegimentGraphics* r = new RegimentGraphics(
+    /*RegimentGraphics* r = new RegimentGraphics(
                 army.getUnits().at(indexArmy.row()));
-    scene.addItem(r);
+    scene.addItem(r);*/
+}
+
+void GameWindow::addRegimentToGameScene(QString id, QString owner, RegimentAbstract r)
+{
+    if(!regimentMap.contains(id))
+    {
+        RegimentGraphics* rg;
+        if(owner == controller.getGame().getMe())
+        {
+            rg = new RegimentGraphics(r, true);
+        }
+        else
+        {
+            rg = new RegimentGraphics(r, false);
+        }
+        rg->setRegimentID(id);
+        rg->setOwner(owner);
+
+        regimentMap[id] = rg;
+        scene.addItem(rg);
+    }
 }
 
 void GameWindow::add6InchesRuler()

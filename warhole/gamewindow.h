@@ -75,6 +75,7 @@ public slots:
     void addRoundTemplateToScene(QString id, int d);
     void moveTemplate(QString id, QPointF p);
     void removeRulerFromScene(QString id);
+    void addRegimentToGameScene(QString id, QString owner, RegimentAbstract r);
 
 private slots:
 
@@ -88,6 +89,7 @@ private slots:
 signals:
     void requestNewRuler(int l);
     void requestNewRoundTemplate(int d);
+    void newRegimentRequest(QString, RegimentAbstract);
 
 private:
     static const QString LOG_ID_TRACE;
@@ -114,7 +116,7 @@ private:
 
     QMap<QString, QGraphicsItem*> toolItemList;
 
-    QList<RegimentGraphics*> regimentsGraphics;
+    QMap<QString, RegimentGraphics*> regimentMap;
 
     GameController controller;
 

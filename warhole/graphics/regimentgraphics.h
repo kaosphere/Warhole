@@ -13,7 +13,7 @@ class RegimentGraphics : public QGraphicsObject
     Q_OBJECT
 public:
     RegimentGraphics(QGraphicsItem* parent = 0);
-    RegimentGraphics(const RegimentAbstract& r, QGraphicsItem* parent = 0);
+    RegimentGraphics(const RegimentAbstract& r, bool isOwnedByMe, QGraphicsItem* parent = 0);
     virtual ~RegimentGraphics();
 
     QRectF boundingRect() const;
@@ -23,15 +23,28 @@ public:
     void setRegiment(const RegimentAbstract &value);
 
     virtual QPainterPath shape() const;
-    int getRegimentID() const;
-    void setRegimentID(int value);
+    QString getRegimentID() const;
+    void setRegimentID(QString value);
+
+    QString getOwner() const;
+    void setOwner(const QString &value);
+
+    bool getIsOwnedByMe() const;
+    void setIsOwnedByMe(bool value);
+
+
+signals:
+    void ownerChanged();
 
 protected:
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent* event);
 
+private slots:
+    void updateOwnership();
+
 private:
     void initRegimentGraphics();
-
+    void updateChildrenBrushes();
     void initModels();
 
     void paintClassicRegiment(QPainter *painter);
@@ -44,6 +57,9 @@ private:
 
     static const int DEFAULT_REGIMENT_WIDTH;
 
+    bool initialized;
+    bool hasImage;
+
     RegimentAbstract regiment;
 
     //! regimentWidth.
@@ -53,11 +69,17 @@ private:
     */
     int regimentWidth;
 
+    QString owner;
+
+    bool isOwnedByMe;
+
     QList<ModelGraphics*> models;
 
     QPen* childrenPen;
 
-    int regimentID;
+    QBrush childrenBrush;
+
+    QString regimentID;
 
 
 private slots:

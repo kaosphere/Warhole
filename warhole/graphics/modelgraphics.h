@@ -16,7 +16,7 @@ class ModelGraphics : public QGraphicsItem
 {
 public:
     ModelGraphics(QGraphicsItem *parent = 0);
-    ModelGraphics(int x, int y, int w, int h, QString n, QPixmap* i = NULL, QGraphicsItem *parent = 0);
+    ModelGraphics(int x, int y, int w, int h, QString n, QPixmap *i = NULL, QGraphicsItem *parent = 0);
 
     virtual ~ModelGraphics();
 

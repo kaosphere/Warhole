@@ -5,7 +5,7 @@ ModelGraphics::ModelGraphics(QGraphicsItem* parent):
 {
 }
 
-ModelGraphics::ModelGraphics(int x, int y, int w, int h, QString n, QPixmap *i, QGraphicsItem* parent):
+ModelGraphics::ModelGraphics(int x, int y, int w, int h, QString n, QPixmap* i, QGraphicsItem* parent):
     QGraphicsItem(parent)
 {
     modelName = n;
@@ -28,7 +28,7 @@ QRectF ModelGraphics::boundingRect() const
 
 void ModelGraphics::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    if(image)
+    if(!image->isNull())
     {
         painter->drawPixmap(boundingRect().toRect(), *image);
     }
