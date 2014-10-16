@@ -38,6 +38,14 @@ GameController::GameController(QObject *parent) :
 
     connect(this, SIGNAL(regimentMoved(QString,QPointF,QTransform)), comManager, SLOT(enqueueRegimentMoveMessage(QString, QPointF, QTransform)));
     connect(comManager, SIGNAL(moveRegiment(QString,QPointF,QTransform)), this, SIGNAL(moveRegiment(QString, QPointF, QTransform)));
+
+    connect(this, SIGNAL(removeRegimentRequest(QString)), comManager, SLOT(enqueueRemoveRegimentMessage(QString)));
+    connect(this, SIGNAL(removeDeadsRequest(QString, int)), comManager, SLOT(enqueueRemoveDeadsMessage(QString, int)));
+    connect(this, SIGNAL(changeWidthRequest(QString, int)), comManager, SLOT(enqueuechangeWidthMessage(QString, int)));
+    connect(comManager, SIGNAL(removeRegiment(QString)), this, SIGNAL(removeRegiment(QString)));
+    connect(comManager, SIGNAL(removeDeads(QString,int)), this, SIGNAL(removeDeads(QString, int)));
+    connect(comManager, SIGNAL(changeRegimentWidth(QString,int)), this, SIGNAL(changeRegimentWidth(QString, int)));
+
     ///////////////////////////////////////////
     // Player Administrator
     ///////////////////////////////////////////

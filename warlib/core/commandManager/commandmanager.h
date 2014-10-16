@@ -23,7 +23,8 @@ enum CommandType{
     ROUND_TEMPLATE_REMOVE,
     NEW_REGIMENT,
     REGIMENT_MOVE,
-    REGIMENT_INFO_CHANGE,
+    REGIMENT_REMOVE_DEADS,
+    REGIMENT_WIDTH_CHANGE,
     REGIMENT_REMOVE
 };
 
@@ -44,6 +45,9 @@ signals:
     void removeTemplate(QString);
     void createRegiment(QString, QString, RegimentAbstract);
     void moveRegiment(QString, QPointF, QTransform);
+    void removeRegiment(QString);
+    void removeDeads(QString, int);
+    void changeRegimentWidth(QString, int);
     
 public slots:
     void processIncomingMessage();
@@ -58,6 +62,9 @@ public slots:
     void enQueueRemoveTemplateMessage(QString i);
     void enqueueNewRegimentMessage(QString o, RegimentAbstract r);
     void enqueueRegimentMoveMessage(QString i, QPointF p, QTransform matrix);
+    void enqueueRemoveRegimentMessage(QString i);
+    void enqueueRemoveDeadsMessage(QString i, int n);
+    void enqueueChangeWidthMessage(QString i, int w);
 
 private:
     static const QString LOG_ID_INFO;
@@ -85,6 +92,9 @@ private:
     void handleRemoveTemplateMessage(const Message &m, QDataStream &data);
     void handleNewRegimentMessage(const Message &m, QDataStream &data);
     void handleRegimentMoveMessage(const Message &m, QDataStream &data);
+    void handleRemoveRegimentMessage(const Message &m, QDataStream &data);
+    void handleRemoveDeadsRegimentMessage(const Message &m, QDataStream &data);
+    void handleChangeWidthRegimentMessage(const Message &m, QDataStream &data);
 };
 
 #endif // COMMANDMANAGER_H

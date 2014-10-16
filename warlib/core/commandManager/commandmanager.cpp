@@ -434,7 +434,6 @@ void CommandManager::enqueueRegimentMoveMessage(QString i, QPointF p , QTransfor
     addMessageToOutQueue(m);
 }
 
-
 void CommandManager::handleRegimentMoveMessage(const Message& m, QDataStream &data)
 {
     QString id;
@@ -450,6 +449,108 @@ void CommandManager::handleRegimentMoveMessage(const Message& m, QDataStream &da
 
     emit moveRegiment(id,point,matrix);
 }
+
+
+void CommandManager::enqueueRemoveRegimentMessage(QString i)
+{
+    Message m;
+    m.setDest(ALL);
+    m.setMessageSender(game->getMe());
+
+    QByteArray data;
+    QDataStream s(&data, QIODevice::WriteOnly);
+
+    s << REGIMENT_REMOVE;
+
+    s << i;
+
+    m.setData(data);
+
+    QLog_Info(LOG_ID_INFO, "enqueueRemoveRegimentMessage() : regiment remove message with ID " + i);
+
+    addMessageToOutQueue(m);
+}
+
+void CommandManager::enqueueRemoveDeadsMessage(QString i, int n)
+{
+    Message m;
+    m.setDest(ALL);
+    m.setMessageSender(game->getMe());
+
+    QByteArray data;
+    QDataStream s(&data, QIODevice::WriteOnly);
+
+    s << REGIMENT_REMOVE_DEADS;
+
+    s << i;
+    s << n;
+
+    m.setData(data);
+
+    QLog_Info(LOG_ID_INFO, "enqueueRemoveDeadsMessage() : deads remove message with ID " + i);
+
+    addMessageToOutQueue(m);
+}
+
+void CommandManager::enqueueChangeWidthMessage(QString i, int w)
+{
+    Message m;
+    m.setDest(ALL);
+    m.setMessageSender(game->getMe());
+
+    QByteArray data;
+    QDataStream s(&data, QIODevice::WriteOnly);
+
+    s << REGIMENT_WIDTH_CHANGE;
+
+    s << i;
+    s << w;
+
+    m.setData(data);
+
+    QLog_Info(LOG_ID_INFO, "enqueueChangeWidthMessage() : change width message with ID " + i);
+
+    addMessageToOutQueue(m);
+}
+
+void CommandManager::handleRemoveRegimentMessage(const Message &m, QDataStream &data)
+{
+    QString id;
+
+    data >> id;
+
+    QLog_Info(LOG_ID_INFO, "handleRemoveRegimentMessage() : received regiment remove message with ID " + id);
+
+    emit removeRegiment(id);
+}
+
+void CommandManager::handleRemoveDeadsRegimentMessage(const Message &m, QDataStream &data)
+{
+    QString id;
+    int nb;
+
+    data >> id;
+    data >> nb;
+
+    QLog_Info(LOG_ID_INFO, "handleRemoveRegimentMessage() : received remove " +
+              QString::number(nb) + " deads to regiment with ID " + id);
+
+    emit removeDeads(id,nb);
+}
+
+void CommandManager::handleChangeWidthRegimentMessage(const Message &m, QDataStream &data)
+{
+    QString id;
+    int w;
+
+    data >> id;
+    data >> w;
+
+    QLog_Info(LOG_ID_INFO, "handleChangeWidthRegimentMessage() : change width message to regiment with ID " + id);
+
+    emit changeRegimentWidth(id,w);
+}
+
 
 void CommandManager::processIncomingMessage()
 {
@@ -541,6 +642,21 @@ void CommandManager::processIncomingMessage()
         case REGIMENT_MOVE:
             QLog_Info(LOG_ID_INFO, "processIncomingMessage() : New regiment move message received.");
             handleRegimentMoveMessage(m, stream);
+            break;
+
+        case REGIMENT_REMOVE:
+            QLog_Info(LOG_ID_INFO, "processIncomingMessage() :Regiment remove message received.");
+            handleRemoveRegimentMessage(m, stream);
+            break;
+
+        case REGIMENT_REMOVE_DEADS:
+            QLog_Info(LOG_ID_INFO, "processIncomingMessage() :Regiment remove deads message received.");
+            handleRemoveDeadsRegimentMessage(m, stream);
+            break;
+
+        case REGIMENT_WIDTH_CHANGE:
+            QLog_Info(LOG_ID_INFO, "processIncomingMessage() :Regiment width change message received.");
+            handleChangeWidthRegimentMessage(m, stream);
             break;
 
         default:

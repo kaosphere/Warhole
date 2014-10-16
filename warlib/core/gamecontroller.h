@@ -45,6 +45,12 @@ signals:
     void createRegiment(QString, QString, RegimentAbstract);
     void regimentMoved(QString, QPointF, QTransform);
     void moveRegiment(QString, QPointF, QTransform);
+    void removeRegimentRequest(QString);
+    void removeDeadsRequest(QString, int);
+    void changeWidthRequest(QString, int);
+    void removeRegiment(QString);
+    void removeDeads(QString, int);
+    void changeRegimentWidth(QString, int);
 
 
 public slots:
