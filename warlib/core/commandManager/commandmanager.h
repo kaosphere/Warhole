@@ -25,7 +25,9 @@ enum CommandType{
     REGIMENT_MOVE,
     REGIMENT_REMOVE_DEADS,
     REGIMENT_WIDTH_CHANGE,
-    REGIMENT_REMOVE
+    REGIMENT_REMOVE,
+    REGIMENT_ADD_MODELS,
+    REGIMENT_CHANGE_INFO
 };
 
 class CommandManager : public QObject
@@ -48,6 +50,8 @@ signals:
     void removeRegiment(QString);
     void removeDeads(QString, int);
     void changeRegimentWidth(QString, int);
+    void addModels(QString, int);
+    void changeRegInfo(QString, RegimentAbstract);
     
 public slots:
     void processIncomingMessage();
@@ -65,6 +69,8 @@ public slots:
     void enqueueRemoveRegimentMessage(QString i);
     void enqueueRemoveDeadsMessage(QString i, int n);
     void enqueueChangeWidthMessage(QString i, int w);
+    void enqueueAddModelMessage(QString i, int nb);
+    void enqueueChangeRegInfoMessage(QString i, RegimentAbstract r);
 
 private:
     static const QString LOG_ID_INFO;
@@ -95,6 +101,8 @@ private:
     void handleRemoveRegimentMessage(const Message &m, QDataStream &data);
     void handleRemoveDeadsRegimentMessage(const Message &m, QDataStream &data);
     void handleChangeWidthRegimentMessage(const Message &m, QDataStream &data);
+    void handleAddModelsMessage(const Message &m, QDataStream &data);
+    void handleChangeRegInfoMessage(const Message &m, QDataStream &data);
 };
 
 #endif // COMMANDMANAGER_H

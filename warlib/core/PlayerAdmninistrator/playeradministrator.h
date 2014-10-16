@@ -16,7 +16,7 @@ public:
 
 signals:
     void playerListChanged(QList<Player> l);
-    void playerNameToChange(Player p);
+    void playerNameToChange(QString p, QString p2);
 
 public slots:
     void handleNewPlayerConnection(Client c);

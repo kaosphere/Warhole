@@ -51,6 +51,10 @@ signals:
     void removeRegiment(QString);
     void removeDeads(QString, int);
     void changeRegimentWidth(QString, int);
+    void addModelToRegRequest(QString, int);
+    void changeRegInfoRequest(QString, RegimentAbstract);
+    void addModels(QString, int);
+    void changeRegInfo(QString, RegimentAbstract);
 
 
 public slots:

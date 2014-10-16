@@ -551,6 +551,73 @@ void CommandManager::handleChangeWidthRegimentMessage(const Message &m, QDataStr
     emit changeRegimentWidth(id,w);
 }
 
+void CommandManager::handleAddModelsMessage(const Message &m, QDataStream &data)
+{
+    QString id;
+    int nb;
+
+    data >> id;
+    data >> nb;
+
+    QLog_Info(LOG_ID_INFO, "handleAddModelsMessage() : add models message to regiment with ID " + id);
+
+    emit addModels(id,nb);
+}
+
+void CommandManager::handleChangeRegInfoMessage(const Message &m, QDataStream &data)
+{
+    QString id;
+    RegimentAbstract r;
+
+    data >> id;
+    data >> r;
+
+    QLog_Info(LOG_ID_INFO, "handleAddModelsMessage() : add models message to regiment with ID " + id);
+
+    emit changeRegInfo(id,r);
+}
+
+
+void CommandManager::enqueueAddModelMessage(QString i, int nb)
+{
+    Message m;
+    m.setDest(ALL);
+    m.setMessageSender(game->getMe());
+
+    QByteArray data;
+    QDataStream s(&data, QIODevice::WriteOnly);
+
+    s << REGIMENT_ADD_MODELS;
+
+    s << i;
+    s << nb;
+
+    m.setData(data);
+
+    QLog_Info(LOG_ID_INFO, "enqueueAddModelMessage() : add models message with ID " + i);
+
+    addMessageToOutQueue(m);
+}
+
+void CommandManager::enqueueChangeRegInfoMessage(QString i, RegimentAbstract r)
+{
+    Message m;
+    m.setDest(ALL);
+    m.setMessageSender(game->getMe());
+
+    QByteArray data;
+    QDataStream s(&data, QIODevice::WriteOnly);
+
+    s << NEW_REGIMENT;
+    s << i;
+    s << r;
+
+    m.setData(data);
+
+    QLog_Info(LOG_ID_INFO, "enqueueChangeRegInfoMessage() : change reg indo message with ID " + i);
+
+    addMessageToOutQueue(m);
+}
 
 void CommandManager::processIncomingMessage()
 {
@@ -657,6 +724,16 @@ void CommandManager::processIncomingMessage()
         case REGIMENT_WIDTH_CHANGE:
             QLog_Info(LOG_ID_INFO, "processIncomingMessage() :Regiment width change message received.");
             handleChangeWidthRegimentMessage(m, stream);
+            break;
+
+        case REGIMENT_ADD_MODELS:
+            QLog_Info(LOG_ID_INFO, "processIncomingMessage() : Add models message received.");
+            handleAddModelsMessage(m, stream);
+            break;
+
+        case REGIMENT_CHANGE_INFO:
+            QLog_Info(LOG_ID_INFO, "processIncomingMessage() :Regiment info change message received.");
+            handleChangeRegInfoMessage(m, stream);
             break;
 
         default:

@@ -68,7 +68,8 @@ void PlayerAdministrator::authorizePlayer(const Player &p)
             playerList.append(p2);
 
             // Notify the player that he has to change name
-            emit playerNameToChange(p);
+            // TODO finish implementation of player name change
+            emit playerNameToChange(p.getName(), p2.getName());
             emit playerListChanged(playerList);
         }
     }

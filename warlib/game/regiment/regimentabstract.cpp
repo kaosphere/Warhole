@@ -130,10 +130,10 @@ int RegimentAbstract::computeTotalNb() const
 	int nb = 0;
 	QList<RecruitsGroup>::const_iterator i = groups.constBegin();
 	while (i != groups.constEnd()) {
-		nb += i->getNb();
+        nb += i->getNb() - i->getCasualties();
 		++i;
 	}
-	return nb;
+    return nb;
 }
 
 
