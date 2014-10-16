@@ -78,6 +78,9 @@ public slots:
     void removeRulerFromScene(QString id);
     void addRegimentToGameScene(QString id, QString owner, RegimentAbstract r);
     void moveRegiment(QString id, QPointF p, QTransform matrix);
+    void removeRegiment(QString id);
+    void removeDeadsFromRegiment(QString id, int nb);
+    void changeRegimentWidth(QString id, int w);
 
 private slots:
 

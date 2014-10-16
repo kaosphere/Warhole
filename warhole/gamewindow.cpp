@@ -100,6 +100,10 @@ void GameWindow::initGameWindow()
     connect(&controller, SIGNAL(networkEvent(QString)), this, SLOT(printSpecialMessage(QString)));
     connect(&controller, SIGNAL(moveTemplate(QString,QPointF)), this, SLOT(moveTemplate(QString, QPointF)));
     connect(&controller, SIGNAL(moveRegiment(QString,QPointF,QTransform)), this, SLOT(moveRegiment(QString, QPointF, QTransform)));
+
+    connect(&controller, SIGNAL(removeRegiment(QString)), this, SLOT(removeRegiment(QString)));
+    connect(&controller, SIGNAL(removeDeads(QString,int)), this, SLOT(removeDeadsFromRegiment(QString, int)));
+    connect(&controller, SIGNAL(changeRegimentWidth(QString,int)), this, SLOT(changeRegimentWidth(QString, int)));
 }
 
 GameWindow::~GameWindow()
@@ -185,6 +189,9 @@ void GameWindow::addRegimentToGameScene(QString id, QString owner, RegimentAbstr
         rg->setOwner(owner);
 
         connect(rg, SIGNAL(regimentMoved(QString,QPointF,QTransform)), &controller, SIGNAL(regimentMoved(QString, QPointF, QTransform)));
+        connect(rg, SIGNAL(removeRegimentRequest(QString)), &controller, SIGNAL(removeRegimentRequest(QString)));
+        connect(rg, SIGNAL(removeDeadsRequest(QString, int)), &controller, SIGNAL(removeDeadsRequest(QString, int)));
+        connect(rg, SIGNAL(changeWidthRequest(QString, int)), &controller, SIGNAL(changeWidthRequest(QString, int)));
 
         regimentMap[id] = rg;
         scene.addItem(rg);
@@ -238,6 +245,18 @@ void GameWindow::moveRuler(QString id, QPointF p, QTransform matrix)
     }
 }
 
+void GameWindow::removeRulerFromScene(QString id)
+{
+    if(toolItemList.contains(id))
+    {
+        QLog_Info(LOG_ID_INFO, "removeRulerFromScene() : ruler (or template) with ID " + id + " found, now removing it.");
+        QGraphicsItem* r = toolItemList[id];
+        scene.removeItem(r);
+        delete r;
+        toolItemList.remove(id);
+    }
+}
+
 void GameWindow::moveRegiment(QString id, QPointF p, QTransform matrix)
 {
     if(regimentMap.contains(id))
@@ -252,15 +271,35 @@ void GameWindow::moveRegiment(QString id, QPointF p, QTransform matrix)
     }
 }
 
-void GameWindow::removeRulerFromScene(QString id)
+void GameWindow::removeRegiment(QString id)
 {
-    if(toolItemList.contains(id))
+    if(regimentMap.contains(id))
     {
-        QLog_Info(LOG_ID_INFO, "moveRuler() : ruler (or template) with ID " + id + " found, now removing it.");
-        QGraphicsItem* r = toolItemList[id];
+        QLog_Info(LOG_ID_INFO, "removeRegiment() : regiment with ID " + id + " found, now removing it.");
+        RegimentGraphics* r = regimentMap[id];
         scene.removeItem(r);
         delete r;
-        toolItemList.remove(id);
+        regimentMap.remove(id);
+    }
+}
+
+void GameWindow::removeDeadsFromRegiment(QString id, int nb)
+{
+    if(regimentMap.contains(id))
+    {
+        QLog_Info(LOG_ID_INFO, "removeDeadsFromRegiment() : regiment with ID " + id + " found, now removing " +
+                  QString::number(nb) + " deads.");
+        regimentMap[id]->removeDeads(nb);
+    }
+}
+
+void GameWindow::changeRegimentWidth(QString id, int w)
+{
+    if(regimentMap.contains(id))
+    {
+        QLog_Info(LOG_ID_INFO, "removeDeadsFromRegiment() : regiment with ID " + id + " found, now setting wdth to " +
+                  QString::number(w));
+        regimentMap[id]->setRegimentWidth(w);
     }
 }
 

@@ -23,7 +23,7 @@ RegimentGraphics::RegimentGraphics(const RegimentAbstract &r, bool owned, QGraph
     hasImage = true;
 
     initRegimentGraphics();
-        
+
     initModels();
 
     initialized = true;
@@ -44,11 +44,18 @@ void RegimentGraphics::initRegimentGraphics()
     
     // Redraw regiment if the regimentAbstract object is replaced
     QObject::connect(this, SIGNAL(regimentUpdated()), this, SLOT(updateRegiment()));
-       
+
     // Set default regiment width
     regimentWidth = DEFAULT_REGIMENT_WIDTH;
     
     childrenPen = new QPen(QColor(0,20,40),3);
+
+    actionRemoveRegiment = new QAction(tr("Retirer"), this);
+    connect(actionRemoveRegiment, SIGNAL(triggered()), this, SLOT(removeRegimentRequest()));
+    actionRemoveDeads = new QAction(tr("Changer la disposition"), this);
+    connect(actionRemoveDeads, SIGNAL(triggered()), this, SLOT(removeDeadRequest()));
+    actionChangeRegimentWidth = new QAction(tr("Retirer des figurines mortes"), this);
+    connect(actionChangeRegimentWidth, SIGNAL(triggered()), this, SLOT(changeRegimentWidthRequest()));
 
     // Item will be enabled for drag and drop if owned only
     connect(this, SIGNAL(ownerChanged()), this, SLOT(updateOwnership()));
@@ -152,15 +159,25 @@ void RegimentGraphics::paint(QPainter *painter, const QStyleOptionGraphicsItem *
 
 void RegimentGraphics::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    //QLog_Info(LOG_ID_INFO, "X : " + QString::number(scenePos().x()) +
-       //       ", Y : " + QString::number(scenePos().y()));
     
     // Signal that the object has been moved by the mouse
     // This permits not to create infinite loop if we cast the signal
     // when the coordinates are changed
-    emit regimentMoved(regimentID, pos(), transform());
+
+    static int cnt = 0;
+    if(++cnt % 16)
+    {
+        cnt = 0;
+        emit regimentMoved(regimentID, pos(), transform());
+    }
     
     QGraphicsItem::mouseMoveEvent(event);
+}
+
+void RegimentGraphics::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+    emit regimentMoved(regimentID, pos(), transform());
+    QGraphicsItem::mouseReleaseEvent(event);
 }
 
 void RegimentGraphics::updateOwnership()
@@ -200,6 +217,32 @@ void RegimentGraphics::updateOwnership()
     if(initialized) updateChildrenBrushes();
 }
 
+void RegimentGraphics::removeRegimentRequest()
+{
+    emit removeRegimentRequest(regimentID);
+}
+
+void RegimentGraphics::removeDeadRequest()
+{
+    int nb = 2;
+    emit removeDeadsRequest(regimentID, nb);
+}
+
+void RegimentGraphics::changeRegimentWidthRequest()
+{
+    int w = 5;
+    emit changeWidthRequest(regimentID, w);
+}
+
+void RegimentGraphics::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
+{
+    QMenu *menu = new QMenu;
+    menu->addAction(actionRemoveRegiment);
+    menu->addAction(actionChangeRegimentWidth);
+    menu->addAction(actionRemoveDeads);
+    menu->popup(event->screenPos());
+}
+
 void RegimentGraphics::updateRegiment()
 {
     this->update();
@@ -228,6 +271,22 @@ void RegimentGraphics::setIsOwnedByMe(bool value)
     emit ownerChanged();
 }
 
+void RegimentGraphics::removeDeads(int nb)
+{
+    regiment.getGroups().first().setCasualties(
+                regiment.getGroups().first().getCasualties() + nb);
+    for(int i=0; i< childItems().size(); ++i)
+    {
+        delete childItems()[i];
+    }
+    childItems().clear();
+    for(int i=0; i< childItems().size(); ++i)
+    {
+        delete models[i];
+    }
+    initModels();
+}
+
 QString RegimentGraphics::getOwner() const
 {
     return owner;
@@ -237,3 +296,14 @@ void RegimentGraphics::setOwner(const QString &value)
 {
     owner = value;
 }
+
+int RegimentGraphics::getRegimentWidth() const
+{
+    return regimentWidth;
+}
+
+void RegimentGraphics::setRegimentWidth(int value)
+{
+    regimentWidth = value;
+}
+

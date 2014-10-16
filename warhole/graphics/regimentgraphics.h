@@ -32,12 +32,21 @@ public:
     bool getIsOwnedByMe() const;
     void setIsOwnedByMe(bool value);
 
+    void removeDeads(int nb);
+
+    int getRegimentWidth() const;
+    void setRegimentWidth(int value);
 
 protected:
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent* event);
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+    void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
 
 private slots:
     void updateOwnership();
+    void removeRegimentRequest();
+    void removeDeadRequest();
+    void changeRegimentWidthRequest();
 
 private:
     void initRegimentGraphics();
@@ -78,11 +87,19 @@ private:
 
     QString regimentID;
 
+    QAction* actionRemoveRegiment;
+    QAction* actionChangeRegimentWidth;
+    QAction* actionRemoveDeads;
+
 
 private slots:
     void updateRegiment();
 
 signals:
+
+    void removeRegimentRequest(QString);
+    void removeDeadsRequest(QString, int);
+    void changeWidthRequest(QString, int);
 
     void ownerChanged();
 
