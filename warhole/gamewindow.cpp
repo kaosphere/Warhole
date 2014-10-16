@@ -104,6 +104,8 @@ void GameWindow::initGameWindow()
     connect(&controller, SIGNAL(removeRegiment(QString)), this, SLOT(removeRegiment(QString)));
     connect(&controller, SIGNAL(removeDeads(QString,int)), this, SLOT(removeDeadsFromRegiment(QString, int)));
     connect(&controller, SIGNAL(changeRegimentWidth(QString,int)), this, SLOT(changeRegimentWidth(QString, int)));
+    connect(&controller, SIGNAL(addModels(QString,int)), this, SLOT(addModelToRegiment(QString, int)));
+    connect(&controller, SIGNAL(changeRegInfo(QString,RegimentAbstract)), this, SLOT(changeRegimentInfo(QString, RegimentAbstract)));
 }
 
 GameWindow::~GameWindow()
@@ -192,9 +194,13 @@ void GameWindow::addRegimentToGameScene(QString id, QString owner, RegimentAbstr
         connect(rg, SIGNAL(removeRegimentRequest(QString)), &controller, SIGNAL(removeRegimentRequest(QString)));
         connect(rg, SIGNAL(removeDeadsRequest(QString, int)), &controller, SIGNAL(removeDeadsRequest(QString, int)));
         connect(rg, SIGNAL(changeWidthRequest(QString, int)), &controller, SIGNAL(changeWidthRequest(QString, int)));
+        connect(rg, SIGNAL(addModelRequest(QString,int)), &controller, SIGNAL(addModelToRegRequest(QString, int)));
+        connect(rg, SIGNAL(changeRegimentInfoRequest(QString,RegimentAbstract)), &controller, SIGNAL(changeRegInfoRequest(QString, RegimentAbstract)));
 
         regimentMap[id] = rg;
         scene.addItem(rg);
+        printSpecialMessage("<em><font color=\"DimGray\"><strong>" + owner + "</strong>" +
+                            tr(" a ajouté le régiment ") + r.getName() + tr(" à la partie") + "</em></font>");
     }
 }
 
@@ -271,12 +277,15 @@ void GameWindow::moveRegiment(QString id, QPointF p, QTransform matrix)
     }
 }
 
+
 void GameWindow::removeRegiment(QString id)
 {
     if(regimentMap.contains(id))
     {
         QLog_Info(LOG_ID_INFO, "removeRegiment() : regiment with ID " + id + " found, now removing it.");
         RegimentGraphics* r = regimentMap[id];
+        printSpecialMessage("<em><font color=\"DimGray\"><strong>" + r->getOwner() + "</strong>" +
+                            tr(" a retiré le régiment ") + r->getRegiment().getName() + tr(" de la partie") + "</em></font>");
         scene.removeItem(r);
         delete r;
         regimentMap.remove(id);
@@ -300,6 +309,27 @@ void GameWindow::changeRegimentWidth(QString id, int w)
         QLog_Info(LOG_ID_INFO, "removeDeadsFromRegiment() : regiment with ID " + id + " found, now setting wdth to " +
                   QString::number(w));
         regimentMap[id]->setRegimentWidth(w);
+    }
+}
+
+void GameWindow::addModelToRegiment(QString id, int nb)
+{
+    if(regimentMap.contains(id))
+    {
+        QLog_Info(LOG_ID_INFO, "addModelToRegiment() : regiment with ID " + id + " found, now adding " +
+                  QString::number(nb) + " models to it");
+        regimentMap[id]->addModels(nb);
+    }
+}
+
+
+void GameWindow::changeRegInfo(QString id, RegimentAbstract r)
+{
+    if(regimentMap.contains(id))
+    {
+        QLog_Info(LOG_ID_INFO, "changeRegInfo() : regiment with ID " + id +
+                  " found, now changing regiment info");
+        regimentMap[id]->setRegiment(r);
     }
 }
 

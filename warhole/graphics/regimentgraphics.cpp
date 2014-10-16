@@ -32,6 +32,10 @@ RegimentGraphics::RegimentGraphics(const RegimentAbstract &r, bool owned, QGraph
 RegimentGraphics::~RegimentGraphics()
 {
     delete childrenPen;
+    for(int i=0; i < models.size(); ++i)
+    {
+        delete models[i];
+    }
 }
 
 void RegimentGraphics::initRegimentGraphics()
@@ -52,10 +56,14 @@ void RegimentGraphics::initRegimentGraphics()
 
     actionRemoveRegiment = new QAction(tr("Retirer"), this);
     connect(actionRemoveRegiment, SIGNAL(triggered()), this, SLOT(removeRegimentRequest()));
-    actionRemoveDeads = new QAction(tr("Changer la disposition"), this);
+    actionRemoveDeads = new QAction(tr("Retirer des figurines mortes"), this);
     connect(actionRemoveDeads, SIGNAL(triggered()), this, SLOT(removeDeadRequest()));
-    actionChangeRegimentWidth = new QAction(tr("Retirer des figurines mortes"), this);
+    actionAddModels = new QAction(tr("Ajouter des figurines"), this);
+    connect(actionAddModels, SIGNAL(triggered()), this, SLOT(addModelRequest()));
+    actionChangeRegimentWidth = new QAction(tr("Changer la disposition"), this);
     connect(actionChangeRegimentWidth, SIGNAL(triggered()), this, SLOT(changeRegimentWidthRequest()));
+    actionChangeRegInfo = new QAction(tr("Changer les infos"), this);
+    connect(actionChangeRegInfo, SIGNAL(triggered()), this, SLOT(changeRegimentInfoRequest()));
 
     // Item will be enabled for drag and drop if owned only
     connect(this, SIGNAL(ownerChanged()), this, SLOT(updateOwnership()));
@@ -92,6 +100,43 @@ void RegimentGraphics::initModels()
             models.append(r);
         }
     }
+}
+
+void RegimentGraphics::updateChildrenPositions()
+{
+    for(int j = 0; j < models.size(); ++j)
+    {
+        // TODO, to adapt when regiment fusion added
+        models[j]->setPosXY(j%regimentWidth * regiment.getGroups().first().getModel()->getSquareBaseW() * ONE_MILLIMETER,
+                          (j/regimentWidth)* regiment.getGroups().first().getModel()->getSquareBaseL() * ONE_MILLIMETER);
+        // Change bounding rect
+        prepareGeometryChange();
+    }
+}
+
+void RegimentGraphics::addModels(int nb)
+{
+    int currentNb = models.size();
+    for(int i = currentNb; i < currentNb+nb; ++i)
+    {
+        // Add a rectangle item for each model in the regiment
+        // X position is the number of the model modulo the regiment width
+        ModelGraphics* r = new ModelGraphics(i%regimentWidth * regiment.getGroups().first().getModel()->getSquareBaseW() * ONE_MILLIMETER,
+                                             // Y position is the number of the model divided by regiment width
+                                             (i/regimentWidth) * regiment.getGroups().first().getModel()->getSquareBaseL() * ONE_MILLIMETER,
+                                             regiment.getGroups().first().getModel()->getSquareBaseW() * ONE_MILLIMETER,
+                                             regiment.getGroups().first().getModel()->getSquareBaseL() * ONE_MILLIMETER,
+                                             regiment.getGroups().first().getModel()->getStats().getName(),
+                                             &(regiment.getGroups().first().getModel()->getImage()),
+                                             this);
+        r->setBrush(childrenBrush);
+        r->setPen(*childrenPen);
+        r->setFlag(ItemStacksBehindParent);
+        models.append(r);
+    }
+    // Add the number to the regiment
+    regiment.getGroups().first().setNb(regiment.getGroups().first().getNb() + nb);
+    prepareGeometryChange();
 }
 
 void RegimentGraphics::updateChildrenBrushes()
@@ -224,14 +269,51 @@ void RegimentGraphics::removeRegimentRequest()
 
 void RegimentGraphics::removeDeadRequest()
 {
-    int nb = 2;
-    emit removeDeadsRequest(regimentID, nb);
+    int nb = 0;
+    GetIntDialog d(tr("Nombre de morts"));
+    d.setModal(true);
+    d.setNb(&nb);
+    if(d.exec())
+    {
+        // If there is more deads than models in the regiment, remove the regiment
+        if(regiment.computeTotalNb() > nb)
+        {
+            emit removeDeadsRequest(regimentID, nb);
+        }
+        else
+        {
+            emit removeRegimentRequest(regimentID);
+        }
+    }
 }
 
 void RegimentGraphics::changeRegimentWidthRequest()
 {
-    int w = 5;
-    emit changeWidthRequest(regimentID, w);
+    int nb = 0;
+    GetIntDialog d(tr("Largeur du régiment"));
+    d.setModal(true);
+    d.setNb(&nb);
+    if(d.exec())
+    {
+        emit changeWidthRequest(regimentID, nb);
+    }
+}
+
+void RegimentGraphics::addModelRequest()
+{
+    int nb = 0;
+    GetIntDialog d(tr("Nombre de figurines"));
+    d.setModal(true);
+    d.setNb(&nb);
+    if(d.exec())
+    {
+        emit addModelRequest(regimentID, nb);
+    }
+}
+
+void RegimentGraphics::changeRegimentInfoRequest()
+{
+    emit changeRegimentInfoRequest(regimentID, regiment);
 }
 
 void RegimentGraphics::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
@@ -240,6 +322,8 @@ void RegimentGraphics::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
     menu->addAction(actionRemoveRegiment);
     menu->addAction(actionChangeRegimentWidth);
     menu->addAction(actionRemoveDeads);
+    menu->addAction(actionAddModels);
+    menu->addAction(actionChangeRegInfo);
     menu->popup(event->screenPos());
 }
 
@@ -256,7 +340,7 @@ RegimentAbstract RegimentGraphics::getRegiment() const
 void RegimentGraphics::setRegiment(const RegimentAbstract &value)
 {
     regiment = value;
-    //emit(SIGNAL(regimentChanged()));
+    prepareGeometryChange();
 }
 
 bool RegimentGraphics::getIsOwnedByMe() const
@@ -275,16 +359,15 @@ void RegimentGraphics::removeDeads(int nb)
 {
     regiment.getGroups().first().setCasualties(
                 regiment.getGroups().first().getCasualties() + nb);
-    for(int i=0; i< childItems().size(); ++i)
+    for(int i=0; i< nb; ++i)
     {
-        delete childItems()[i];
+        ModelGraphics* m = models.takeLast();
+        // Remove object from the parent
+        m->setParentItem(NULL);
+        // Remove object from the scene
+        scene()->removeItem(m);
+        delete m;
     }
-    childItems().clear();
-    for(int i=0; i< childItems().size(); ++i)
-    {
-        delete models[i];
-    }
-    initModels();
 }
 
 QString RegimentGraphics::getOwner() const
@@ -304,6 +387,14 @@ int RegimentGraphics::getRegimentWidth() const
 
 void RegimentGraphics::setRegimentWidth(int value)
 {
-    regimentWidth = value;
+    if(value > regiment.computeTotalNb())
+    {
+        regimentWidth = regiment.computeTotalNb();
+    }
+    else
+    {
+        regimentWidth = value;
+    }
+    updateChildrenPositions();
 }
 

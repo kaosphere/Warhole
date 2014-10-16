@@ -7,6 +7,7 @@
 #include "distances.h"
 #include "game/regiment/regimentabstract.h"
 #include "Utilities/QLogger/QLogger.h"
+#include "getintdialog.h"
 
 class RegimentGraphics : public QGraphicsObject
 {
@@ -37,6 +38,9 @@ public:
     int getRegimentWidth() const;
     void setRegimentWidth(int value);
 
+    void updateChildrenPositions();
+    void addModels(int nb);
+
 protected:
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent* event);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
@@ -47,6 +51,8 @@ private slots:
     void removeRegimentRequest();
     void removeDeadRequest();
     void changeRegimentWidthRequest();
+    void addModelRequest();
+    void changeRegimentInfoRequest();
 
 private:
     void initRegimentGraphics();
@@ -90,6 +96,8 @@ private:
     QAction* actionRemoveRegiment;
     QAction* actionChangeRegimentWidth;
     QAction* actionRemoveDeads;
+    QAction* actionAddModels;
+    QAction* actionChangeRegInfo;
 
 
 private slots:
@@ -100,6 +108,8 @@ signals:
     void removeRegimentRequest(QString);
     void removeDeadsRequest(QString, int);
     void changeWidthRequest(QString, int);
+    void addModelRequest(QString, int);
+    void changeRegimentInfoRequest(QString, RegimentAbstract);
 
     void ownerChanged();
 

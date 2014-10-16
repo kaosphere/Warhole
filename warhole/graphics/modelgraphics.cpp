@@ -71,3 +71,10 @@ void ModelGraphics::setPen(const QPen &value)
     pen = value;
 }
 
+void ModelGraphics::setPosXY(qreal x, qreal y)
+{
+    posx = x;
+    posy = y;
+    prepareGeometryChange();
+}
+

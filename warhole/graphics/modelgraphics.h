@@ -32,6 +32,7 @@ public:
     QPen getPen() const;
     void setPen(const QPen &value);
 
+    void setPosXY(qreal x, qreal y);
 private:
     QString modelName;
     QPixmap* image;

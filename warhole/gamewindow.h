@@ -31,6 +31,7 @@
 #include "core/gamecontroller.h"
 #include "Utilities/RandomIdGenerator/idgenerator.h"
 #include "graphics/roundtemplategraphics.h"
+#include "getintdialog.h"
 
 
 namespace Ui {
@@ -81,6 +82,8 @@ public slots:
     void removeRegiment(QString id);
     void removeDeadsFromRegiment(QString id, int nb);
     void changeRegimentWidth(QString id, int w);
+    void addModelToRegiment(QString id, int nb);
+    void changeRegInfo(QString id, RegimentAbstract r);
 
 private slots:
 
