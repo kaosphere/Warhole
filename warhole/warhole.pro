@@ -37,7 +37,8 @@ SOURCES += main.cpp\
     chatwidgetform.cpp \
     statsdisplayform.cpp \
     graphics/roundtemplategraphics.cpp \
-    getintdialog.cpp
+    getintdialog.cpp \
+    statsdisplaywidget.cpp
 
 HEADERS  += mainwindow.h \
     modelwindow.h \
@@ -58,7 +59,8 @@ HEADERS  += mainwindow.h \
     chatwidgetform.h \
     statsdisplayform.h \
     graphics/roundtemplategraphics.h \
-    getintdialog.h
+    getintdialog.h \
+    statsdisplaywidget.h
 
 TRANSLATIONS = warhole_en.ts
 
@@ -73,7 +75,8 @@ FORMS += \
     connecttoserverdialog.ui \
     chatwidgetform.ui \
     statsdisplayform.ui \
-    getintdialog.ui
+    getintdialog.ui \
+    statsdisplaywidget.ui
 
 RESOURCES += \
     resources.qrc

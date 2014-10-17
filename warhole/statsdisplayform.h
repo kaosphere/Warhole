@@ -2,6 +2,10 @@
 #define STATSDISPLAYFORM_H
 
 #include <QWidget>
+#include <QContextMenuEvent>
+#include "game/regiment/regimentabstract.h"
+#include "statsdisplaywidget.h"
+#include <QVBoxLayout>
 
 namespace Ui {
 class StatsDisplayForm;
@@ -12,9 +16,12 @@ class StatsDisplayForm : public QWidget
     Q_OBJECT
     
 public:
-    explicit StatsDisplayForm(QWidget *parent = 0);
+    explicit StatsDisplayForm(RegimentAbstract r, bool owned, QWidget *parent = 0);
     ~StatsDisplayForm();
     
+private slots:
+    void on_pushButton_clicked();
+
 private:
     Ui::StatsDisplayForm *ui;
 };

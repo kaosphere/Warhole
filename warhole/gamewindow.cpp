@@ -38,10 +38,6 @@ void GameWindow::initGameWindow()
     connect(cw, SIGNAL(newMessageToSend(QString)), &controller, SIGNAL(newChatMessageToSend(QString)));
     connect(&controller, SIGNAL(newChatMessageToPrint(QString,QString)), cw, SLOT(printNewChatMessage(QString,QString)));
 
-    // Display stats widget
-    sd = new StatsDisplayForm(this);
-    ui->dockWidget_3->setWidget(sd);
-
     ///////////////////////////////////////////
     //Tree view of army
     ///////////////////////////////////////////
@@ -196,6 +192,7 @@ void GameWindow::addRegimentToGameScene(QString id, QString owner, RegimentAbstr
         connect(rg, SIGNAL(changeWidthRequest(QString, int)), &controller, SIGNAL(changeWidthRequest(QString, int)));
         connect(rg, SIGNAL(addModelRequest(QString,int)), &controller, SIGNAL(addModelToRegRequest(QString, int)));
         connect(rg, SIGNAL(changeRegimentInfoRequest(QString,RegimentAbstract)), &controller, SIGNAL(changeRegInfoRequest(QString, RegimentAbstract)));
+        connect(rg, SIGNAL(showStats(RegimentAbstract)), this, SLOT(showStatsWidget(RegimentAbstract)));
 
         regimentMap[id] = rg;
         scene.addItem(rg);

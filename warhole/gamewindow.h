@@ -89,9 +89,7 @@ private slots:
 
     void on_actionHost_Game_triggered();
     void on_actionConnect_to_a_game_2_triggered();
-
     void on_actionExpTemplateSmall_triggered();
-
     void on_actionExpTemplateBig_triggered();
 
 signals:

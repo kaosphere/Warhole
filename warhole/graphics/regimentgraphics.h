@@ -8,6 +8,7 @@
 #include "game/regiment/regimentabstract.h"
 #include "Utilities/QLogger/QLogger.h"
 #include "getintdialog.h"
+#include "statsdisplayform.h"
 
 class RegimentGraphics : public QGraphicsObject
 {
@@ -53,6 +54,7 @@ private slots:
     void changeRegimentWidthRequest();
     void addModelRequest();
     void changeRegimentInfoRequest();
+    void closeInfoRect();
 
 private:
     void initRegimentGraphics();
@@ -98,10 +100,13 @@ private:
     QAction* actionRemoveDeads;
     QAction* actionAddModels;
     QAction* actionChangeRegInfo;
+    QAction* actionShowStats;
 
+    QGraphicsRectItem* infoRect;
 
 private slots:
     void updateRegiment();
+    void showStats();
 
 signals:
 
@@ -110,7 +115,7 @@ signals:
     void changeWidthRequest(QString, int);
     void addModelRequest(QString, int);
     void changeRegimentInfoRequest(QString, RegimentAbstract);
-
+    void showStats(RegimentAbstract);
     void ownerChanged();
 
     //! regimentDataChanged.

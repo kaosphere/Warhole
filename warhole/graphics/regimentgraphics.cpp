@@ -51,7 +51,8 @@ void RegimentGraphics::initRegimentGraphics()
 
     // Set default regiment width
     regimentWidth = DEFAULT_REGIMENT_WIDTH;
-    
+    infoRect = NULL;
+
     childrenPen = new QPen(QColor(0,20,40),3);
 
     actionRemoveRegiment = new QAction(tr("Retirer"), this);
@@ -64,6 +65,8 @@ void RegimentGraphics::initRegimentGraphics()
     connect(actionChangeRegimentWidth, SIGNAL(triggered()), this, SLOT(changeRegimentWidthRequest()));
     actionChangeRegInfo = new QAction(tr("Changer les infos"), this);
     connect(actionChangeRegInfo, SIGNAL(triggered()), this, SLOT(changeRegimentInfoRequest()));
+    actionShowStats = new QAction(tr("Afficher informations"), this);
+    connect(actionShowStats, SIGNAL(triggered()), this, SLOT(showStats()));
 
     // Item will be enabled for drag and drop if owned only
     connect(this, SIGNAL(ownerChanged()), this, SLOT(updateOwnership()));
@@ -208,11 +211,10 @@ void RegimentGraphics::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     // Signal that the object has been moved by the mouse
     // This permits not to create infinite loop if we cast the signal
     // when the coordinates are changed
-
-    static int cnt = 0;
-    if(++cnt % 16)
+    static int cnt = 1;
+    if(++cnt % 8 == 0)
     {
-        cnt = 0;
+        cnt = 1;
         emit regimentMoved(regimentID, pos(), transform());
     }
     
@@ -324,6 +326,7 @@ void RegimentGraphics::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
     menu->addAction(actionRemoveDeads);
     menu->addAction(actionAddModels);
     menu->addAction(actionChangeRegInfo);
+    menu->addAction(actionShowStats);
     menu->popup(event->screenPos());
 }
 
@@ -331,6 +334,40 @@ void RegimentGraphics::updateRegiment()
 {
     this->update();
 }
+
+void RegimentGraphics::showStats()
+{
+    if(!infoRect)
+    {
+        StatsDisplayForm* s = new StatsDisplayForm(regiment, isOwnedByMe);
+        QGraphicsProxyWidget* w = new QGraphicsProxyWidget();
+        w->setWidget(s);
+
+        infoRect = new QGraphicsRectItem(this->pos().x() + boundingRect().width(),
+                                                     pos().y(),
+                                                     s->width(),
+                                                     s->height());
+        infoRect->setFlag(ItemIsMovable);
+        infoRect->setFlag(ItemIsSelectable);
+
+        w->setParentItem(infoRect);
+        w->setPos(infoRect->boundingRect().topLeft());
+        w->setOpacity(0.9);
+
+
+        connect(s,SIGNAL(destroyed()), this, SLOT(closeInfoRect()));
+
+        scene()->addItem(infoRect);
+    }
+}
+
+void RegimentGraphics::closeInfoRect()
+{
+    scene()->removeItem(infoRect);
+    delete infoRect;
+    infoRect = NULL;
+}
+
 
 RegimentAbstract RegimentGraphics::getRegiment() const
 {
