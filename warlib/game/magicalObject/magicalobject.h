@@ -42,7 +42,7 @@ public:
     bool operator==(const MagicalObject& other);
     MagicalObject& operator=(const MagicalObject& other);
 
-    QString displayString();
+    QString displayString() const;
 
     QString getHtml();
 

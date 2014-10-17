@@ -113,7 +113,7 @@ MagicalObject &MagicalObject::operator=(const MagicalObject &other)
     return *this;
 }
 
-QString MagicalObject::displayString()
+QString MagicalObject::displayString() const
 {
     QString s;
     QTextStream info(&s);
