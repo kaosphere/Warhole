@@ -189,6 +189,9 @@ public:
      */
     QDataStream& serializeOutBase(QDataStream& out) const;
 
+    // Fucking ugly hack TODO change later
+    virtual QString getSpecialRules() const = 0;
+
     StatsModel getStats() const;
     void setStats(const StatsModel &value);
 

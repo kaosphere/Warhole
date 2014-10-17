@@ -371,6 +371,7 @@ QDataStream &ModelAbstract::serializeOutBase(QDataStream &out) const
     return out;
 }
 
+
 QDataStream &operator <<(QDataStream & out, const ModelAbstract & obj)
 {
     bool i;
