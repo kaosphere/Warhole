@@ -10,6 +10,8 @@
 #include <QKeyEvent>
 #include <QCursor>
 
+#include <qmath.h>
+
 #include "distances.h"
 
 class RulerGraphics : public QGraphicsObject
