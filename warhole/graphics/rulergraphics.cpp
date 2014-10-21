@@ -111,35 +111,38 @@ void RulerGraphics::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 
 void RulerGraphics::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    static QPointF previousPos = scenePos();
+    static qreal translation;
+    static qreal previousRot = 0;
     if(rot)
     {
         static int offset = 0;
 
         if(firstRot)
         {
+
             if(event->pos().x() < boundingRect().center().x())
             {
-                setTransformOriginPoint(boundingRect().right(),0);
+                translation = boundingRect().right();
                 offset = 180;
             }
             else
             {
-                setTransformOriginPoint(0,0);
+                translation = 0;
                 offset = 0;
             }
             firstRot = false;
         }
 
-        QPointF originPoint = mapToScene(transformOriginPoint());
+        QPointF originPoint = mapToScene(translation, 0);
 
         qreal a1 = event->scenePos().x() - originPoint.x();
         qreal a2 = event->scenePos().y() - originPoint.y();
         qreal angle = qAtan2(a2, a1);
 
-        setRotation((angle * 180 / 3.14) + offset);
-
-        //setTransform(transform() * QTransform().translate(cX,cY).rotate(rotation() + angle).translate(-cX,-cY));
+        QTransform trans;
+        trans.translate(translation,0).rotate(-previousRot).rotate((angle * 180 / 3.14) + offset).translate(-translation,0);
+        setTransform(trans, true);
+        previousRot = ((angle * 180 / 3.14) + offset);
 
         if((++cnt)%6 == 0)
         {
