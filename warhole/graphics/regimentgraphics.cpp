@@ -435,3 +435,30 @@ void RegimentGraphics::setRegimentWidth(int value)
     updateChildrenPositions();
 }
 
+QDataStream& operator<<(QDataSteam& out, const RegimentGraphics& obj)
+{
+    out << obj.id;
+    out << obj.regiment;
+    out << obj.pos();
+    out << obj.transform();
+    
+    return out; 
+}
+
+QDataStream& operator>>(QDataStream& in, RegimentGraphics& obj)
+{
+    QPointF position;
+    QTransform matrix;
+    
+    in >> obj.id;
+    in >> obj.regiment;
+    in >> position;
+    
+    obj.setPos(position);
+    
+    in >> matrix;
+    
+    obj.setTransform(matrix);
+    
+    return in;
+}
