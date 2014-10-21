@@ -41,6 +41,9 @@ public:
 
     void updateChildrenPositions();
     void addModels(int nb);
+    
+    friend QDataStream& operator<<(QDataStream& out, const RegimentGraphics& obj);
+    friend QDataStream& operator>>(QDataStream& in, RegimentGraphics& obj);
 
 protected:
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent* event);
