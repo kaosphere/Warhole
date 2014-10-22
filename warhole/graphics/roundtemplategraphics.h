@@ -31,6 +31,9 @@ public:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
+    
+    QDataStream& serializeOut(QDataStream& out);
+    QDataStream& serializeIn(QDataStream& in);
 
     friend QDataStream& operator<<(QDataStream& out, const RoundTemplateGraphics& obj);
     friend QDataStream& operator>>(QDataStream& in, RoundTemplateGraphics& obj);
