@@ -427,12 +427,12 @@ void GameWindow::on_actionSave_Game_triggered()
     stream << regimentMap.size();
     QMap<QString, RegimentGraphics*>::const_iterator i = regimentMap.constBegin();
     while (i != regimentMap.constEnd()) {
-        stream << RegimentGraphics(*i);
+        i->serializeOut(stream);
         ++i;
     }
 
     // Store rulers
-    stream << rulerList.size();
+    /*stream << rulerList.size();
     QMap<QString, RulerGraphics*>::const_iterator j = rulerList.constBegin();
     while (j != rulerList.constEnd()) {
         stream << (*j);
@@ -445,7 +445,7 @@ void GameWindow::on_actionSave_Game_triggered()
     while (k != roundTemplateList.constEnd()) {
         stream << (*k);
         ++k;
-    }
+    }*/
 
     file.close();
 }
@@ -478,7 +478,7 @@ void GameWindow::on_actionCharger_une_partie_triggered()
     for(int i = 0; i < size; ++i)
     {
         RegimentGraphics* r = new RegimentGraphics();
-        stream >> (*r);
+        r->serializeIn(stream);
         regimentMap[r->getRegimentID()] = r;
 
         connect(r, SIGNAL(regimentMoved(QString,QPointF,QTransform)), &controller, SIGNAL(regimentMoved(QString, QPointF, QTransform)));
@@ -493,7 +493,7 @@ void GameWindow::on_actionCharger_une_partie_triggered()
     }
 
     // Store rulers
-    stream >> size;
+    /*stream >> size;
     for(int i = 0; i < size; ++i)
     {
         RulerGraphics* r = new RulerGraphics();
@@ -516,7 +516,9 @@ void GameWindow::on_actionCharger_une_partie_triggered()
         connect(r, SIGNAL(templateMoved(QString,QPointF)), &controller, SIGNAL(templateMoved(QString, QPointF)));
         connect(r, SIGNAL(removeTemplateRequest(QString)), &controller, SIGNAL(removeTemplateRequest(QString)));
         scene.addItem(r);
-    }
+    }*/
+    
+    file.close();
 
     // TODO send overall update
 }
