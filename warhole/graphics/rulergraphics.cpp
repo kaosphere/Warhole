@@ -204,6 +204,18 @@ void RulerGraphics::removeRulerRequest()
     emit removeRuler(id);
 }
 
+QDataStream& RulerGraphics::serializeOut(QDataStream& out)
+{
+    out << (*this);
+    return out;
+}
+
+QDataStream& RulerGraphics::serializeIn(QDataStream& in)
+{
+    in >> (*this);
+    return in;
+}
+
 QDataStream& operator<<(QDataStream& out, const RulerGraphics& obj)
 {
     out << obj.id
