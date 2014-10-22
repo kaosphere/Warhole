@@ -503,6 +503,18 @@ void RegimentGraphics::setRegimentWidth(int value)
     updateChildrenPositions();
 }
 
+QDataStream& RegimentGraphics::serializeOut(QDataStream& out)
+{
+    out << (*this);
+    return out;
+}
+
+QDataStream& RegimentGraphics::serializeIn(QDataStream& in)
+{
+    in >> (*this);
+    return in;
+}
+
 QDataStream& operator<<(QDataStream& out, const RegimentGraphics& obj)
 {
     out << obj.regimentID;
