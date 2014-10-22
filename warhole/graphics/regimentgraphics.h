@@ -1,7 +1,11 @@
 #ifndef REGIMENTGRAPHICS_H
 #define REGIMENTGRAPHICS_H
 
-#include <QGraphicsItem>
+#include <QGraphicsObject>
+#include <QKeyEvent>
+#include <QGraphicsSceneContextMenuEvent>
+#include <QKeyEvent>
+#include <QCursor>
 
 #include "modelgraphics.h"
 #include "distances.h"
@@ -47,8 +51,10 @@ public:
 
 protected:
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent* event);
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-    void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
+    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+    virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
+    virtual void keyPressEvent(QKeyEvent *event);
+    virtual void keyReleaseEvent(QKeyEvent *event);
 
 private slots:
     void updateOwnership();
@@ -76,6 +82,8 @@ private:
 
     bool initialized;
     bool hasImage;
+    bool rot;
+    bool firstRot;
 
     RegimentAbstract regiment;
 

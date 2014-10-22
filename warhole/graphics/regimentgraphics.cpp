@@ -53,6 +53,9 @@ void RegimentGraphics::initRegimentGraphics()
     regimentWidth = DEFAULT_REGIMENT_WIDTH;
     infoRect = NULL;
 
+    rot = false;
+    firstRot = true;
+
     childrenPen = new QPen(QColor(0,20,40),3);
 
     actionRemoveRegiment = new QAction(tr("Retirer"), this);
@@ -212,13 +215,76 @@ void RegimentGraphics::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     // This permits not to create infinite loop if we cast the signal
     // when the coordinates are changed
     static int cnt = 1;
-    if(++cnt % 8 == 0)
+
+    static qreal translation;
+    static qreal previousRot = 0;
+    if(rot)
     {
-        cnt = 1;
-        emit regimentMoved(regimentID, pos(), transform());
+        static int offset = 0;
+
+        if(firstRot)
+        {
+
+            if(event->pos().x() < boundingRect().center().x())
+            {
+                translation = boundingRect().right();
+                offset = 180;
+            }
+            else
+            {
+                translation = 0;
+                offset = 0;
+            }
+            firstRot = false;
+        }
+
+        QPointF originPoint = mapToScene(translation, 0);
+
+        qreal a1 = event->scenePos().x() - originPoint.x();
+        qreal a2 = event->scenePos().y() - originPoint.y();
+        qreal angle = qAtan2(a2, a1);
+
+        QTransform trans;
+        trans.translate(translation,0).rotate(-previousRot).rotate((angle * 180 / 3.14) + offset).translate(-translation,0);
+        setTransform(trans, true);
+        previousRot = ((angle * 180 / 3.14) + offset);
+
+        if((++cnt)%8 == 0)
+        {
+            cnt = 1;
+            emit regimentMoved(regimentID, pos(), transform());
+        }
     }
-    
-    QGraphicsItem::mouseMoveEvent(event);
+    else
+    {
+
+        if(++cnt % 8 == 0)
+        {
+            cnt = 1;
+            emit regimentMoved(regimentID, pos(), transform());
+        }
+
+        QGraphicsItem::mouseMoveEvent(event);
+    }
+}
+
+void RegimentGraphics::keyPressEvent(QKeyEvent *event)
+{
+    if(event->key() == Qt::Key_R)
+    {
+        rot = true;
+    }
+    QGraphicsItem::keyPressEvent(event);
+}
+
+void RegimentGraphics::keyReleaseEvent(QKeyEvent *event)
+{
+    if(event->key() == Qt::Key_R && !event->isAutoRepeat())
+    {
+        rot = false;
+        firstRot = true;
+    }
+    QGraphicsItem::keyReleaseEvent(event);
 }
 
 void RegimentGraphics::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
@@ -236,6 +302,7 @@ void RegimentGraphics::updateOwnership()
     {
         setFlag(ItemIsMovable);
         setFlag(ItemIsSelectable);
+        setFlag(ItemIsFocusable);
 
         QLinearGradient gradient(0,
                                  ((nb/regimentWidth)+1)*regiment.getGroupsConst().first().getModel()->getSquareBaseL() * ONE_MILLIMETER,
@@ -249,6 +316,7 @@ void RegimentGraphics::updateOwnership()
     {
         setFlag(ItemIsMovable, false);
         setFlag(ItemIsSelectable, false);
+        setFlag(ItemIsFocusable, false);
 
         QLinearGradient gradient(0,
                                  ((nb/regimentWidth)+1)*regiment.getGroupsConst().first().getModel()->getSquareBaseL() * ONE_MILLIMETER,

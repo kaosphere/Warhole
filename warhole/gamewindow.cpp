@@ -194,8 +194,9 @@ void GameWindow::addRegimentToGameScene(QString id, QString owner, RegimentAbstr
         connect(rg, SIGNAL(changeRegimentInfoRequest(QString,RegimentAbstract)), &controller, SIGNAL(changeRegInfoRequest(QString, RegimentAbstract)));
         connect(rg, SIGNAL(showStats(RegimentAbstract)), this, SLOT(showStatsWidget(RegimentAbstract)));
 
-        regimentMap[id] = rg;
         scene.addItem(rg);
+        regimentMap[id] = rg;
+
         printSpecialMessage("<em><font color=\"DimGray\"><strong>" + owner + "</strong>" +
                             tr(" a ajouté le régiment ") + r.getName() + tr(" à la partie") + "</em></font>");
     }

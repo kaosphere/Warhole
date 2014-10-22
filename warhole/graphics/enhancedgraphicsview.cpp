@@ -24,6 +24,7 @@ EnhancedGraphicsView::EnhancedGraphicsView(QWidget *parent) : QGraphicsView(pare
     pan = false;
 
     setDragMode(RubberBandDrag);
+    setFocus();
 
     setRenderHints(QPainter::Antialiasing|
                    QPainter::TextAntialiasing);
