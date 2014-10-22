@@ -116,6 +116,18 @@ void RoundTemplateGraphics::setDiameter(int value)
     diameter = value;
 }
 
+QDataStream& RoundTemplateGraphics::serializeOut(QDataStream& out)
+{
+    out << (*this);
+    return out;
+}
+
+QDataStream& RoundTemplateGraphics::serializeIn(QDataStream& in)
+{
+    in >> (*this);
+    return in;
+}
+
 QDataStream& operator<<(QDataStream& out, const RoundTemplateGraphics& obj)
 {
     out << obj.id
