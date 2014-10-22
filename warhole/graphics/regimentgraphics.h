@@ -46,6 +46,9 @@ public:
     void updateChildrenPositions();
     void addModels(int nb);
     
+    QDataStream& serializeOut(QDataStream& out);
+    QDataStream& serializeIn(QDataStream& in);
+    
     friend QDataStream& operator<<(QDataStream& out, const RegimentGraphics& obj);
     friend QDataStream& operator>>(QDataStream& in, RegimentGraphics& obj);
 
