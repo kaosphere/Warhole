@@ -92,6 +92,10 @@ private slots:
     void on_actionExpTemplateSmall_triggered();
     void on_actionExpTemplateBig_triggered();
 
+    void on_actionSave_Game_triggered();
+
+    void on_actionCharger_une_partie_triggered();
+
 signals:
     void requestNewRuler(int l);
     void requestNewRoundTemplate(int d);
@@ -120,7 +124,8 @@ private:
 
     void initGameWindow();
 
-    QMap<QString, QGraphicsItem*> toolItemList;
+    QMap<QString, RulerGraphics*> rulerList;
+    QMap<QString, RoundTemplateGraphics*> roundTemplateList;
 
     QMap<QString, RegimentGraphics*> regimentMap;
 

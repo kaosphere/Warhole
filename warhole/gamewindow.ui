@@ -31,10 +31,13 @@
     </property>
     <addaction name="separator"/>
     <addaction name="actionOpen_Army"/>
+    <addaction name="actionSave_Game"/>
+    <addaction name="actionCharger_une_partie"/>
+    <addaction name="actionQuitter"/>
    </widget>
    <widget class="QMenu" name="menuGame">
     <property name="title">
-     <string>Game</string>
+     <string>Partie</string>
     </property>
     <addaction name="actionHost_Game"/>
     <addaction name="actionConnect_to_a_game_2"/>
@@ -139,17 +142,17 @@
   </action>
   <action name="actionOpen_Army">
    <property name="text">
-    <string>Open Army</string>
+    <string>Charger une armée</string>
    </property>
   </action>
   <action name="actionHost_Game">
    <property name="text">
-    <string>Host Game</string>
+    <string>Héberger une Partie</string>
    </property>
   </action>
   <action name="actionConnect_to_a_game_2">
    <property name="text">
-    <string>Connect to a game</string>
+    <string>Rejoindre une Partie</string>
    </property>
   </action>
   <action name="actionRuler_6_inches">
@@ -208,6 +211,21 @@
   <action name="actionChat">
    <property name="text">
     <string>Chat</string>
+   </property>
+  </action>
+  <action name="actionSave_Game">
+   <property name="text">
+    <string>Sauver la partie</string>
+   </property>
+  </action>
+  <action name="actionCharger_une_partie">
+   <property name="text">
+    <string>Charger une partie</string>
+   </property>
+  </action>
+  <action name="actionQuitter">
+   <property name="text">
+    <string>Quitter</string>
    </property>
   </action>
  </widget>

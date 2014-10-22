@@ -232,16 +232,16 @@ void GameWindow::addRulerToScene(QString id, int l)
     r->setPos(back->getW()/2, back->getH()/2);
 
     // Assume that id will be unique for now
-    toolItemList[id] = r;
+    rulerList[id] = r;
 }
 
 void GameWindow::moveRuler(QString id, QPointF p, QTransform matrix)
 {
-    if(toolItemList.contains(id))
+    if(rulerList.contains(id))
     {
         QLog_Info(LOG_ID_INFO, "moveRuler() : ruler with ID " + id + " found, now moving it.");
-        toolItemList[id]->setPos(p);
-        toolItemList[id]->setTransform(matrix);
+        rulerList[id]->setPos(p);
+        rulerList[id]->setTransform(matrix);
     }
     else
     {
@@ -251,13 +251,13 @@ void GameWindow::moveRuler(QString id, QPointF p, QTransform matrix)
 
 void GameWindow::removeRulerFromScene(QString id)
 {
-    if(toolItemList.contains(id))
+    if(rulerList.contains(id))
     {
         QLog_Info(LOG_ID_INFO, "removeRulerFromScene() : ruler (or template) with ID " + id + " found, now removing it.");
-        QGraphicsItem* r = toolItemList[id];
+        QGraphicsItem* r = rulerList[id];
         scene.removeItem(r);
         delete r;
-        toolItemList.remove(id);
+        rulerList.remove(id);
     }
 }
 
@@ -394,15 +394,15 @@ void GameWindow::addRoundTemplateToScene(QString id, int d)
     r->setPos(back->getW()/2, back->getH()/2);
 
     // Assume that id will be unique for now
-    toolItemList[id] = r;
+    roundTemplateList[id] = r;
 }
 
 void GameWindow::moveTemplate(QString id, QPointF p)
 {
-    if(toolItemList.contains(id))
+    if(roundTemplateList.contains(id))
     {
         QLog_Info(LOG_ID_INFO, "moveTemplate() : template with ID " + id + " found, now moving it.");
-        toolItemList[id]->setPos(p);
+        roundTemplateList[id]->setPos(p);
     }
     else
     {
@@ -410,4 +410,113 @@ void GameWindow::moveTemplate(QString id, QPointF p)
     }
 }
 
+void GameWindow::on_actionSave_Game_triggered()
+{
+    QString path = QFileDialog::getSaveFileName(this, tr("Sauvegarde du fichier"), controller.getGame().getName() + ".war", tr("fichiers war(*.war)"));
 
+    QFile file(path);
+    if (!file.open(QIODevice::WriteOnly))
+             return;
+
+    QDataStream stream(&file);
+
+    // Store game info
+    stream << controller.getGame();
+
+    // Store regiments
+    stream << regimentMap.size();
+    QMap<QString, RegimentGraphics*>::const_iterator i = regimentMap.constBegin();
+    while (i != regimentMap.constEnd()) {
+        stream << RegimentGraphics(*i);
+        ++i;
+    }
+
+    // Store rulers
+    stream << rulerList.size();
+    QMap<QString, RulerGraphics*>::const_iterator j = rulerList.constBegin();
+    while (j != rulerList.constEnd()) {
+        stream << (*j);
+        ++j;
+    }
+
+    // Store templates
+    stream << roundTemplateList.size();
+    QMap<QString, RoundTemplateGraphics*>::const_iterator k = roundTemplateList.constBegin();
+    while (k != roundTemplateList.constEnd()) {
+        stream << (*k);
+        ++k;
+    }
+
+    file.close();
+}
+
+void GameWindow::on_actionCharger_une_partie_triggered()
+{
+    rulerList.clear();
+    roundTemplateList.clear();
+    regimentMap.clear();
+
+    QString path = QFileDialog::getOpenFileName(this, tr("Charger partie"), "", tr("Fichiers war (*.war)"));
+    int size;
+    Game g;
+
+    QFile file(path);
+    if (!file.open(QIODevice::ReadOnly))
+             return;
+
+    QDataStream stream(&file);
+
+    // Store game info
+    stream >> g;
+
+    controller.setGame(g);
+
+    QLog_Info(LOG_ID_INFO, controller.getGame().getName());
+
+    // Store regiments
+    stream >> size;
+    for(int i = 0; i < size; ++i)
+    {
+        RegimentGraphics* r = new RegimentGraphics();
+        stream >> (*r);
+        regimentMap[r->getRegimentID()] = r;
+
+        connect(r, SIGNAL(regimentMoved(QString,QPointF,QTransform)), &controller, SIGNAL(regimentMoved(QString, QPointF, QTransform)));
+        connect(r, SIGNAL(removeRegimentRequest(QString)), &controller, SIGNAL(removeRegimentRequest(QString)));
+        connect(r, SIGNAL(removeDeadsRequest(QString, int)), &controller, SIGNAL(removeDeadsRequest(QString, int)));
+        connect(r, SIGNAL(changeWidthRequest(QString, int)), &controller, SIGNAL(changeWidthRequest(QString, int)));
+        connect(r, SIGNAL(addModelRequest(QString,int)), &controller, SIGNAL(addModelToRegRequest(QString, int)));
+        connect(r, SIGNAL(changeRegimentInfoRequest(QString,RegimentAbstract)), &controller, SIGNAL(changeRegInfoRequest(QString, RegimentAbstract)));
+        connect(r, SIGNAL(showStats(RegimentAbstract)), this, SLOT(showStatsWidget(RegimentAbstract)));
+
+        scene.addItem(r);
+    }
+
+    // Store rulers
+    stream >> size;
+    for(int i = 0; i < size; ++i)
+    {
+        RulerGraphics* r = new RulerGraphics();
+        stream >> *r;
+        rulerList[r->getId()] = r;
+
+        connect(r, SIGNAL(rulerMoved(QString, QPointF, QTransform)), &controller, SIGNAL(rulerMoved(QString, QPointF, QTransform)));
+        connect(r, SIGNAL(removeRuler(QString)), &controller, SIGNAL(removeRulerRequest(QString)));
+        scene.addItem(r);
+    }
+
+    // Store templates
+    stream >> size;
+    for(int i = 0; i < size; ++i)
+    {
+        RoundTemplateGraphics* r = new RoundTemplateGraphics();
+        stream >> *r;
+        roundTemplateList[r->getId()] = r;
+
+        connect(r, SIGNAL(templateMoved(QString,QPointF)), &controller, SIGNAL(templateMoved(QString, QPointF)));
+        connect(r, SIGNAL(removeTemplateRequest(QString)), &controller, SIGNAL(removeTemplateRequest(QString)));
+        scene.addItem(r);
+    }
+
+    // TODO send overall update
+}
