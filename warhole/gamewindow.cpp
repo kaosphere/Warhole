@@ -432,10 +432,10 @@ void GameWindow::on_actionSave_Game_triggered()
     }
 
     // Store rulers
-    /*stream << rulerList.size();
+    stream << rulerList.size();
     QMap<QString, RulerGraphics*>::const_iterator j = rulerList.constBegin();
     while (j != rulerList.constEnd()) {
-        stream << (*j);
+        j->serializeOut(stream);
         ++j;
     }
 
@@ -443,9 +443,9 @@ void GameWindow::on_actionSave_Game_triggered()
     stream << roundTemplateList.size();
     QMap<QString, RoundTemplateGraphics*>::const_iterator k = roundTemplateList.constBegin();
     while (k != roundTemplateList.constEnd()) {
-        stream << (*k);
+        k->serializeOut(stream);
         ++k;
-    }*/
+    }
 
     file.close();
 }
@@ -493,11 +493,11 @@ void GameWindow::on_actionCharger_une_partie_triggered()
     }
 
     // Store rulers
-    /*stream >> size;
+    stream >> size;
     for(int i = 0; i < size; ++i)
     {
         RulerGraphics* r = new RulerGraphics();
-        stream >> *r;
+        r->serializeIn(stream);
         rulerList[r->getId()] = r;
 
         connect(r, SIGNAL(rulerMoved(QString, QPointF, QTransform)), &controller, SIGNAL(rulerMoved(QString, QPointF, QTransform)));
@@ -510,13 +510,13 @@ void GameWindow::on_actionCharger_une_partie_triggered()
     for(int i = 0; i < size; ++i)
     {
         RoundTemplateGraphics* r = new RoundTemplateGraphics();
-        stream >> *r;
+        r->serializeIn(stream);
         roundTemplateList[r->getId()] = r;
 
         connect(r, SIGNAL(templateMoved(QString,QPointF)), &controller, SIGNAL(templateMoved(QString, QPointF)));
         connect(r, SIGNAL(removeTemplateRequest(QString)), &controller, SIGNAL(removeTemplateRequest(QString)));
         scene.addItem(r);
-    }*/
+    }
     
     file.close();
 
