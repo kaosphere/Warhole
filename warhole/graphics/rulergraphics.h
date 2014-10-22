@@ -39,6 +39,9 @@ public:
     void setId(const QString &value);
 
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+    
+    QDataStream& serializeOut(QDataStream& out);
+    QDataStream& serializeIn(QDataStream& in);
 
     friend QDataStream& operator<<(QDataStream& out, const RulerGraphics& obj);
     friend QDataStream& operator>>(QDataStream& in, RulerGraphics& obj);
