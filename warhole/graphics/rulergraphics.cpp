@@ -203,3 +203,31 @@ void RulerGraphics::removeRulerRequest()
 {
     emit removeRuler(id);
 }
+
+QDataStream& operator<<(QDataStream& out, const RulerGraphics& obj)
+{
+    out << obj.id
+        << obj.length
+        << obj.pos()
+        << obj.transform();
+
+    return out;
+}
+
+QDataStream& operator>>(QDataStream& in, RulerGraphics& obj)
+{
+    QPointF position;
+    QTransform trans;
+
+    in >> obj.id;
+    in >> obj.length;
+    in >> position;
+
+    obj.setPos(position);
+
+    in >> trans;
+
+    obj.setTransform(trans);
+
+    return in;
+}

@@ -115,3 +115,25 @@ void RoundTemplateGraphics::setDiameter(int value)
 {
     diameter = value;
 }
+
+QDataStream& operator<<(QDataStream& out, const RoundTemplateGraphics& obj)
+{
+    out << obj.id
+        << obj.diameter
+        << obj.pos();
+
+    return out;
+}
+
+QDataStream& operator>>(QDataStream& in, RoundTemplateGraphics& obj)
+{
+    QPointF position;
+
+    in >> obj.id;
+    in >> obj.diameter;
+    in >> position;
+
+    obj.setPos(position);
+
+    return in;
+}

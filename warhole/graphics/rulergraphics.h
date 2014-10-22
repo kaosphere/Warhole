@@ -40,6 +40,9 @@ public:
 
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 
+    friend QDataStream& operator<<(QDataStream& out, const RulerGraphics& obj);
+    friend QDataStream& operator>>(QDataStream& in, RulerGraphics& obj);
+
 public slots:
     void removeRulerRequest();
 

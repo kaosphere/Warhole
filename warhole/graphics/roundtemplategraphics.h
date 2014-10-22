@@ -32,6 +32,8 @@ public:
 
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
 
+    friend QDataStream& operator<<(QDataStream& out, const RoundTemplateGraphics& obj);
+    friend QDataStream& operator>>(QDataStream& in, RoundTemplateGraphics& obj);
 
 signals:
     void templateMoved(QString, QPointF);
