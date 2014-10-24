@@ -427,7 +427,7 @@ void GameWindow::on_actionSave_Game_triggered()
     stream << regimentMap.size();
     QMap<QString, RegimentGraphics*>::const_iterator i = regimentMap.constBegin();
     while (i != regimentMap.constEnd()) {
-        i->serializeOut(stream);
+        (*i)->serializeOut(stream);
         ++i;
     }
 
@@ -435,7 +435,7 @@ void GameWindow::on_actionSave_Game_triggered()
     stream << rulerList.size();
     QMap<QString, RulerGraphics*>::const_iterator j = rulerList.constBegin();
     while (j != rulerList.constEnd()) {
-        j->serializeOut(stream);
+        (*j)->serializeOut(stream);
         ++j;
     }
 
@@ -443,7 +443,7 @@ void GameWindow::on_actionSave_Game_triggered()
     stream << roundTemplateList.size();
     QMap<QString, RoundTemplateGraphics*>::const_iterator k = roundTemplateList.constBegin();
     while (k != roundTemplateList.constEnd()) {
-        k->serializeOut(stream);
+        (*k)->serializeOut(stream);
         ++k;
     }
 

@@ -11,6 +11,7 @@ const int RegimentGraphics::DEFAULT_REGIMENT_WIDTH = 5;
 
 RegimentGraphics::RegimentGraphics(QGraphicsItem *parent) : QGraphicsObject(parent)
 {
+    initialized = false;
     initRegimentGraphics();
 }
 
@@ -20,7 +21,6 @@ RegimentGraphics::RegimentGraphics(const RegimentAbstract &r, bool owned, QGraph
     initialized = false;
     regiment = r;
     isOwnedByMe = owned;
-    hasImage = true;
 
     initRegimentGraphics();
 
@@ -53,6 +53,7 @@ void RegimentGraphics::initRegimentGraphics()
     regimentWidth = DEFAULT_REGIMENT_WIDTH;
     infoRect = NULL;
 
+    hasImage = true;
     rot = false;
     firstRot = true;
 
@@ -106,6 +107,7 @@ void RegimentGraphics::initModels()
             models.append(r);
         }
     }
+    prepareGeometryChange();
 }
 
 void RegimentGraphics::updateChildrenPositions()
@@ -296,40 +298,47 @@ void RegimentGraphics::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 void RegimentGraphics::updateOwnership()
 {
     QBrush* brush;
-    int nb = regiment.computeTotalNb();
-    // set movable flag so that an item not owned cannot be moved
-    if(isOwnedByMe)
-    {
-        setFlag(ItemIsMovable);
-        setFlag(ItemIsSelectable);
-        setFlag(ItemIsFocusable);
 
-        QLinearGradient gradient(0,
+    if(!regiment.getGroups().isEmpty())
+    {
+        int nb = regiment.computeTotalNb();
+        // set movable flag so that an item not owned cannot be moved
+        if(isOwnedByMe)
+        {
+            setFlag(ItemIsMovable);
+            setFlag(ItemIsSelectable);
+            setFlag(ItemIsFocusable);
+
+
+            QLinearGradient gradient(0,
                                  ((nb/regimentWidth)+1)*regiment.getGroupsConst().first().getModel()->getSquareBaseL() * ONE_MILLIMETER,
                                  regimentWidth*regiment.getGroupsConst().first().getModel()->getSquareBaseW() * ONE_MILLIMETER,
                                  0);
-        gradient.setColorAt(0, QColor::fromRgb(qRgba(6, 52, 69, 0)));
-        gradient.setColorAt(1, QColor::fromRgb(qRgba(9, 85, 112, 0)));
-        brush = new QBrush(gradient);
+
+            gradient.setColorAt(0, QColor::fromRgb(qRgba(6, 52, 69, 0)));
+            gradient.setColorAt(1, QColor::fromRgb(qRgba(9, 85, 112, 0)));
+            brush = new QBrush(gradient);
+            childrenBrush = *brush;
+        }
+        else
+        {
+            setFlag(ItemIsMovable, false);
+            setFlag(ItemIsSelectable, false);
+            setFlag(ItemIsFocusable, false);
+
+
+            QLinearGradient gradient(0,
+                                     ((nb/regimentWidth)+1)*regiment.getGroupsConst().first().getModel()->getSquareBaseL() * ONE_MILLIMETER,
+                                     regimentWidth*regiment.getGroupsConst().first().getModel()->getSquareBaseW() * ONE_MILLIMETER,
+                                     0);
+            gradient.setColorAt(0, QColor::fromRgb(qRgba(69, 52, 6, 0)));
+            gradient.setColorAt(1, QColor::fromRgb(qRgba(112, 85, 9, 0)));
+            brush = new QBrush(gradient);
+            childrenBrush = *brush;
+        }
+
+        updateChildrenBrushes();
     }
-    else
-    {
-        setFlag(ItemIsMovable, false);
-        setFlag(ItemIsSelectable, false);
-        setFlag(ItemIsFocusable, false);
-
-        QLinearGradient gradient(0,
-                                 ((nb/regimentWidth)+1)*regiment.getGroupsConst().first().getModel()->getSquareBaseL() * ONE_MILLIMETER,
-                                 regimentWidth*regiment.getGroupsConst().first().getModel()->getSquareBaseW() * ONE_MILLIMETER,
-                                 0);
-        gradient.setColorAt(0, QColor::fromRgb(qRgba(69, 52, 6, 0)));
-        gradient.setColorAt(1, QColor::fromRgb(qRgba(112, 85, 9, 0)));
-        brush = new QBrush(gradient);
-    }
-
-    childrenBrush = *brush;
-
-    if(initialized) updateChildrenBrushes();
 }
 
 void RegimentGraphics::removeRegimentRequest()
@@ -519,6 +528,8 @@ QDataStream& operator<<(QDataStream& out, const RegimentGraphics& obj)
 {
     out << obj.regimentID;
     out << obj.regiment;
+    out << obj.owner;
+    out << obj.isOwnedByMe;
     out << obj.pos();
     out << obj.transform();
     
@@ -532,6 +543,8 @@ QDataStream& operator>>(QDataStream& in, RegimentGraphics& obj)
     
     in >> obj.regimentID;
     in >> obj.regiment;
+    in >> obj.owner;
+    in >> obj.isOwnedByMe;
     in >> position;
     
     obj.setPos(position);
@@ -539,6 +552,9 @@ QDataStream& operator>>(QDataStream& in, RegimentGraphics& obj)
     in >> matrix;
     
     obj.setTransform(matrix);
+    obj.updateOwnership();
+    obj.initModels();
+    obj.initialized = true;
     
     return in;
 }
