@@ -150,3 +150,28 @@ Game &Game::operator=(const Game &other)
     return (*this);
 }
 
+QDataStream& operator<<(QDataStream& out, const Game& obj)
+{
+    // TODO historic and players not streamed
+
+    out << obj.name
+        << obj.spectators
+        << obj.playerNumber
+        << obj.information
+        << obj.me
+        << obj.points;
+
+    return out;
+}
+
+QDataStream& operator>>(QDataStream& in, Game& obj)
+{
+    in >> obj.name;
+    in >> obj.spectators;
+    in >> obj.playerNumber;
+    in >> obj.information;
+    in >> obj.me;
+    in >> obj.points;
+
+    return in;
+}

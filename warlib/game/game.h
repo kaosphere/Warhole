@@ -54,6 +54,9 @@ public:
 
     Game &operator=(const Game& other);
 
+    friend QDataStream& operator<<(QDataStream& out, const Game& obj);
+    friend QDataStream& operator>>(QDataStream& in, Game& obj);
+
 signals:
     
 public slots:
