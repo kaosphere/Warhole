@@ -12,6 +12,7 @@ RecruitsGroup::RecruitsGroup(QObject *parent) : QObject(parent)
     casualties = 0;
     nb = 0;
     path = "";
+    model = NULL;
 
     QLoggerManager *manager = QLoggerManager::getInstance();
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
