@@ -410,16 +410,8 @@ void GameWindow::moveTemplate(QString id, QPointF p)
     }
 }
 
-void GameWindow::on_actionSave_Game_triggered()
+void GameWindow::getGlobalInfo(QDataStream& stream)
 {
-    QString path = QFileDialog::getSaveFileName(this, tr("Sauvegarde du fichier"), controller.getGame().getName() + ".war", tr("fichiers war(*.war)"));
-
-    QFile file(path);
-    if (!file.open(QIODevice::WriteOnly))
-             return;
-
-    QDataStream stream(&file);
-
     // Store game info
     stream << controller.getGame();
 
@@ -446,25 +438,15 @@ void GameWindow::on_actionSave_Game_triggered()
         (*k)->serializeOut(stream);
         ++k;
     }
-
-    file.close();
 }
 
-void GameWindow::on_actionCharger_une_partie_triggered()
+void GameWindow::setGlobalInfo(QDataStream& stream)
 {
     rulerList.clear();
     roundTemplateList.clear();
     regimentMap.clear();
-
-    QString path = QFileDialog::getOpenFileName(this, tr("Charger partie"), "", tr("Fichiers war (*.war)"));
     int size;
     Game g;
-
-    QFile file(path);
-    if (!file.open(QIODevice::ReadOnly))
-             return;
-
-    QDataStream stream(&file);
 
     // Store game info
     stream >> g;
@@ -517,6 +499,34 @@ void GameWindow::on_actionCharger_une_partie_triggered()
         connect(r, SIGNAL(removeTemplateRequest(QString)), &controller, SIGNAL(removeTemplateRequest(QString)));
         scene.addItem(r);
     }
+}
+
+void GameWindow::on_actionSave_Game_triggered()
+{
+    QString path = QFileDialog::getSaveFileName(this, tr("Sauvegarde du fichier"), controller.getGame().getName() + ".war", tr("fichiers war(*.war)"));
+
+    QFile file(path);
+    if (!file.open(QIODevice::WriteOnly))
+             return;
+
+    QDataStream stream(&file);
+
+    getGlobalInfo(stream);
+
+    file.close();
+}
+
+void GameWindow::on_actionCharger_une_partie_triggered()
+{
+    QString path = QFileDialog::getOpenFileName(this, tr("Charger partie"), "", tr("Fichiers war (*.war)"));
+
+    QFile file(path);
+    if (!file.open(QIODevice::ReadOnly))
+             return;
+
+    QDataStream stream(&file);
+
+    setGlobalInfo(stream);
     
     file.close();
 

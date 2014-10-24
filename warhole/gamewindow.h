@@ -63,6 +63,8 @@ public:
     virtual void closeEvent(QCloseEvent *);
 
 
+    void getGlobalInfo(QDataStream &stream);
+    void setGlobalInfo(QDataStream &stream);
 public slots:
     void openArmyMenuClicked();
     void openArmyModelContextMenu(QPoint pos);
