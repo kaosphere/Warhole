@@ -30,6 +30,7 @@
    </property>
    <property name="font">
     <font>
+     <pointsize>14</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>
@@ -44,10 +45,10 @@
   <widget class="QPushButton" name="pushButton">
    <property name="geometry">
     <rect>
-     <x>130</x>
-     <y>0</y>
-     <width>20</width>
-     <height>20</height>
+     <x>330</x>
+     <y>10</y>
+     <width>30</width>
+     <height>30</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -56,14 +57,21 @@
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
+   <property name="minimumSize">
+    <size>
+     <width>30</width>
+     <height>30</height>
+    </size>
+   </property>
    <property name="maximumSize">
     <size>
-     <width>20</width>
-     <height>20</height>
+     <width>30</width>
+     <height>30</height>
     </size>
    </property>
    <property name="font">
     <font>
+     <pointsize>16</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>
