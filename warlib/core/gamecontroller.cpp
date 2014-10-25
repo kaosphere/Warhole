@@ -50,6 +50,9 @@ GameController::GameController(QObject *parent) :
     connect(comManager, SIGNAL(addModels(QString,int)), this, SIGNAL(addModels(QString, int)));
     connect(comManager, SIGNAL(changeRegInfo(QString,RegimentAbstract)), this, SIGNAL(changeRegInfo(QString, RegimentAbstract)));
 
+    connect(comManager, SIGNAL(serverInfoRequested(QString)), this, SIGNAL(serverInfoRequested(QString)));
+    connect(this, SIGNAL(sendGlobalInfoUpdate(QString, QByteArray)), comManager, SLOT(enQueueServerInfo(QString, QByteArray)));
+    connect(comManager, SIGNAL(loadGlobalInfoUpdate(QByteArray)), this, SIGNAL(loadGlobalInfoUpdate(QByteArray)));
 
     ///////////////////////////////////////////
     // Player Administrator

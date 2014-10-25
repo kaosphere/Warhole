@@ -9,10 +9,8 @@
 #include "Utilities/RandomIdGenerator/idgenerator.h"
 
 enum CommandType{
-    SERVER_INFO_REQUEST,
+    SERVER_INFO_REQUEST = 0,
     SERVER_INFO,
-    GLOBAL_UPDATE_REQUEST,
-    GLOBAL_UPDATE,
     PLAYER_LIST_UPDATE,
     CHAT_MESSAGE,
     NEW_RULER,
@@ -52,11 +50,14 @@ signals:
     void changeRegimentWidth(QString, int);
     void addModels(QString, int);
     void changeRegInfo(QString, RegimentAbstract);
+    void serverInfoRequested(QString);
+    void loadGlobalInfoUpdate(QByteArray);
     
 public slots:
     void processIncomingMessage();
     void enQueueChatMessage(QString message);
     void enQueueServerInfoRequest();
+    void enQueueServerInfo(QString destination, QByteArray info);
     void enQueuePlayerListRefreshMessage(QList<Player> l);
     void enQueueCreateRulerMessage(int l);
     void enQueueRulerMoveMessage(QString i, QPointF p, QTransform matrix);
@@ -87,7 +88,7 @@ private:
     void addMessageToOutQueue(const Message &m);
     void addMessageToInQueue(const Message &m);
     void handleServerInfoRequest(MessageDestination dest, QString sender);
-    void handleServerInfo(QByteArray &data);
+    void handleServerInfo(const Message &m, QDataStream &data);
     void handleNewChatMessage(const Message& m, QDataStream& data);
     void handlePlayerListRefreshMessage(const Message &m, QDataStream &data);
     void handleCreateRulerMessage(const Message &m, QDataStream &data);

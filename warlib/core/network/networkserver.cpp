@@ -151,6 +151,7 @@ void NetworkServer::receiveData()
         // Transfer message to every one
         if(m.getDest() != ME)
         {
+            QLog_Info(LOG_ID_INFO, "receiveData() : message dest is different from ME, put in outqueue to transfer.");
             if(outQueue)
             {
                 outQueue->addMessage(m);

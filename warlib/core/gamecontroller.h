@@ -55,7 +55,9 @@ signals:
     void changeRegInfoRequest(QString, RegimentAbstract);
     void addModels(QString, int);
     void changeRegInfo(QString, RegimentAbstract);
-
+    void serverInfoRequested(QString);
+    void sendGlobalInfoUpdate(QString, QByteArray);
+    void loadGlobalInfoUpdate(QByteArray);
 
 public slots:
 

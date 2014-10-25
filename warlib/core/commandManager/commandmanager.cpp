@@ -96,28 +96,47 @@ void CommandManager::enQueueServerInfoRequest()
     addMessageToOutQueue(m);
 }
 
-void CommandManager::handleServerInfoRequest(MessageDestination dest, QString sender)
+
+void CommandManager::enQueueServerInfo(QString destination, QByteArray info)
 {
-    QLog_Info(LOG_ID_INFO, "handleServerInfoRequest() : sending server info to " + sender);
+    QLog_Info(LOG_ID_INFO, "enQueueServerInfo() : sending server info to " + destination);
     Message m;
-    m.setDest(dest);
-    m.setMessageSender(sender);
-    qDebug() << "ici la dest : " + QString::number((int)dest);
+
+    if(destination != "")
+    {
+        m.setDest(ME);
+        m.setMessageSender(destination);
+    }
+    else
+    {
+        m.setDest(ALL_BUT_ME);
+        m.setMessageSender(game->getMe());
+    }
 
     QByteArray data;
-    QDataStream s(&data, QIODevice::WriteOnly);
-
-    s << SERVER_INFO;
-    // TODO fill data
+    QDataStream stream(&data, QIODevice::ReadWrite);
+    stream << SERVER_INFO;
+    stream << info;
 
     m.setData(data);
 
     addMessageToOutQueue(m);
 }
 
-void CommandManager::handleServerInfo(QByteArray& data)
+void CommandManager::handleServerInfoRequest(MessageDestination dest, QString sender)
 {
-    // TODO do something with data
+    QLog_Info(LOG_ID_INFO, "handleServerInfoRequest() : asking for game info for " + sender);
+    emit serverInfoRequested(sender);
+}
+
+void CommandManager::handleServerInfo(const Message& m, QDataStream& data)
+{
+    QLog_Info(LOG_ID_INFO, "handleServerInfo() : global update");
+    QByteArray info;
+
+    data >> info;
+
+    emit loadGlobalInfoUpdate(info);
 }
 
 void CommandManager::enQueuePlayerListRefreshMessage(QList<Player> l)
@@ -663,7 +682,7 @@ void CommandManager::processIncomingMessage()
 
         case SERVER_INFO:
             QLog_Info(LOG_ID_INFO, "processIncomingMessage() : Server info received from server.");
-            handleServerInfo(data);
+            handleServerInfo(m, stream);
             break;
 
         case PLAYER_LIST_UPDATE:
