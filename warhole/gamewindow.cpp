@@ -73,7 +73,7 @@ void GameWindow::initGameWindow()
     connect(this, SIGNAL(requestNewRuler(int)), &controller, SIGNAL(addRulerToGameSceneRequest(int)));
     connect(&controller, SIGNAL(addRulerToGameScene(QString, int)), this, SLOT(addRulerToScene(QString, int)));
     connect(&controller, SIGNAL(removeRuler(QString)), this, SLOT(removeRulerFromScene(QString)));
-    connect(&controller, SIGNAL(removeTemplate(QString)), this, SLOT(removeRulerFromScene(QString)));
+    connect(&controller, SIGNAL(removeTemplate(QString)), this, SLOT(removeRoundTemplate(QString)));
 
     connect(this, SIGNAL(requestNewRoundTemplate(int)), &controller, SIGNAL(addRoundTemplateToGameSceneRequest(int)));
     connect(&controller, SIGNAL(addRoundTemplateScene(QString,int)), this, SLOT(addRoundTemplateToScene(QString, int)));
@@ -253,11 +253,15 @@ void GameWindow::removeRulerFromScene(QString id)
 {
     if(rulerList.contains(id))
     {
-        QLog_Info(LOG_ID_INFO, "removeRulerFromScene() : ruler (or template) with ID " + id + " found, now removing it.");
+        QLog_Info(LOG_ID_INFO, "removeRulerFromScene() : ruler with ID " + id + " found, now removing it.");
         QGraphicsItem* r = rulerList[id];
         scene.removeItem(r);
         delete r;
         rulerList.remove(id);
+    }
+    else
+    {
+        QLog_Error(LOG_ID_ERR, "removeRulerFromScene() : ruler with ID " + id + " not found is map.");
     }
 }
 
@@ -288,6 +292,10 @@ void GameWindow::removeRegiment(QString id)
         delete r;
         regimentMap.remove(id);
     }
+    else
+    {
+        QLog_Error(LOG_ID_ERR, "removeRegiment() : regiment with ID " + id + " not found is map.");
+    }
 }
 
 void GameWindow::removeDeadsFromRegiment(QString id, int nb)
@@ -297,6 +305,10 @@ void GameWindow::removeDeadsFromRegiment(QString id, int nb)
         QLog_Info(LOG_ID_INFO, "removeDeadsFromRegiment() : regiment with ID " + id + " found, now removing " +
                   QString::number(nb) + " deads.");
         regimentMap[id]->removeDeads(nb);
+    }
+    else
+    {
+        QLog_Error(LOG_ID_ERR, "removeDeadsFromRegiment() : regiment with ID " + id + " not found is map.");
     }
 }
 
@@ -308,6 +320,10 @@ void GameWindow::changeRegimentWidth(QString id, int w)
                   QString::number(w));
         regimentMap[id]->setRegimentWidth(w);
     }
+    else
+    {
+        QLog_Error(LOG_ID_ERR, "addModelToRegiment() : regiment with ID " + id + " not found is map.");
+    }
 }
 
 void GameWindow::addModelToRegiment(QString id, int nb)
@@ -317,6 +333,10 @@ void GameWindow::addModelToRegiment(QString id, int nb)
         QLog_Info(LOG_ID_INFO, "addModelToRegiment() : regiment with ID " + id + " found, now adding " +
                   QString::number(nb) + " models to it");
         regimentMap[id]->addModels(nb);
+    }
+    else
+    {
+        QLog_Error(LOG_ID_ERR, "addModelToRegiment() : regiment with ID " + id + " not found is map.");
     }
 }
 
@@ -328,6 +348,10 @@ void GameWindow::changeRegInfo(QString id, RegimentAbstract r)
         QLog_Info(LOG_ID_INFO, "changeRegInfo() : regiment with ID " + id +
                   " found, now changing regiment info");
         regimentMap[id]->setRegiment(r);
+    }
+    else
+    {
+        QLog_Error(LOG_ID_ERR, "changeRegInfo() : regiment with ID " + id + " not found is map.");
     }
 }
 
@@ -407,6 +431,22 @@ void GameWindow::moveTemplate(QString id, QPointF p)
     else
     {
         QLog_Error(LOG_ID_ERR, "moveTemplate() : template with ID " + id + " not found is item list.");
+    }
+}
+
+void GameWindow::removeRoundTemplate(QString id)
+{
+    if(roundTemplateList.contains(id))
+    {
+        QLog_Info(LOG_ID_INFO, "removeRoundTemplate() : round template with ID " + id + " found, now removing it.");
+        QGraphicsItem* r = roundTemplateList[id];
+        scene.removeItem(r);
+        delete r;
+        roundTemplateList.remove(id);
+    }
+    else
+    {
+        QLog_Error(LOG_ID_ERR, "removeRoundTemplate() : round template with ID " + id + " not found is map.");
     }
 }
 
@@ -529,6 +569,4 @@ void GameWindow::on_actionCharger_une_partie_triggered()
     setGlobalInfo(stream);
     
     file.close();
-
-    // TODO send overall update
 }

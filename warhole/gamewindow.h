@@ -78,6 +78,7 @@ public slots:
     void moveRuler(QString id, QPointF p, QTransform matrix);
     void addRoundTemplateToScene(QString id, int d);
     void moveTemplate(QString id, QPointF p);
+    void removeRoundTemplate(QString id);
     void removeRulerFromScene(QString id);
     void addRegimentToGameScene(QString id, QString owner, RegimentAbstract r);
     void moveRegiment(QString id, QPointF p, QTransform matrix);
