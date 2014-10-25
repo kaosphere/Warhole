@@ -30,9 +30,6 @@ public:
     void save(const QString& path);
     void load(const QString& path);
 
-    unsigned int getPoints() const;
-    void setPoints(unsigned int value);
-
     friend QDataStream & operator << (QDataStream &, const Army &);
     friend QDataStream & operator >> (QDataStream &, Army &);
 
