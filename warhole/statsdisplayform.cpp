@@ -1,7 +1,7 @@
 #include "statsdisplayform.h"
 #include "ui_statsdisplayform.h"
 
-StatsDisplayForm::StatsDisplayForm(RegimentAbstract r, bool owned, QWidget *parent) :
+StatsDisplayForm::StatsDisplayForm(RegimentAbstract r, bool owned, QString owner, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::StatsDisplayForm)
 {
@@ -21,6 +21,7 @@ StatsDisplayForm::StatsDisplayForm(RegimentAbstract r, bool owned, QWidget *pare
     v->addWidget(ui->label);
 
     QString text;
+    text.append("Appartient à : " + owner + "\n");
     if(owned)
     {
 

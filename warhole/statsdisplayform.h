@@ -16,7 +16,7 @@ class StatsDisplayForm : public QWidget
     Q_OBJECT
     
 public:
-    explicit StatsDisplayForm(RegimentAbstract r, bool owned, QWidget *parent = 0);
+    explicit StatsDisplayForm(RegimentAbstract r, bool owned, QString owner, QWidget *parent = 0);
     ~StatsDisplayForm();
     
 private slots:
