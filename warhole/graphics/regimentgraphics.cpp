@@ -12,6 +12,7 @@ const int RegimentGraphics::DEFAULT_REGIMENT_WIDTH = 5;
 RegimentGraphics::RegimentGraphics(QGraphicsItem *parent) : QGraphicsObject(parent)
 {
     initialized = false;
+    isOwnedByMe = false;
     initRegimentGraphics();
 }
 
@@ -25,8 +26,6 @@ RegimentGraphics::RegimentGraphics(const RegimentAbstract &r, bool owned, QGraph
     initRegimentGraphics();
 
     initModels();
-
-    initialized = true;
 }
 
 RegimentGraphics::~RegimentGraphics()
@@ -108,6 +107,7 @@ void RegimentGraphics::initModels()
         }
     }
     prepareGeometryChange();
+    initialized = true;
 }
 
 void RegimentGraphics::updateChildrenPositions()
@@ -398,11 +398,14 @@ void RegimentGraphics::changeRegimentInfoRequest()
 void RegimentGraphics::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 {
     QMenu *menu = new QMenu;
-    menu->addAction(actionRemoveRegiment);
-    menu->addAction(actionChangeRegimentWidth);
-    menu->addAction(actionRemoveDeads);
-    menu->addAction(actionAddModels);
-    menu->addAction(actionChangeRegInfo);
+    if(isOwnedByMe)
+    {
+        menu->addAction(actionRemoveRegiment);
+        menu->addAction(actionChangeRegimentWidth);
+        menu->addAction(actionRemoveDeads);
+        menu->addAction(actionAddModels);
+        menu->addAction(actionChangeRegInfo);
+    }
     menu->addAction(actionShowStats);
     menu->popup(event->screenPos());
 }
@@ -416,7 +419,7 @@ void RegimentGraphics::showStats()
 {
     if(!infoRect)
     {
-        StatsDisplayForm* s = new StatsDisplayForm(regiment, isOwnedByMe);
+        StatsDisplayForm* s = new StatsDisplayForm(regiment, isOwnedByMe, owner);
         QGraphicsProxyWidget* w = new QGraphicsProxyWidget();
         w->setWidget(s);
 
@@ -529,7 +532,6 @@ QDataStream& operator<<(QDataStream& out, const RegimentGraphics& obj)
     out << obj.regimentID;
     out << obj.regiment;
     out << obj.owner;
-    out << obj.isOwnedByMe;
     out << obj.pos();
     out << obj.transform();
     
@@ -544,17 +546,14 @@ QDataStream& operator>>(QDataStream& in, RegimentGraphics& obj)
     in >> obj.regimentID;
     in >> obj.regiment;
     in >> obj.owner;
-    in >> obj.isOwnedByMe;
     in >> position;
-    
+
+    obj.updateOwnership();
     obj.setPos(position);
     
     in >> matrix;
     
     obj.setTransform(matrix);
-    obj.updateOwnership();
-    obj.initModels();
-    obj.initialized = true;
-    
+
     return in;
 }

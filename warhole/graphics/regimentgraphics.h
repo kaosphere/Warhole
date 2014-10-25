@@ -22,6 +22,8 @@ public:
     RegimentGraphics(const RegimentAbstract& r, bool isOwnedByMe, QGraphicsItem* parent = 0);
     virtual ~RegimentGraphics();
 
+    void initModels();
+
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
@@ -71,7 +73,6 @@ private slots:
 private:
     void initRegimentGraphics();
     void updateChildrenBrushes();
-    void initModels();
 
     void paintClassicRegiment(QPainter *painter);
     void paintSkirmishRegiment(QPainter *painter);

@@ -87,7 +87,6 @@ void GameWindow::initGameWindow()
 
     connect(ui->actionOpen_Army, SIGNAL(triggered()), this, SLOT(openArmyMenuClicked()));
 
-
     /////////////////////////////////////////////
     //GameController
     /////////////////////////////////////////////
@@ -102,6 +101,10 @@ void GameWindow::initGameWindow()
     connect(&controller, SIGNAL(changeRegimentWidth(QString,int)), this, SLOT(changeRegimentWidth(QString, int)));
     connect(&controller, SIGNAL(addModels(QString,int)), this, SLOT(addModelToRegiment(QString, int)));
     connect(&controller, SIGNAL(changeRegInfo(QString,RegimentAbstract)), this, SLOT(changeRegimentInfo(QString, RegimentAbstract)));
+
+    connect(&controller, SIGNAL(serverInfoRequested(QString)), this, SLOT(packGameDataForGlobalUpdate(QString)));
+    connect(this, SIGNAL(sendGlobalInfoUpdate(QString,QByteArray)), &controller, SIGNAL(sendGlobalInfoUpdate(QString, QByteArray)));
+    connect(&controller, SIGNAL(loadGlobalInfoUpdate(QByteArray)), this, SLOT(loadGlobalInfoUpdate(QByteArray)));
 }
 
 GameWindow::~GameWindow()
@@ -186,13 +189,13 @@ void GameWindow::addRegimentToGameScene(QString id, QString owner, RegimentAbstr
         rg->setRegimentID(id);
         rg->setOwner(owner);
 
+
         connect(rg, SIGNAL(regimentMoved(QString,QPointF,QTransform)), &controller, SIGNAL(regimentMoved(QString, QPointF, QTransform)));
         connect(rg, SIGNAL(removeRegimentRequest(QString)), &controller, SIGNAL(removeRegimentRequest(QString)));
         connect(rg, SIGNAL(removeDeadsRequest(QString, int)), &controller, SIGNAL(removeDeadsRequest(QString, int)));
         connect(rg, SIGNAL(changeWidthRequest(QString, int)), &controller, SIGNAL(changeWidthRequest(QString, int)));
         connect(rg, SIGNAL(addModelRequest(QString,int)), &controller, SIGNAL(addModelToRegRequest(QString, int)));
         connect(rg, SIGNAL(changeRegimentInfoRequest(QString,RegimentAbstract)), &controller, SIGNAL(changeRegInfoRequest(QString, RegimentAbstract)));
-        connect(rg, SIGNAL(showStats(RegimentAbstract)), this, SLOT(showStatsWidget(RegimentAbstract)));
 
         scene.addItem(rg);
         regimentMap[id] = rg;
@@ -319,6 +322,9 @@ void GameWindow::changeRegimentWidth(QString id, int w)
         QLog_Info(LOG_ID_INFO, "removeDeadsFromRegiment() : regiment with ID " + id + " found, now setting wdth to " +
                   QString::number(w));
         regimentMap[id]->setRegimentWidth(w);
+        emit cw->newMessageToSend("<em><font color=\"DimGray\">" + tr("Régiment ") +
+                                  regimentMap[id]->getRegiment().getName() + tr(" se reforme, sa largeur passe à ") +
+                                  QString::number(regimentMap[id]->getRegimentWidth()) + "</em></font>");
     }
     else
     {
@@ -355,9 +361,32 @@ void GameWindow::changeRegInfo(QString id, RegimentAbstract r)
     }
 }
 
+void GameWindow::packGameDataForGlobalUpdate(QString sender)
+{
+    QByteArray data;
+
+    QDataStream stream(&data, QIODevice::WriteOnly);
+
+    getGlobalInfo(stream);
+
+    emit sendGlobalInfoUpdate(sender, data);
+}
+
+void GameWindow::loadGlobalInfoUpdate(QByteArray info)
+{
+    QDataStream stream(info);
+
+    setGlobalInfo(stream);
+}
+
 void GameWindow::openArmyMenuClicked()
 {
     loadArmy();
+    emit cw->newMessageToSend("<em><font color=\"DimGray\">" +
+                              tr("Armée chargée : ") +
+                              army.getName() + " " +
+                              QString::number(army.computePoints()) +
+                              tr(" points") +  "</em></font>");
 }
 
 void GameWindow::on_actionHost_Game_triggered()
@@ -480,18 +509,48 @@ void GameWindow::getGlobalInfo(QDataStream& stream)
     }
 }
 
-void GameWindow::setGlobalInfo(QDataStream& stream)
+void GameWindow::clearAllMaps()
 {
+    // clearing regiments
+    QMap<QString, RegimentGraphics*>::const_iterator i = regimentMap.constBegin();
+    while (i != regimentMap.constEnd()) {
+        scene.removeItem(*i);
+        i++;
+    }
+
+    // clearing rulers
+    QMap<QString, RulerGraphics*>::const_iterator j = rulerList.constBegin();
+    while (j != rulerList.constEnd()) {
+        scene.removeItem(*j);
+        ++j;
+    }
+
+    // clearing templates
+    QMap<QString, RoundTemplateGraphics*>::const_iterator k = roundTemplateList.constBegin();
+    while (k != roundTemplateList.constEnd()) {
+        scene.removeItem(*k);
+        ++k;
+    }
+    regimentMap.clear();
     rulerList.clear();
     roundTemplateList.clear();
-    regimentMap.clear();
+}
+
+void GameWindow::setGlobalInfo(QDataStream& stream)
+{
+    clearAllMaps();
     int size;
     Game g;
+    QString me;
 
     // Store game info
     stream >> g;
 
+    // Load game info, but keep the Me value
+    // TODO Find other way to handle this
+    me = controller.getGame().getMe();
     controller.setGame(g);
+    controller.getGamePtr()->setMe(me);
 
     QLog_Info(LOG_ID_INFO, controller.getGame().getName());
 
@@ -501,6 +560,8 @@ void GameWindow::setGlobalInfo(QDataStream& stream)
     {
         RegimentGraphics* r = new RegimentGraphics();
         r->serializeIn(stream);
+        if(r->getOwner() == controller.getGame().getMe()) r->setIsOwnedByMe(true);
+        r->initModels();
         regimentMap[r->getRegimentID()] = r;
 
         connect(r, SIGNAL(regimentMoved(QString,QPointF,QTransform)), &controller, SIGNAL(regimentMoved(QString, QPointF, QTransform)));
@@ -509,7 +570,6 @@ void GameWindow::setGlobalInfo(QDataStream& stream)
         connect(r, SIGNAL(changeWidthRequest(QString, int)), &controller, SIGNAL(changeWidthRequest(QString, int)));
         connect(r, SIGNAL(addModelRequest(QString,int)), &controller, SIGNAL(addModelToRegRequest(QString, int)));
         connect(r, SIGNAL(changeRegimentInfoRequest(QString,RegimentAbstract)), &controller, SIGNAL(changeRegInfoRequest(QString, RegimentAbstract)));
-        connect(r, SIGNAL(showStats(RegimentAbstract)), this, SLOT(showStatsWidget(RegimentAbstract)));
 
         scene.addItem(r);
     }
@@ -553,6 +613,8 @@ void GameWindow::on_actionSave_Game_triggered()
 
     getGlobalInfo(stream);
 
+    emit cw->newMessageToSend("<em><font color=\"DimGray\">" + tr("Partie sauvegardée.") + "</em></font>");
+
     file.close();
 }
 
@@ -567,6 +629,11 @@ void GameWindow::on_actionCharger_une_partie_triggered()
     QDataStream stream(&file);
 
     setGlobalInfo(stream);
+
+    // Send global info to all
+    packGameDataForGlobalUpdate("");
+
+    emit cw->newMessageToSend("<em><font color=\"DimGray\">" + tr("Fichier de partie chargé : ") + path + "</em></font>");
     
     file.close();
 }

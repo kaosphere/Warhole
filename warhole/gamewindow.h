@@ -65,6 +65,8 @@ public:
 
     void getGlobalInfo(QDataStream &stream);
     void setGlobalInfo(QDataStream &stream);
+
+    void clearAllMaps();
 public slots:
     void openArmyMenuClicked();
     void openArmyModelContextMenu(QPoint pos);
@@ -87,6 +89,8 @@ public slots:
     void changeRegimentWidth(QString id, int w);
     void addModelToRegiment(QString id, int nb);
     void changeRegInfo(QString id, RegimentAbstract r);
+    void packGameDataForGlobalUpdate(QString sender);
+    void loadGlobalInfoUpdate(QByteArray info);
 
 private slots:
 
@@ -103,6 +107,7 @@ signals:
     void requestNewRuler(int l);
     void requestNewRoundTemplate(int d);
     void newRegimentRequest(QString, RegimentAbstract);
+    void sendGlobalInfoUpdate(QString, QByteArray);
 
 private:
     static const QString LOG_ID_TRACE;
