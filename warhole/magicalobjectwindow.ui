@@ -288,7 +288,11 @@
       </widget>
      </item>
      <item>
-      <widget class="QTreeView" name="treeViewExistingObjects"/>
+      <widget class="QTreeView" name="treeViewExistingObjects">
+       <property name="editTriggers">
+        <set>QAbstractItemView::NoEditTriggers</set>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>

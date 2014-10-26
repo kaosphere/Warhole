@@ -102,9 +102,28 @@ void MagicalObjectWindow::on_addButton_clicked()
         obj.setSpecialRules(ui->textEdit->toPlainText());
         obj.setCabalistic(ui->checkBox->isChecked());
 
-        QLog_Info(LOG_ID_INFO, "Magical Object saved : " + obj.displayString());
+        QFile f;
+        QString path = MAGICAL_OBJECT_PATH + '/' + ui->comboRace->currentText() + "/" + ui->lineEditName->text() + ".om";
+        f.setFileName(path);
 
-        obj.save(MAGICAL_OBJECT_PATH + '/' + ui->comboRace->currentText() + "/" + ui->lineEditName->text() + ".om");
+        if(f.exists())
+        {
+            int rep = QMessageBox::question(this,tr("Ecraser"),
+                                            tr("L'objet existe déjà, voulez vous l'écraser?"), QMessageBox::Yes | QMessageBox::No);
+            if (rep == QMessageBox::Yes)
+            {
+                obj.save(path);
+            }
+            else if (rep == QMessageBox::No)
+            {
+                return;
+            }
+        }
+        else{
+            obj.save(path);
+        }
+
+        QLog_Info(LOG_ID_INFO, "Magical Object saved : " + obj.displayString());
 
         updateTreeView(ui->comboRace->currentText());
         clearWindow();
@@ -139,7 +158,7 @@ void MagicalObjectWindow::on_removeButton_clicked()
     }
     else
     {
-        QMessageBox::warning(this, tr("Info"), tr("Veuillez sélectionner un régiment a dupliquer."));
+        QMessageBox::warning(this, tr("Info"), tr("Veuillez sélectionner un régiment a supprimer."));
     }
 }
 
