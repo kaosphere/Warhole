@@ -129,7 +129,7 @@ void CommandManager::handleServerInfoRequest(MessageDestination dest, QString se
     emit serverInfoRequested(sender);
 }
 
-void CommandManager::handleServerInfo(const Message& m, QDataStream& data)
+void CommandManager::handleServerInfo(QDataStream& data)
 {
     QLog_Info(LOG_ID_INFO, "handleServerInfo() : global update");
     QByteArray info;
@@ -161,7 +161,7 @@ void CommandManager::enQueuePlayerListRefreshMessage(QList<Player> l)
     addMessageToOutQueue(m);
 }
 
-void CommandManager::handlePlayerListRefreshMessage(const Message& m, QDataStream& data)
+void CommandManager:: handlePlayerListRefreshMessage(QDataStream& data)
 {
     QLog_Info(LOG_ID_INFO, "handlePlayerListRefreshMessage() : refreshing player list");
     int size;
@@ -202,7 +202,7 @@ void CommandManager::enQueueCreateRulerMessage(int l)
 
 
 
-void CommandManager::handleCreateRulerMessage(const Message &m, QDataStream& data)
+void CommandManager::handleCreateRulerMessage(QDataStream& data)
 {
     int length;
     QString id;
@@ -239,7 +239,7 @@ void CommandManager::enQueueRulerMoveMessage(QString i, QPointF p, QTransform ma
     addMessageToOutQueue(m);
 }
 
-void CommandManager::handleRulerMoveMessage(const Message& m, QDataStream& data)
+void CommandManager::handleRulerMoveMessage(QDataStream& data)
 {
     QString id;
     QPointF point;
@@ -275,7 +275,7 @@ void CommandManager::enQueueRemoveRulerMessage(QString i)
     addMessageToOutQueue(m);
 }
 
-void CommandManager::handleRemoveRulerMessage(const Message& m, QDataStream& data)
+void CommandManager::handleRemoveRulerMessage(QDataStream& data)
 {
     QString id;
 
@@ -306,7 +306,7 @@ void CommandManager::enQueueRemoveTemplateMessage(QString i)
     addMessageToOutQueue(m);
 }
 
-void CommandManager::handleRemoveTemplateMessage(const Message& m, QDataStream& data)
+void CommandManager::handleRemoveTemplateMessage(QDataStream& data)
 {
     QString id;
 
@@ -340,7 +340,7 @@ void CommandManager::enqueueCreateRoundTemplateMessage(int d)
     addMessageToOutQueue(m);
 }
 
-void CommandManager::handleCreateRoundTemplateMessage(const Message &m, QDataStream &data)
+void CommandManager::handleCreateRoundTemplateMessage(QDataStream &data)
 {
     int diameter;
     QString id;
@@ -377,7 +377,7 @@ void CommandManager::enQueueTemplateMoveMessage(QString id, QPointF p)
 }
 
 
-void CommandManager::handleTemplateMoveMessage(const Message &m, QDataStream &data)
+void CommandManager::handleTemplateMoveMessage(QDataStream &data)
 {
     QString id;
     QPointF point;
@@ -413,7 +413,7 @@ void CommandManager::enqueueNewRegimentMessage(QString o, RegimentAbstract r)
     addMessageToOutQueue(m);
 }
 
-void CommandManager::handleNewRegimentMessage(const Message &m, QDataStream &data)
+void CommandManager::handleNewRegimentMessage(QDataStream &data)
 {
     QString id;
     QString owner;
@@ -453,7 +453,7 @@ void CommandManager::enqueueRegimentMoveMessage(QString i, QPointF p , QTransfor
     addMessageToOutQueue(m);
 }
 
-void CommandManager::handleRegimentMoveMessage(const Message& m, QDataStream &data)
+void CommandManager::handleRegimentMoveMessage(QDataStream &data)
 {
     QString id;
     QPointF point;
@@ -532,7 +532,7 @@ void CommandManager::enqueueChangeWidthMessage(QString i, int w)
     addMessageToOutQueue(m);
 }
 
-void CommandManager::handleRemoveRegimentMessage(const Message &m, QDataStream &data)
+void CommandManager::handleRemoveRegimentMessage(QDataStream &data)
 {
     QString id;
 
@@ -543,7 +543,7 @@ void CommandManager::handleRemoveRegimentMessage(const Message &m, QDataStream &
     emit removeRegiment(id);
 }
 
-void CommandManager::handleRemoveDeadsRegimentMessage(const Message &m, QDataStream &data)
+void CommandManager::handleRemoveDeadsRegimentMessage(QDataStream &data)
 {
     QString id;
     int nb;
@@ -557,7 +557,7 @@ void CommandManager::handleRemoveDeadsRegimentMessage(const Message &m, QDataStr
     emit removeDeads(id,nb);
 }
 
-void CommandManager::handleChangeWidthRegimentMessage(const Message &m, QDataStream &data)
+void CommandManager::handleChangeWidthRegimentMessage(QDataStream &data)
 {
     QString id;
     int w;
@@ -570,7 +570,7 @@ void CommandManager::handleChangeWidthRegimentMessage(const Message &m, QDataStr
     emit changeRegimentWidth(id,w);
 }
 
-void CommandManager::handleAddModelsMessage(const Message &m, QDataStream &data)
+void CommandManager::handleAddModelsMessage(QDataStream &data)
 {
     QString id;
     int nb;
@@ -583,7 +583,7 @@ void CommandManager::handleAddModelsMessage(const Message &m, QDataStream &data)
     emit addModels(id,nb);
 }
 
-void CommandManager::handleChangeRegInfoMessage(const Message &m, QDataStream &data)
+void CommandManager::handleChangeRegInfoMessage(QDataStream &data)
 {
     QString id;
     RegimentAbstract r;
@@ -638,6 +638,40 @@ void CommandManager::enqueueChangeRegInfoMessage(QString i, RegimentAbstract r)
     addMessageToOutQueue(m);
 }
 
+void CommandManager::enQueueNewTerrainMessage(Terrain t)
+{
+    Message m;
+    m.setDest(ALL);
+    m.setMessageSender(game->getMe());
+
+    QByteArray data;
+    QDataStream s(&data, QIODevice::WriteOnly);
+
+    s << NEW_TERRAIN;
+    QString id = IdGenerator::generateRandomID(IdGenerator::ID_SIZE);
+    s << id;
+    s << t;
+
+    m.setData(data);
+
+    QLog_Info(LOG_ID_INFO, "enQueueNewTerrainMessage() : new terrain message with ID " + id);
+
+    addMessageToOutQueue(m);
+}
+
+void CommandManager::handleNewTerrainMessage(QDataStream &data)
+{
+    QString id;
+    Terrain t;
+
+    data >> id;
+    data >> t;
+
+    QLog_Info(LOG_ID_INFO, "handleAddModelsMessage() : add models message to regiment with ID " + id);
+
+    emit newTerrain(id,t);
+}
+
 void CommandManager::processIncomingMessage()
 {
     Message m;
@@ -682,77 +716,82 @@ void CommandManager::processIncomingMessage()
 
         case SERVER_INFO:
             QLog_Info(LOG_ID_INFO, "processIncomingMessage() : Server info received from server.");
-            handleServerInfo(m, stream);
+            handleServerInfo(stream);
             break;
 
         case PLAYER_LIST_UPDATE:
             QLog_Info(LOG_ID_INFO, "processIncomingMessage() : Player list update received.");
-            handlePlayerListRefreshMessage(m, stream);
+            handlePlayerListRefreshMessage(stream);
             break;
 
         case NEW_RULER:
             QLog_Info(LOG_ID_INFO, "processIncomingMessage() : New ruler message received.");
-            handleCreateRulerMessage(m, stream);
+            handleCreateRulerMessage(stream);
             break;
 
         case RULER_POSITION_CHANGE:
             QLog_Info(LOG_ID_INFO, "processIncomingMessage() : Ruler moved message received.");
-            handleRulerMoveMessage(m, stream);
+            handleRulerMoveMessage(stream);
             break;
 
         case RULER_REMOVE:
             QLog_Info(LOG_ID_INFO, "processIncomingMessage() : Ruler remove message received.");
-            handleRemoveRulerMessage(m, stream);
+            handleRemoveRulerMessage(stream);
             break;
 
         case NEW_ROUND_TEMPLATE:
             QLog_Info(LOG_ID_INFO, "processIncomingMessage() : New Round template received.");
-            handleCreateRoundTemplateMessage(m, stream);
+            handleCreateRoundTemplateMessage(stream);
             break;
 
         case ROUND_TEMPLATE_POSITION_CHANGE:
             QLog_Info(LOG_ID_INFO, "processIncomingMessage() : Template moved message received.");
-            handleTemplateMoveMessage(m, stream);
+            handleTemplateMoveMessage(stream);
             break;
 
         case ROUND_TEMPLATE_REMOVE:
             QLog_Info(LOG_ID_INFO, "processIncomingMessage() : Template remove message received.");
-            handleRemoveTemplateMessage(m, stream);
+            handleRemoveTemplateMessage(stream);
             break;
 
         case NEW_REGIMENT:
             QLog_Info(LOG_ID_INFO, "processIncomingMessage() : New regiment message received.");
-            handleNewRegimentMessage(m, stream);
+            handleNewRegimentMessage(stream);
             break;
 
         case REGIMENT_MOVE:
             QLog_Info(LOG_ID_INFO, "processIncomingMessage() : New regiment move message received.");
-            handleRegimentMoveMessage(m, stream);
+            handleRegimentMoveMessage(stream);
             break;
 
         case REGIMENT_REMOVE:
             QLog_Info(LOG_ID_INFO, "processIncomingMessage() :Regiment remove message received.");
-            handleRemoveRegimentMessage(m, stream);
+            handleRemoveRegimentMessage(stream);
             break;
 
         case REGIMENT_REMOVE_DEADS:
             QLog_Info(LOG_ID_INFO, "processIncomingMessage() :Regiment remove deads message received.");
-            handleRemoveDeadsRegimentMessage(m, stream);
+            handleRemoveDeadsRegimentMessage(stream);
             break;
 
         case REGIMENT_WIDTH_CHANGE:
             QLog_Info(LOG_ID_INFO, "processIncomingMessage() :Regiment width change message received.");
-            handleChangeWidthRegimentMessage(m, stream);
+            handleChangeWidthRegimentMessage(stream);
             break;
 
         case REGIMENT_ADD_MODELS:
             QLog_Info(LOG_ID_INFO, "processIncomingMessage() : Add models message received.");
-            handleAddModelsMessage(m, stream);
+            handleAddModelsMessage(stream);
             break;
 
         case REGIMENT_CHANGE_INFO:
             QLog_Info(LOG_ID_INFO, "processIncomingMessage() :Regiment info change message received.");
-            handleChangeRegInfoMessage(m, stream);
+            handleChangeRegInfoMessage(stream);
+            break;
+
+        case NEW_TERRAIN:
+            QLog_Info(LOG_ID_INFO, "processIncomingMessage() : New terrain message received.");
+            handleNewTerrainMessage(stream);
             break;
 
         default:

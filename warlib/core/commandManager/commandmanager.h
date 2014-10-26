@@ -5,6 +5,7 @@
 
 #include "core/messagequeue.h"
 #include "game/game.h"
+#include "game/terrain/terrain.h"
 #include "core/network/networkinterface.h"
 #include "Utilities/RandomIdGenerator/idgenerator.h"
 
@@ -25,7 +26,11 @@ enum CommandType{
     REGIMENT_WIDTH_CHANGE,
     REGIMENT_REMOVE,
     REGIMENT_ADD_MODELS,
-    REGIMENT_CHANGE_INFO
+    REGIMENT_CHANGE_INFO,
+    NEW_TERRAIN,
+    TERRAIN_MOVE,
+    TERRAIN_DELETE,
+    TERRAIN_LOCK
 };
 
 class CommandManager : public QObject
@@ -52,6 +57,7 @@ signals:
     void changeRegInfo(QString, RegimentAbstract);
     void serverInfoRequested(QString);
     void loadGlobalInfoUpdate(QByteArray);
+    void newTerrain(QString, Terrain);
     
 public slots:
     void processIncomingMessage();
@@ -72,6 +78,7 @@ public slots:
     void enqueueChangeWidthMessage(QString i, int w);
     void enqueueAddModelMessage(QString i, int nb);
     void enqueueChangeRegInfoMessage(QString i, RegimentAbstract r);
+    void enQueueNewTerrainMessage(Terrain t);
 
 private:
     static const QString LOG_ID_INFO;
@@ -88,22 +95,23 @@ private:
     void addMessageToOutQueue(const Message &m);
     void addMessageToInQueue(const Message &m);
     void handleServerInfoRequest(MessageDestination dest, QString sender);
-    void handleServerInfo(const Message &m, QDataStream &data);
+    void handleServerInfo(QDataStream &data);
     void handleNewChatMessage(const Message& m, QDataStream& data);
-    void handlePlayerListRefreshMessage(const Message &m, QDataStream &data);
-    void handleCreateRulerMessage(const Message &m, QDataStream &data);
-    void handleRulerMoveMessage(const Message &m, QDataStream &data);
-    void handleCreateRoundTemplateMessage(const Message &m, QDataStream& data);
-    void handleTemplateMoveMessage(const Message &m, QDataStream &data);
-    void handleRemoveRulerMessage(const Message &m, QDataStream &data);
-    void handleRemoveTemplateMessage(const Message &m, QDataStream &data);
-    void handleNewRegimentMessage(const Message &m, QDataStream &data);
-    void handleRegimentMoveMessage(const Message &m, QDataStream &data);
-    void handleRemoveRegimentMessage(const Message &m, QDataStream &data);
-    void handleRemoveDeadsRegimentMessage(const Message &m, QDataStream &data);
-    void handleChangeWidthRegimentMessage(const Message &m, QDataStream &data);
-    void handleAddModelsMessage(const Message &m, QDataStream &data);
-    void handleChangeRegInfoMessage(const Message &m, QDataStream &data);
+    void handlePlayerListRefreshMessage(QDataStream &data);
+    void handleCreateRulerMessage(QDataStream &data);
+    void handleRulerMoveMessage(QDataStream &data);
+    void handleCreateRoundTemplateMessage( QDataStream& data);
+    void handleTemplateMoveMessage(QDataStream &data);
+    void handleRemoveRulerMessage(QDataStream &data);
+    void handleRemoveTemplateMessage(QDataStream &data);
+    void handleNewRegimentMessage(QDataStream &data);
+    void handleRegimentMoveMessage(QDataStream &data);
+    void handleRemoveRegimentMessage(QDataStream &data);
+    void handleRemoveDeadsRegimentMessage(QDataStream &data);
+    void handleChangeWidthRegimentMessage(QDataStream &data);
+    void handleAddModelsMessage(QDataStream &data);
+    void handleChangeRegInfoMessage(QDataStream &data);
+    void handleNewTerrainMessage(QDataStream &data);
 };
 
 #endif // COMMANDMANAGER_H

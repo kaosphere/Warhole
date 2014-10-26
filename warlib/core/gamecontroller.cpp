@@ -55,6 +55,9 @@ GameController::GameController(QObject *parent) :
     connect(this, SIGNAL(sendGlobalInfoUpdate(QString, QByteArray)), comManager, SLOT(enQueueServerInfo(QString, QByteArray)));
     connect(comManager, SIGNAL(loadGlobalInfoUpdate(QByteArray)), this, SIGNAL(loadGlobalInfoUpdate(QByteArray)));
 
+    connect(this, SIGNAL(requestNewTerrain(Terrain)), comManager, SLOT(enQueueNewTerrainMessage(Terrain)));
+    connect(comManager, SIGNAL(newTerrain(QString, Terrain)), this, SIGNAL(newTerrain(QString, Terrain)));
+
     ///////////////////////////////////////////
     // Player Administrator
     ///////////////////////////////////////////

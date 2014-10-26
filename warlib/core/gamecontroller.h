@@ -7,6 +7,7 @@
 #include "network/networkclient.h"
 #include "network/networkserver.h"
 #include "game/game.h"
+#include "game/terrain/terrain.h"
 #include "PlayerAdmninistrator/playeradministrator.h"
 
 class GameController : public QObject
@@ -59,6 +60,8 @@ signals:
     void serverInfoRequested(QString);
     void sendGlobalInfoUpdate(QString, QByteArray);
     void loadGlobalInfoUpdate(QByteArray);
+    void requestNewTerrain(Terrain);
+    void newTerrain(QString, Terrain);
 
 public slots:
     void setNetwork();
