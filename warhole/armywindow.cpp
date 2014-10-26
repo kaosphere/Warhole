@@ -180,7 +180,7 @@ void ArmyWindow::on_comboBoxRace_currentIndexChanged(const QString &raceDir)
         if(existingModels.isEmpty())
         {
             QLog_Info(LOG_ID_INFO, "on_comboBoxRace_currentIndexChanged() : No Model found in race : " + raceDir);
-            QMessageBox::warning(this, tr("Erreur"), tr("Aucune race existante ; commencez par créer des figurines"));
+            QMessageBox::warning(this, tr("Erreur"), tr("Aucune figurine existante ; commencez par créer des figurines"));
         }
 
         // set the root path of the tree view
