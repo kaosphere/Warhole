@@ -52,11 +52,10 @@ QString OptionModel::displayString()
 {
     QString s;
     QTextStream info(&s);
-    info << name << endl;
-    info << "Points :                   " << nbPoints << endl;
-    info << "Rules :                    " << specialRules << endl;
-    info << "Selected :                 " << activated << endl;
-    info << "Regiment options :         " << regimentOptions <<endl;
+    info << name << " (" << nbPoints << " points";
+    if(regimentOptions) info << tr(", régiment)") << endl;
+    else info << ")" << endl;
+
     return s;
 }
 

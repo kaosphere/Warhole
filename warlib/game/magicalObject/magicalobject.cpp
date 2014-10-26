@@ -117,10 +117,10 @@ QString MagicalObject::displayString() const
 {
     QString s;
     QTextStream info(&s);
-    info << name << endl;
-    if(cabalistic) info << "Cabalistic object";
-    info << "Points :                   " << points << endl;
-    info << "Rules :                    " << specialRules << endl;
+    info << name << " (" << points << " points";
+    if(cabalistic) info << tr(", cabalistique)") << endl;
+    else info << ")" << endl;
+    info << specialRules << endl;
     return s;
 }
 
