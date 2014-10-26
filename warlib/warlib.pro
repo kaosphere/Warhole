@@ -46,7 +46,8 @@ SOURCES += \
     core/network/networkinterface.cpp \
     core/network/networkclient.cpp \
     core/network/client.cpp \
-    core/commandManager/commandmanager.cpp
+    core/commandManager/commandmanager.cpp \
+    game/terrain/terrain.cpp
 	
 HEADERS += \
     game/stats/statsmodel.h \
@@ -85,7 +86,8 @@ HEADERS += \
     core/network/networkinterface.h \
     core/network/networkclient.h \
     core/network/client.h \
-    core/commandManager/commandmanager.h
+    core/commandManager/commandmanager.h \
+    game/terrain/terrain.h
 
 INSTALLS += target
 

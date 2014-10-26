@@ -10,6 +10,7 @@
 #include "game/model/modelmonster.h"
 #include "game/model/modelwarmachine.h"
 #include "game/magicalObject/magicalobject.h"
+#include "game/terrain/terrain.h"
 
 #include "game/army/army.h"
 

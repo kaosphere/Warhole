@@ -10,6 +10,7 @@ const int SAVE_VERSION(2);
 const QString MODEL_PATH("models");
 const QString ARMY_PATH("armies");
 const QString MAGICAL_OBJECT_PATH("magical_objects");
+const QString TERRAIN_PATH("terrains");
 
 const QString CAVALERY_STRING("Cavalerie");
 const QString CHARACTER_STRING("Personnage");
