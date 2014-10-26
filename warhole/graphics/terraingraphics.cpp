@@ -3,6 +3,18 @@
 TerrainGraphics::TerrainGraphics(QGraphicsItem *parent) :
     QGraphicsObject(parent)
 {
+    setFlag(ItemIsFocusable);
+    setFlag(ItemIsMovable);
+
+    rot = false;
+    firstRot = true;
+
+    actionRemoveTerrain = new QAction(tr("Retirer"), this);
+    connect(actionRemoveTerrain, SIGNAL(triggered()),this, SLOT(removeTerrainRequest()));
+    actionLockTerrain = new QAction(tr("Vérouiller"), this);
+    connect(actionLockTerrain, SIGNAL(triggered()), this, SLOT(lockTerrainRequest()));
+    actionSeeTerrainInfo = new QAction(tr("Voir les infos du décor"), this);
+    connect(actionSeeTerrainInfo, SIGNAL(triggered()), this, SLOT(displayTerrainInfo()));
 }
 
 TerrainGraphics::TerrainGraphics(Terrain ter, QGraphicsItem *parent):
@@ -10,6 +22,19 @@ TerrainGraphics::TerrainGraphics(Terrain ter, QGraphicsItem *parent):
 {
     t = ter;
     prepareGeometryChange();
+
+    setFlag(ItemIsFocusable);
+    setFlag(ItemIsMovable);
+
+    rot = false;
+    firstRot = true;
+
+    actionRemoveTerrain = new QAction(tr("Retirer"), this);
+    connect(actionRemoveTerrain, SIGNAL(triggered()),this, SLOT(removeTerrainRequest()));
+    actionLockTerrain = new QAction(tr("Vérouiller"), this);
+    connect(actionLockTerrain, SIGNAL(triggered()), this, SLOT(lockTerrainRequest()));
+    actionSeeTerrainInfo = new QAction(tr("Voir les infos du décor"), this);
+    connect(actionSeeTerrainInfo, SIGNAL(triggered()), this, SLOT(displayTerrainInfo()));
 }
 
 QRectF TerrainGraphics::boundingRect() const
@@ -23,6 +48,86 @@ QRectF TerrainGraphics::boundingRect() const
 void TerrainGraphics::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     painter->drawPixmap(boundingRect().toRect(), t.getTerrainImage());
+}
+
+void TerrainGraphics::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+    static qreal translation;
+    static qreal previousRot = 0;
+    static int cnt = 0;
+    if(rot)
+    {
+        static int offset = 0;
+
+        if(firstRot)
+        {
+
+            if(event->pos().x() < boundingRect().center().x())
+            {
+                translation = boundingRect().right();
+                offset = 180;
+            }
+            else
+            {
+                translation = 0;
+                offset = 0;
+            }
+            firstRot = false;
+        }
+
+        QPointF originPoint = mapToScene(translation, 0);
+
+        qreal a1 = event->scenePos().x() - originPoint.x();
+        qreal a2 = event->scenePos().y() - originPoint.y();
+        qreal angle = qAtan2(a2, a1);
+
+        QTransform trans;
+        trans.translate(translation,0).rotate(-previousRot).rotate((angle * 180 / 3.14) + offset).translate(-translation,0);
+        setTransform(trans, true);
+        previousRot = ((angle * 180 / 3.14) + offset);
+
+        if((++cnt)%6 == 0)
+        {
+            cnt = 1;
+            emit terrainMoved(id, pos(), transform());
+        }
+    }
+    else
+    {
+        if((++cnt)%6 == 0)
+        {
+            cnt = 1;
+            emit terrainMoved(id, pos(), transform());
+        }
+        QGraphicsItem::mouseMoveEvent(event);
+    }
+}
+
+void TerrainGraphics::keyPressEvent(QKeyEvent *event)
+{
+    if(event->key() == Qt::Key_R)
+    {
+        rot = true;
+    }
+    QGraphicsItem::keyPressEvent(event);
+}
+
+void TerrainGraphics::keyReleaseEvent(QKeyEvent *event)
+{
+    if(event->key() == Qt::Key_R && !event->isAutoRepeat())
+    {
+        rot = false;
+        firstRot = true;
+    }
+    QGraphicsItem::keyReleaseEvent(event);
+}
+
+void TerrainGraphics::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+    // End of movement, send final position
+    emit terrainMoved(id, pos(), transform());
+
+    QGraphicsItem::mouseReleaseEvent(event);
 }
 
 Terrain TerrainGraphics::getT() const
@@ -40,4 +145,51 @@ void TerrainGraphics::changeResize(bool r)
 {
     t.setResize(r);
     prepareGeometryChange();
+}
+
+
+QString TerrainGraphics::getId() const
+{
+    return id;
+}
+
+void TerrainGraphics::setId(const QString &value)
+{
+    id = value;
+}
+
+
+bool TerrainGraphics::isLocked() const
+{
+    return lock;
+}
+
+void TerrainGraphics::setLock(bool value)
+{
+    lock = value;
+}
+
+void TerrainGraphics::updateLock()
+{
+    if(lock)
+    {
+        setFlag(ItemIsMovable, false);
+    }
+    else
+        setFlag(ItemIsMovable);
+}
+
+
+void TerrainGraphics::removeTerrainRequest()
+{
+    emit removeTerrainRequest(id);
+}
+
+void TerrainGraphics::lockTerrainRequest()
+{
+    emit lockTerrainRequest(id);
+}
+
+void TerrainGraphics::displayTerrainInfo()
+{
 }

@@ -32,6 +32,7 @@
 #include "Utilities/RandomIdGenerator/idgenerator.h"
 #include "graphics/roundtemplategraphics.h"
 #include "getintdialog.h"
+#include "graphics/terraingraphics.h"
 
 
 namespace Ui {
@@ -91,6 +92,8 @@ public slots:
     void changeRegInfo(QString id, RegimentAbstract r);
     void packGameDataForGlobalUpdate(QString sender);
     void loadGlobalInfoUpdate(QByteArray info);
+    void placeTerrainRequest();
+    void addNewTerrainToScene(QString id, Terrain t);
 
 private slots:
 
@@ -98,16 +101,16 @@ private slots:
     void on_actionConnect_to_a_game_2_triggered();
     void on_actionExpTemplateSmall_triggered();
     void on_actionExpTemplateBig_triggered();
-
     void on_actionSave_Game_triggered();
-
     void on_actionCharger_une_partie_triggered();
+    void on_treeViewTerrains_customContextMenuRequested(const QPoint &pos);
 
 signals:
     void requestNewRuler(int l);
     void requestNewRoundTemplate(int d);
     void newRegimentRequest(QString, RegimentAbstract);
     void sendGlobalInfoUpdate(QString, QByteArray);
+    void requestNewTerrain(Terrain);
 
 private:
     static const QString LOG_ID_TRACE;
@@ -136,10 +139,16 @@ private:
     QMap<QString, RoundTemplateGraphics*> roundTemplateList;
 
     QMap<QString, RegimentGraphics*> regimentMap;
+    QMap<QString, TerrainGraphics*> terrainMap;
 
     GameController controller;
 
     Army army;
+
+    QFileSystemModel* terrainsModel;
+    QModelIndex indexTerrain;
+    QString currentSelectedTerrainPath;
+    QAction* placeTerrain;
 };
 
 #endif // GAMEWINDOW_H

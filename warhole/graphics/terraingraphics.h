@@ -3,6 +3,9 @@
 
 #include <QGraphicsObject>
 #include <QPainter>
+#include <QGraphicsSceneMouseEvent>
+#include <QKeyEvent>
+#include <QAction>
 #include "game/terrain/terrain.h"
 #include "distances.h"
 
@@ -20,13 +23,42 @@ public:
     void setT(const Terrain &value);
 
     void changeResize(bool r);
+    QString getId() const;
+    void setId(const QString &value);
+
+    bool isLocked() const;
+    void setLock(bool value);
+
+    void updateLock();
+
+protected:
+    void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+    void keyPressEvent(QKeyEvent *event);
+    void keyReleaseEvent(QKeyEvent *event);
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+
 signals:
+    void terrainMoved(QString, QPointF, QTransform);
+    void removeTerrainRequest(QString);
+    void lockTerrainRequest(QString);
     
 public slots:
+    void removeTerrainRequest();
+    void lockTerrainRequest();
+    void displayTerrainInfo();
 
 private:
     Terrain t;
-    
+    QString id;
+
+    bool rot;
+    bool firstRot;
+
+    bool lock;
+
+    QAction* actionRemoveTerrain;
+    QAction* actionLockTerrain;
+    QAction* actionSeeTerrainInfo;
 };
 
 #endif // TERRAINGRAPHICS_H

@@ -25,7 +25,7 @@ TerrainWindow::TerrainWindow(QWidget *parent) :
 
     sceneRefresh = true;
 
-    model = new QFileSystemModel(this);
+
 
     view = new EnhancedGraphicsView();
     view->setMinimumHeight(250);
@@ -34,6 +34,7 @@ TerrainWindow::TerrainWindow(QWidget *parent) :
     scene = new QGraphicsScene();
     view->setScene(scene);
 
+    model = new QFileSystemModel(this);
     ui->treeViewExistingTerrains->setModel(model);
     ui->treeViewExistingTerrains->setRootIndex(model->setRootPath(TERRAIN_PATH));
     // hide size, type and date collumns

@@ -44,6 +44,20 @@ void GameWindow::initGameWindow()
     connect(cw, SIGNAL(newMessageToSend(QString)), &controller, SIGNAL(newChatMessageToSend(QString)));
     connect(&controller, SIGNAL(newChatMessageToPrint(QString,QString)), cw, SLOT(printNewChatMessage(QString,QString)));
 
+    tabifyDockWidget(ui->dockWidget, ui->dockWidget_5);
+
+    // Terrain
+    terrainsModel = new QFileSystemModel(this);
+    ui->treeViewTerrains->setModel(terrainsModel);
+    ui->treeViewTerrains->setRootIndex(terrainsModel->setRootPath(TERRAIN_PATH));
+    // hide size, type and date collumns
+    ui->treeViewTerrains->hideColumn(1);
+    ui->treeViewTerrains->hideColumn(2);
+    ui->treeViewTerrains->hideColumn(3);
+    placeTerrain = new QAction(tr("Placer terrain"), this);
+    ui->treeViewTerrains->setContextMenuPolicy((Qt::CustomContextMenu));
+    connect(placeTerrain, SIGNAL(triggered()), this, SLOT(placeTerrainRequest()));
+
     ///////////////////////////////////////////
     //Tree view of army
     ///////////////////////////////////////////
@@ -111,6 +125,9 @@ void GameWindow::initGameWindow()
     connect(&controller, SIGNAL(serverInfoRequested(QString)), this, SLOT(packGameDataForGlobalUpdate(QString)));
     connect(this, SIGNAL(sendGlobalInfoUpdate(QString,QByteArray)), &controller, SIGNAL(sendGlobalInfoUpdate(QString, QByteArray)));
     connect(&controller, SIGNAL(loadGlobalInfoUpdate(QByteArray)), this, SLOT(loadGlobalInfoUpdate(QByteArray)));
+
+    connect(this, SIGNAL(requestNewTerrain(Terrain)), &controller, SIGNAL(requestNewTerrain(Terrain)));
+    connect(&controller, SIGNAL(newTerrain(QString, Terrain)), this, SLOT(addNewTerrainToScene(QString, Terrain)));
 }
 
 GameWindow::~GameWindow()
@@ -119,6 +136,7 @@ GameWindow::~GameWindow()
     delete back;
     armyModel->deleteLater();
     actionDeploy->deleteLater();
+    placeTerrain->deleteLater();
     cw->deleteLater();
 }
 
@@ -643,3 +661,44 @@ void GameWindow::on_actionCharger_une_partie_triggered()
     
     file.close();
 }
+
+void GameWindow::on_treeViewTerrains_customContextMenuRequested(const QPoint &pos)
+{
+    indexTerrain =ui->treeViewTerrains->indexAt(pos);
+
+    if(indexTerrain.isValid())
+    {
+        QString name = indexTerrain.data().toString();
+        QStringList pieces = name.split(".");
+        if(pieces.last() == "ter")
+        {
+            currentSelectedTerrainPath = terrainsModel->filePath(indexTerrain);
+            QMenu *menu=new QMenu(this);
+            menu->addAction(placeTerrain);
+            menu->popup(ui->treeViewTerrains->viewport()->mapToGlobal(pos));
+        }
+        else currentSelectedTerrainPath = "";
+    }
+}
+
+void GameWindow::placeTerrainRequest()
+{
+    Terrain ter;
+    ter.load(currentSelectedTerrainPath);
+
+    emit requestNewTerrain(ter);
+}
+
+void GameWindow::addNewTerrainToScene(QString id, Terrain t)
+{
+    TerrainGraphics* ter = new TerrainGraphics(t);
+    ter->setId(id);
+
+    connect(ter, SIGNAL(removeTerrainRequest(QString)), &controller, SIGNAL(removeTerrainRequest(QString)));
+    connect(ter, SIGNAL(lockTerrainRequest(QString)), &controller, SIGNAL(lockTerrainRequest(QString)));
+    connect(ter, SIGNAL(terrainMoved(QString,QPointF,QTransform)), &controller, SIGNAL(terrainMoved(QString, QPointF, QTransform)));
+
+    terrainMap[id] = ter;
+    scene.addItem(ter);
+}
+
