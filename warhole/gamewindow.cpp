@@ -32,6 +32,12 @@ void GameWindow::initGameWindow()
     view.setScene(&scene);
     ui->horizontalLayout->addWidget(&view);
 
+    // Actions load and save game
+    ui->actionCharger_une_partie->setEnabled(false);
+    ui->actionSave_Game->setEnabled(false);
+    connect(&controller, SIGNAL(networkEnabled(bool)), ui->actionCharger_une_partie, SLOT(setEnabled(bool)));
+    connect(&controller, SIGNAL(networkEnabled(bool)), ui->actionSave_Game, SLOT(setEnabled(bool)));
+
     // Chat widget
     cw = new ChatWidgetForm(this);
     ui->dockWidget_2->setWidget(cw);
