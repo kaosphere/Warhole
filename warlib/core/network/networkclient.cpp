@@ -23,6 +23,7 @@ NetworkClient::NetworkClient(MessageQueue *in, MessageQueue* out, QObject *paren
     QObject::connect(sock, SIGNAL(readyRead()), this, SLOT(receiveData()));
     QObject::connect(sock, SIGNAL(connected()), this, SLOT(connected()));
     QObject::connect(sock, SIGNAL(disconnected()), this, SLOT(deconnected()));
+    QObject::connect(sock, SIGNAL(disconnected()), this, SIGNAL(disconnected()));
     QObject::connect(sock, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(errorSocket(QAbstractSocket::SocketError)));
     QObject::connect(sock, SIGNAL(bytesWritten(qint64)), this, SLOT(printBufferInfo(qint64)));
 

@@ -7,6 +7,7 @@ GameController::GameController(QObject *parent) :
     // Network interface
     ///////////////////////////////////////////
     netInterface = NULL;
+    network = false;
 
     ///////////////////////////////////////////
     // Command manager
@@ -77,10 +78,13 @@ void GameController::createNetworkInterface(NetworkType t, QString ip)
         connect(&playerAdmin, SIGNAL(playerListChanged(QList<Player>)), SIGNAL(refreshPlayerListDisplay(QList<Player>)));
         // Add server to the player list
         playerAdmin.authorizePlayer(Player(game.getMe(), "127.0.0.1", true));
+        setNetwork();
         break;
     case CLIENT:
         netInterface = new NetworkClient(&inQueue, &outQueue, this, ip);
         connect(netInterface, SIGNAL(firstConnectionToServer()), comManager, SLOT(enQueueServerInfoRequest()));
+        connect(netInterface, SIGNAL(firstConnectionToServer()), this, SLOT(setNetwork()));
+        connect(netInterface, SIGNAL(disconnected()), this, SLOT(clearNetwork()));
         break;
     default:
         //TODO error
@@ -115,4 +119,19 @@ void GameController::setGame(const Game &value)
     game = value;
 }
 
+bool GameController::networkActive()
+{
+    return network;
+}
 
+void GameController::setNetwork()
+{
+    network = true;
+    emit networkEnabled(network);
+}
+
+void GameController::clearNetwork()
+{
+    network = false;
+    emit networkEnabled(network);
+}

@@ -37,6 +37,7 @@ signals:
     void newPlayerConnected(Client c);
     void playerDisconnected(Client c);
     void firstConnectionToServer();
+    void disconnected();
     
 public slots:
     virtual void receiveData() = 0;

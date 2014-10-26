@@ -22,9 +22,10 @@ public:
     Game getGame() const;
     Game* getGamePtr();
     void setGame(const Game &value);
-
+    bool networkActive();
 
 signals:
+    void networkEnabled(bool);
     void newChatMessageToPrint(QString, QString);
     void newChatMessageToSend(QString);
     void refreshPlayerListDisplay(QList<Player>);
@@ -60,6 +61,8 @@ signals:
     void loadGlobalInfoUpdate(QByteArray);
 
 public slots:
+    void setNetwork();
+    void clearNetwork();
 
 private:
     NetworkInterface* netInterface;
@@ -68,6 +71,7 @@ private:
     MessageQueue inQueue;
     MessageQueue outQueue;
     Game game;
+    bool network;
 };
 
 #endif // GAMECONTROLLER_H

@@ -28,6 +28,7 @@ public:
 
     void disconnection();
 signals:
+
     
 public slots:
     virtual void send();
