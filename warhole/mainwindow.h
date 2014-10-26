@@ -10,6 +10,7 @@
 #include "armywindow.h"
 #include "gamewindow.h"
 #include "magicalobjectwindow.h"
+#include "terrainwindow.h"
 #include "Utilities/QLogger/QLogger.h"
 
 namespace Ui {
@@ -31,6 +32,7 @@ public slots:
    void openEditArmyWindow();
    void openGameWindow();
    void openMagicalObjectWindow();
+   void openTerrainWindow();
    void updateLogOutput(QString message);
 
 private:
@@ -42,6 +44,7 @@ private:
     ArmyWindow* arm;
     GameWindow* game;
     MagicalObjectWindow* obj;
+    TerrainWindow *ter;
 };
 
 #endif // MAINWINDOW_H

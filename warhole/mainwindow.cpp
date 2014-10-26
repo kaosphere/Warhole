@@ -18,6 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
     obj = NULL;
     arm = NULL;
     game = NULL;
+    ter = NULL;
 
     // Connect signal from the logger to slot that update the text edit
     QObject::connect(manager, SIGNAL(newLogWritten(QString)), this, SLOT(updateLogOutput(QString)));
@@ -64,6 +65,10 @@ MainWindow::MainWindow(QWidget *parent)
     actionEditArmy->setShortcut(QKeySequence("Ctrl+D"));
     connect(actionEditArmy, SIGNAL(triggered()), this, SLOT(openEditArmyWindow()));
 
+    QAction *actionCreateTerrains = new QAction(tr("&Créer des décors"), this);
+    menuManageModels->addAction(actionCreateTerrains);
+    connect(actionCreateTerrains, SIGNAL(triggered()), this, SLOT(openTerrainWindow()));
+
     //s = new mainWidget(this);
     //setCentralWidget(s);
 }
@@ -74,6 +79,7 @@ MainWindow::~MainWindow()
     if(arm)arm->deleteLater();
     if(game)game->deleteLater();
     if(obj)obj->deleteLater();
+    if(ter)ter->deleteLater();
 }
 
 
@@ -115,6 +121,12 @@ void MainWindow::openMagicalObjectWindow()
 {
     obj = new MagicalObjectWindow();
     obj->show();
+}
+
+void MainWindow::openTerrainWindow()
+{
+    ter = new TerrainWindow();
+    ter->show();
 }
 
 void MainWindow::updateLogOutput(QString message)
