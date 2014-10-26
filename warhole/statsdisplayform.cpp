@@ -21,23 +21,37 @@ StatsDisplayForm::StatsDisplayForm(RegimentAbstract r, bool owned, QString owner
     v->addWidget(ui->label);
 
     QString text;
-    text.append("Appartient à : " + owner + "\n");
+    text.append("Appartient à : " + owner + "\n\n");
+
+    if(r.getGroups().first().getModel()->getMusician())
+        text.append(tr("Musicien\n"));
+    if(r.getGroups().first().getModel()->getBanner())
+        text.append(tr("Étandard\n"));
+    if(r.getGroups().first().getModel()->getChampion())
+        text.append(tr("Champion\n"));
+
     if(owned)
     {
-
+        text.append(tr("Options : \n"));
         for(int i = 0; i< m->getOptions().size(); ++i)
         {
             if(m->getOptions().at(i).isActivated())
             {
+                text.append("- ");
                 text.append(m->getOptions()[i].displayString());
             }
         }
-        for(int i = 0; i<r.getGroups().first().getObjects().size(); ++i)
+        if(!r.getGroups().first().getObjects().isEmpty())
         {
-            text.append(r.getGroups().first().getObjects().at(i).displayString());
+            text.append("\nObjets magiques : \n");
+            for(int i = 0; i<r.getGroups().first().getObjects().size(); ++i)
+            {
+                text.append("- ");
+                text.append(r.getGroups().first().getObjects().at(i).displayString());
+            }
         }
     }
-    text.append(m->getSpecialRules());
+    text.append("\n" + m->getSpecialRules());
     ui->label->setText(text);
 }
 
