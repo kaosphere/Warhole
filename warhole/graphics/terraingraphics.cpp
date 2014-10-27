@@ -203,3 +203,46 @@ void TerrainGraphics::lockTerrainRequest()
 void TerrainGraphics::displayTerrainInfo()
 {
 }
+
+QDataStream& TerrainGraphics::serializeOut(QDataStream& out)
+{
+    out << (*this);
+    return out;
+}
+QDataStream& TerrainGraphics::serializeIn(QDataStream& in)
+{
+    in >> (*this);
+    return in;
+}
+
+QDataStream& operator<<(QDataStream& out, const TerrainGraphcics& obj);
+{
+    out << id
+        << t
+        << lock
+        << pos()
+        << transform();
+        
+    return out;
+}
+
+QDataStream& operator>>(QDataStream& in, TerrainGraphcics& obj)
+{
+    bool l;
+    QPointF position;
+    QTransform matrix;
+    
+    in >> obj.id;
+    in >> obj.t;
+    in >> l;
+    
+    obj.setLock(l);
+    
+    in >> position;
+    obj.setPos(position);
+    
+    in >> matrix;
+    obj.setTransform(matrix);
+    
+    return in;
+}
