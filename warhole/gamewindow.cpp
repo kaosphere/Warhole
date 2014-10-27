@@ -534,6 +534,14 @@ void GameWindow::getGlobalInfo(QDataStream& stream)
         (*k)->serializeOut(stream);
         ++k;
     }
+    
+    // Store terrains
+    stream << terrainsMap.size();
+    QMap<QString, TerrainGraphics*>::const_iterator l = terrainsMap.constBegin();
+    while (l != terrainsMap.constEnd()) {
+        (*l)->serializeOut(stream);
+        ++l;
+    }
 }
 
 void GameWindow::clearAllMaps()
@@ -558,9 +566,18 @@ void GameWindow::clearAllMaps()
         scene.removeItem(*k);
         ++k;
     }
+    
+    // clearing terrains
+    QMap<QString, TerrainGraphics*>::const_iterator l = terrainsMap.constBegin();
+    while (l != terrainsMap.constEnd()) {
+        scene.removeItem(*l);
+        ++l;
+    }
+    
     regimentMap.clear();
     rulerList.clear();
     roundTemplateList.clear();
+    terrainsMap.clear();
 }
 
 void GameWindow::setGlobalInfo(QDataStream& stream)
@@ -625,6 +642,21 @@ void GameWindow::setGlobalInfo(QDataStream& stream)
         connect(r, SIGNAL(templateMoved(QString,QPointF)), &controller, SIGNAL(templateMoved(QString, QPointF)));
         connect(r, SIGNAL(removeTemplateRequest(QString)), &controller, SIGNAL(removeTemplateRequest(QString)));
         scene.addItem(r);
+    }
+    
+    // Store terrains
+    stream >> size;
+    for(int i = 0; i < size; ++i)
+    {
+        TerrainGraphics* t = new TerrainGraphics();
+        t->serializeIn(stream);
+        terrainsMap[t->getId()] = t;
+
+        connect(t, SIGNAL(removeTerrainRequest(QString)), &controller, SIGNAL(removeTerrainRequest(QString)));
+        connect(t, SIGNAL(lockTerrainRequest(QString, bool)), &controller, SIGNAL(lockTerrainRequest(QString, bool)));
+        connect(t, SIGNAL(terrainMoved(QString,QPointF,QTransform)), &controller, SIGNAL(terrainMoved(QString, QPointF, QTransform)));
+    
+        scene.addItem(t);
     }
 }
 
