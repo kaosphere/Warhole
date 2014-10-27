@@ -66,6 +66,7 @@ private:
 
     QAction* actionRemoveTerrain;
     QAction* actionLockTerrain;
+    QAction* actionUnlockTerrain;
     QAction* actionSeeTerrainInfo;
 };
 
