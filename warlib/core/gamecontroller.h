@@ -62,6 +62,12 @@ signals:
     void loadGlobalInfoUpdate(QByteArray);
     void requestNewTerrain(Terrain);
     void newTerrain(QString, Terrain);
+    void removeTerrainRequest(QString);
+    void lockTerrainRequest(QString, bool);
+    void terrainMoved(QString, QPointF, QTransform);
+    void removeTerrain(QString);
+    void lockTerrain(QString, bool);
+    void moveTerrain(QString,QPointF,QTransform);
 
 public slots:
     void setNetwork();

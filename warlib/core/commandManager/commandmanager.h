@@ -58,6 +58,10 @@ signals:
     void serverInfoRequested(QString);
     void loadGlobalInfoUpdate(QByteArray);
     void newTerrain(QString, Terrain);
+    void removeTerrain(QString);
+    void lockTerrain(QString, bool);
+    void moveTerrain(QString, QPointF, QTransform);
+
     
 public slots:
     void processIncomingMessage();
@@ -79,6 +83,9 @@ public slots:
     void enqueueAddModelMessage(QString i, int nb);
     void enqueueChangeRegInfoMessage(QString i, RegimentAbstract r);
     void enQueueNewTerrainMessage(Terrain t);
+    void enQueueRemoveTerrainMessage(QString id);
+    void enQueueLockTerrainMessage(QString id, bool l);
+    void enQueueMoveTerrainMessage(QString i, QPointF p, QTransform matrix);
 
 private:
     static const QString LOG_ID_INFO;
@@ -112,6 +119,9 @@ private:
     void handleAddModelsMessage(QDataStream &data);
     void handleChangeRegInfoMessage(QDataStream &data);
     void handleNewTerrainMessage(QDataStream &data);
+    void handleRemoveTerrainMessage(QDataStream& data);
+    void handleLockTerrainMessage(QDataStream& data);
+    void handleMoveTerrainMessage(QDataStream& data);
 };
 
 #endif // COMMANDMANAGER_H

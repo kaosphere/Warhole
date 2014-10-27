@@ -659,6 +659,67 @@ void CommandManager::enQueueNewTerrainMessage(Terrain t)
     addMessageToOutQueue(m);
 }
 
+void CommandManager::enQueueRemoveTerrainMessage(QString id)
+{
+    Message m;
+    m.setDest(ALL);
+    m.setMessageSender(game->getMe());
+
+    QByteArray data;
+    QDataStream s(&data, QIODevice::WriteOnly);
+
+    s << TERRAIN_DELETE;
+    s << id;
+
+    m.setData(data);
+
+    QLog_Info(LOG_ID_INFO, "enQueueRemoveTerrainMessage() : remove terrain message with ID " + id);
+
+    addMessageToOutQueue(m);
+}
+
+void CommandManager::enQueueLockTerrainMessage(QString id, bool l)
+{
+    Message m;
+    m.setDest(ALL);
+    m.setMessageSender(game->getMe());
+
+    QByteArray data;
+    QDataStream s(&data, QIODevice::WriteOnly);
+
+    s << TERRAIN_LOCK;
+    s << id;
+    s << l;
+
+    m.setData(data);
+
+    QLog_Info(LOG_ID_INFO, "enQueueLockTerrainMessage() : lock terrain message with ID " + id);
+
+    addMessageToOutQueue(m);
+}
+
+void CommandManager::enQueueMoveTerrainMessage(QString i, QPointF p, QTransform matrix)
+{
+    Message m;
+    m.setDest(ALL_BUT_ME);
+    m.setMessageSender(game->getMe());
+
+    QByteArray data;
+    QDataStream s(&data, QIODevice::WriteOnly);
+
+    s << TERRAIN_MOVE;
+
+    s << i;
+    s << p;
+    s << matrix;
+
+    m.setData(data);
+
+    QLog_Info(LOG_ID_INFO, "enQueueMoveTerrainMessage() : terrain move message with ID " + i);
+
+    addMessageToOutQueue(m);
+}
+
 void CommandManager::handleNewTerrainMessage(QDataStream &data)
 {
     QString id;
@@ -670,6 +731,45 @@ void CommandManager::handleNewTerrainMessage(QDataStream &data)
     QLog_Info(LOG_ID_INFO, "handleAddModelsMessage() : add models message to regiment with ID " + id);
 
     emit newTerrain(id,t);
+}
+
+void CommandManager::handleRemoveTerrainMessage(QDataStream &data)
+{
+    QString id;
+
+    data >> id;
+
+    QLog_Info(LOG_ID_INFO, "handleRemoveTerrainMessage() : remove terraub message with ID " + id);
+
+    emit removeTerrain(id);
+}
+
+void CommandManager::handleLockTerrainMessage(QDataStream &data)
+{
+    QString id;
+    bool l;
+
+    data >> id;
+    data >> l;
+
+    QLog_Info(LOG_ID_INFO, "handleLockTerrainMessage() : lock terraub message with ID " + id);
+
+    emit lockTerrain(id, l);
+}
+
+void CommandManager::handleMoveTerrainMessage(QDataStream &data)
+{
+    QString id;
+    QPointF p;
+    QTransform matrix;
+
+    data >> id;
+    data >> p;
+    data >> matrix;
+
+    QLog_Info(LOG_ID_INFO, "handleMoveTerrainMessage() : lock terraub message with ID " + id);
+
+    emit moveTerrain(id, p, matrix);
 }
 
 void CommandManager::processIncomingMessage()
@@ -792,6 +892,21 @@ void CommandManager::processIncomingMessage()
         case NEW_TERRAIN:
             QLog_Info(LOG_ID_INFO, "processIncomingMessage() : New terrain message received.");
             handleNewTerrainMessage(stream);
+            break;
+
+        case TERRAIN_DELETE:
+            QLog_Info(LOG_ID_INFO, "processIncomingMessage() : New terrain message received.");
+            handleRemoveTerrainMessage(stream);
+            break;
+
+        case TERRAIN_LOCK:
+            QLog_Info(LOG_ID_INFO, "processIncomingMessage() : New terrain message received.");
+            handleLockTerrainMessage(stream);
+            break;
+
+        case TERRAIN_MOVE:
+            QLog_Info(LOG_ID_INFO, "processIncomingMessage() : New terrain message received.");
+            handleMoveTerrainMessage(stream);
             break;
 
         default:
