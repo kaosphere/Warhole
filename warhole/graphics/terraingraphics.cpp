@@ -15,6 +15,8 @@ TerrainGraphics::TerrainGraphics(QGraphicsItem *parent) :
     connect(actionLockTerrain, SIGNAL(triggered()), this, SLOT(lockTerrainRequest()));
     actionSeeTerrainInfo = new QAction(tr("Voir les infos du décor"), this);
     connect(actionSeeTerrainInfo, SIGNAL(triggered()), this, SLOT(displayTerrainInfo()));
+    actionUnlockTerrain = new QAction(tr("Dévérouiller"), this);
+    connect(actionUnlockTerrain, SIGNAL(triggered()), this, SLOT(unlockTerrainRequest());
 }
 
 TerrainGraphics::TerrainGraphics(Terrain ter, QGraphicsItem *parent):
@@ -35,6 +37,8 @@ TerrainGraphics::TerrainGraphics(Terrain ter, QGraphicsItem *parent):
     connect(actionLockTerrain, SIGNAL(triggered()), this, SLOT(lockTerrainRequest()));
     actionSeeTerrainInfo = new QAction(tr("Voir les infos du décor"), this);
     connect(actionSeeTerrainInfo, SIGNAL(triggered()), this, SLOT(displayTerrainInfo()));
+    actionUnlockTerrain = new QAction(tr("Dévérouiller"), this);
+    connect(actionUnlockTerrain, SIGNAL(triggered()), this, SLOT(unlockTerrainRequest());
 }
 
 QRectF TerrainGraphics::boundingRect() const
@@ -184,7 +188,10 @@ void TerrainGraphics::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 {
     QMenu *menu = new QMenu;
     menu->addAction(actionRemoveTerrain);
-    menu->addAction(actionLockTerrain);
+    if(lock)
+        menu->addAction(actionUnlockTerrain);
+    else
+        menu->addAction(actionLockTerrain);
     menu->addAction(actionSeeTerrainInfo);
     menu->popup(event->screenPos());
 }
@@ -198,6 +205,11 @@ void TerrainGraphics::removeTerrainRequest()
 void TerrainGraphics::lockTerrainRequest()
 {
     emit lockTerrainRequest(id, true);
+}
+
+void TerrainGraphics::unlockTerrainRequest()
+{
+    emit lockTerrainRequest(id, false);
 }
 
 void TerrainGraphics::displayTerrainInfo()
