@@ -59,7 +59,7 @@ GameController::GameController(QObject *parent) :
     connect(comManager, SIGNAL(newTerrain(QString, Terrain)), this, SIGNAL(newTerrain(QString, Terrain)));
     connect(this, SIGNAL(removeTerrainRequest(QString)), comManager, SLOT(enQueueRemoveTerrainMessage(QString)));
     connect(this, SIGNAL(lockTerrainRequest(QString, bool)), comManager, SLOT(enQueueLockTerrainMessage(QString, bool)));
-    connect(this, SIGNAL(terrainMoved(QString,QPointF,QTransform)), SLOT(enQueueMoveTerrainMessage(QString, QPointF, QTransform)));
+    connect(this, SIGNAL(terrainMoved(QString,QPointF,QTransform)), comManager, SLOT(enQueueMoveTerrainMessage(QString, QPointF, QTransform)));
     connect(comManager, SIGNAL(removeTerrain(QString)), this, SIGNAL(removeTerrain(QString)));
     connect(comManager, SIGNAL(lockTerrain(QString, bool)), this, SIGNAL(lockTerrain(QString, bool)));
     connect(comManager, SIGNAL(moveTerrain(QString,QPointF,QTransform)), this, SIGNAL(moveTerrain(QString,QPointF,QTransform)));
