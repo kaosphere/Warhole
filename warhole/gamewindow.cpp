@@ -128,6 +128,9 @@ void GameWindow::initGameWindow()
 
     connect(this, SIGNAL(requestNewTerrain(Terrain)), &controller, SIGNAL(requestNewTerrain(Terrain)));
     connect(&controller, SIGNAL(newTerrain(QString, Terrain)), this, SLOT(addNewTerrainToScene(QString, Terrain)));
+    connect(&controller, SIGNAL(removeTerrain(QString)), this, SLOT(removeTerrain(QString)));
+    connect(&controller, SIGNAL(lockTerrain(QString, bool)), this, SLOT(lockTerrain(QString, bool)));
+    connect(&controller, SIGNAL(moveTerrain(QString,QPointF,QTransform)), SLOT(moveTerrain(QString, QPointF, QTransform)));
 }
 
 GameWindow::~GameWindow()
@@ -695,10 +698,60 @@ void GameWindow::addNewTerrainToScene(QString id, Terrain t)
     ter->setId(id);
 
     connect(ter, SIGNAL(removeTerrainRequest(QString)), &controller, SIGNAL(removeTerrainRequest(QString)));
-    connect(ter, SIGNAL(lockTerrainRequest(QString)), &controller, SIGNAL(lockTerrainRequest(QString)));
+    connect(ter, SIGNAL(lockTerrainRequest(QString, bool)), &controller, SIGNAL(lockTerrainRequest(QString, bool)));
     connect(ter, SIGNAL(terrainMoved(QString,QPointF,QTransform)), &controller, SIGNAL(terrainMoved(QString, QPointF, QTransform)));
 
     terrainMap[id] = ter;
     scene.addItem(ter);
+}
+
+void GameWindow::removeTerrain(QString id)
+{
+    if(terrainMap.contains(id))
+    {
+        QLog_Info(LOG_ID_INFO, "removeTerrain() : regiment with ID " + id +
+                  " found, now removing it");
+        TerrainGraphics* t = terrainMap[id];
+        scene.removeItem(t);
+        emit cw->newMessageToSend("<em><font color=\"DimGray\">" + tr("Terrain ") +
+                                  terrainMap[id]->getT().getName() + " retiré de la partie.</em></font>");
+        delete t;
+        terrainMap.remove(id);
+    }
+    else
+    {
+        QLog_Error(LOG_ID_ERR, "removeTerrain() : terrain with ID " + id + " not found in map.");
+    }
+}
+
+void GameWindow::lockTerrain(QString id, bool l)
+{
+    if(terrainMap.contains(id))
+    {
+        QLog_Info(LOG_ID_INFO, "lockTerrain() : regiment with ID " + id +
+                  " found, now locking it");
+        terrainMap[id]->setLock(l);
+        emit cw->newMessageToSend("<em><font color=\"DimGray\">" + tr("Terrain ") +
+                                  terrainMap[id]->getT().getName() + " vérouillé.</em></font>");
+    }
+    else
+    {
+        QLog_Error(LOG_ID_ERR, "removeTerrain() : terrain with ID " + id + " not found in map.");
+    }
+}
+
+void GameWindow::moveTerrain(QString id, QPointF p, QTransform matrix)
+{
+    if(terrainMap.contains(id))
+    {
+        QLog_Info(LOG_ID_INFO, "lockTerrain() : regiment with ID " + id +
+                  " found, now moving it");
+        terrainMap[id]->setPos(p);
+        terrainMap[id]->setTransform(matrix);
+    }
+    else
+    {
+        QLog_Error(LOG_ID_ERR, "removeTerrain() : terrain with ID " + id + " not found in map.");
+    }
 }
 

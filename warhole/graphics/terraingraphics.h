@@ -6,6 +6,7 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QKeyEvent>
 #include <QAction>
+#include <QMenu>
 #include "game/terrain/terrain.h"
 #include "distances.h"
 
@@ -31,6 +32,7 @@ public:
 
     void updateLock();
 
+    void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
 protected:
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     void keyPressEvent(QKeyEvent *event);
@@ -40,7 +42,7 @@ protected:
 signals:
     void terrainMoved(QString, QPointF, QTransform);
     void removeTerrainRequest(QString);
-    void lockTerrainRequest(QString);
+    void lockTerrainRequest(QString, bool);
     
 public slots:
     void removeTerrainRequest();

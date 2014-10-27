@@ -94,6 +94,9 @@ public slots:
     void loadGlobalInfoUpdate(QByteArray info);
     void placeTerrainRequest();
     void addNewTerrainToScene(QString id, Terrain t);
+    void removeTerrain(QString id);
+    void lockTerrain(QString id, bool l);
+    void moveTerrain(QString id, QPointF p, QTransform matrix);
 
 private slots:
 

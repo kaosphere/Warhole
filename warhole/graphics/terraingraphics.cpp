@@ -167,6 +167,7 @@ bool TerrainGraphics::isLocked() const
 void TerrainGraphics::setLock(bool value)
 {
     lock = value;
+    updateLock();
 }
 
 void TerrainGraphics::updateLock()
@@ -179,6 +180,15 @@ void TerrainGraphics::updateLock()
         setFlag(ItemIsMovable);
 }
 
+void TerrainGraphics::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
+{
+    QMenu *menu = new QMenu;
+    menu->addAction(actionRemoveTerrain);
+    menu->addAction(actionLockTerrain);
+    menu->addAction(actionSeeTerrainInfo);
+    menu->popup(event->screenPos());
+}
+
 
 void TerrainGraphics::removeTerrainRequest()
 {
@@ -187,7 +197,7 @@ void TerrainGraphics::removeTerrainRequest()
 
 void TerrainGraphics::lockTerrainRequest()
 {
-    emit lockTerrainRequest(id);
+    emit lockTerrainRequest(id, true);
 }
 
 void TerrainGraphics::displayTerrainInfo()
