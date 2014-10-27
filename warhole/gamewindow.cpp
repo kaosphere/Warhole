@@ -763,8 +763,16 @@ void GameWindow::lockTerrain(QString id, bool l)
         QLog_Info(LOG_ID_INFO, "lockTerrain() : regiment with ID " + id +
                   " found, now locking it");
         terrainMap[id]->setLock(l);
-        emit cw->newMessageToSend("<em><font color=\"DimGray\">" + tr("Terrain ") +
+        if(l)
+        {
+            emit cw->newMessageToSend("<em><font color=\"DimGray\">" + tr("Terrain ") +
                                   terrainMap[id]->getT().getName() + " vérouillé.</em></font>");
+        }
+        else
+        {
+            emit cw->newMessageToSend("<em><font color=\"DimGray\">" + tr("Terrain ") +
+                                  terrainMap[id]->getT().getName() + " dévérouillé.</em></font>");
+        }
     }
     else
     {
