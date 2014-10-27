@@ -53,6 +53,7 @@ signals:
 public slots:
     void removeTerrainRequest();
     void lockTerrainRequest();
+    void unlockTerrainRequest();
     void displayTerrainInfo();
 
 private:
