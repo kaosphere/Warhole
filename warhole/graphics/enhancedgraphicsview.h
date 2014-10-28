@@ -49,6 +49,14 @@ public slots:
     * Slot that zooms out from the view.
     */
     void zoomOut();
+    
+    //! changeSideView.
+    /*!
+    * Rotates the view by an angle of 180 degrees to see
+    * from the other side of the table.
+    */
+    void changeSideView();
+    
 protected:
     //! wheelEvent.
     /*!
