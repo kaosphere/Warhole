@@ -74,7 +74,7 @@ void NetworkServer::removeClient(Client* c)
 void NetworkServer::receiveData()
 {
     // Receive data, and put it in inQueue
-    quint16 tailleMsg;
+    quint32 tailleMsg;
     QString name;
     int dest;
     QTcpSocket* s;
@@ -94,7 +94,7 @@ void NetworkServer::receiveData()
 
         if (c->getMessageSize() == 0) // Si on ne connaît pas encore la taille du message, on essaie de la récupérer
         {
-            if (s->bytesAvailable() < (int)sizeof(quint16)) // On n'a pas reçu la taille du message en entier
+            if (s->bytesAvailable() < (int)sizeof(quint32)) // On n'a pas reçu la taille du message en entier
                 return;
 
             in >> tailleMsg; // Si on a reçu la taille du message en entier, on la récupère
@@ -255,12 +255,12 @@ QByteArray NetworkServer::fillPacketWithMessage(const Message& m)
 
     // TODO : put message serialization in message class
 
-    out << (quint16) 0; // On écrit 0 au début du paquet pour réserver la place pour écrire la taille
+    out << (quint32) 0; // On écrit 0 au début du paquet pour réserver la place pour écrire la taille
     out << m.getMessageSender(); // Envoyeur
     out << (int)m.getDest(); // Destinataire (utilisé par le server seulement)
     out << m.getData(); // On ajoute le message à la suite
     out.device()->seek(0); // On se replace au début du paquet
-    out << (quint16) (packet.size() - sizeof(quint16)); // On écrase le 0 qu'on avait réservé par la longueur du message
+    out << (quint32) (packet.size() - sizeof(quint32)); // On écrase le 0 qu'on avait réservé par la longueur du message
 
     return packet;
 }

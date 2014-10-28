@@ -61,12 +61,12 @@ void Client::setSocket(QTcpSocket* s)
     sock = s;
 }
 
-quint16 Client::getMessageSize() const
+quint32 Client::getMessageSize() const
 {
     return messageSize;
 }
 
-void Client::setMessageSize(const quint16 &value)
+void Client::setMessageSize(const quint32 &value)
 {
     messageSize = value;
 }

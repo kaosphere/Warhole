@@ -45,7 +45,7 @@ private:
     static const QString LOG_ID_ERR;
 
     QTcpSocket* sock;
-    quint16 messageSize;
+    quint32 messageSize;
 };
 
 #endif // NETWORKCLIENT_H

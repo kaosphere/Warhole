@@ -17,8 +17,8 @@ public:
     QTcpSocket* getSocket();
     void setSocket(QTcpSocket* s);
 
-    quint16 getMessageSize() const;
-    void setMessageSize(const quint16 &value);
+    quint32 getMessageSize() const;
+    void setMessageSize(const quint32 &value);
 
     bool operator=(const Client& other);
 
@@ -40,7 +40,7 @@ private:
 
     QTcpSocket* sock;
     QString name;
-    quint16 messageSize;
+    quint32 messageSize;
 };
 
 #endif // CLIENT_H

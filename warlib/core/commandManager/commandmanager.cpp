@@ -591,7 +591,7 @@ void CommandManager::handleChangeRegInfoMessage(QDataStream &data)
     data >> id;
     data >> r;
 
-    QLog_Info(LOG_ID_INFO, "handleAddModelsMessage() : add models message to regiment with ID " + id);
+    QLog_Info(LOG_ID_INFO, "handleAddModelsMessage() : change reg info, regiment with ID " + id);
 
     emit changeRegInfo(id,r);
 }
@@ -627,7 +627,7 @@ void CommandManager::enqueueChangeRegInfoMessage(QString i, RegimentAbstract r)
     QByteArray data;
     QDataStream s(&data, QIODevice::WriteOnly);
 
-    s << NEW_REGIMENT;
+    s << REGIMENT_CHANGE_INFO;
     s << i;
     s << r;
 
@@ -728,7 +728,7 @@ void CommandManager::handleNewTerrainMessage(QDataStream &data)
     data >> id;
     data >> t;
 
-    QLog_Info(LOG_ID_INFO, "handleAddModelsMessage() : add models message to regiment with ID " + id);
+    QLog_Info(LOG_ID_INFO, "handleNewTerrainMessage() : add new terrain with ID " + id);
 
     emit newTerrain(id,t);
 }
@@ -767,7 +767,7 @@ void CommandManager::handleMoveTerrainMessage(QDataStream &data)
     data >> p;
     data >> matrix;
 
-    QLog_Info(LOG_ID_INFO, "handleMoveTerrainMessage() : lock terraub message with ID " + id);
+    QLog_Info(LOG_ID_INFO, "handleMoveTerrainMessage() : move terrain message with ID " + id);
 
     emit moveTerrain(id, p, matrix);
 }
@@ -900,12 +900,12 @@ void CommandManager::processIncomingMessage()
             break;
 
         case TERRAIN_LOCK:
-            QLog_Info(LOG_ID_INFO, "processIncomingMessage() : New terrain message received.");
+            QLog_Info(LOG_ID_INFO, "processIncomingMessage() : Terrain lock message received.");
             handleLockTerrainMessage(stream);
             break;
 
         case TERRAIN_MOVE:
-            QLog_Info(LOG_ID_INFO, "processIncomingMessage() : New terrain message received.");
+            QLog_Info(LOG_ID_INFO, "processIncomingMessage() : Move terrain message received.");
             handleMoveTerrainMessage(stream);
             break;
 

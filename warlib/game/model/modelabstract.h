@@ -191,6 +191,7 @@ public:
 
     // Fucking ugly hack TODO change later
     virtual QString getSpecialRules() const = 0;
+    virtual void setSpecialRules(const QString &value) = 0;
 
     StatsModel getStats() const;
     void setStats(const StatsModel &value);

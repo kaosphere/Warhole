@@ -77,12 +77,12 @@ void NetworkClient::sendToServer(const Message& m)
     QByteArray packet;
     QDataStream out(&packet, QIODevice::WriteOnly);
 
-    out << (quint16) 0; // On écrit 0 au début du paquet pour réserver la place pour écrire la taille
+    out << (quint32) 0; // On écrit 0 au début du paquet pour réserver la place pour écrire la taille
     out << m.getMessageSender();
     out << (int)m.getDest();
     out << m.getData(); // On ajoute le message à la suite
     out.device()->seek(0); // On se replace au début du paquet
-    out << (quint16) (packet.size() - sizeof(quint16)); // On écrase le 0 qu'on avait réservé par la longueur du message
+    out << (quint32) (packet.size() - sizeof(quint32)); // On écrase le 0 qu'on avait réservé par la longueur du message
 
     sock->write(packet); // On envoie le paquet
 
@@ -99,7 +99,7 @@ void NetworkClient::receiveData()
     {
         if (messageSize == 0)
         {
-            if (sock->bytesAvailable() < (int)sizeof(quint16))
+            if (sock->bytesAvailable() < (int)sizeof(quint32))
                 return;
 
             in >> messageSize;
