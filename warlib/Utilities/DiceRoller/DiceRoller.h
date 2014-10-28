@@ -4,13 +4,23 @@
 #include "Utilities/QLogger/QLogger.h"
 
 #include <QList>
-#include <QStringList>
+#include <QtCore>
+#include <QObject>
+#include <QTranslator>
 #include <QPair>
 #include <time.h>
 #include <stdlib.h>
 #include <QTextStream>
+#include <QtAlgorithms>
 
-enum Dice { D2 = 0, D3, D4, D6, D8, D10, D12, D20};
+enum Dice { D2 = 2,
+            D3 = 3,
+            D4 = 4,
+            D6 = 6,
+            D8 = 8,
+            D10 = 10,
+            D12 = 12,
+            D20 = 20};
 
 class DiceRoller
 {

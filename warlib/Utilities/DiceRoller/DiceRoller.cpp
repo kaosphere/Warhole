@@ -29,11 +29,13 @@ QString DiceRoller::rollDiceString(Dice die, int nbDice)
 	{
 		l << QString::number(computeDiceOutput(die));
 	}
+    qSort(l.begin(), l.end(),qLess<QString>());
 	QString str;
 	QTextStream info(&str);
-	info << "Launched " << QString::number(nbDice) << " dice : ";
+    info << "<em><font color=\"DimGray\">" << QObject::tr("Lancé ") <<
+            QString::number(nbDice) << QObject::tr(" dés : ") << "</em></font>";
 	for (int i = 0; i < l.size(); ++i)
-          info << l.at(i).toLocal8Bit().constData() << ", ";
+          info << l.at(i) << ", ";
     info << endl;
 	return str;
 }
