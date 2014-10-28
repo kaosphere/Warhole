@@ -7,5 +7,6 @@
         <file>ressources/ruler-icon-12.gif</file>
         <file>ressources/ruler-icon-18.gif</file>
         <file>ressources/ruler-icon-24.gif</file>
+        <file>ressources/dice.png</file>
     </qresource>
 </RCC>

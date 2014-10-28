@@ -5,6 +5,7 @@
 #include <QTextStream>
 #include <QStandardItemModel>
 #include "game/player.h"
+#include "Utilities/DiceRoller/DiceRoller.h"
 
 namespace Ui {
 class ChatWidgetForm;
@@ -23,6 +24,8 @@ private slots:
     void on_pushButton_clicked();
     void printNewChatMessage(QString sender, QString msg);
     void refreshPlayerListDisplay(QList<Player> l);
+
+    void on_pushButton_2_clicked();
 
 signals:
     void newMessageToSend(QString m);

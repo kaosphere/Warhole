@@ -26,6 +26,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     ui->textEdit->setReadOnly(true);
+    ui->textEdit->ensureCursorVisible();
 
     QMenu *menuFichier = menuBar()->addMenu(tr("&Fichier"));
 

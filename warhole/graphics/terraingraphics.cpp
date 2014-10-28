@@ -9,6 +9,8 @@ TerrainGraphics::TerrainGraphics(QGraphicsItem *parent) :
     rot = false;
     firstRot = true;
 
+    lock = false;
+
     actionRemoveTerrain = new QAction(tr("Retirer"), this);
     connect(actionRemoveTerrain, SIGNAL(triggered()),this, SLOT(removeTerrainRequest()));
     actionLockTerrain = new QAction(tr("Vérouiller"), this);
@@ -16,7 +18,7 @@ TerrainGraphics::TerrainGraphics(QGraphicsItem *parent) :
     actionSeeTerrainInfo = new QAction(tr("Voir les infos du décor"), this);
     connect(actionSeeTerrainInfo, SIGNAL(triggered()), this, SLOT(displayTerrainInfo()));
     actionUnlockTerrain = new QAction(tr("Dévérouiller"), this);
-    connect(actionUnlockTerrain, SIGNAL(triggered()), this, SLOT(unlockTerrainRequest());
+    connect(actionUnlockTerrain, SIGNAL(triggered()), this, SLOT(unlockTerrainRequest()));
 }
 
 TerrainGraphics::TerrainGraphics(Terrain ter, QGraphicsItem *parent):
@@ -31,6 +33,8 @@ TerrainGraphics::TerrainGraphics(Terrain ter, QGraphicsItem *parent):
     rot = false;
     firstRot = true;
 
+    lock = false;
+
     actionRemoveTerrain = new QAction(tr("Retirer"), this);
     connect(actionRemoveTerrain, SIGNAL(triggered()),this, SLOT(removeTerrainRequest()));
     actionLockTerrain = new QAction(tr("Vérouiller"), this);
@@ -38,7 +42,7 @@ TerrainGraphics::TerrainGraphics(Terrain ter, QGraphicsItem *parent):
     actionSeeTerrainInfo = new QAction(tr("Voir les infos du décor"), this);
     connect(actionSeeTerrainInfo, SIGNAL(triggered()), this, SLOT(displayTerrainInfo()));
     actionUnlockTerrain = new QAction(tr("Dévérouiller"), this);
-    connect(actionUnlockTerrain, SIGNAL(triggered()), this, SLOT(unlockTerrainRequest());
+    connect(actionUnlockTerrain, SIGNAL(triggered()), this, SLOT(unlockTerrainRequest()));
 }
 
 QRectF TerrainGraphics::boundingRect() const
@@ -227,18 +231,18 @@ QDataStream& TerrainGraphics::serializeIn(QDataStream& in)
     return in;
 }
 
-QDataStream& operator<<(QDataStream& out, const TerrainGraphcics& obj);
+QDataStream& operator<<(QDataStream& out, const TerrainGraphics& obj)
 {
-    out << id
-        << t
-        << lock
-        << pos()
-        << transform();
+    out << obj.id
+        << obj.t
+        << obj.lock
+        << obj.pos()
+        << obj.transform();
         
     return out;
 }
 
-QDataStream& operator>>(QDataStream& in, TerrainGraphcics& obj)
+QDataStream& operator>>(QDataStream& in, TerrainGraphics& obj)
 {
     bool l;
     QPointF position;

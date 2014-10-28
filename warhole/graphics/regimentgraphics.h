@@ -13,6 +13,7 @@
 #include "Utilities/QLogger/QLogger.h"
 #include "getintdialog.h"
 #include "statsdisplayform.h"
+#include "regimentinfodialog.h"
 
 class RegimentGraphics : public QGraphicsObject
 {

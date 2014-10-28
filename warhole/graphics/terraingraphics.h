@@ -37,8 +37,8 @@ public:
     QDataStream& serializeOut(QDataStream& out);
     QDataStream& serializeIn(QDataStream& in);
     
-    friend QDataStream& operator<<(QDataStream& out, const TerrainGraphcics& obj);
-    friend QDataStream& operator>>(QDataStream& in, TerrainGraphcics& obj);
+    friend QDataStream& operator<<(QDataStream& out, const TerrainGraphics& obj);
+    friend QDataStream& operator>>(QDataStream& in, TerrainGraphics& obj);
 protected:
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     void keyPressEvent(QKeyEvent *event);

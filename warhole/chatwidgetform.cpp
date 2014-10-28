@@ -10,6 +10,8 @@ ChatWidgetForm::ChatWidgetForm(QWidget *parent) :
     players = new QStandardItemModel();
     ui->treeView->setModel(players);
 
+    ui->textEdit->ensureCursorVisible();
+
     QObject::connect(ui->lineEdit, SIGNAL(returnPressed()),this,SLOT(on_pushButton_clicked()));
 }
 
@@ -49,4 +51,9 @@ void ChatWidgetForm::refreshPlayerListDisplay(QList<Player> l)
 void ChatWidgetForm::appendString(QString s)
 {
     ui->textEdit->append(s);
+}
+
+void ChatWidgetForm::on_pushButton_2_clicked()
+{
+    emit newMessageToSend(DiceRoller::rollDiceString(D6, ui->spinBox->value()));
 }

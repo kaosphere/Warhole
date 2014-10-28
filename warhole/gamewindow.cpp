@@ -120,7 +120,7 @@ void GameWindow::initGameWindow()
     connect(&controller, SIGNAL(removeDeads(QString,int)), this, SLOT(removeDeadsFromRegiment(QString, int)));
     connect(&controller, SIGNAL(changeRegimentWidth(QString,int)), this, SLOT(changeRegimentWidth(QString, int)));
     connect(&controller, SIGNAL(addModels(QString,int)), this, SLOT(addModelToRegiment(QString, int)));
-    connect(&controller, SIGNAL(changeRegInfo(QString,RegimentAbstract)), this, SLOT(changeRegimentInfo(QString, RegimentAbstract)));
+    connect(&controller, SIGNAL(changeRegInfo(QString,RegimentAbstract)), this, SLOT(changeRegInfo(QString, RegimentAbstract)));
 
     connect(&controller, SIGNAL(serverInfoRequested(QString)), this, SLOT(packGameDataForGlobalUpdate(QString)));
     connect(this, SIGNAL(sendGlobalInfoUpdate(QString,QByteArray)), &controller, SIGNAL(sendGlobalInfoUpdate(QString, QByteArray)));
@@ -308,7 +308,6 @@ void GameWindow::moveRegiment(QString id, QPointF p, QTransform matrix)
         QLog_Error(LOG_ID_ERR, "moveRegiment() : regiment with ID " + id + " not found is item list.");
     }
 }
-
 
 void GameWindow::removeRegiment(QString id)
 {
@@ -536,9 +535,9 @@ void GameWindow::getGlobalInfo(QDataStream& stream)
     }
     
     // Store terrains
-    stream << terrainsMap.size();
-    QMap<QString, TerrainGraphics*>::const_iterator l = terrainsMap.constBegin();
-    while (l != terrainsMap.constEnd()) {
+    stream << terrainMap.size();
+    QMap<QString, TerrainGraphics*>::const_iterator l = terrainMap.constBegin();
+    while (l != terrainMap.constEnd()) {
         (*l)->serializeOut(stream);
         ++l;
     }
@@ -568,8 +567,8 @@ void GameWindow::clearAllMaps()
     }
     
     // clearing terrains
-    QMap<QString, TerrainGraphics*>::const_iterator l = terrainsMap.constBegin();
-    while (l != terrainsMap.constEnd()) {
+    QMap<QString, TerrainGraphics*>::const_iterator l = terrainMap.constBegin();
+    while (l != terrainMap.constEnd()) {
         scene.removeItem(*l);
         ++l;
     }
@@ -577,7 +576,7 @@ void GameWindow::clearAllMaps()
     regimentMap.clear();
     rulerList.clear();
     roundTemplateList.clear();
-    terrainsMap.clear();
+    terrainMap.clear();
 }
 
 void GameWindow::setGlobalInfo(QDataStream& stream)
@@ -595,8 +594,6 @@ void GameWindow::setGlobalInfo(QDataStream& stream)
     me = controller.getGame().getMe();
     controller.setGame(g);
     controller.getGamePtr()->setMe(me);
-
-    QLog_Info(LOG_ID_INFO, controller.getGame().getName());
 
     // Store regiments
     stream >> size;
@@ -650,7 +647,7 @@ void GameWindow::setGlobalInfo(QDataStream& stream)
     {
         TerrainGraphics* t = new TerrainGraphics();
         t->serializeIn(stream);
-        terrainsMap[t->getId()] = t;
+        terrainMap[t->getId()] = t;
 
         connect(t, SIGNAL(removeTerrainRequest(QString)), &controller, SIGNAL(removeTerrainRequest(QString)));
         connect(t, SIGNAL(lockTerrainRequest(QString, bool)), &controller, SIGNAL(lockTerrainRequest(QString, bool)));
@@ -673,7 +670,6 @@ void GameWindow::on_actionSave_Game_triggered()
     getGlobalInfo(stream);
 
     emit cw->newMessageToSend("<em><font color=\"DimGray\">" + tr("Partie sauvegardée.") + "</em></font>");
-
     file.close();
 }
 
@@ -696,6 +692,7 @@ void GameWindow::on_actionCharger_une_partie_triggered()
     
     file.close();
 }
+
 
 void GameWindow::on_treeViewTerrains_customContextMenuRequested(const QPoint &pos)
 {
@@ -745,8 +742,6 @@ void GameWindow::removeTerrain(QString id)
                   " found, now removing it");
         TerrainGraphics* t = terrainMap[id];
         scene.removeItem(t);
-        emit cw->newMessageToSend("<em><font color=\"DimGray\">" + tr("Terrain ") +
-                                  terrainMap[id]->getT().getName() + " retiré de la partie.</em></font>");
         delete t;
         terrainMap.remove(id);
     }
@@ -763,16 +758,6 @@ void GameWindow::lockTerrain(QString id, bool l)
         QLog_Info(LOG_ID_INFO, "lockTerrain() : regiment with ID " + id +
                   " found, now locking it");
         terrainMap[id]->setLock(l);
-        if(l)
-        {
-            emit cw->newMessageToSend("<em><font color=\"DimGray\">" + tr("Terrain ") +
-                                  terrainMap[id]->getT().getName() + " vérouillé.</em></font>");
-        }
-        else
-        {
-            emit cw->newMessageToSend("<em><font color=\"DimGray\">" + tr("Terrain ") +
-                                  terrainMap[id]->getT().getName() + " dévérouillé.</em></font>");
-        }
     }
     else
     {
