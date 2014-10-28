@@ -82,5 +82,12 @@ void EnhancedGraphicsView::scaleBy(double factor)
     scale(factor, factor);
 }
 
+void EnhancedGraphicsView::changeSideView()
+{
+    // Rotate the view by 180 degree to simulate the fact
+    // to be on the other side of the table
+    rotate(180);
+}
+
 
 
