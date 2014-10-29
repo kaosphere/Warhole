@@ -23,6 +23,7 @@ void BlowTemplateGraphics::initRoundTemplateGraphics()
 
     rot = false;
     firstRot = true;
+    previousRot = 0;
 
     setFlag(ItemIsMovable);
     setFlag(ItemIsFocusable);
@@ -68,20 +69,96 @@ void BlowTemplateGraphics::paint(QPainter *painter, const QStyleOptionGraphicsIt
 
 void BlowTemplateGraphics::setId(QString value)
 {
+    id = value;
+}
+
+QString BlowTemplateGraphics::getId() const
+{
+    return id;
 }
 
 void BlowTemplateGraphics::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    QGraphicsItem::mouseMoveEvent(event);
+    static qreal translation;
+    if(rot)
+    {
+        static int offset = 0;
+        if(firstRot)
+        {
+            if(event->pos().x() < boundingRect().center().x())
+            {
+                translation = boundingRect().right();
+                offset = 180;
+            }
+            else
+            {
+                translation = 0;
+                offset = 0;
+            }
+            firstRot = false;
+        }
+    
+        QPointF originPoint = mapToScene(translation, 0);
+        qreal a1 = event->scenePos().x() - originPoint.x();
+        qreal a2 = event->scenePos().y() - originPoint.y();
+        qreal angle = qAtan2(a2, a1);
+        
+        QTransform trans;
+        trans.translate(translation,0).rotate(-previousRot).rotate((angle * 180 / 3.14) + offset).translate(-translation,0);
+        setTransform(trans, true);
+        
+        previousRot = ((angle * 180 / 3.14) + offset);
+    
+        if((++cnt)%6 == 0)
+        {
+            cnt = 1;
+            emit templateMoved(id, pos(), transform());
+        }
+    }
+    else
+    {
+        if((++cnt)%6 == 0)
+        {
+            cnt = 1;
+            emit templateMoved(id, pos(), transform());
+        }
+        QGraphicsItem::mouseMoveEvent(event);
+    }
 }
 
 void BlowTemplateGraphics::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
+    // End of movement, send final position
+    emit templateMoved(id, pos(), transform());
+    
     QGraphicsItem::mouseReleaseEvent(event);
+}
+
+void BlowTemplateGraphics::keyPressEvent(QKeyEvent *event)
+{
+    if(event->key() == Qt::Key_R)
+    {
+        rot = true;
+    }
+    QGraphicsItem::keyPressEvent(event);
+}
+
+void BlowTemplateGraphics::keyReleaseEvent(QKeyEvent *event)
+{
+    if(event->key() == Qt::Key_R && !event->isAutoRepeat())
+    {
+        rot = false;
+        firstRot = true;
+        previousRot = 0;
+    }
+    QGraphicsItem::keyReleaseEvent(event);
 }
 
 void BlowTemplateGraphics::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 {
+    QMenu *menu = new QMenu;
+    menu->addAction(actionRemoveTemplate);
+    menu->popup(event->screenPos());
 }
 
 QDataStream &BlowTemplateGraphics::serializeOut(QDataStream &out)
@@ -98,17 +175,29 @@ QDataStream &BlowTemplateGraphics::serializeIn(QDataStream &in)
 
 QDataStream &operator <<(QDataStream &out, const BlowTemplateGraphics &obj)
 {
+    out << obj.id
+        << obj.pos()
+        << obj.transform();
+        
+    return out;
 }
 
 QDataStream &operator >>(QDataStream &in, BlowTemplateGraphics &obj)
 {
+    QPointF position; 
+    QTransform matrix;
+    
+    in >> obj.id;
+    in >> position;
+    in >> matrix;
+    
+    obj.setPos(position);
+    obj.setTransform(matrix);
+    
+    return in;
 }
-
-QString BlowTemplateGraphics::getId() const
-{
-}
-
 
 void BlowTemplateGraphics::removeTemplate()
 {
+    emit removeTemplateRequest(id);
 }
