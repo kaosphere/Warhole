@@ -33,6 +33,7 @@
 #include "graphics/roundtemplategraphics.h"
 #include "getintdialog.h"
 #include "graphics/terraingraphics.h"
+#include "graphics/blowtemplategraphics.h"
 
 
 namespace Ui {

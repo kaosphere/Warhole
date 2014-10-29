@@ -55,7 +55,9 @@ SOURCES += main.cpp\
     statsdisplaywidget.cpp \
     terrainwindow.cpp \
     graphics/terraingraphics.cpp \
-    regimentinfodialog.cpp
+    regimentinfodialog.cpp \
+    graphics/graphicalobjectabstract.cpp \
+    graphics/blowtemplategraphics.cpp
 
 HEADERS  += mainwindow.h \
     modelwindow.h \
@@ -80,7 +82,9 @@ HEADERS  += mainwindow.h \
     statsdisplaywidget.h \
     terrainwindow.h \
     graphics/terraingraphics.h \
-    regimentinfodialog.h
+    regimentinfodialog.h \
+    graphics/graphicalobjectabstract.h \
+    graphics/blowtemplategraphics.h
 
 TRANSLATIONS = warhole_en.ts
 
