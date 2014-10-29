@@ -542,6 +542,14 @@ void GameWindow::getGlobalInfo(QDataStream& stream)
         (*l)->serializeOut(stream);
         ++l;
     }
+    
+    // Store blow templates
+    stream << blowTemplateList.size();
+    QMap<QString, BlowTemplateGraphics*>::const_iterator m = blowTemplateList.constBegin();
+    while (m != blowTemplateList.constEnd()) {
+        (*m)->serializeOut(stream);
+        ++m;
+    }
 }
 
 void GameWindow::clearAllMaps()
@@ -574,10 +582,19 @@ void GameWindow::clearAllMaps()
         ++l;
     }
     
+    // clearing blow templates
+    QMap<QString, BlowTemplateGraphics*>::const_iterator m = blowTemplateList.constBegin();
+    while (m != blowTemplateList.constEnd()) {
+        scene.removeItem(*m);
+        ++m;
+    }
+    
     regimentMap.clear();
     rulerList.clear();
     roundTemplateList.clear();
     terrainMap.clear();
+    blowTemplateList.clear();
+    // TODO : verify if clear() deletes items
 }
 
 void GameWindow::setGlobalInfo(QDataStream& stream)
@@ -655,6 +672,19 @@ void GameWindow::setGlobalInfo(QDataStream& stream)
         connect(t, SIGNAL(terrainMoved(QString,QPointF,QTransform)), &controller, SIGNAL(terrainMoved(QString, QPointF, QTransform)));
     
         scene.addItem(t);
+    }
+    
+    // Store blow template
+    stream >> size;
+    for(int i = 0; i < size; ++i)
+    {
+        BlowTemplateGraphics* b = new TerrainGraphics(id);
+
+        connect(b, SIGNAL(removeTemplateRequest(QString)), &controller, SIGNAL(removeTemplateRequest(QString)));
+        connect(b, SIGNAL(templateMoved(QString,QPointF,QTransform)), &controller, SIGNAL(templateMoved(QString, QPointF, QTransform)));
+    
+        blowTemplateList[id] = b;
+        scene.addItem(b);
     }
 }
 
@@ -744,7 +774,7 @@ void GameWindow::removeTerrain(QString id)
 {
     if(terrainMap.contains(id))
     {
-        QLog_Info(LOG_ID_INFO, "removeTerrain() : regiment with ID " + id +
+        QLog_Info(LOG_ID_INFO, "removeTerrain() : terrain with ID " + id +
                   " found, now removing it");
         TerrainGraphics* t = terrainMap[id];
         scene.removeItem(t);
@@ -761,7 +791,7 @@ void GameWindow::lockTerrain(QString id, bool l)
 {
     if(terrainMap.contains(id))
     {
-        QLog_Info(LOG_ID_INFO, "lockTerrain() : regiment with ID " + id +
+        QLog_Info(LOG_ID_INFO, "lockTerrain() : terrain with ID " + id +
                   " found, now locking it");
         terrainMap[id]->setLock(l);
     }
@@ -775,14 +805,57 @@ void GameWindow::moveTerrain(QString id, QPointF p, QTransform matrix)
 {
     if(terrainMap.contains(id))
     {
-        QLog_Info(LOG_ID_INFO, "lockTerrain() : regiment with ID " + id +
+        QLog_Info(LOG_ID_INFO, "moveTerrain() : terrain with ID " + id +
                   " found, now moving it");
         terrainMap[id]->setPos(p);
         terrainMap[id]->setTransform(matrix);
     }
     else
     {
-        QLog_Error(LOG_ID_ERR, "removeTerrain() : terrain with ID " + id + " not found in map.");
+        QLog_Error(LOG_ID_ERR, "moveTerrain() : terrain with ID " + id + " not found in map.");
+    }
+}
+
+void GameWindow::addNewBlowTemplateToScene(QString id)
+{
+    BlowTemplateGraphics* b = new TerrainGraphics(id);
+
+    connect(b, SIGNAL(removeTemplateRequest(QString)), &controller, SIGNAL(removeTemplateRequest(QString)));
+    connect(b, SIGNAL(templateMoved(QString,QPointF,QTransform)), &controller, SIGNAL(templateMoved(QString, QPointF, QTransform)));
+
+    blowTemplateList[id] = b;
+    scene.addItem(b);
+}
+
+void GameWindow::moveBlowTemplate(QString id)
+{
+    if(blowTemplateList.contains(id))
+    {
+        QLog_Info(LOG_ID_INFO, "moveBlowTemplate() : blow template with ID " + id +
+                  " found, now moving it");
+        blowTemplateList[id]->setPos(p);
+        blowTemplateList[id]->setTransform(matrix);
+    }
+    else
+    {
+        QLog_Error(LOG_ID_ERR, "moveBlowTemplate() : blow template with ID " + id + " not found in map.");
+    }
+}
+
+void GameWindow::removeBlowTemplate(QString id)
+{
+    if(blowTemplateList.contains(id))
+    {
+        QLog_Info(LOG_ID_INFO, "removeBlowTemplate() : blow template with ID " + id +
+                  " found, now removing it");
+        BlowTemplateGraphics* t = blowTemplateList[id];
+        scene.removeItem(t);
+        delete t;
+        blowTemplateList.remove(id);
+    }
+    else
+    {
+        QLog_Error(LOG_ID_ERR, "removeBlowTemplate() : blow template with ID " + id + " not found in map.");
     }
 }
 
