@@ -98,6 +98,9 @@ public slots:
     void removeTerrain(QString id);
     void lockTerrain(QString id, bool l);
     void moveTerrain(QString id, QPointF p, QTransform matrix);
+    void addNewBlowTemplateToScene(QString id);
+    void moveBlowTemplate(QString id);
+    void removeBlowTemplate(QString id);
 
 private slots:
 
@@ -116,6 +119,7 @@ signals:
     void newRegimentRequest(QString, RegimentAbstract);
     void sendGlobalInfoUpdate(QString, QByteArray);
     void requestNewTerrain(Terrain);
+    void requestNewBlowTemplate();
 
 private:
     static const QString LOG_ID_TRACE;
@@ -142,7 +146,7 @@ private:
 
     QMap<QString, RulerGraphics*> rulerList;
     QMap<QString, RoundTemplateGraphics*> roundTemplateList;
-
+    QMap<QString, BlowTemplateGraphics*> blowTemplateList;
     QMap<QString, RegimentGraphics*> regimentMap;
     QMap<QString, TerrainGraphics*> terrainMap;
 
