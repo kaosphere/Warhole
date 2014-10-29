@@ -39,10 +39,7 @@ QRectF RoundTemplateGraphics::boundingRect() const
 void RoundTemplateGraphics::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     // Paint main circle, do this in a path to empty the middle circle
-    QPainterPath p;
-
-    p.addEllipse(boundingRect());
-    p.addEllipse(boundingRect().center(), ONE_INCH/4, ONE_INCH/4);
+    QPainterPath p = shape();
 
     QLinearGradient gradient(0, 0, diameter * ONE_INCH, 0);
     gradient.setColorAt(0, QColor::fromRgb(qRgba(221, 209, 92, 0.8)));
