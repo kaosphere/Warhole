@@ -108,6 +108,7 @@ private slots:
     void on_actionSave_Game_triggered();
     void on_actionCharger_une_partie_triggered();
     void on_treeViewTerrains_customContextMenuRequested(const QPoint &pos);
+    void rotateView();
 
 signals:
     void requestNewRuler(int l);

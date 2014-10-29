@@ -54,6 +54,7 @@
      <addaction name="actionChat"/>
     </widget>
     <addaction name="menuAfficher"/>
+    <addaction name="actionPivoter_la_vue"/>
    </widget>
    <addaction name="menuFichier"/>
    <addaction name="menuGame"/>
@@ -251,6 +252,11 @@
   <action name="actionQuitter">
    <property name="text">
     <string>Quitter</string>
+   </property>
+  </action>
+  <action name="actionPivoter_la_vue">
+   <property name="text">
+    <string>Pivoter la vue</string>
    </property>
   </action>
  </widget>
