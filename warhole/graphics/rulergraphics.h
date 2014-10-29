@@ -81,6 +81,7 @@ private:
     bool rot;
     bool firstRot;
     QPointF initialPos;
+    qreal previousRot;
 
     void initRulerGraphics();
 };
