@@ -31,6 +31,7 @@ void RulerGraphics::initRulerGraphics()
 
     rot = false;
     firstRot = true;
+    previousRot = 0;
 
     setFlag(ItemIsMovable);
     setFlag(ItemIsSelectable);
@@ -112,7 +113,6 @@ void RulerGraphics::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 void RulerGraphics::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     static qreal translation;
-    static qreal previousRot = 0;
     if(rot)
     {
         static int offset = 0;
@@ -176,6 +176,7 @@ void RulerGraphics::keyReleaseEvent(QKeyEvent *event)
     {
         rot = false;
         firstRot = true;
+        previousRot = 0;
     }
     QGraphicsItem::keyReleaseEvent(event);
 }
