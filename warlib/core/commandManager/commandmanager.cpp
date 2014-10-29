@@ -92,7 +92,9 @@ void CommandManager::enQueueServerInfoRequest()
 
     QByteArray data;
     QDataStream stream(&data, QIODevice::ReadWrite);
+
     stream << SERVER_INFO_REQUEST;
+
     addMessageToOutQueue(m);
 }
 

@@ -10,7 +10,7 @@
 #include "Utilities/RandomIdGenerator/idgenerator.h"
 
 enum CommandType{
-    SERVER_INFO_REQUEST = 1,
+    SERVER_INFO_REQUEST = 0,
     SERVER_INFO,
     PLAYER_LIST_UPDATE,
     CHAT_MESSAGE,
