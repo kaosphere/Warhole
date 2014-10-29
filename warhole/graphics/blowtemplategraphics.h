@@ -23,6 +23,8 @@ public:
     void initRoundTemplateGraphics();
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+    void keyPressEvent(QKeyEvent *event);
+    void keyReleaseEvent(QKeyEvent *event);
 
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
 
@@ -44,6 +46,7 @@ private:
     QAction* actionRemoveTemplate;
     bool rot;
     bool firstRot;
+    qreal previousRot;
 
     static const qreal WIDTH;
     static const qreal LENGTH;
