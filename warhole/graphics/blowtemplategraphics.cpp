@@ -6,20 +6,20 @@ const qreal BlowTemplateGraphics::LENGTH = 8.5;
 BlowTemplateGraphics::BlowTemplateGraphics(QGraphicsItem *parent) :
     QGraphicsObject(parent)
 {
+    id = "";
     initRoundTemplateGraphics();
 }
 
 BlowTemplateGraphics::BlowTemplateGraphics(QString i, QGraphicsItem *parent)
 {
+    id = i;
     initRoundTemplateGraphics();
 }
 
 void BlowTemplateGraphics::initRoundTemplateGraphics()
 {
-    id = "";
-
     actionRemoveTemplate = new QAction(tr("Retirer"), this);
-    connect(actionRemoveTemplate, SIGNAL(triggered()),this, SLOT(actionRemoveTemplateRequest()));
+    connect(actionRemoveTemplate, SIGNAL(triggered()),this, SLOT(removeTemplate()));
 
     rot = false;
     firstRot = true;
@@ -55,8 +55,8 @@ void BlowTemplateGraphics::paint(QPainter *painter, const QStyleOptionGraphicsIt
     QPainterPath p = shape();
 
     QLinearGradient gradient(0, 0, 0, WIDTH * ONE_INCH);
-    gradient.setColorAt(0, QColor::fromRgba(qRgba(221, 209, 92, 0.8)));
-    gradient.setColorAt(1, QColor::fromRgba(qRgba(80, 80, 20, 0.8)));
+    gradient.setColorAt(0, QColor::fromRgb(qRgba(221, 209, 92, 0.8)));
+    gradient.setColorAt(1, QColor::fromRgb(qRgba(80, 80, 20, 0.8)));
 
     QBrush brush(gradient);
     QPen pen(QColor(0,20,40),3);
@@ -80,6 +80,7 @@ QString BlowTemplateGraphics::getId() const
 void BlowTemplateGraphics::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     static qreal translation;
+    static int cnt = 0;
     if(rot)
     {
         static int offset = 0;

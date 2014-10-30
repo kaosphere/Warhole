@@ -132,6 +132,12 @@ void GameWindow::initGameWindow()
     connect(&controller, SIGNAL(removeTerrain(QString)), this, SLOT(removeTerrain(QString)));
     connect(&controller, SIGNAL(lockTerrain(QString, bool)), this, SLOT(lockTerrain(QString, bool)));
     connect(&controller, SIGNAL(moveTerrain(QString,QPointF,QTransform)), SLOT(moveTerrain(QString, QPointF, QTransform)));
+
+    connect(&controller, SIGNAL(newBlowTemp(QString)), this, SLOT(addNewBlowTemplateToScene(QString)));
+    connect(&controller, SIGNAL(moveBlowTemp(QString,QPointF,QTransform)), this, SLOT(moveBlowTemplate(QString,QPointF,QTransform)));
+    connect(&controller, SIGNAL(removeBlowTemp(QString)), this, SLOT(removeBlowTemplate(QString)));
+
+    connect(ui->actionBlowTemplate, SIGNAL(triggered()), &controller, SIGNAL(requestBlowTemplate()));
 }
 
 GameWindow::~GameWindow()
@@ -678,12 +684,13 @@ void GameWindow::setGlobalInfo(QDataStream& stream)
     stream >> size;
     for(int i = 0; i < size; ++i)
     {
-        BlowTemplateGraphics* b = new TerrainGraphics(id);
+        BlowTemplateGraphics* b = new BlowTemplateGraphics();
+        b->serializeIn(stream);
+        blowTemplateList[b->getId()] = b;
 
         connect(b, SIGNAL(removeTemplateRequest(QString)), &controller, SIGNAL(removeTemplateRequest(QString)));
-        connect(b, SIGNAL(templateMoved(QString,QPointF,QTransform)), &controller, SIGNAL(templateMoved(QString, QPointF, QTransform)));
+        connect(b, SIGNAL(templateMoved(QString,QPointF,QTransform)), &controller, SIGNAL(blowTemplateMoved(QString,QPointF,QTransform)));
     
-        blowTemplateList[id] = b;
         scene.addItem(b);
     }
 }
@@ -818,16 +825,17 @@ void GameWindow::moveTerrain(QString id, QPointF p, QTransform matrix)
 
 void GameWindow::addNewBlowTemplateToScene(QString id)
 {
-    BlowTemplateGraphics* b = new TerrainGraphics(id);
+    BlowTemplateGraphics* b = new BlowTemplateGraphics(id);
+    QLog_Info(LOG_ID_INFO, "addNewBlowTemplateToScene(): adding blow template to list with ID " + id);
 
-    connect(b, SIGNAL(removeTemplateRequest(QString)), &controller, SIGNAL(removeTemplateRequest(QString)));
-    connect(b, SIGNAL(templateMoved(QString,QPointF,QTransform)), &controller, SIGNAL(templateMoved(QString, QPointF, QTransform)));
+    connect(b, SIGNAL(removeTemplateRequest(QString)), &controller, SIGNAL(removeBlowTemplateRequest(QString)));
+    connect(b, SIGNAL(templateMoved(QString,QPointF,QTransform)), &controller, SIGNAL(blowTemplateMoved(QString, QPointF, QTransform)));
 
     blowTemplateList[id] = b;
     scene.addItem(b);
 }
 
-void GameWindow::moveBlowTemplate(QString id)
+void GameWindow::moveBlowTemplate(QString id, QPointF p, QTransform matrix)
 {
     if(blowTemplateList.contains(id))
     {

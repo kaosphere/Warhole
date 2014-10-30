@@ -99,7 +99,7 @@ public slots:
     void lockTerrain(QString id, bool l);
     void moveTerrain(QString id, QPointF p, QTransform matrix);
     void addNewBlowTemplateToScene(QString id);
-    void moveBlowTemplate(QString id);
+    void moveBlowTemplate(QString id, QPointF p, QTransform matrix);
     void removeBlowTemplate(QString id);
 
 private slots:
@@ -119,7 +119,6 @@ signals:
     void newRegimentRequest(QString, RegimentAbstract);
     void sendGlobalInfoUpdate(QString, QByteArray);
     void requestNewTerrain(Terrain);
-    void requestNewBlowTemplate();
 
 private:
     static const QString LOG_ID_TRACE;

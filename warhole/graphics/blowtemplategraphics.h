@@ -4,6 +4,10 @@
 #include <QGraphicsObject>
 #include <QAction>
 #include <QPainter>
+#include <QGraphicsSceneMouseEvent>
+#include <qmath.h>
+#include <QKeyEvent>
+#include <QMenu>
 #include "distances.h"
 
 class BlowTemplateGraphics : public QGraphicsObject
@@ -35,7 +39,7 @@ public:
     friend QDataStream& operator>>(QDataStream& in, BlowTemplateGraphics& obj);
     
 signals:
-    void templateMoved(QString, QPointF);
+    void templateMoved(QString, QPointF, QTransform);
     void removeTemplateRequest(QString);
 
 public slots:
