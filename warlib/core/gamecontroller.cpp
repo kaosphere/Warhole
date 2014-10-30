@@ -64,6 +64,13 @@ GameController::GameController(QObject *parent) :
     connect(comManager, SIGNAL(lockTerrain(QString, bool)), this, SIGNAL(lockTerrain(QString, bool)));
     connect(comManager, SIGNAL(moveTerrain(QString,QPointF,QTransform)), this, SIGNAL(moveTerrain(QString,QPointF,QTransform)));
 
+    connect(this, SIGNAL(requestBlowTemplate()), comManager, SLOT(enQueueNewBlowTemplateMessage()));
+    connect(this, SIGNAL(blowTemplateMoved(QString,QPointF,QTransform)), comManager, SLOT(enQueueBlowTemplateMoveMessage(QString, QPointF, QTransform)));
+    connect(this, SIGNAL(removeBlowTemplateRequest(QString)), comManager, SLOT(enQueueRemoveBlowTemplateMessage(QString)));
+    connect(comManager, SIGNAL(newBlowTemp(QString)), this, SIGNAL(newBlowTemp(QString)));
+    connect(comManager, SIGNAL(moveBlowTemp(QString, QPointF, QTransform)), this, SIGNAL(moveBlowTemp(QString, QPointF, QTransform)));
+    connect(comManager, SIGNAL(removeBlowTemp(QString)), this, SIGNAL(removeBlowTemp(QString)));
+
     ///////////////////////////////////////////
     // Player Administrator
     ///////////////////////////////////////////

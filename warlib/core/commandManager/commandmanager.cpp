@@ -774,6 +774,107 @@ void CommandManager::handleMoveTerrainMessage(QDataStream &data)
     emit moveTerrain(id, p, matrix);
 }
 
+void CommandManager::handleNewBlowTempMessage(QDataStream &data)
+{
+    QString id;
+
+    data >> id;
+
+    QLog_Info(LOG_ID_INFO, "handleNewBlowTempMessage() : new blow temp message with ID " + id);
+
+    emit newBlowTemp(id);
+}
+
+void CommandManager::handleMoveBlowTempMessage(QDataStream &data)
+{
+    QString id;
+    QPointF p;
+    QTransform matrix;
+
+    data >> id;
+    data >> p;
+    data >> matrix;
+
+    QLog_Info(LOG_ID_INFO, "handleMoveBlowTempMessage() : move blow temp message with ID " + id);
+
+    emit moveBlowTemp(id, p, matrix);
+}
+
+void CommandManager::handleRemoveBlowTempMessage(QDataStream &data)
+{
+    QString id;
+
+    data >> id;
+
+    QLog_Info(LOG_ID_INFO, "handleRemoveBlowTempMessage() : remove blow temp message with ID " + id);
+
+    emit removeBlowTemp(id);
+}
+
+void CommandManager::enQueueNewBlowTemplateMessage()
+{
+    Message m;
+    m.setDest(ALL);
+    m.setMessageSender(game->getMe());
+
+    QByteArray data;
+    QDataStream s(&data, QIODevice::WriteOnly);
+
+    s << NEW_BLOW_TEMP;
+
+    QString id = IdGenerator::generateRandomID(IdGenerator::ID_SIZE);
+
+    s << id;
+
+    m.setData(data);
+
+    QLog_Info(LOG_ID_INFO, "enQueueNewBlowTemplateMessage() : new blow template message with ID " + id);
+
+    addMessageToOutQueue(m);
+}
+
+void CommandManager::enQueueBlowTemplateMoveMessage(QString i, QPointF p, QTransform matrix)
+{
+    Message m;
+    m.setDest(ALL_BUT_ME);
+    m.setMessageSender(game->getMe());
+
+    QByteArray data;
+    QDataStream s(&data, QIODevice::WriteOnly);
+
+    s << BLOW_TEMP_MOVE;
+
+    s << i;
+    s << p;
+    s << matrix;
+
+    m.setData(data);
+
+    QLog_Info(LOG_ID_INFO, "enQueueNewBlowTemplateMoveMessage() : blow template move message with ID " + i);
+
+    addMessageToOutQueue(m);
+}
+
+void CommandManager::enQueueRemoveBlowTemplateMessage(QString i)
+{
+    Message m;
+    m.setDest(ALL);
+    m.setMessageSender(game->getMe());
+
+    QByteArray data;
+    QDataStream s(&data, QIODevice::WriteOnly);
+
+    s << REMOVE_BLOW_TEMP;
+
+    s << i;
+
+    m.setData(data);
+
+    QLog_Info(LOG_ID_INFO, "enQueueRemoveBlowTemplateMessage() : blow template remove message with ID " + i);
+
+    addMessageToOutQueue(m);
+}
+
 void CommandManager::processIncomingMessage()
 {
     Message m;
@@ -909,6 +1010,21 @@ void CommandManager::processIncomingMessage()
         case TERRAIN_MOVE:
             QLog_Info(LOG_ID_INFO, "processIncomingMessage() : Move terrain message received.");
             handleMoveTerrainMessage(stream);
+            break;
+
+        case NEW_BLOW_TEMP:
+            QLog_Info(LOG_ID_INFO, "processIncomingMessage() :New blow template message received.");
+            handleNewBlowTempMessage(stream);
+            break;
+
+        case BLOW_TEMP_MOVE:
+            QLog_Info(LOG_ID_INFO, "processIncomingMessage() : blow template move message received.");
+            handleMoveBlowTempMessage(stream);
+            break;
+
+        case REMOVE_BLOW_TEMP:
+            QLog_Info(LOG_ID_INFO, "processIncomingMessage() : blow template remove message received.");
+            handleRemoveBlowTempMessage(stream);
             break;
 
         default:

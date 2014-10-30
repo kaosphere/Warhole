@@ -68,6 +68,12 @@ signals:
     void removeTerrain(QString);
     void lockTerrain(QString, bool);
     void moveTerrain(QString,QPointF,QTransform);
+    void removeBlowTemplateRequest(QString);
+    void blowTemplateMoved(QString, QPointF, QTransform);
+    void requestBlowTemplate();
+    void removeBlowTemp(QString);
+    void moveBlowTemp(QString, QPointF, QTransform);
+    void newBlowTemp(QString);
 
 public slots:
     void setNetwork();
