@@ -21,7 +21,6 @@ RoundTemplateGraphics::RoundTemplateGraphics(int d, QString i, QGraphicsItem* pa
 void RoundTemplateGraphics::initRoundTemplateGraphics()
 {
     setFlag(ItemIsMovable);
-    setFlag(ItemIsSelectable);
     setFlag(ItemIsFocusable);
 
     actionRemoveTemplate = new QAction(tr("Retirer"), this);

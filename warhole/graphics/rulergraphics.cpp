@@ -34,7 +34,6 @@ void RulerGraphics::initRulerGraphics()
     previousRot = 0;
 
     setFlag(ItemIsMovable);
-    setFlag(ItemIsSelectable);
     setFlag(ItemIsFocusable);
 }
 
