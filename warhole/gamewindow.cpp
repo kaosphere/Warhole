@@ -138,6 +138,10 @@ void GameWindow::initGameWindow()
     connect(&controller, SIGNAL(removeBlowTemp(QString)), this, SLOT(removeBlowTemplate(QString)));
 
     connect(ui->actionBlowTemplate, SIGNAL(triggered()), &controller, SIGNAL(requestBlowTemplate()));
+
+    TextGraphics* text = new TextGraphics();
+    connect(text, SIGNAL(textDoubleClicked()), this, SLOT(editText()));
+    scene.addItem(text);
 }
 
 GameWindow::~GameWindow()
@@ -864,6 +868,20 @@ void GameWindow::removeBlowTemplate(QString id)
     else
     {
         QLog_Error(LOG_ID_ERR, "removeBlowTemplate() : blow template with ID " + id + " not found in map.");
+    }
+}
+
+void GameWindow::editText()
+{
+    bool ok;
+    QString text;
+    text = QInputDialog::getText(this, tr("Changer le texte"),
+                                  tr("Texte :"), QLineEdit::Normal,
+                                  QDir::home().dirName(), &ok);
+    if(ok)
+    {
+        TextGraphics* t = qobject_cast<TextGraphics*>(sender());
+        t->setText(text);
     }
 }
 

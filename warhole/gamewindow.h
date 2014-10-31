@@ -34,6 +34,7 @@
 #include "getintdialog.h"
 #include "graphics/terraingraphics.h"
 #include "graphics/blowtemplategraphics.h"
+#include "graphics/textgraphics.h"
 
 
 namespace Ui {
@@ -101,6 +102,7 @@ public slots:
     void addNewBlowTemplateToScene(QString id);
     void moveBlowTemplate(QString id, QPointF p, QTransform matrix);
     void removeBlowTemplate(QString id);
+    void editText();
 
 private slots:
 
