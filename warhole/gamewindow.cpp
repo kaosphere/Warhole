@@ -138,11 +138,13 @@ void GameWindow::initGameWindow()
     connect(&controller, SIGNAL(removeBlowTemp(QString)), this, SLOT(removeBlowTemplate(QString)));
 
     connect(ui->actionBlowTemplate, SIGNAL(triggered()), &controller, SIGNAL(requestBlowTemplate()));
-
-    TextGraphics* text = new TextGraphics();
-    connect(text, SIGNAL(textDoubleClicked()), this, SLOT(editText()));
-    scene.addItem(text);
+    connect(ui->actionActionAddText, SIGNAL(triggered()), this, SLOT(requestNewText()));
+    connect(this, SIGNAL(requestNewText(QString)), &controller, SIGNAL(newTextRequest(QString)));
+    connect(&controller, SIGNAL(newText(QString, QString)), this, SLOT(addNewTextToScene(QString, QString)));
+    connect(&controller, SIGNAL(moveText(QString,QString,QPointF,QTransform)), this, SLOT(moveText(QString, QString, QPointF, QTransform)));
+    connect(&controller, SIGNAL(removeText(QString)), this, SLOT(removeText(QString)));
 }
+
 
 GameWindow::~GameWindow()
 {
@@ -560,6 +562,14 @@ void GameWindow::getGlobalInfo(QDataStream& stream)
         (*m)->serializeOut(stream);
         ++m;
     }
+
+    // Store text
+    stream << textMap.size();
+    QMap<QString, TextGraphics*>::const_iterator n = textMap.constBegin();
+    while (n != textMap.constEnd()) {
+        (*n)->serializeOut(stream);
+        ++n;
+    }
 }
 
 void GameWindow::clearAllMaps()
@@ -598,12 +608,20 @@ void GameWindow::clearAllMaps()
         scene.removeItem(*m);
         ++m;
     }
+
+    // Clearing text
+    QMap<QString, TextGraphics*>::const_iterator n = textMap.constBegin();
+    while (n != textMap.constEnd()) {
+        scene.removeItem(*n);
+        ++n;
+    }
     
     regimentMap.clear();
     rulerList.clear();
     roundTemplateList.clear();
     terrainMap.clear();
     blowTemplateList.clear();
+    textMap.clear();
     // TODO : verify if clear() deletes items
 }
 
@@ -695,6 +713,20 @@ void GameWindow::setGlobalInfo(QDataStream& stream)
         connect(b, SIGNAL(removeTemplateRequest(QString)), &controller, SIGNAL(removeTemplateRequest(QString)));
         connect(b, SIGNAL(templateMoved(QString,QPointF,QTransform)), &controller, SIGNAL(blowTemplateMoved(QString,QPointF,QTransform)));
     
+        scene.addItem(b);
+    }
+
+    // Store text
+    stream >> size;
+    for(int i = 0; i < size; ++i)
+    {
+        TextGraphics* b = new TextGraphics();
+        b->serializeIn(stream);
+        textMap[b->getId()] = b;
+
+        connect(b, SIGNAL(removeTextRequest(QString)), &controller, SIGNAL(removeTextRequest(QString)));
+        connect(b, SIGNAL(textChanged(QString,QString,QPointF,QTransform)), &controller, SIGNAL(textChanged(QString,QString,QPointF,QTransform)));
+        connect(b, SIGNAL(textDoubleClicked()), this, SLOT(editText()));
         scene.addItem(b);
     }
 }
@@ -875,13 +907,75 @@ void GameWindow::editText()
 {
     bool ok;
     QString text;
+    TextGraphics* t = qobject_cast<TextGraphics*>(sender());
     text = QInputDialog::getText(this, tr("Changer le texte"),
                                   tr("Texte :"), QLineEdit::Normal,
-                                  QDir::home().dirName(), &ok);
+                                 t->getText(), &ok);
     if(ok)
     {
-        TextGraphics* t = qobject_cast<TextGraphics*>(sender());
         t->setText(text);
+    }
+}
+
+void GameWindow::addNewTextToScene(QString id, QString text)
+{
+    TextGraphics* b = new TextGraphics();
+    b->setTextWithoutSignal(text);
+    b->setId(id);
+    QLog_Info(LOG_ID_INFO, "addNewTextToScene(): adding text to list with ID " + id);
+
+    connect(b, SIGNAL(removeTextRequest(QString)), &controller, SIGNAL(removeTextRequest(QString)));
+    connect(b, SIGNAL(textChanged(QString,QString,QPointF,QTransform)), &controller, SIGNAL(textChanged(QString, QString, QPointF, QTransform)));
+    connect(b, SIGNAL(textDoubleClicked()), this, SLOT(editText()));
+
+    textMap[id] = b;
+    scene.addItem(b);
+}
+
+void GameWindow::moveText(QString i, QString text, QPointF p, QTransform matrix)
+{
+    if(textMap.contains(i))
+    {
+        QLog_Info(LOG_ID_INFO, "moveText() : text with ID " + i +
+                  " found, now moving it");
+        TextGraphics* t = textMap[i];
+        t->setPos(p);
+        t->setTransform(matrix);
+        t->setTextWithoutSignal(text);
+    }
+    else
+    {
+        QLog_Error(LOG_ID_ERR, "moveText() : text with ID " + i + " not found in map.");
+    }
+}
+
+void GameWindow::removeText(QString i)
+{
+    if(textMap.contains(i))
+    {
+        QLog_Info(LOG_ID_INFO, "removeText() : blow template with ID " + i +
+                  " found, now removing it");
+        TextGraphics* t = textMap[i];
+        scene.removeItem(t);
+        delete t;
+        textMap.remove(i);
+    }
+    else
+    {
+        QLog_Error(LOG_ID_ERR, "removeText() : text with ID " + i + " not found in map.");
+    }
+}
+
+void GameWindow::requestNewText()
+{
+    bool ok;
+    QString text;
+    text = QInputDialog::getText(this, tr("Entrez votre texte"),
+                                  tr("Texte :"), QLineEdit::Normal,
+                                 "", &ok);
+    if(ok)
+    {
+        emit requestNewText(text);
     }
 }
 

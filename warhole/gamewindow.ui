@@ -76,6 +76,7 @@
    <addaction name="actionRuler_18_inches"/>
    <addaction name="actionRuler_24_inches"/>
    <addaction name="separator"/>
+   <addaction name="actionActionAddText"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QDockWidget" name="dockWidget">
@@ -257,6 +258,18 @@
   <action name="actionPivoter_la_vue">
    <property name="text">
     <string>Pivoter la vue</string>
+   </property>
+  </action>
+  <action name="actionActionAddText">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icons/ressources/textIcon.png</normaloff>:/icons/ressources/textIcon.png</iconset>
+   </property>
+   <property name="text">
+    <string>actionAddText</string>
+   </property>
+   <property name="toolTip">
+    <string>Ajoute du texte sur l'aire de jeu</string>
    </property>
   </action>
  </widget>
