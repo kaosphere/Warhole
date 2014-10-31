@@ -811,6 +811,7 @@ void CommandManager::handleRemoveBlowTempMessage(QDataStream &data)
     emit removeBlowTemp(id);
 }
 
+
 void CommandManager::enQueueNewBlowTemplateMessage()
 {
     Message m;
@@ -874,6 +875,116 @@ void CommandManager::enQueueRemoveBlowTemplateMessage(QString i)
 
     addMessageToOutQueue(m);
 }
+
+void CommandManager::enQueueNewTextMessage(QString text)
+{
+    Message m;
+    m.setDest(ALL);
+    m.setMessageSender(game->getMe());
+
+    QByteArray data;
+    QDataStream s(&data, QIODevice::WriteOnly);
+
+    s << NEW_TEXT;
+
+    QString id = IdGenerator::generateRandomID(IdGenerator::ID_SIZE);
+
+    s << id;
+    s << text;
+
+    m.setData(data);
+
+    QLog_Info(LOG_ID_INFO, "enQueueNewTextMessage() : new text message with ID " + id);
+
+    addMessageToOutQueue(m);
+}
+
+void CommandManager::enQueueRemoveTextMessage(QString i)
+{
+    Message m;
+    m.setDest(ALL);
+    m.setMessageSender(game->getMe());
+
+    QByteArray data;
+    QDataStream s(&data, QIODevice::WriteOnly);
+
+    s << REMOVE_TEXT;
+
+    s << i;
+
+    m.setData(data);
+
+    QLog_Info(LOG_ID_INFO, "enQueueRemoveTextMessage() : text remove message with ID " + i);
+
+    addMessageToOutQueue(m);
+}
+
+void CommandManager::enQueueTextChangeMessage(QString i, QString t, QPointF p, QTransform matrix)
+{
+    Message m;
+    m.setDest(ALL_BUT_ME);
+    m.setMessageSender(game->getMe());
+
+    QByteArray data;
+    QDataStream s(&data, QIODevice::WriteOnly);
+
+    s << TEXT_CHANGED;
+
+    s << i;
+    s << t;
+    s << p;
+    s << matrix;
+
+    m.setData(data);
+
+    QLog_Info(LOG_ID_INFO, "enQueueTextChangeMessage() : text move message with ID " + i +
+              " and text : " + t);
+
+    addMessageToOutQueue(m);
+}
+
+void CommandManager::handleNewTextMessage(QDataStream &data)
+{
+    QString id;
+    QString text;
+
+    data >> id;
+    data >> text;
+
+    QLog_Info(LOG_ID_INFO, "handleNewTextMessage() : new text message with ID " + id +
+              " and text : " + text);
+
+    emit newText(id, text);
+}
+
+void CommandManager::handleMoveTextMessage(QDataStream &data)
+{
+    QString id;
+    QString text;
+    QPointF p;
+    QTransform matrix;
+
+    data >> id;
+    data >> text;
+    data >> p;
+    data >> matrix;
+
+    QLog_Info(LOG_ID_INFO, "handleMoveTextMessage() : move blow temp message with ID " + id);
+
+    emit moveText(id, text, p, matrix);
+}
+
+void CommandManager::handleRemoveTextMessage(QDataStream &data)
+{
+    QString id;
+
+    data >> id;
+
+    QLog_Info(LOG_ID_INFO, "handleRemoveTextMessage() : remove blow temp message with ID " + id);
+
+    emit removeText(id);
+}
+
 
 void CommandManager::processIncomingMessage()
 {
@@ -1025,6 +1136,21 @@ void CommandManager::processIncomingMessage()
         case REMOVE_BLOW_TEMP:
             QLog_Info(LOG_ID_INFO, "processIncomingMessage() : blow template remove message received.");
             handleRemoveBlowTempMessage(stream);
+            break;
+
+        case NEW_TEXT:
+            QLog_Info(LOG_ID_INFO, "processIncomingMessage() :New text message received.");
+            handleNewTextMessage(stream);
+            break;
+
+        case TEXT_CHANGED:
+            QLog_Info(LOG_ID_INFO, "processIncomingMessage() : text move message received.");
+            handleMoveTextMessage(stream);
+            break;
+
+        case REMOVE_TEXT:
+            QLog_Info(LOG_ID_INFO, "processIncomingMessage() : text remove message received.");
+            handleRemoveTextMessage(stream);
             break;
 
         default:

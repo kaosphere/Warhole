@@ -33,7 +33,10 @@ enum CommandType{
     TERRAIN_LOCK,
     NEW_BLOW_TEMP,
     BLOW_TEMP_MOVE,
-    REMOVE_BLOW_TEMP
+    REMOVE_BLOW_TEMP,
+    NEW_TEXT,
+    TEXT_CHANGED,
+    REMOVE_TEXT
 };
 
 class CommandManager : public QObject
@@ -67,6 +70,9 @@ signals:
     void newBlowTemp(QString);
     void moveBlowTemp(QString, QPointF, QTransform);
     void removeBlowTemp(QString);
+    void newText(QString, QString);
+    void moveText(QString, QString, QPointF, QTransform);
+    void removeText(QString);
     
 public slots:
     void processIncomingMessage();
@@ -94,6 +100,9 @@ public slots:
     void enQueueNewBlowTemplateMessage();
     void enQueueBlowTemplateMoveMessage(QString i, QPointF p, QTransform matrix);
     void enQueueRemoveBlowTemplateMessage(QString i);
+    void enQueueNewTextMessage(QString text);
+    void enQueueRemoveTextMessage(QString i);
+    void enQueueTextChangeMessage(QString i, QString t, QPointF p, QTransform matrix);
 
 
 private:
@@ -134,6 +143,9 @@ private:
     void handleNewBlowTempMessage(QDataStream& data);
     void handleMoveBlowTempMessage(QDataStream& data);
     void handleRemoveBlowTempMessage(QDataStream& data);
+    void handleNewTextMessage(QDataStream& data);
+    void handleMoveTextMessage(QDataStream& data);
+    void handleRemoveTextMessage(QDataStream& data);
 };
 
 #endif // COMMANDMANAGER_H

@@ -71,6 +71,14 @@ GameController::GameController(QObject *parent) :
     connect(comManager, SIGNAL(moveBlowTemp(QString, QPointF, QTransform)), this, SIGNAL(moveBlowTemp(QString, QPointF, QTransform)));
     connect(comManager, SIGNAL(removeBlowTemp(QString)), this, SIGNAL(removeBlowTemp(QString)));
 
+    connect(this, SIGNAL(newTextRequest(QString)), comManager, SLOT(enQueueNewTextMessage(QString)));
+    connect(this, SIGNAL(removeTextRequest(QString)), comManager, SLOT(enQueueRemoveTextMessage(QString)));
+    connect(this, SIGNAL(textChanged(QString,QString,QPointF,QTransform)), comManager, SLOT(enQueueTextChangeMessage(QString, QString, QPointF, QTransform)));
+    connect(comManager, SIGNAL(newText(QString,QString)), this, SIGNAL(newText(QString, QString)));
+    connect(comManager, SIGNAL(moveText(QString,QString,QPointF,QTransform)), this, SIGNAL(moveText(QString, QString, QPointF, QTransform)));
+    connect(comManager, SIGNAL(removeText(QString)), this, SIGNAL(removeText(QString)));
+
+
     ///////////////////////////////////////////
     // Player Administrator
     ///////////////////////////////////////////

@@ -74,6 +74,12 @@ signals:
     void removeBlowTemp(QString);
     void moveBlowTemp(QString, QPointF, QTransform);
     void newBlowTemp(QString);
+    void newTextRequest(QString);
+    void removeTextRequest(QString);
+    void textChanged(QString, QString, QPointF, QTransform);
+    void newText(QString, QString);
+    void moveText(QString, QString, QPointF, QTransform);
+    void removeText(QString);
 
 public slots:
     void setNetwork();
