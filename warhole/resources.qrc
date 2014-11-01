@@ -9,5 +9,6 @@
         <file>ressources/ruler-icon-24.gif</file>
         <file>ressources/dice.png</file>
         <file>ressources/textIcon.png</file>
+        <file>ressources/scatterDie.png</file>
     </qresource>
 </RCC>

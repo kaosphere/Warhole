@@ -143,6 +143,12 @@ void GameWindow::initGameWindow()
     connect(&controller, SIGNAL(newText(QString, QString)), this, SLOT(addNewTextToScene(QString, QString)));
     connect(&controller, SIGNAL(moveText(QString,QString,QPointF,QTransform)), this, SLOT(moveText(QString, QString, QPointF, QTransform)));
     connect(&controller, SIGNAL(removeText(QString)), this, SLOT(removeText(QString)));
+
+    connect(ui->actionScatterDice, SIGNAL(triggered()), this, SLOT(requestNewScatter()));
+    connect(this, SIGNAL(requestNewScatter(int)), &controller, SIGNAL(requestNewScatter(int)));
+    connect(&controller, SIGNAL(newScatter(QString,int)), this, SLOT(addNewScatterToScene(QString,int)));
+    connect(&controller, SIGNAL(moveScatter(QString,QPointF)), this, SLOT(moveScatter(QString, QPointF)));
+    connect(&controller, SIGNAL(removeScatter(QString)), this, SLOT(removeScatter(QString)));
 }
 
 
@@ -570,6 +576,14 @@ void GameWindow::getGlobalInfo(QDataStream& stream)
         (*n)->serializeOut(stream);
         ++n;
     }
+
+    // Store text
+    stream << scatterMap.size();
+    QMap<QString, DispersionGraphics*>::const_iterator o = scatterMap.constBegin();
+    while (o != scatterMap.constEnd()) {
+        (*o)->serializeOut(stream);
+        ++o;
+    }
 }
 
 void GameWindow::clearAllMaps()
@@ -615,6 +629,13 @@ void GameWindow::clearAllMaps()
         scene.removeItem(*n);
         ++n;
     }
+
+    // Clearing scatter
+    QMap<QString, DispersionGraphics*>::const_iterator o = scatterMap.constBegin();
+    while (o != scatterMap.constEnd()) {
+        scene.removeItem(*o);
+        ++o;
+    }
     
     regimentMap.clear();
     rulerList.clear();
@@ -622,6 +643,7 @@ void GameWindow::clearAllMaps()
     terrainMap.clear();
     blowTemplateList.clear();
     textMap.clear();
+    scatterMap.clear();
     // TODO : verify if clear() deletes items
 }
 
@@ -727,6 +749,20 @@ void GameWindow::setGlobalInfo(QDataStream& stream)
         connect(b, SIGNAL(removeTextRequest(QString)), &controller, SIGNAL(removeTextRequest(QString)));
         connect(b, SIGNAL(textChanged(QString,QString,QPointF,QTransform)), &controller, SIGNAL(textChanged(QString,QString,QPointF,QTransform)));
         connect(b, SIGNAL(textDoubleClicked()), this, SLOT(editText()));
+        scene.addItem(b);
+    }
+
+    // Store scatters
+    stream >> size;
+    for(int i = 0; i < size; ++i)
+    {
+        DispersionGraphics* b = new DispersionGraphics();
+        b->serializeIn(stream);
+        scatterMap[b->getId()] = b;
+
+        connect(b, SIGNAL(scatterMoved(QString,QPointF)), &controller, SIGNAL(scatterMoved(QString, QPointF)));
+        connect(b, SIGNAL(removeScatter(QString)), &controller, SIGNAL(removeScatterRequest(QString)));
+
         scene.addItem(b);
     }
 }
@@ -868,6 +904,7 @@ void GameWindow::addNewBlowTemplateToScene(QString id)
     connect(b, SIGNAL(templateMoved(QString,QPointF,QTransform)), &controller, SIGNAL(blowTemplateMoved(QString, QPointF, QTransform)));
 
     blowTemplateList[id] = b;
+    b->setPos(back->getW()/2, back->getH()/2);
     scene.addItem(b);
 }
 
@@ -929,6 +966,7 @@ void GameWindow::addNewTextToScene(QString id, QString text)
     connect(b, SIGNAL(textDoubleClicked()), this, SLOT(editText()));
 
     textMap[id] = b;
+    b->setPos(back->getW()/2, back->getH()/2);
     scene.addItem(b);
 }
 
@@ -953,7 +991,7 @@ void GameWindow::removeText(QString i)
 {
     if(textMap.contains(i))
     {
-        QLog_Info(LOG_ID_INFO, "removeText() : blow template with ID " + i +
+        QLog_Info(LOG_ID_INFO, "removeText() : text with ID " + i +
                   " found, now removing it");
         TextGraphics* t = textMap[i];
         scene.removeItem(t);
@@ -966,6 +1004,25 @@ void GameWindow::removeText(QString i)
     }
 }
 
+void GameWindow::requestNewScatter()
+{
+    emit cw->newMessageToSend("<em><font color=\"DimGray\">" + tr("Lance un dé de dispersion.") + "</em></font>");
+    int angle = DiceRoller::getDispersion();
+    emit requestNewScatter(angle);
+}
+
+void GameWindow::addNewScatterToScene(QString i, int a)
+{
+    DispersionGraphics* d = new DispersionGraphics(i, a);
+
+    connect(d, SIGNAL(scatterMoved(QString,QPointF)), &controller, SIGNAL(scatterMoved(QString, QPointF)));
+    connect(d, SIGNAL(removeScatter(QString)), &controller, SIGNAL(removeScatterRequest(QString)));
+
+    scatterMap[i] = d;
+    d->setPos(back->getW()/2, back->getH()/2);
+    scene.addItem(d);
+}
+
 void GameWindow::requestNewText()
 {
     bool ok;
@@ -976,6 +1033,38 @@ void GameWindow::requestNewText()
     if(ok)
     {
         emit requestNewText(text);
+    }
+}
+
+void GameWindow::moveScatter(QString i, QPointF p)
+{
+    if(scatterMap.contains(i))
+    {
+        QLog_Info(LOG_ID_INFO, "moveScatter() : scatter with ID " + i +
+                  " found, now moving it");
+        DispersionGraphics* t = scatterMap[i];
+        t->setPos(p);
+    }
+    else
+    {
+        QLog_Error(LOG_ID_ERR, "moveScatter() : scatter with ID " + i + " not found in map.");
+    }
+}
+
+void GameWindow::removeScatter(QString i)
+{
+    if(scatterMap.contains(i))
+    {
+        QLog_Info(LOG_ID_INFO, "removeText() : Scatter with ID " + i +
+                  " found, now removing it");
+        DispersionGraphics* t = scatterMap[i];
+        scene.removeItem(t);
+        delete t;
+        scatterMap.remove(i);
+    }
+    else
+    {
+        QLog_Error(LOG_ID_ERR, "removeScatter() : scatter with ID " + i + " not found in map.");
     }
 }
 

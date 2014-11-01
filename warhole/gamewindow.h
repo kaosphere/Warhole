@@ -35,6 +35,7 @@
 #include "graphics/terraingraphics.h"
 #include "graphics/blowtemplategraphics.h"
 #include "graphics/textgraphics.h"
+#include "graphics/dispersiongraphics.h"
 
 
 namespace Ui {
@@ -106,6 +107,9 @@ public slots:
     void addNewTextToScene(QString id, QString text);
     void moveText(QString i, QString text, QPointF p, QTransform matrix);
     void removeText(QString i);
+    void requestNewScatter();
+    void moveScatter(QString i, QPointF p);
+    void removeScatter(QString i);
 
 private slots:
 
@@ -118,6 +122,7 @@ private slots:
     void on_treeViewTerrains_customContextMenuRequested(const QPoint &pos);
     void rotateView();
     void requestNewText();
+    void addNewScatterToScene(QString i, int a);
 
 signals:
     void requestNewRuler(int l);
@@ -126,6 +131,7 @@ signals:
     void sendGlobalInfoUpdate(QString, QByteArray);
     void requestNewTerrain(Terrain);
     void requestNewText(QString);
+    void requestNewScatter(int);
 
 private:
     static const QString LOG_ID_TRACE;
@@ -156,6 +162,7 @@ private:
     QMap<QString, RegimentGraphics*> regimentMap;
     QMap<QString, TerrainGraphics*> terrainMap;
     QMap<QString, TextGraphics*> textMap;
+    QMap<QString, DispersionGraphics*> scatterMap;
 
     GameController controller;
 
