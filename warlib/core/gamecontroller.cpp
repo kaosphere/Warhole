@@ -78,6 +78,12 @@ GameController::GameController(QObject *parent) :
     connect(comManager, SIGNAL(moveText(QString,QString,QPointF,QTransform)), this, SIGNAL(moveText(QString, QString, QPointF, QTransform)));
     connect(comManager, SIGNAL(removeText(QString)), this, SIGNAL(removeText(QString)));
 
+    connect(this, SIGNAL(requestNewScatter(int)), comManager, SLOT(enQueueNewScatterMessage(int)));
+    connect(this, SIGNAL(removeScatterRequest(QString)), comManager, SLOT(enQueueRemoveScatterMessage(QString)));
+    connect(this, SIGNAL(scatterMoved(QString,QPointF)), comManager, SLOT(enQueueScatterMoveMessage(QString, QPointF)));
+    connect(comManager, SIGNAL(newScatter(QString,int)), this, SIGNAL(newScatter(QString, int)));
+    connect(comManager, SIGNAL(moveScatter(QString,QPointF)), this, SIGNAL(moveScatter(QString, QPointF)));
+    connect(comManager, SIGNAL(removeScatter(QString)), this, SIGNAL(removeScatter(QString)));
 
     ///////////////////////////////////////////
     // Player Administrator

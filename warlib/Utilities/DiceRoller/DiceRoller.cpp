@@ -61,7 +61,12 @@ QPair<QPair<int, QString>, QString> DiceRoller::computeDispersionDice()
 	
 	artillery.first = disp;
 	
-	return artillery;
-}	
+    return artillery;
+}
+
+int DiceRoller::getDispersion()
+{
+    return rand()% 360 + 1;
+}
 
 

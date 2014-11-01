@@ -30,6 +30,7 @@ public:
     static QList<int> rollDiceInt(Dice die, int nbDice);
     static QString rollDiceString(Dice die, int nbDice);
     static QPair<QPair<int, QString>, QString> computeDispersionDice();
+    static int getDispersion();
 
 private:
     static int computeDiceOutput(Dice d);

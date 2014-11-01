@@ -36,7 +36,10 @@ enum CommandType{
     REMOVE_BLOW_TEMP,
     NEW_TEXT,
     TEXT_CHANGED,
-    REMOVE_TEXT
+    REMOVE_TEXT,
+    NEW_SCATTER,
+    SCATTER_MOVE,
+    REMOVE_SCATTER
 };
 
 class CommandManager : public QObject
@@ -73,6 +76,9 @@ signals:
     void newText(QString, QString);
     void moveText(QString, QString, QPointF, QTransform);
     void removeText(QString);
+    void newScatter(QString, int);
+    void moveScatter(QString, QPointF);
+    void removeScatter(QString);
     
 public slots:
     void processIncomingMessage();
@@ -103,7 +109,9 @@ public slots:
     void enQueueNewTextMessage(QString text);
     void enQueueRemoveTextMessage(QString i);
     void enQueueTextChangeMessage(QString i, QString t, QPointF p, QTransform matrix);
-
+    void enQueueNewScatterMessage(int angle);
+    void enQueueRemoveScatterMessage(QString i);
+    void enQueueScatterMoveMessage(QString i, QPointF p);
 
 private:
     static const QString LOG_ID_INFO;
@@ -146,6 +154,9 @@ private:
     void handleNewTextMessage(QDataStream& data);
     void handleMoveTextMessage(QDataStream& data);
     void handleRemoveTextMessage(QDataStream& data);
+    void handleNewScatterMessage(QDataStream& data);
+    void handleMoveScatterMessage(QDataStream& data);
+    void handleRemoveScatterMessage(QDataStream& data);
 };
 
 #endif // COMMANDMANAGER_H

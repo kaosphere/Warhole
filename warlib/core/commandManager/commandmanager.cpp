@@ -985,6 +985,106 @@ void CommandManager::handleRemoveTextMessage(QDataStream &data)
     emit removeText(id);
 }
 
+void CommandManager::enQueueNewScatterMessage(int angle)
+{
+    Message m;
+    m.setDest(ALL);
+    m.setMessageSender(game->getMe());
+
+    QByteArray data;
+    QDataStream s(&data, QIODevice::WriteOnly);
+
+    s << NEW_SCATTER;
+
+    QString id = IdGenerator::generateRandomID(IdGenerator::ID_SIZE);
+
+    s << id;
+    s << angle;
+
+    m.setData(data);
+
+    QLog_Info(LOG_ID_INFO, "enQueueNewScatterMessage() : new scatter message with ID " + id);
+
+    addMessageToOutQueue(m);
+}
+
+void CommandManager::enQueueRemoveScatterMessage(QString i)
+{
+    Message m;
+    m.setDest(ALL);
+    m.setMessageSender(game->getMe());
+
+    QByteArray data;
+    QDataStream s(&data, QIODevice::WriteOnly);
+
+    s << REMOVE_SCATTER;
+
+    s << i;
+
+    m.setData(data);
+
+    QLog_Info(LOG_ID_INFO, "enQueueRemoveScatterMessage() : scatter remove message with ID " + i);
+
+    addMessageToOutQueue(m);
+}
+
+void CommandManager::enQueueScatterMoveMessage(QString i, QPointF p)
+{
+    Message m;
+    m.setDest(ALL_BUT_ME);
+    m.setMessageSender(game->getMe());
+
+    QByteArray data;
+    QDataStream s(&data, QIODevice::WriteOnly);
+
+    s << SCATTER_MOVE;
+
+    s << i;
+    s << p;
+
+    m.setData(data);
+
+    QLog_Info(LOG_ID_INFO, "enQueueScatterMoveMessage() : scatter move message with ID " + i);
+
+    addMessageToOutQueue(m);
+}
+
+void CommandManager::handleNewScatterMessage(QDataStream &data)
+{
+    QString id;
+    int angle;
+
+    data >> id;
+    data >> angle;
+
+    QLog_Info(LOG_ID_INFO, "handleNewScatterMessage() : new scatter message with ID " + id );
+
+    emit newScatter(id, angle);
+}
+
+void CommandManager::handleMoveScatterMessage(QDataStream &data)
+{
+    QString id;
+    QPointF pos;
+
+    data >> id;
+    data >> pos;
+
+    QLog_Info(LOG_ID_INFO, "handleMoveScatterMessage() : new scatter message with ID " + id);
+
+    emit moveScatter(id, pos);
+}
+
+void CommandManager::handleRemoveScatterMessage(QDataStream &data)
+{
+    QString id;
+
+    data >> id;
+
+    QLog_Info(LOG_ID_INFO, "handleRemoveScatterMessage() : remove scatter message with ID " + id);
+
+    emit removeScatter(id);
+}
 
 void CommandManager::processIncomingMessage()
 {
@@ -1151,6 +1251,21 @@ void CommandManager::processIncomingMessage()
         case REMOVE_TEXT:
             QLog_Info(LOG_ID_INFO, "processIncomingMessage() : text remove message received.");
             handleRemoveTextMessage(stream);
+            break;
+
+        case NEW_SCATTER:
+            QLog_Info(LOG_ID_INFO, "processIncomingMessage() :New scatter message received.");
+            handleNewScatterMessage(stream);
+            break;
+
+        case SCATTER_MOVE:
+            QLog_Info(LOG_ID_INFO, "processIncomingMessage() : scatter move message received.");
+            handleMoveScatterMessage(stream);
+            break;
+
+        case REMOVE_SCATTER:
+            QLog_Info(LOG_ID_INFO, "processIncomingMessage() : scatter remove message received.");
+            handleRemoveScatterMessage(stream);
             break;
 
         default:

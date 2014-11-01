@@ -80,6 +80,12 @@ signals:
     void newText(QString, QString);
     void moveText(QString, QString, QPointF, QTransform);
     void removeText(QString);
+    void requestNewScatter(int);
+    void scatterMoved(QString, QPointF);
+    void removeScatterRequest(QString);
+    void newScatter(QString, int);
+    void moveScatter(QString, QPointF);
+    void removeScatter(QString);
 
 public slots:
     void setNetwork();
