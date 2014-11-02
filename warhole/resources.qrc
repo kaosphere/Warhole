@@ -11,4 +11,8 @@
         <file>ressources/textIcon.png</file>
         <file>ressources/scatterDie.png</file>
     </qresource>
+    <qresource prefix="/images">
+        <file>ressources/floor_grass5.jpg</file>
+        <file>ressources/floor_grass3AndSoil.jpg</file>
+    </qresource>
 </RCC>

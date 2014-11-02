@@ -71,7 +71,7 @@ void GameWindow::initGameWindow()
     ///////////////////////////////////////////
     //background of the game (To be removed afterwards)
     ///////////////////////////////////////////
-    if(!background.load("C:/Users/Psycko/Documents/GitHub/Warhole/warhole/ressources/floor_grass5.jpg"))
+    if(!background.load(":/images/ressources/floor_grass5.jpg"))
     {
         QLog_Error(LOG_ID_ERR, "GAMEWINDOW : Can't load background image");
     }
