@@ -72,6 +72,11 @@
          </item>
          <item>
           <property name="text">
+           <string>Elfes sylvains</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
            <string>Empire</string>
           </property>
          </item>

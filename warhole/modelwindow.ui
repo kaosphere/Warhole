@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1254</width>
-    <height>732</height>
+    <height>886</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -76,6 +76,11 @@
            <item>
             <property name="text">
              <string>Elfes Noirs</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Elfes sylvains</string>
             </property>
            </item>
            <item>
@@ -1896,9 +1901,6 @@
   </layout>
   <zorder></zorder>
   <zorder>line_4</zorder>
-  <zorder>label_4</zorder>
-  <zorder>spinPoints</zorder>
-  <zorder>label_27</zorder>
  </widget>
  <resources/>
  <connections/>
