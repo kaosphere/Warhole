@@ -214,13 +214,16 @@ void ArmyWindow::updateTreeView(QString raceDir)
                 obj.load(MAGICAL_OBJECT_PATH + "/" + raceDir + "/" + existingObjects[i]);
 
                 QList<QStandardItem *> newObject;
+                QStandardItem* rules = new QStandardItem(obj.getSpecialRules());
+                rules->setToolTip(obj.getSpecialRules());
+
                 QStandardItem* checkBox = new QStandardItem(true);
                 checkBox->setCheckable(true);
 
                 newObject << checkBox
-                        <<new QStandardItem(obj.getName())
-                        <<new QStandardItem(QString::number(obj.getPoints()))
-                        <<new QStandardItem(obj.getSpecialRules());
+                        << new QStandardItem(obj.getName())
+                        << new QStandardItem(QString::number(obj.getPoints()))
+                        << rules;
                 objects->appendRow(newObject);
             }
         }
