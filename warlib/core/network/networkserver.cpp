@@ -102,8 +102,13 @@ void NetworkServer::receiveData()
         }
 
         // Si on connaît la taille du message, on vérifie si on a reçu le message en entier
-        if (s->bytesAvailable() < c->getMessageSize()) // Si on n'a pas encore tout reçu, on arrête la méthode
-            return;
+        if (s->bytesAvailable() < c->getMessageSize())
+        {
+            QLog_Info(LOG_ID_INFO, "receiveData(): received network message is incomplete.");
+            QLog_Info(LOG_ID_INFO, "receiveData(): arrived bytes : " + QString::number(sock->bytesAvailable()));
+            QLog_Info(LOG_ID_INFO, "receiveData(): expecting " + QString::number(messageSize) + " bytes.");
+            return;    
+        }
 
 
         // Si ces lignes s'exécutent, c'est qu'on a reçu tout le message : on peut le récupérer !
