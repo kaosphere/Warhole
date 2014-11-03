@@ -3,16 +3,15 @@
         <file>ressources/exp_template.png</file>
         <file>ressources/exp_template_icon_small.png</file>
         <file>ressources/blowTemplate.png</file>
-        <file>ressources/ruler-icon-6.gif</file>
-        <file>ressources/ruler-icon-12.gif</file>
-        <file>ressources/ruler-icon-18.gif</file>
-        <file>ressources/ruler-icon-24.gif</file>
         <file>ressources/dice.png</file>
         <file>ressources/textIcon.png</file>
         <file>ressources/scatterDie.png</file>
+        <file>ressources/ruler-icon-6.png</file>
+        <file>ressources/ruler-icon-12.png</file>
+        <file>ressources/ruler-icon-18.png</file>
+        <file>ressources/ruler-icon-24.png</file>
     </qresource>
     <qresource prefix="/images">
-        <file>ressources/floor_grass5.jpg</file>
-        <file>ressources/floor_grass3AndSoil.jpg</file>
+        <file>ressources/floor_grass5.png</file>
     </qresource>
 </RCC>
