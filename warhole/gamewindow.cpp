@@ -99,6 +99,7 @@ void GameWindow::initGameWindow()
     connect(&controller, SIGNAL(addRoundTemplateScene(QString,int)), this, SLOT(addRoundTemplateToScene(QString, int)));
 
     connect(ui->actionPivoter_la_vue, SIGNAL(triggered()), this, SLOT(rotateView()));
+    invertedView = false;
 
     actionDeploy = new QAction(tr("Déployer"), this);
     connect(actionDeploy, SIGNAL(triggered()),this,SLOT(deployRegiment()));
@@ -826,6 +827,7 @@ void GameWindow::on_treeViewTerrains_customContextMenuRequested(const QPoint &po
 void GameWindow::rotateView()
 {
     view.changeSideView();
+    invertedView = !invertedValue;
 }
 
 void GameWindow::placeTerrainRequest()
