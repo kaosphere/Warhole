@@ -20,7 +20,7 @@ class RegimentGraphics : public QGraphicsObject
     Q_OBJECT
 public:
     RegimentGraphics(QGraphicsItem* parent = 0);
-    RegimentGraphics(const RegimentAbstract& r, bool isOwnedByMe, QGraphicsItem* parent = 0);
+    RegimentGraphics(const RegimentAbstract& r, bool isOwnedByMe, bool& iv, QGraphicsItem* parent = 0);
     virtual ~RegimentGraphics();
 
     void initModels();
@@ -119,6 +119,8 @@ private:
     QAction* actionShowStats;
 
     QGraphicsRectItem* infoRect;
+    
+    bool& invertedView;
 
 private slots:
     void updateRegiment();
