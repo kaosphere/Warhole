@@ -16,12 +16,13 @@ RegimentGraphics::RegimentGraphics(QGraphicsItem *parent) : QGraphicsObject(pare
     initRegimentGraphics();
 }
 
-RegimentGraphics::RegimentGraphics(const RegimentAbstract &r, bool owned, QGraphicsItem *parent) :
+RegimentGraphics::RegimentGraphics(const RegimentAbstract &r, bool owned, bool& iv, QGraphicsItem *parent) :
     QGraphicsObject(parent)
 {
     initialized = false;
     regiment = r;
     isOwnedByMe = owned;
+    invertedView = iv;
 
     initRegimentGraphics();
 
@@ -491,7 +492,12 @@ void RegimentGraphics::showStats()
 
 
         connect(s,SIGNAL(destroyed()), this, SLOT(closeInfoRect()));
-
+        
+        if(invertedView)
+        {
+            // Display stats according to view side
+            infoRect.setRotation(180);
+        }
         scene()->addItem(infoRect);
     }
 }
