@@ -153,6 +153,8 @@ private:
 
     ChatWidgetForm* cw;
     StatsDisplayForm* sd;
+    
+    bool invertedView;
 
     void initGameWindow();
 
