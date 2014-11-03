@@ -4,6 +4,9 @@
 #include <QWidget>
 #include <QContextMenuEvent>
 #include "game/regiment/regimentabstract.h"
+#include "game/model/modelcavalry.h"
+#include "game/model/modelcharacter.h"
+#include "game/model/modelcharriot.h"
 #include "statsdisplaywidget.h"
 #include <QVBoxLayout>
 

@@ -18,6 +18,26 @@ StatsDisplayForm::StatsDisplayForm(RegimentAbstract r, bool owned, QString owner
         StatsDisplayWidget* w2 = new StatsDisplayWidget(m->getChampionStats());
         v->addWidget(w2);
     }
+    QString type = r.getGroups().first().getPath().section('/',-2,-2);
+    if(type == CAVALERY_STRING)
+    {
+        StatsDisplayWidget* w2 = new StatsDisplayWidget(dynamic_cast<ModelCavalry*>(m)->getMount());
+        v->addWidget(w2);
+    }
+    if(type == CHARACTER_STRING)
+    {
+        StatsDisplayWidget* w2 = new StatsDisplayWidget(dynamic_cast<ModelCharacter*>(m)->getMount());
+        v->addWidget(w2);
+    }
+    if(type == CHARRIOT_STRING)
+    {
+        for(int i = 0; i < dynamic_cast<ModelCharriot*>(m)->getCrew().size(); ++i)
+        {
+            StatsDisplayWidget* w2 = new StatsDisplayWidget(dynamic_cast<ModelCharriot*>(m)->getCrew().at(i));
+            v->addWidget(w2);
+        }
+    }
+
     v->addWidget(ui->label);
 
     QString text;
