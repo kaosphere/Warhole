@@ -71,7 +71,7 @@ void GameWindow::initGameWindow()
     ///////////////////////////////////////////
     //background of the game (To be removed afterwards)
     ///////////////////////////////////////////
-    if(!background.load(":/images/ressources/floor_grass5.jpg"))
+    if(!background.load(":/images/ressources/floor_grass5.png"))
     {
         QLog_Error(LOG_ID_ERR, "GAMEWINDOW : Can't load background image");
     }

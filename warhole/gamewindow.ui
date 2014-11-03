@@ -186,7 +186,7 @@
   <action name="actionRuler_6_inches">
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/icons/ressources/ruler-icon-6.gif</normaloff>:/icons/ressources/ruler-icon-6.gif</iconset>
+     <normaloff>:/icons/ressources/ruler-icon-6.png</normaloff>:/icons/ressources/ruler-icon-6.png</iconset>
    </property>
    <property name="text">
     <string>Ruler 6 inches</string>
@@ -198,7 +198,7 @@
   <action name="actionRuler_12_inches">
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/icons/ressources/ruler-icon-12.gif</normaloff>:/icons/ressources/ruler-icon-12.gif</iconset>
+     <normaloff>:/icons/ressources/ruler-icon-12.png</normaloff>:/icons/ressources/ruler-icon-12.png</iconset>
    </property>
    <property name="text">
     <string>Ruler 12 inches</string>
@@ -210,7 +210,7 @@
   <action name="actionRuler_18_inches">
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/icons/ressources/ruler-icon-18.gif</normaloff>:/icons/ressources/ruler-icon-18.gif</iconset>
+     <normaloff>:/icons/ressources/ruler-icon-18.png</normaloff>:/icons/ressources/ruler-icon-18.png</iconset>
    </property>
    <property name="text">
     <string>Ruler 18 inches</string>
@@ -222,7 +222,7 @@
   <action name="actionRuler_24_inches">
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/icons/ressources/ruler-icon-24.gif</normaloff>:/icons/ressources/ruler-icon-24.gif</iconset>
+     <normaloff>:/icons/ressources/ruler-icon-24.png</normaloff>:/icons/ressources/ruler-icon-24.png</iconset>
    </property>
    <property name="text">
     <string>Ruler 24 inches</string>
