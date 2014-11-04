@@ -18,7 +18,7 @@ Client::Client()
     sock = new QTcpSocket(this);
     messageSize = 0;
 
-    connect(sock, SIGNAL(bytesWritten(qint64)), this, SLOT(printBufferInfo(quint64)));
+    connect(sock, SIGNAL(bytesWritten(qint64)), this, SLOT(printBufferInfo(qint64)));
 }
 
 Client::Client(const Client &other):
@@ -33,7 +33,7 @@ Client::Client(const Client &other):
     sock = other.sock;
     name = other.name;
 
-    connect(sock, SIGNAL(bytesWritten(qint64)), this, SLOT(printBufferInfo(quint64)));
+    connect(sock, SIGNAL(bytesWritten(qint64)), this, SLOT(printBufferInfo(qint64)));
 }
 
 Client::~Client()
@@ -89,7 +89,7 @@ void Client::setName(const QString &value)
     name = value;
 }
 
-void Client::printBufferInfo(quint64 n)
+void Client::printBufferInfo(qint64 n)
 {
     QLog_Info(LOG_ID_INFO, " printBufferInfo() : Socket to " + name + " : bytes written : " +
               QString::number(n) + ". Bytes to write : " + QString::number(sock->bytesToWrite()));

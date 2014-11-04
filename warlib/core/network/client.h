@@ -26,7 +26,7 @@ public:
     void setName(const QString &value);
 
 public slots:
-    void printBufferInfo(quint64 n);
+    void printBufferInfo(qint64 n);
 
 signals:
     void donnees();

@@ -186,7 +186,7 @@ void NetworkClient::errorSocket(QAbstractSocket::SocketError erreur)
     }
 }
 
-void NetworkClient::printBufferInfo(quint64 n)
+void NetworkClient::printBufferInfo(qint64 n)
 {
     QLog_Info(LOG_ID_INFO, " printBufferInfo() : Bytes written : " + QString::number(n) +
             ". Bytes to write : " + QString::number(sock->bytesToWrite()));

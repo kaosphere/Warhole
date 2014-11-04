@@ -105,8 +105,8 @@ void NetworkServer::receiveData()
         if (s->bytesAvailable() < c->getMessageSize())
         {
             QLog_Info(LOG_ID_INFO, "receiveData(): received network message is incomplete.");
-            QLog_Info(LOG_ID_INFO, "receiveData(): arrived bytes : " + QString::number(sock->bytesAvailable()));
-            QLog_Info(LOG_ID_INFO, "receiveData(): expecting " + QString::number(messageSize) + " bytes.");
+            QLog_Info(LOG_ID_INFO, "receiveData(): arrived bytes : " + QString::number(s->bytesAvailable()));
+            QLog_Info(LOG_ID_INFO, "receiveData(): expecting " + QString::number(c->getMessageSize()) + " bytes.");
             return;    
         }
 
@@ -213,7 +213,7 @@ void NetworkServer::sendToAllButMe(const QByteArray& m, QString sender)
             clients[i]->getSocket()->write(m);
             // Be sure to send packet now
             //clients[i]->getSocket()->flush();
-            QLog_Info(LOG_ID_INFO, "sendToAllButMe() : sending message to " + clients[i]->getName());
+            QLog_Info(LOG_ID_INFO, "sendToAllButMe() : message sent to " + clients[i]->getName());
         }
     }
 }
@@ -223,8 +223,8 @@ void NetworkServer::sendToAll(const QByteArray& m)
     // Send message to all clients (but sender if a sender is defined
     for(int i = 0; i < clients.size(); ++i)
     {
-         QLog_Info(LOG_ID_INFO, "sendToAll() : sending message to " + clients[i]->getName());
          clients[i]->getSocket()->write(m);
+         QLog_Info(LOG_ID_INFO, "sendToAll() : message sent to " + clients[i]->getName());
          // Be sure to send packet now
          //clients[i]->getSocket()->flush();
     }
@@ -247,7 +247,7 @@ void NetworkServer::sendBackToSender(const QByteArray& m, QString sender)
             clients[i]->getSocket()->write(m);
             // Be sure to send packet now
             //clients[i]->getSocket()->flush();
-            QLog_Info(LOG_ID_INFO, "sendBackToSender() : sending message to " + clients[i]->getName());
+            QLog_Info(LOG_ID_INFO, "sendBackToSender() : message sent to " + clients[i]->getName());
         }
     }
 }
@@ -317,4 +317,3 @@ void NetworkServer::send()
         }
     }
 }
-
