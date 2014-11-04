@@ -95,6 +95,7 @@ GameController::GameController(QObject *parent) :
 GameController::~GameController()
 {
     comManager->deleteLater();
+    netInterface->deleteLater();
 }
 
 void GameController::createNetworkInterface(NetworkType t, QString ip)
