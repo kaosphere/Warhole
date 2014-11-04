@@ -16,16 +16,16 @@ RegimentGraphics::RegimentGraphics(QGraphicsItem *parent) : QGraphicsObject(pare
     initRegimentGraphics();
 }
 
-RegimentGraphics::RegimentGraphics(const RegimentAbstract &r, bool owned, bool& iv, QGraphicsItem *parent) :
+RegimentGraphics::RegimentGraphics(const RegimentAbstract &r, bool owned, bool* iv, QGraphicsItem *parent) :
     QGraphicsObject(parent)
 {
     initialized = false;
     regiment = r;
     isOwnedByMe = owned;
     invertedView = iv;
-
+    
     initRegimentGraphics();
-
+    
     initModels();
 }
 
@@ -48,17 +48,17 @@ void RegimentGraphics::initRegimentGraphics()
     
     // Redraw regiment if the regimentAbstract object is replaced
     QObject::connect(this, SIGNAL(regimentUpdated()), this, SLOT(updateRegiment()));
-
+    
     // Set default regiment width
     regimentWidth = DEFAULT_REGIMENT_WIDTH;
     infoRect = NULL;
-
+    
     hasImage = true;
     rot = false;
     firstRot = true;
-
+    
     childrenPen = new QPen(QColor(0,20,40),3);
-
+    
     actionRemoveRegiment = new QAction(tr("Retirer"), this);
     connect(actionRemoveRegiment, SIGNAL(triggered()), this, SLOT(removeRegimentRequest()));
     actionRemoveDeads = new QAction(tr("Retirer des figurines mortes"), this);
@@ -71,7 +71,7 @@ void RegimentGraphics::initRegimentGraphics()
     connect(actionChangeRegInfo, SIGNAL(triggered()), this, SLOT(changeRegimentInfoRequest()));
     actionShowStats = new QAction(tr("Afficher informations"), this);
     connect(actionShowStats, SIGNAL(triggered()), this, SLOT(showStats()));
-
+    
     // Item will be enabled for drag and drop if owned only
     connect(this, SIGNAL(ownerChanged()), this, SLOT(updateOwnership()));
     emit ownerChanged();
@@ -81,6 +81,8 @@ void RegimentGraphics::initModels()
 {
     models.clear();
     int nb = regiment.computeTotalNb();
+    if(nb < regimentWidth)
+        regimentWidth = nb;
     
     for(int i=0; i < regiment.getGroups().size(); ++i)
     {
@@ -97,24 +99,24 @@ void RegimentGraphics::initModels()
             if(regiment.getSkirmishers())
             {
                 r = new ModelGraphics(((i*j)+j)%regimentWidth * regiment.getGroups().at(i).getModel()->getSquareBaseW() * ONE_MILLIMETER + (((i*j)+j)%regimentWidth) * ONE_INCH/2,
-                                                     // Y position is the number of the model divided by regiment width
-                                                     (((i*j)+j)/regimentWidth) * regiment.getGroups().at(i).getModel()->getSquareBaseL() * ONE_MILLIMETER + (((i*j)+j)/regimentWidth) * ONE_INCH/2,
-                                                     regiment.getGroups().at(i).getModel()->getSquareBaseW() * ONE_MILLIMETER,
-                                                     regiment.getGroups().at(i).getModel()->getSquareBaseL() * ONE_MILLIMETER,
-                                                     regiment.getGroups().at(i).getModel()->getStats().getName(),
-                                                     &(regiment.getGroups().at(i).getModel()->getImage()),
-                                                     this);
+                                      // Y position is the number of the model divided by regiment width
+                                      (((i*j)+j)/regimentWidth) * regiment.getGroups().at(i).getModel()->getSquareBaseL() * ONE_MILLIMETER + (((i*j)+j)/regimentWidth) * ONE_INCH/2,
+                                      regiment.getGroups().at(i).getModel()->getSquareBaseW() * ONE_MILLIMETER,
+                                      regiment.getGroups().at(i).getModel()->getSquareBaseL() * ONE_MILLIMETER,
+                                      regiment.getGroups().at(i).getModel()->getStats().getName(),
+                                      &(regiment.getGroups().at(i).getModel()->getImage()),
+                                      this);
             }
             else
             {
                 r = new ModelGraphics(((i*j)+j)%regimentWidth * regiment.getGroups().at(i).getModel()->getSquareBaseW() * ONE_MILLIMETER,
-                                                     // Y position is the number of the model divided by regiment width
-                                                     (((i*j)+j)/regimentWidth) * regiment.getGroups().at(i).getModel()->getSquareBaseL() * ONE_MILLIMETER,
-                                                     regiment.getGroups().at(i).getModel()->getSquareBaseW() * ONE_MILLIMETER,
-                                                     regiment.getGroups().at(i).getModel()->getSquareBaseL() * ONE_MILLIMETER,
-                                                     regiment.getGroups().at(i).getModel()->getStats().getName(),
-                                                     &(regiment.getGroups().at(i).getModel()->getImage()),
-                                                     this);
+                                      // Y position is the number of the model divided by regiment width
+                                      (((i*j)+j)/regimentWidth) * regiment.getGroups().at(i).getModel()->getSquareBaseL() * ONE_MILLIMETER,
+                                      regiment.getGroups().at(i).getModel()->getSquareBaseW() * ONE_MILLIMETER,
+                                      regiment.getGroups().at(i).getModel()->getSquareBaseL() * ONE_MILLIMETER,
+                                      regiment.getGroups().at(i).getModel()->getStats().getName(),
+                                      &(regiment.getGroups().at(i).getModel()->getImage()),
+                                      this);
             }
             r->setBrush(childrenBrush);
             r->setPen(*childrenPen);
@@ -134,12 +136,12 @@ void RegimentGraphics::updateChildrenPositions()
         if(regiment.getSkirmishers())
         {
             models[j]->setPosXY((j%regimentWidth * regiment.getGroups().first().getModel()->getSquareBaseW() * ONE_MILLIMETER) + j%regimentWidth * ONE_INCH/2,
-                              ((j/regimentWidth)* regiment.getGroups().first().getModel()->getSquareBaseL() * ONE_MILLIMETER) + (j/regimentWidth) * ONE_INCH/2);
+                                ((j/regimentWidth)* regiment.getGroups().first().getModel()->getSquareBaseL() * ONE_MILLIMETER) + (j/regimentWidth) * ONE_INCH/2);
         }
         else
         {
             models[j]->setPosXY(j%regimentWidth * regiment.getGroups().first().getModel()->getSquareBaseW() * ONE_MILLIMETER,
-                              (j/regimentWidth)* regiment.getGroups().first().getModel()->getSquareBaseL() * ONE_MILLIMETER);
+                                (j/regimentWidth)* regiment.getGroups().first().getModel()->getSquareBaseL() * ONE_MILLIMETER);
             // Change bounding rect
         }
         prepareGeometryChange();
@@ -156,25 +158,25 @@ void RegimentGraphics::addModels(int nb)
         ModelGraphics* r;
         if(regiment.getSkirmishers())
         {
-             r = new ModelGraphics(i%regimentWidth * regiment.getGroups().first().getModel()->getSquareBaseW() * ONE_MILLIMETER + i%regimentWidth * ONE_INCH/2,
-                                             // Y position is the number of the model divided by regiment width
-                                             (i/regimentWidth) * regiment.getGroups().first().getModel()->getSquareBaseL() * ONE_MILLIMETER +(i/regimentWidth) * ONE_INCH/2,
-                                             regiment.getGroups().first().getModel()->getSquareBaseW() * ONE_MILLIMETER,
-                                             regiment.getGroups().first().getModel()->getSquareBaseL() * ONE_MILLIMETER,
-                                             regiment.getGroups().first().getModel()->getStats().getName(),
-                                             &(regiment.getGroups().first().getModel()->getImage()),
-                                             this);
+            r = new ModelGraphics(i%regimentWidth * regiment.getGroups().first().getModel()->getSquareBaseW() * ONE_MILLIMETER + i%regimentWidth * ONE_INCH/2,
+                                  // Y position is the number of the model divided by regiment width
+                                  (i/regimentWidth) * regiment.getGroups().first().getModel()->getSquareBaseL() * ONE_MILLIMETER +(i/regimentWidth) * ONE_INCH/2,
+                                  regiment.getGroups().first().getModel()->getSquareBaseW() * ONE_MILLIMETER,
+                                  regiment.getGroups().first().getModel()->getSquareBaseL() * ONE_MILLIMETER,
+                                  regiment.getGroups().first().getModel()->getStats().getName(),
+                                  &(regiment.getGroups().first().getModel()->getImage()),
+                                  this);
         }
         else
         {
             r = new ModelGraphics(i%regimentWidth * regiment.getGroups().first().getModel()->getSquareBaseW() * ONE_MILLIMETER,
-                                             // Y position is the number of the model divided by regiment width
-                                             (i/regimentWidth) * regiment.getGroups().first().getModel()->getSquareBaseL() * ONE_MILLIMETER,
-                                             regiment.getGroups().first().getModel()->getSquareBaseW() * ONE_MILLIMETER,
-                                             regiment.getGroups().first().getModel()->getSquareBaseL() * ONE_MILLIMETER,
-                                             regiment.getGroups().first().getModel()->getStats().getName(),
-                                             &(regiment.getGroups().first().getModel()->getImage()),
-                                             this);
+                                  // Y position is the number of the model divided by regiment width
+                                  (i/regimentWidth) * regiment.getGroups().first().getModel()->getSquareBaseL() * ONE_MILLIMETER,
+                                  regiment.getGroups().first().getModel()->getSquareBaseW() * ONE_MILLIMETER,
+                                  regiment.getGroups().first().getModel()->getSquareBaseL() * ONE_MILLIMETER,
+                                  regiment.getGroups().first().getModel()->getStats().getName(),
+                                  &(regiment.getGroups().first().getModel()->getImage()),
+                                  this);
         }
         r->setBrush(childrenBrush);
         r->setPen(*childrenPen);
@@ -249,7 +251,7 @@ void RegimentGraphics::paint(QPainter *painter, const QStyleOptionGraphicsItem *
         painter->setBrush(b);
         painter->drawPath(shape());
     }
-
+    
     // Handle selection
     if(this->isSelected())
     {
@@ -266,16 +268,16 @@ void RegimentGraphics::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     // This permits not to create infinite loop if we cast the signal
     // when the coordinates are changed
     static int cnt = 1;
-
+    
     static qreal translation;
     static qreal previousRot = 0;
     if(rot)
     {
         static int offset = 0;
-
+        
         if(firstRot)
         {
-
+            
             if(event->pos().x() < boundingRect().center().x())
             {
                 translation = boundingRect().right();
@@ -288,18 +290,18 @@ void RegimentGraphics::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
             }
             firstRot = false;
         }
-
+        
         QPointF originPoint = mapToScene(translation, 0);
-
+        
         qreal a1 = event->scenePos().x() - originPoint.x();
         qreal a2 = event->scenePos().y() - originPoint.y();
         qreal angle = qAtan2(a2, a1);
-
+        
         QTransform trans;
         trans.translate(translation,0).rotate(-previousRot).rotate((angle * 180 / 3.14) + offset).translate(-translation,0);
         setTransform(trans, true);
         previousRot = ((angle * 180 / 3.14) + offset);
-
+        
         if((++cnt)%8 == 0)
         {
             cnt = 1;
@@ -308,13 +310,13 @@ void RegimentGraphics::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     }
     else
     {
-
+        
         if(++cnt % 8 == 0)
         {
             cnt = 1;
             emit regimentMoved(regimentID, pos(), transform());
         }
-
+        
         QGraphicsItem::mouseMoveEvent(event);
     }
 }
@@ -347,7 +349,7 @@ void RegimentGraphics::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 void RegimentGraphics::updateOwnership()
 {
     QBrush* brush;
-
+    
     if(!regiment.getGroups().isEmpty())
     {
         int nb = regiment.computeTotalNb();
@@ -357,13 +359,13 @@ void RegimentGraphics::updateOwnership()
             setFlag(ItemIsMovable);
             setFlag(ItemIsSelectable);
             setFlag(ItemIsFocusable);
-
-
+            
+            
             QLinearGradient gradient(0,
-                                 ((nb/regimentWidth)+1)*regiment.getGroupsConst().first().getModel()->getSquareBaseL() * ONE_MILLIMETER,
-                                 regimentWidth*regiment.getGroupsConst().first().getModel()->getSquareBaseW() * ONE_MILLIMETER,
-                                 0);
-
+                                     ((nb/regimentWidth)+1)*regiment.getGroupsConst().first().getModel()->getSquareBaseL() * ONE_MILLIMETER,
+                                     regimentWidth*regiment.getGroupsConst().first().getModel()->getSquareBaseW() * ONE_MILLIMETER,
+                                     0);
+            
             gradient.setColorAt(0, QColor::fromRgb(qRgba(6, 52, 69, 0)));
             gradient.setColorAt(1, QColor::fromRgb(qRgba(9, 85, 112, 0)));
             brush = new QBrush(gradient);
@@ -374,8 +376,8 @@ void RegimentGraphics::updateOwnership()
             setFlag(ItemIsMovable, false);
             setFlag(ItemIsSelectable, false);
             setFlag(ItemIsFocusable, false);
-
-
+            
+            
             QLinearGradient gradient(0,
                                      ((nb/regimentWidth)+1)*regiment.getGroupsConst().first().getModel()->getSquareBaseL() * ONE_MILLIMETER,
                                      regimentWidth*regiment.getGroupsConst().first().getModel()->getSquareBaseW() * ONE_MILLIMETER,
@@ -385,7 +387,7 @@ void RegimentGraphics::updateOwnership()
             brush = new QBrush(gradient);
             childrenBrush = *brush;
         }
-
+        
         updateChildrenBrushes();
     }
 }
@@ -478,25 +480,26 @@ void RegimentGraphics::showStats()
         StatsDisplayForm* s = new StatsDisplayForm(regiment, isOwnedByMe, owner);
         QGraphicsProxyWidget* w = new QGraphicsProxyWidget();
         w->setWidget(s);
-
+        
         infoRect = new QGraphicsRectItem(this->pos().x() + boundingRect().width(),
-                                                     pos().y(),
-                                                     s->width(),
-                                                     s->height());
+                                         pos().y(),
+                                         s->width(),
+                                         s->height());
         infoRect->setFlag(ItemIsMovable);
         infoRect->setFlag(ItemIsSelectable);
-
+        
         w->setParentItem(infoRect);
         w->setPos(infoRect->boundingRect().topLeft());
         w->setOpacity(0.9);
-
-
+        
+        
         connect(s,SIGNAL(destroyed()), this, SLOT(closeInfoRect()));
         
-        if(invertedView)
+        if(*invertedView)
         {
             // Display stats according to view side
-            infoRect.setRotation(180);
+            infoRect->setTransformOriginPoint(pos());
+            infoRect->setRotation(180);
         }
         scene()->addItem(infoRect);
     }
@@ -529,7 +532,7 @@ bool RegimentGraphics::getIsOwnedByMe() const
 void RegimentGraphics::setIsOwnedByMe(bool value)
 {
     isOwnedByMe = value;
-
+    
     emit ownerChanged();
 }
 
@@ -610,13 +613,24 @@ QDataStream& operator>>(QDataStream& in, RegimentGraphics& obj)
     in >> obj.regimentWidth;
     in >> obj.owner;
     in >> position;
-
+    
     obj.updateOwnership();
     obj.setPos(position);
     
     in >> matrix;
     
     obj.setTransform(matrix);
-
+    
     return in;
+}
+
+
+bool RegimentGraphics::getInvertedView() const
+{
+    return *invertedView;
+}
+
+void RegimentGraphics::setInvertedView(bool *value)
+{
+    invertedView = value;
 }

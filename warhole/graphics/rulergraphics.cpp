@@ -35,6 +35,7 @@ void RulerGraphics::initRulerGraphics()
 
     setFlag(ItemIsMovable);
     setFlag(ItemIsFocusable);
+    setFlag(ItemIsSelectable);
 }
 
 RulerGraphics::~RulerGraphics()

@@ -10,6 +10,7 @@ DispersionGraphics::DispersionGraphics(QGraphicsItem *parent) :
     id = "";
     setFlag(ItemIsMovable);
     setFlag(ItemIsFocusable);
+    setFlag(ItemIsSelectable);
 
     actionRemove = new QAction(tr("Retirer"), this);
     connect(actionRemove, SIGNAL(triggered()), this, SLOT(removeScatter()));
@@ -28,6 +29,7 @@ DispersionGraphics::DispersionGraphics(QString i, qreal a, QGraphicsItem *parent
 
     setFlag(ItemIsMovable);
     setFlag(ItemIsFocusable);
+    setFlag(ItemIsSelectable);
 }
 
 QRectF DispersionGraphics::boundingRect() const

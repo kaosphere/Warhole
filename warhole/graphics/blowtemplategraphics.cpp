@@ -27,6 +27,7 @@ void BlowTemplateGraphics::initRoundTemplateGraphics()
 
     setFlag(ItemIsMovable);
     setFlag(ItemIsFocusable);
+    setFlag(ItemIsSelectable);
 
     setOpacity(0.7);
     setZValue(1);

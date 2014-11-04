@@ -5,6 +5,7 @@ TerrainGraphics::TerrainGraphics(QGraphicsItem *parent) :
 {
     setFlag(ItemIsFocusable);
     setFlag(ItemIsMovable);
+    setFlag(ItemIsSelectable);
 
     rot = false;
     firstRot = true;
@@ -29,6 +30,7 @@ TerrainGraphics::TerrainGraphics(Terrain ter, QGraphicsItem *parent):
 
     setFlag(ItemIsFocusable);
     setFlag(ItemIsMovable);
+    setFlag(ItemIsSelectable);
 
     rot = false;
     firstRot = true;

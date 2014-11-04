@@ -20,7 +20,7 @@ class RegimentGraphics : public QGraphicsObject
     Q_OBJECT
 public:
     RegimentGraphics(QGraphicsItem* parent = 0);
-    RegimentGraphics(const RegimentAbstract& r, bool isOwnedByMe, bool& iv, QGraphicsItem* parent = 0);
+    RegimentGraphics(const RegimentAbstract& r, bool isOwnedByMe, bool *iv, QGraphicsItem* parent = 0);
     virtual ~RegimentGraphics();
 
     void initModels();
@@ -54,6 +54,9 @@ public:
     
     friend QDataStream& operator<<(QDataStream& out, const RegimentGraphics& obj);
     friend QDataStream& operator>>(QDataStream& in, RegimentGraphics& obj);
+
+    bool getInvertedView() const;
+    void setInvertedView(bool *value);
 
 protected:
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent* event);
@@ -120,7 +123,7 @@ private:
 
     QGraphicsRectItem* infoRect;
     
-    bool& invertedView;
+    bool* invertedView;
 
 private slots:
     void updateRegiment();

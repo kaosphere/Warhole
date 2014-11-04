@@ -29,6 +29,7 @@ void TextGraphics::initTextItem()
     item->setFont(QFont("Times", 48, QFont::Bold));
     setFlag(ItemIsMovable);
     setFlag(ItemIsFocusable);
+    setFlag(ItemIsSelectable);
 }
 
 QRectF TextGraphics::boundingRect() const

@@ -227,11 +227,11 @@ void GameWindow::addRegimentToGameScene(QString id, QString owner, RegimentAbstr
         RegimentGraphics* rg;
         if(owner == controller.getGame().getMe())
         {
-            rg = new RegimentGraphics(r, true);
+            rg = new RegimentGraphics(r, true, &invertedView);
         }
         else
         {
-            rg = new RegimentGraphics(r, false);
+            rg = new RegimentGraphics(r, false, &invertedView);
         }
         rg->setRegimentID(id);
         rg->setOwner(owner);
@@ -245,6 +245,7 @@ void GameWindow::addRegimentToGameScene(QString id, QString owner, RegimentAbstr
         connect(rg, SIGNAL(changeRegimentInfoRequest(QString,RegimentAbstract)), &controller, SIGNAL(changeRegInfoRequest(QString, RegimentAbstract)));
 
         scene.addItem(rg);
+        scene.clearSelection();
         regimentMap[id] = rg;
 
         printSpecialMessage("<em><font color=\"DimGray\"><strong>" + owner + "</strong>" +
@@ -279,6 +280,7 @@ void GameWindow::addRulerToScene(QString id, int l)
     connect(r, SIGNAL(rulerMoved(QString, QPointF, QTransform)), &controller, SIGNAL(rulerMoved(QString, QPointF, QTransform)));
     connect(r, SIGNAL(removeRuler(QString)), &controller, SIGNAL(removeRulerRequest(QString)));
     scene.addItem(r);
+    scene.clearSelection();
     r->setPos(back->getW()/2, back->getH()/2);
 
     // Assume that id will be unique for now
@@ -469,6 +471,7 @@ void GameWindow::on_actionConnect_to_a_game_2_triggered()
     }
 }
 
+
 void GameWindow::printSpecialMessage(QString state)
 {
     cw->appendString(state);
@@ -490,6 +493,7 @@ void GameWindow::addRoundTemplateToScene(QString id, int d)
     connect(r, SIGNAL(templateMoved(QString,QPointF)), &controller, SIGNAL(templateMoved(QString, QPointF)));
     connect(r, SIGNAL(removeTemplateRequest(QString)), &controller, SIGNAL(removeTemplateRequest(QString)));
     scene.addItem(r);
+    scene.clearSelection();
     r->setPos(back->getW()/2, back->getH()/2);
 
     // Assume that id will be unique for now
@@ -527,6 +531,7 @@ void GameWindow::removeRoundTemplate(QString id)
 
 void GameWindow::getGlobalInfo(QDataStream& stream)
 {
+    QLog_Info(LOG_ID_INFO, "on_actionSave_Game_triggered(): starting to gather game info...");
     // Store game info
     stream << controller.getGame();
 
@@ -585,6 +590,7 @@ void GameWindow::getGlobalInfo(QDataStream& stream)
         (*o)->serializeOut(stream);
         ++o;
     }
+    QLog_Info(LOG_ID_INFO, "on_actionSave_Game_triggered(): finished to gather game info");
 }
 
 void GameWindow::clearAllMaps()
@@ -672,6 +678,7 @@ void GameWindow::setGlobalInfo(QDataStream& stream)
         r->serializeIn(stream);
         if(r->getOwner() == controller.getGame().getMe()) r->setIsOwnedByMe(true);
         r->initModels();
+        r->setInvertedView(&invertedView);
         regimentMap[r->getRegimentID()] = r;
 
         connect(r, SIGNAL(regimentMoved(QString,QPointF,QTransform)), &controller, SIGNAL(regimentMoved(QString, QPointF, QTransform)));
@@ -768,6 +775,7 @@ void GameWindow::setGlobalInfo(QDataStream& stream)
     }
 }
 
+
 void GameWindow::on_actionSave_Game_triggered()
 {
     QString path = QFileDialog::getSaveFileName(this, tr("Sauvegarde du fichier"), controller.getGame().getName() + ".war", tr("fichiers war(*.war)"));
@@ -827,7 +835,7 @@ void GameWindow::on_treeViewTerrains_customContextMenuRequested(const QPoint &po
 void GameWindow::rotateView()
 {
     view.changeSideView();
-    invertedView = !invertedValue;
+    invertedView = !invertedView;
 }
 
 void GameWindow::placeTerrainRequest()
@@ -849,6 +857,7 @@ void GameWindow::addNewTerrainToScene(QString id, Terrain t)
 
     terrainMap[id] = ter;
     scene.addItem(ter);
+    scene.clearSelection();
 }
 
 void GameWindow::removeTerrain(QString id)
@@ -908,6 +917,7 @@ void GameWindow::addNewBlowTemplateToScene(QString id)
     blowTemplateList[id] = b;
     b->setPos(back->getW()/2, back->getH()/2);
     scene.addItem(b);
+    scene.clearSelection();
 }
 
 void GameWindow::moveBlowTemplate(QString id, QPointF p, QTransform matrix)
@@ -970,6 +980,7 @@ void GameWindow::addNewTextToScene(QString id, QString text)
     textMap[id] = b;
     b->setPos(back->getW()/2, back->getH()/2);
     scene.addItem(b);
+    scene.clearSelection();
 }
 
 void GameWindow::moveText(QString i, QString text, QPointF p, QTransform matrix)
@@ -1023,6 +1034,7 @@ void GameWindow::addNewScatterToScene(QString i, int a)
     scatterMap[i] = d;
     d->setPos(back->getW()/2, back->getH()/2);
     scene.addItem(d);
+    scene.clearSelection();
 }
 
 void GameWindow::requestNewText()

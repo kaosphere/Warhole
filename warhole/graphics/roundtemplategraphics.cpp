@@ -22,6 +22,7 @@ void RoundTemplateGraphics::initRoundTemplateGraphics()
 {
     setFlag(ItemIsMovable);
     setFlag(ItemIsFocusable);
+    setFlag(ItemIsSelectable);
 
     actionRemoveTemplate = new QAction(tr("Retirer"), this);
     connect(actionRemoveTemplate, SIGNAL(triggered()),this, SLOT(removeTemplate()));
