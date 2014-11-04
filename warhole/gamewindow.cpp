@@ -370,9 +370,6 @@ void GameWindow::changeRegimentWidth(QString id, int w)
         QLog_Info(LOG_ID_INFO, "removeDeadsFromRegiment() : regiment with ID " + id + " found, now setting wdth to " +
                   QString::number(w));
         regimentMap[id]->setRegimentWidth(w);
-        emit cw->newMessageToSend("<em><font color=\"DimGray\">" + tr("Régiment ") +
-                                  regimentMap[id]->getRegiment().getName() + tr(" se reforme, sa largeur passe à ") +
-                                  QString::number(regimentMap[id]->getRegimentWidth()) + "</em></font>");
     }
     else
     {
