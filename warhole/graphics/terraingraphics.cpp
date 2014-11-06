@@ -185,9 +185,13 @@ void TerrainGraphics::updateLock()
     if(lock)
     {
         setFlag(ItemIsMovable, false);
+        setFlag(ItemIsSelectable, false);
     }
     else
+    {
         setFlag(ItemIsMovable);
+        setFlag(ItemIsSelectable, false);
+    }
 }
 
 void TerrainGraphics::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
