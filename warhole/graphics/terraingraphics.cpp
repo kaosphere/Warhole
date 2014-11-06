@@ -65,7 +65,7 @@ void TerrainGraphics::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     static qreal translation;
     static qreal previousRot = 0;
     static int cnt = 0;
-    if(rot)
+    if(rot && !lock)
     {
         static int offset = 0;
 
