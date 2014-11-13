@@ -46,11 +46,14 @@ public:
     friend QDataStream& operator<<(QDataStream& out, const RulerGraphics& obj);
     friend QDataStream& operator>>(QDataStream& in, RulerGraphics& obj);
 
+    qreal getPreviousRot() const;
+    void setPreviousRot(const qreal &value);
+
 public slots:
     void removeRulerRequest();
 
 signals:
-    void rulerMoved(QString, QPointF, QTransform);
+    void rulerMoved(QString, QPointF, QTransform, qreal);
     void removeRuler(QString);
 
 private:

@@ -56,6 +56,9 @@ void RegimentGraphics::initRegimentGraphics()
     hasImage = true;
     rot = false;
     firstRot = true;
+    previousRot = 0;
+
+    setZValue(REGIMENT_Z_VALUE);
     
     childrenPen = new QPen(QColor(0,20,40),3);
     
@@ -270,7 +273,6 @@ void RegimentGraphics::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     static int cnt = 1;
     
     static qreal translation;
-    static qreal previousRot = 0;
     if(rot)
     {
         static int offset = 0;
@@ -305,7 +307,7 @@ void RegimentGraphics::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         if((++cnt)%8 == 0)
         {
             cnt = 1;
-            emit regimentMoved(regimentID, pos(), transform());
+            emit regimentMoved(regimentID, pos(), transform(), previousRot);
         }
     }
     else
@@ -314,7 +316,7 @@ void RegimentGraphics::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         if(++cnt % 8 == 0)
         {
             cnt = 1;
-            emit regimentMoved(regimentID, pos(), transform());
+            emit regimentMoved(regimentID, pos(), transform(), previousRot);
         }
         
         QGraphicsItem::mouseMoveEvent(event);
@@ -342,7 +344,7 @@ void RegimentGraphics::keyReleaseEvent(QKeyEvent *event)
 
 void RegimentGraphics::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    emit regimentMoved(regimentID, pos(), transform());
+    emit regimentMoved(regimentID, pos(), transform(), previousRot);
     QGraphicsItem::mouseReleaseEvent(event);
 }
 
@@ -599,8 +601,9 @@ QDataStream& operator<<(QDataStream& out, const RegimentGraphics& obj)
     out << obj.owner;
     out << obj.pos();
     out << obj.transform();
+    out << obj.previousRot;
     
-    return out; 
+    return out;
 }
 
 QDataStream& operator>>(QDataStream& in, RegimentGraphics& obj)
@@ -618,6 +621,7 @@ QDataStream& operator>>(QDataStream& in, RegimentGraphics& obj)
     obj.setPos(position);
     
     in >> matrix;
+    in >> obj.previousRot;
     
     obj.setTransform(matrix);
     
@@ -634,3 +638,14 @@ void RegimentGraphics::setInvertedView(bool *value)
 {
     invertedView = value;
 }
+
+qreal RegimentGraphics::getPreviousRot() const
+{
+    return previousRot;
+}
+
+void RegimentGraphics::setPreviousRot(const qreal &value)
+{
+    previousRot = value;
+}
+

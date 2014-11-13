@@ -58,6 +58,9 @@ public:
     bool getInvertedView() const;
     void setInvertedView(bool *value);
 
+    qreal getPreviousRot() const;
+    void setPreviousRot(const qreal &value);
+
 protected:
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent* event);
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
@@ -125,6 +128,8 @@ private:
     
     bool* invertedView;
 
+    qreal previousRot;
+
 private slots:
     void updateRegiment();
     void showStats();
@@ -149,7 +154,7 @@ signals:
     /*!
     * This signal is sent when the graphic regiment is moved.
     */
-    void regimentMoved(QString, QPointF, QTransform);
+    void regimentMoved(QString, QPointF, QTransform, qreal);
 
     //! regimentUpdated.
     /*!

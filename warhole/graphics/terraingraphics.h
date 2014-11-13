@@ -39,6 +39,9 @@ public:
     
     friend QDataStream& operator<<(QDataStream& out, const TerrainGraphics& obj);
     friend QDataStream& operator>>(QDataStream& in, TerrainGraphics& obj);
+    qreal getPreviousRot() const;
+    void setPreviousRot(const qreal &value);
+
 protected:
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     void keyPressEvent(QKeyEvent *event);
@@ -46,7 +49,7 @@ protected:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 
 signals:
-    void terrainMoved(QString, QPointF, QTransform);
+    void terrainMoved(QString, QPointF, QTransform, qreal);
     void removeTerrainRequest(QString);
     void lockTerrainRequest(QString, bool);
     
@@ -62,6 +65,7 @@ private:
 
     bool rot;
     bool firstRot;
+    qreal previousRot;
 
     bool lock;
 

@@ -24,11 +24,12 @@ void RoundTemplateGraphics::initRoundTemplateGraphics()
     setFlag(ItemIsFocusable);
     setFlag(ItemIsSelectable);
 
+    setZValue(TEMPLATE_Z_VALUE);
+
     actionRemoveTemplate = new QAction(tr("Retirer"), this);
     connect(actionRemoveTemplate, SIGNAL(triggered()),this, SLOT(removeTemplate()));
 
     setOpacity(0.7);
-    setZValue(1);
 }
 
 QRectF RoundTemplateGraphics::boundingRect() const

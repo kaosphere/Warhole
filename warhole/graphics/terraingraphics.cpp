@@ -9,8 +9,9 @@ TerrainGraphics::TerrainGraphics(QGraphicsItem *parent) :
 
     rot = false;
     firstRot = true;
-
+    previousRot = 0;
     lock = false;
+    setZValue(TERRAIN_Z_VALUE);
 
     actionRemoveTerrain = new QAction(tr("Retirer"), this);
     connect(actionRemoveTerrain, SIGNAL(triggered()),this, SLOT(removeTerrainRequest()));
@@ -34,8 +35,9 @@ TerrainGraphics::TerrainGraphics(Terrain ter, QGraphicsItem *parent):
 
     rot = false;
     firstRot = true;
-
+    previousRot = 0;
     lock = false;
+    setZValue(TERRAIN_Z_VALUE);
 
     actionRemoveTerrain = new QAction(tr("Retirer"), this);
     connect(actionRemoveTerrain, SIGNAL(triggered()),this, SLOT(removeTerrainRequest()));
@@ -63,7 +65,7 @@ void TerrainGraphics::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
 void TerrainGraphics::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     static qreal translation;
-    static qreal previousRot = 0;
+
     static int cnt = 0;
     if(rot && !lock)
     {
@@ -99,7 +101,7 @@ void TerrainGraphics::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         if((++cnt)%6 == 0)
         {
             cnt = 1;
-            emit terrainMoved(id, pos(), transform());
+            emit terrainMoved(id, pos(), transform(), previousRot);
         }
     }
     else
@@ -107,7 +109,7 @@ void TerrainGraphics::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         if((++cnt)%6 == 0)
         {
             cnt = 1;
-            emit terrainMoved(id, pos(), transform());
+            emit terrainMoved(id, pos(), transform(), previousRot);
         }
         QGraphicsItem::mouseMoveEvent(event);
     }
@@ -135,7 +137,7 @@ void TerrainGraphics::keyReleaseEvent(QKeyEvent *event)
 void TerrainGraphics::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     // End of movement, send final position
-    emit terrainMoved(id, pos(), transform());
+    emit terrainMoved(id, pos(), transform(), previousRot);
 
     QGraphicsItem::mouseReleaseEvent(event);
 }
@@ -243,8 +245,9 @@ QDataStream& operator<<(QDataStream& out, const TerrainGraphics& obj)
         << obj.t
         << obj.lock
         << obj.pos()
-        << obj.transform();
-        
+        << obj.transform()
+        << obj.previousRot;
+
     return out;
 }
 
@@ -264,7 +267,19 @@ QDataStream& operator>>(QDataStream& in, TerrainGraphics& obj)
     obj.setPos(position);
     
     in >> matrix;
+    in >> obj.previousRot;
     obj.setTransform(matrix);
     
     return in;
 }
+
+qreal TerrainGraphics::getPreviousRot() const
+{
+    return previousRot;
+}
+
+void TerrainGraphics::setPreviousRot(const qreal &value)
+{
+    previousRot = value;
+}
+

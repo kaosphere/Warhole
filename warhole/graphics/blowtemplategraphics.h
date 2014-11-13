@@ -38,8 +38,11 @@ public:
     friend QDataStream& operator<<(QDataStream& out, const BlowTemplateGraphics& obj);
     friend QDataStream& operator>>(QDataStream& in, BlowTemplateGraphics& obj);
     
+    qreal getPreviousRot() const;
+    void setPreviousRot(const qreal &value);
+
 signals:
-    void templateMoved(QString, QPointF, QTransform);
+    void templateMoved(QString, QPointF, QTransform, qreal);
     void removeTemplateRequest(QString);
 
 public slots:

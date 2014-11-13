@@ -12,6 +12,8 @@ DispersionGraphics::DispersionGraphics(QGraphicsItem *parent) :
     setFlag(ItemIsFocusable);
     setFlag(ItemIsSelectable);
 
+    setZValue(SCATTER_Z_VALUE);
+
     actionRemove = new QAction(tr("Retirer"), this);
     connect(actionRemove, SIGNAL(triggered()), this, SLOT(removeScatter()));
 }
@@ -26,6 +28,8 @@ DispersionGraphics::DispersionGraphics(QString i, qreal a, QGraphicsItem *parent
 
     actionRemove = new QAction(tr("Retirer"), this);
     connect(actionRemove, SIGNAL(triggered()), this, SLOT(removeScatter()));
+
+    setZValue(SCATTER_Z_VALUE);
 
     setFlag(ItemIsMovable);
     setFlag(ItemIsFocusable);

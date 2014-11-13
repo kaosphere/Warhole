@@ -10,6 +10,7 @@
 #include <QKeyEvent>
 #include <QAction>
 #include <QMenu>
+#include "distances.h"
 
 class TextGraphics : public QGraphicsObject
 {
@@ -45,9 +46,12 @@ public:
 
     void setTextWithoutSignal(const QString &value);
 
+    qreal getPreviousRot() const;
+    void setPreviousRot(const qreal &value);
+
 signals:
     void textDoubleClicked();
-    void textChanged(QString, QString, QPointF, QTransform);
+    void textChanged(QString, QString, QPointF, QTransform, qreal);
     void removeTextRequest(QString);
     
 public slots:
@@ -61,6 +65,7 @@ private:
 
     bool rot;
     bool firstRot;
+    qreal previousRot;
 
     static const QString DEFAULT_TEXT;
     

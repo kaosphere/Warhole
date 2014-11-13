@@ -113,10 +113,10 @@ void GameWindow::initGameWindow()
     //GameController
     /////////////////////////////////////////////
     connect(&controller, SIGNAL(refreshPlayerListDisplay(QList<Player>)), cw, SLOT(refreshPlayerListDisplay(QList<Player>)));
-    connect(&controller, SIGNAL(moveRuler(QString,QPointF, QTransform)), this, SLOT(moveRuler(QString,QPointF, QTransform)));
+    connect(&controller, SIGNAL(moveRuler(QString,QPointF, QTransform, qreal)), this, SLOT(moveRuler(QString,QPointF, QTransform, qreal)));
     connect(&controller, SIGNAL(networkEvent(QString)), this, SLOT(printSpecialMessage(QString)));
     connect(&controller, SIGNAL(moveTemplate(QString,QPointF)), this, SLOT(moveTemplate(QString, QPointF)));
-    connect(&controller, SIGNAL(moveRegiment(QString,QPointF,QTransform)), this, SLOT(moveRegiment(QString, QPointF, QTransform)));
+    connect(&controller, SIGNAL(moveRegiment(QString,QPointF,QTransform, qreal)), this, SLOT(moveRegiment(QString, QPointF, QTransform, qreal)));
 
     connect(&controller, SIGNAL(removeRegiment(QString)), this, SLOT(removeRegiment(QString)));
     connect(&controller, SIGNAL(removeDeads(QString,int)), this, SLOT(removeDeadsFromRegiment(QString, int)));
@@ -132,17 +132,17 @@ void GameWindow::initGameWindow()
     connect(&controller, SIGNAL(newTerrain(QString, Terrain)), this, SLOT(addNewTerrainToScene(QString, Terrain)));
     connect(&controller, SIGNAL(removeTerrain(QString)), this, SLOT(removeTerrain(QString)));
     connect(&controller, SIGNAL(lockTerrain(QString, bool)), this, SLOT(lockTerrain(QString, bool)));
-    connect(&controller, SIGNAL(moveTerrain(QString,QPointF,QTransform)), SLOT(moveTerrain(QString, QPointF, QTransform)));
+    connect(&controller, SIGNAL(moveTerrain(QString,QPointF,QTransform, qreal)), SLOT(moveTerrain(QString, QPointF, QTransform, qreal)));
 
     connect(&controller, SIGNAL(newBlowTemp(QString)), this, SLOT(addNewBlowTemplateToScene(QString)));
-    connect(&controller, SIGNAL(moveBlowTemp(QString,QPointF,QTransform)), this, SLOT(moveBlowTemplate(QString,QPointF,QTransform)));
+    connect(&controller, SIGNAL(moveBlowTemp(QString,QPointF,QTransform, qreal)), this, SLOT(moveBlowTemplate(QString,QPointF,QTransform, qreal)));
     connect(&controller, SIGNAL(removeBlowTemp(QString)), this, SLOT(removeBlowTemplate(QString)));
 
     connect(ui->actionBlowTemplate, SIGNAL(triggered()), &controller, SIGNAL(requestBlowTemplate()));
     connect(ui->actionActionAddText, SIGNAL(triggered()), this, SLOT(requestNewText()));
     connect(this, SIGNAL(requestNewText(QString)), &controller, SIGNAL(newTextRequest(QString)));
     connect(&controller, SIGNAL(newText(QString, QString)), this, SLOT(addNewTextToScene(QString, QString)));
-    connect(&controller, SIGNAL(moveText(QString,QString,QPointF,QTransform)), this, SLOT(moveText(QString, QString, QPointF, QTransform)));
+    connect(&controller, SIGNAL(moveText(QString,QString,QPointF,QTransform, qreal)), this, SLOT(moveText(QString, QString, QPointF, QTransform, qreal)));
     connect(&controller, SIGNAL(removeText(QString)), this, SLOT(removeText(QString)));
 
     connect(ui->actionScatterDice, SIGNAL(triggered()), this, SLOT(requestNewScatter()));
@@ -237,7 +237,7 @@ void GameWindow::addRegimentToGameScene(QString id, QString owner, RegimentAbstr
         rg->setOwner(owner);
 
 
-        connect(rg, SIGNAL(regimentMoved(QString,QPointF,QTransform)), &controller, SIGNAL(regimentMoved(QString, QPointF, QTransform)));
+        connect(rg, SIGNAL(regimentMoved(QString,QPointF,QTransform, qreal)), &controller, SIGNAL(regimentMoved(QString, QPointF, QTransform, qreal)));
         connect(rg, SIGNAL(removeRegimentRequest(QString)), &controller, SIGNAL(removeRegimentRequest(QString)));
         connect(rg, SIGNAL(removeDeadsRequest(QString, int)), &controller, SIGNAL(removeDeadsRequest(QString, int)));
         connect(rg, SIGNAL(changeWidthRequest(QString, int)), &controller, SIGNAL(changeWidthRequest(QString, int)));
@@ -277,7 +277,7 @@ void GameWindow::add24InchesRuler()
 void GameWindow::addRulerToScene(QString id, int l)
 {
     RulerGraphics* r = new RulerGraphics(l, id);
-    connect(r, SIGNAL(rulerMoved(QString, QPointF, QTransform)), &controller, SIGNAL(rulerMoved(QString, QPointF, QTransform)));
+    connect(r, SIGNAL(rulerMoved(QString, QPointF, QTransform, qreal)), &controller, SIGNAL(rulerMoved(QString, QPointF, QTransform, qreal)));
     connect(r, SIGNAL(removeRuler(QString)), &controller, SIGNAL(removeRulerRequest(QString)));
     scene.addItem(r);
     scene.clearSelection();
@@ -287,13 +287,14 @@ void GameWindow::addRulerToScene(QString id, int l)
     rulerList[id] = r;
 }
 
-void GameWindow::moveRuler(QString id, QPointF p, QTransform matrix)
+void GameWindow::moveRuler(QString id, QPointF p, QTransform matrix, qreal pr)
 {
     if(rulerList.contains(id))
     {
         QLog_Info(LOG_ID_INFO, "moveRuler() : ruler with ID " + id + " found, now moving it.");
         rulerList[id]->setPos(p);
         rulerList[id]->setTransform(matrix);
+        rulerList[id]->setPreviousRot(pr);
     }
     else
     {
@@ -317,13 +318,14 @@ void GameWindow::removeRulerFromScene(QString id)
     }
 }
 
-void GameWindow::moveRegiment(QString id, QPointF p, QTransform matrix)
+void GameWindow::moveRegiment(QString id, QPointF p, QTransform matrix, qreal pr)
 {
     if(regimentMap.contains(id))
     {
         QLog_Info(LOG_ID_INFO, "moveRegiment() : regiment with ID " + id + " found, now moving it.");
         regimentMap[id]->setPos(p);
         regimentMap[id]->setTransform(matrix);
+        regimentMap[id]->setPreviousRot(pr);
     }
     else
     {
@@ -678,7 +680,7 @@ void GameWindow::setGlobalInfo(QDataStream& stream)
         r->setInvertedView(&invertedView);
         regimentMap[r->getRegimentID()] = r;
 
-        connect(r, SIGNAL(regimentMoved(QString,QPointF,QTransform)), &controller, SIGNAL(regimentMoved(QString, QPointF, QTransform)));
+        connect(r, SIGNAL(regimentMoved(QString,QPointF,QTransform, qreal)), &controller, SIGNAL(regimentMoved(QString, QPointF, QTransform, qreal)));
         connect(r, SIGNAL(removeRegimentRequest(QString)), &controller, SIGNAL(removeRegimentRequest(QString)));
         connect(r, SIGNAL(removeDeadsRequest(QString, int)), &controller, SIGNAL(removeDeadsRequest(QString, int)));
         connect(r, SIGNAL(changeWidthRequest(QString, int)), &controller, SIGNAL(changeWidthRequest(QString, int)));
@@ -696,7 +698,7 @@ void GameWindow::setGlobalInfo(QDataStream& stream)
         r->serializeIn(stream);
         rulerList[r->getId()] = r;
 
-        connect(r, SIGNAL(rulerMoved(QString, QPointF, QTransform)), &controller, SIGNAL(rulerMoved(QString, QPointF, QTransform)));
+        connect(r, SIGNAL(rulerMoved(QString, QPointF, QTransform, qreal)), &controller, SIGNAL(rulerMoved(QString, QPointF, QTransform, qreal)));
         connect(r, SIGNAL(removeRuler(QString)), &controller, SIGNAL(removeRulerRequest(QString)));
         scene.addItem(r);
     }
@@ -724,7 +726,7 @@ void GameWindow::setGlobalInfo(QDataStream& stream)
 
         connect(t, SIGNAL(removeTerrainRequest(QString)), &controller, SIGNAL(removeTerrainRequest(QString)));
         connect(t, SIGNAL(lockTerrainRequest(QString, bool)), &controller, SIGNAL(lockTerrainRequest(QString, bool)));
-        connect(t, SIGNAL(terrainMoved(QString,QPointF,QTransform)), &controller, SIGNAL(terrainMoved(QString, QPointF, QTransform)));
+        connect(t, SIGNAL(terrainMoved(QString,QPointF,QTransform, qreal)), &controller, SIGNAL(terrainMoved(QString, QPointF, QTransform, qreal)));
     
         scene.addItem(t);
     }
@@ -738,7 +740,7 @@ void GameWindow::setGlobalInfo(QDataStream& stream)
         blowTemplateList[b->getId()] = b;
 
         connect(b, SIGNAL(removeTemplateRequest(QString)), &controller, SIGNAL(removeTemplateRequest(QString)));
-        connect(b, SIGNAL(templateMoved(QString,QPointF,QTransform)), &controller, SIGNAL(blowTemplateMoved(QString,QPointF,QTransform)));
+        connect(b, SIGNAL(templateMoved(QString,QPointF,QTransform, qreal)), &controller, SIGNAL(blowTemplateMoved(QString,QPointF,QTransform, qreal)));
     
         scene.addItem(b);
     }
@@ -752,7 +754,7 @@ void GameWindow::setGlobalInfo(QDataStream& stream)
         textMap[b->getId()] = b;
 
         connect(b, SIGNAL(removeTextRequest(QString)), &controller, SIGNAL(removeTextRequest(QString)));
-        connect(b, SIGNAL(textChanged(QString,QString,QPointF,QTransform)), &controller, SIGNAL(textChanged(QString,QString,QPointF,QTransform)));
+        connect(b, SIGNAL(textChanged(QString,QString,QPointF,QTransform, qreal)), &controller, SIGNAL(textChanged(QString,QString,QPointF,QTransform, qreal)));
         connect(b, SIGNAL(textDoubleClicked()), this, SLOT(editText()));
         scene.addItem(b);
     }
@@ -850,7 +852,7 @@ void GameWindow::addNewTerrainToScene(QString id, Terrain t)
 
     connect(ter, SIGNAL(removeTerrainRequest(QString)), &controller, SIGNAL(removeTerrainRequest(QString)));
     connect(ter, SIGNAL(lockTerrainRequest(QString, bool)), &controller, SIGNAL(lockTerrainRequest(QString, bool)));
-    connect(ter, SIGNAL(terrainMoved(QString,QPointF,QTransform)), &controller, SIGNAL(terrainMoved(QString, QPointF, QTransform)));
+    connect(ter, SIGNAL(terrainMoved(QString,QPointF,QTransform, qreal)), &controller, SIGNAL(terrainMoved(QString, QPointF, QTransform, qreal)));
 
     terrainMap[id] = ter;
     scene.addItem(ter);
@@ -888,7 +890,7 @@ void GameWindow::lockTerrain(QString id, bool l)
     }
 }
 
-void GameWindow::moveTerrain(QString id, QPointF p, QTransform matrix)
+void GameWindow::moveTerrain(QString id, QPointF p, QTransform matrix, qreal pr)
 {
     if(terrainMap.contains(id))
     {
@@ -896,6 +898,7 @@ void GameWindow::moveTerrain(QString id, QPointF p, QTransform matrix)
                   " found, now moving it");
         terrainMap[id]->setPos(p);
         terrainMap[id]->setTransform(matrix);
+        terrainMap[id]->setPreviousRot(pr);
     }
     else
     {
@@ -909,7 +912,7 @@ void GameWindow::addNewBlowTemplateToScene(QString id)
     QLog_Info(LOG_ID_INFO, "addNewBlowTemplateToScene(): adding blow template to list with ID " + id);
 
     connect(b, SIGNAL(removeTemplateRequest(QString)), &controller, SIGNAL(removeBlowTemplateRequest(QString)));
-    connect(b, SIGNAL(templateMoved(QString,QPointF,QTransform)), &controller, SIGNAL(blowTemplateMoved(QString, QPointF, QTransform)));
+    connect(b, SIGNAL(templateMoved(QString,QPointF,QTransform, qreal)), &controller, SIGNAL(blowTemplateMoved(QString, QPointF, QTransform, qreal)));
 
     blowTemplateList[id] = b;
     b->setPos(back->getW()/2, back->getH()/2);
@@ -917,7 +920,7 @@ void GameWindow::addNewBlowTemplateToScene(QString id)
     scene.clearSelection();
 }
 
-void GameWindow::moveBlowTemplate(QString id, QPointF p, QTransform matrix)
+void GameWindow::moveBlowTemplate(QString id, QPointF p, QTransform matrix, qreal pr)
 {
     if(blowTemplateList.contains(id))
     {
@@ -925,6 +928,7 @@ void GameWindow::moveBlowTemplate(QString id, QPointF p, QTransform matrix)
                   " found, now moving it");
         blowTemplateList[id]->setPos(p);
         blowTemplateList[id]->setTransform(matrix);
+        blowTemplateList[id]->setPreviousRot(pr);
     }
     else
     {
@@ -971,7 +975,7 @@ void GameWindow::addNewTextToScene(QString id, QString text)
     QLog_Info(LOG_ID_INFO, "addNewTextToScene(): adding text to list with ID " + id);
 
     connect(b, SIGNAL(removeTextRequest(QString)), &controller, SIGNAL(removeTextRequest(QString)));
-    connect(b, SIGNAL(textChanged(QString,QString,QPointF,QTransform)), &controller, SIGNAL(textChanged(QString, QString, QPointF, QTransform)));
+    connect(b, SIGNAL(textChanged(QString,QString,QPointF,QTransform, qreal)), &controller, SIGNAL(textChanged(QString, QString, QPointF, QTransform, qreal)));
     connect(b, SIGNAL(textDoubleClicked()), this, SLOT(editText()));
 
     textMap[id] = b;
@@ -980,7 +984,7 @@ void GameWindow::addNewTextToScene(QString id, QString text)
     scene.clearSelection();
 }
 
-void GameWindow::moveText(QString i, QString text, QPointF p, QTransform matrix)
+void GameWindow::moveText(QString i, QString text, QPointF p, QTransform matrix, qreal pr)
 {
     if(textMap.contains(i))
     {
@@ -990,6 +994,7 @@ void GameWindow::moveText(QString i, QString text, QPointF p, QTransform matrix)
         t->setPos(p);
         t->setTransform(matrix);
         t->setTextWithoutSignal(text);
+        t->setPreviousRot(pr);
     }
     else
     {

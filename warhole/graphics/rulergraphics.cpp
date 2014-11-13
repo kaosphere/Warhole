@@ -26,6 +26,8 @@ void RulerGraphics::initRulerGraphics()
     width = DEFAULT_RULER_WIDTH;
     cnt = 1;
 
+    setZValue(RULER_Z_VALUE);
+
     actionRemoveRuler = new QAction(tr("Retirer"), this);
     connect(actionRemoveRuler, SIGNAL(triggered()),this, SLOT(removeRulerRequest()));
 
@@ -144,10 +146,14 @@ void RulerGraphics::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         setTransform(trans, true);
         previousRot = ((angle * 180 / 3.14) + offset);
 
+        qDebug() << "Computed angle : " << angle;
+        qDebug() << "Previous Rot : " << previousRot;
+        qDebug() << "Real Rot : " << rotation();
+
         if((++cnt)%6 == 0)
         {
             cnt = 1;
-            emit rulerMoved(id, pos(), transform());
+            emit rulerMoved(id, pos(), transform(), previousRot);
         }
     }
     else
@@ -155,7 +161,7 @@ void RulerGraphics::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         if((++cnt)%6 == 0)
         {
             cnt = 1;
-            emit rulerMoved(id, pos(), transform());
+            emit rulerMoved(id, pos(), transform(), previousRot);
         }
         QGraphicsItem::mouseMoveEvent(event);
     }
@@ -163,7 +169,7 @@ void RulerGraphics::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void RulerGraphics::keyPressEvent(QKeyEvent *event)
 {
-    if(event->key() == Qt::Key_R)
+    if(event->key() == Qt::Key_R && !event->isAutoRepeat())
     {
         rot = true;
     }
@@ -176,7 +182,7 @@ void RulerGraphics::keyReleaseEvent(QKeyEvent *event)
     {
         rot = false;
         firstRot = true;
-        previousRot = 0;
+        //previousRot = rotation();
     }
     QGraphicsItem::keyReleaseEvent(event);
 }
@@ -185,7 +191,7 @@ void RulerGraphics::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     // End of movement, send final position
     qDebug() << "Finalizing movement";
-    emit rulerMoved(id, pos(), transform());
+    emit rulerMoved(id, pos(), transform(), previousRot);
 
     QGraphicsItem::mouseReleaseEvent(event);
 }
@@ -222,7 +228,8 @@ QDataStream& operator<<(QDataStream& out, const RulerGraphics& obj)
     out << obj.id
         << obj.length
         << obj.pos()
-        << obj.transform();
+        << obj.transform()
+        << obj.previousRot;
 
     return out;
 }
@@ -239,8 +246,21 @@ QDataStream& operator>>(QDataStream& in, RulerGraphics& obj)
     obj.setPos(position);
 
     in >> trans;
+    in >> obj.previousRot;
 
     obj.setTransform(trans);
 
     return in;
 }
+
+
+qreal RulerGraphics::getPreviousRot() const
+{
+return previousRot;
+}
+
+void RulerGraphics::setPreviousRot(const qreal &value)
+{
+previousRot = value;
+}
+

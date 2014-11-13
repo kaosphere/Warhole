@@ -20,6 +20,8 @@ void TextGraphics::initTextItem()
 {
     rot = false;
     firstRot = true;
+    previousRot = 0;
+    setZValue(TEXT_Z_VALUE);
 
     actionRemove = new QAction(tr("Retirer"), this);
     connect(actionRemove, SIGNAL(triggered()), this, SLOT(removeText()));
@@ -47,7 +49,7 @@ void TextGraphics::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 void TextGraphics::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     static qreal translation;
-    static qreal previousRot = 0;
+
     static int cnt = 0;
     if(rot)
     {
@@ -83,7 +85,7 @@ void TextGraphics::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         if((++cnt)%6 == 0)
         {
             cnt = 1;
-            emit textChanged(id, text, pos(), transform());
+            emit textChanged(id, text, pos(), transform(), previousRot);
         }
     }
     else
@@ -91,7 +93,7 @@ void TextGraphics::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         if((++cnt)%6 == 0)
         {
             cnt = 1;
-            emit textChanged(id, text, pos(), transform());
+            emit textChanged(id, text, pos(), transform(), previousRot);
         }
         QGraphicsItem::mouseMoveEvent(event);
     }
@@ -119,7 +121,7 @@ void TextGraphics::keyReleaseEvent(QKeyEvent *event)
 void TextGraphics::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     // End of movement, send final position
-    emit textChanged(id, text, pos(), transform());
+    emit textChanged(id, text, pos(), transform(), previousRot);
 
     QGraphicsItem::mouseReleaseEvent(event);
 }
@@ -147,6 +149,7 @@ QDataStream& operator<<(QDataStream& out, const TextGraphics& obj)
     out << obj.text;
     out << obj.pos();
     out << obj.transform();
+    out << obj.previousRot;
 
     return out;
 }
@@ -160,6 +163,7 @@ QDataStream& operator>>(QDataStream& in, TextGraphics& obj)
     in >> obj.text;
     in >> position;
     in >> matrix;
+    in >> obj.previousRot;
 
     obj.setPos(position);
     obj.setTransform(matrix);
@@ -195,7 +199,7 @@ void TextGraphics::setText(const QString &value)
 {
     text = value;
     refreshItemText();
-    emit textChanged(id, text, pos(), transform());
+    emit textChanged(id, text, pos(), transform(), previousRot);
 }
 
 void TextGraphics::setTextWithoutSignal(const QString &value)
@@ -214,5 +218,15 @@ void TextGraphics::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 void TextGraphics::removeText()
 {
     emit removeTextRequest(id);
+}
+
+qreal TextGraphics::getPreviousRot() const
+{
+    return previousRot;
+}
+
+void TextGraphics::setPreviousRot(const qreal &value)
+{
+    previousRot = value;
 }
 
