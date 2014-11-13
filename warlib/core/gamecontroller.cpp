@@ -19,8 +19,8 @@ GameController::GameController(QObject *parent) :
     connect(this, SIGNAL(addRulerToGameSceneRequest(int)), comManager, SLOT(enQueueCreateRulerMessage(int)));
     connect(comManager, SIGNAL(createRuler(QString, int)), this, SIGNAL(addRulerToGameScene(QString, int)));
 
-    connect(this, SIGNAL(rulerMoved(QString, QPointF, QTransform)), comManager, SLOT(enQueueRulerMoveMessage(QString, QPointF, QTransform)));
-    connect(comManager, SIGNAL(moveRuler(QString, QPointF, QTransform)), this, SIGNAL(moveRuler(QString, QPointF, QTransform)));
+    connect(this, SIGNAL(rulerMoved(QString, QPointF, QTransform, qreal)), comManager, SLOT(enQueueRulerMoveMessage(QString, QPointF, QTransform, qreal)));
+    connect(comManager, SIGNAL(moveRuler(QString, QPointF, QTransform, qreal)), this, SIGNAL(moveRuler(QString, QPointF, QTransform, qreal)));
 
     connect(this, SIGNAL(addRoundTemplateToGameSceneRequest(int)), comManager, SLOT(enqueueCreateRoundTemplateMessage(int)));
     connect(comManager, SIGNAL(createRoundTemplate(QString,int)), this, SIGNAL(addRoundTemplateScene(QString, int)));
@@ -37,8 +37,8 @@ GameController::GameController(QObject *parent) :
     connect(this, SIGNAL(addRegimentRequest(QString, RegimentAbstract)), comManager,SLOT(enqueueNewRegimentMessage(QString, RegimentAbstract)));
     connect(comManager, SIGNAL(createRegiment(QString,QString,RegimentAbstract)), this, SIGNAL(createRegiment(QString, QString, RegimentAbstract)));
 
-    connect(this, SIGNAL(regimentMoved(QString,QPointF,QTransform)), comManager, SLOT(enqueueRegimentMoveMessage(QString, QPointF, QTransform)));
-    connect(comManager, SIGNAL(moveRegiment(QString,QPointF,QTransform)), this, SIGNAL(moveRegiment(QString, QPointF, QTransform)));
+    connect(this, SIGNAL(regimentMoved(QString,QPointF,QTransform, qreal)), comManager, SLOT(enqueueRegimentMoveMessage(QString, QPointF, QTransform, qreal)));
+    connect(comManager, SIGNAL(moveRegiment(QString,QPointF,QTransform, qreal)), this, SIGNAL(moveRegiment(QString, QPointF, QTransform, qreal)));
 
     connect(this, SIGNAL(removeRegimentRequest(QString)), comManager, SLOT(enqueueRemoveRegimentMessage(QString)));
     connect(this, SIGNAL(removeDeadsRequest(QString, int)), comManager, SLOT(enqueueRemoveDeadsMessage(QString, int)));
@@ -59,23 +59,23 @@ GameController::GameController(QObject *parent) :
     connect(comManager, SIGNAL(newTerrain(QString, Terrain)), this, SIGNAL(newTerrain(QString, Terrain)));
     connect(this, SIGNAL(removeTerrainRequest(QString)), comManager, SLOT(enQueueRemoveTerrainMessage(QString)));
     connect(this, SIGNAL(lockTerrainRequest(QString, bool)), comManager, SLOT(enQueueLockTerrainMessage(QString, bool)));
-    connect(this, SIGNAL(terrainMoved(QString,QPointF,QTransform)), comManager, SLOT(enQueueMoveTerrainMessage(QString, QPointF, QTransform)));
+    connect(this, SIGNAL(terrainMoved(QString,QPointF,QTransform, qreal)), comManager, SLOT(enQueueMoveTerrainMessage(QString, QPointF, QTransform, qreal)));
     connect(comManager, SIGNAL(removeTerrain(QString)), this, SIGNAL(removeTerrain(QString)));
     connect(comManager, SIGNAL(lockTerrain(QString, bool)), this, SIGNAL(lockTerrain(QString, bool)));
-    connect(comManager, SIGNAL(moveTerrain(QString,QPointF,QTransform)), this, SIGNAL(moveTerrain(QString,QPointF,QTransform)));
+    connect(comManager, SIGNAL(moveTerrain(QString,QPointF,QTransform, qreal)), this, SIGNAL(moveTerrain(QString,QPointF,QTransform, qreal)));
 
     connect(this, SIGNAL(requestBlowTemplate()), comManager, SLOT(enQueueNewBlowTemplateMessage()));
-    connect(this, SIGNAL(blowTemplateMoved(QString,QPointF,QTransform)), comManager, SLOT(enQueueBlowTemplateMoveMessage(QString, QPointF, QTransform)));
+    connect(this, SIGNAL(blowTemplateMoved(QString,QPointF,QTransform, qreal)), comManager, SLOT(enQueueBlowTemplateMoveMessage(QString, QPointF, QTransform, qreal)));
     connect(this, SIGNAL(removeBlowTemplateRequest(QString)), comManager, SLOT(enQueueRemoveBlowTemplateMessage(QString)));
     connect(comManager, SIGNAL(newBlowTemp(QString)), this, SIGNAL(newBlowTemp(QString)));
-    connect(comManager, SIGNAL(moveBlowTemp(QString, QPointF, QTransform)), this, SIGNAL(moveBlowTemp(QString, QPointF, QTransform)));
+    connect(comManager, SIGNAL(moveBlowTemp(QString, QPointF, QTransform, qreal)), this, SIGNAL(moveBlowTemp(QString, QPointF, QTransform, qreal)));
     connect(comManager, SIGNAL(removeBlowTemp(QString)), this, SIGNAL(removeBlowTemp(QString)));
 
     connect(this, SIGNAL(newTextRequest(QString)), comManager, SLOT(enQueueNewTextMessage(QString)));
     connect(this, SIGNAL(removeTextRequest(QString)), comManager, SLOT(enQueueRemoveTextMessage(QString)));
-    connect(this, SIGNAL(textChanged(QString,QString,QPointF,QTransform)), comManager, SLOT(enQueueTextChangeMessage(QString, QString, QPointF, QTransform)));
+    connect(this, SIGNAL(textChanged(QString,QString,QPointF,QTransform, qreal)), comManager, SLOT(enQueueTextChangeMessage(QString, QString, QPointF, QTransform, qreal)));
     connect(comManager, SIGNAL(newText(QString,QString)), this, SIGNAL(newText(QString, QString)));
-    connect(comManager, SIGNAL(moveText(QString,QString,QPointF,QTransform)), this, SIGNAL(moveText(QString, QString, QPointF, QTransform)));
+    connect(comManager, SIGNAL(moveText(QString,QString,QPointF,QTransform, qreal)), this, SIGNAL(moveText(QString, QString, QPointF, QTransform, qreal)));
     connect(comManager, SIGNAL(removeText(QString)), this, SIGNAL(removeText(QString)));
 
     connect(this, SIGNAL(requestNewScatter(int)), comManager, SLOT(enQueueNewScatterMessage(int)));

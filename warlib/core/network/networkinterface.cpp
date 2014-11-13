@@ -10,6 +10,7 @@ const QString NetworkInterface::LOG_ID_ERR = "NetworkInterface_err";
 NetworkInterface::NetworkInterface(MessageQueue *in, MessageQueue *out, QObject *parent) :
     QObject(parent)
 {
+    // TODO see for out and inqueues init
     QLoggerManager *manager = QLoggerManager::getInstance();
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_INFO), QLogger::InfoLevel);

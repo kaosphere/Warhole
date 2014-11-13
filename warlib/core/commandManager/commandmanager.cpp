@@ -127,6 +127,8 @@ void CommandManager::enQueueServerInfo(QString destination, QByteArray info)
 
 void CommandManager::handleServerInfoRequest(MessageDestination dest, QString sender)
 {
+    Q_UNUSED(dest);
+
     QLog_Info(LOG_ID_INFO, "handleServerInfoRequest() : asking for game info for " + sender);
     emit serverInfoRequested(sender);
 }
@@ -219,7 +221,7 @@ void CommandManager::handleCreateRulerMessage(QDataStream& data)
     emit createRuler(id,length);
 }
 
-void CommandManager::enQueueRulerMoveMessage(QString i, QPointF p, QTransform matrix)
+void CommandManager::enQueueRulerMoveMessage(QString i, QPointF p, QTransform matrix, qreal pr)
 {
     Message m;
     m.setDest(ALL_BUT_ME);
@@ -233,6 +235,7 @@ void CommandManager::enQueueRulerMoveMessage(QString i, QPointF p, QTransform ma
     s << i;
     s << p;
     s << matrix;
+    s << pr;
 
     m.setData(data);
 
@@ -246,15 +249,17 @@ void CommandManager::handleRulerMoveMessage(QDataStream& data)
     QString id;
     QPointF point;
     QTransform matrix;
+    qreal pr;
 
     data >> id;
     data >> point;
     data >> matrix;
+    data >> pr;
 
     QLog_Info(LOG_ID_INFO, "handleRulerMoveMessage() : received ruler moved message with ID " + id);
 
 
-    emit moveRuler(id,point,matrix);
+    emit moveRuler(id,point,matrix, pr);
 }
 
 void CommandManager::enQueueRemoveRulerMessage(QString i)
@@ -433,7 +438,7 @@ void CommandManager::handleNewRegimentMessage(QDataStream &data)
     emit createRegiment(id, owner, r);
 }
 
-void CommandManager::enqueueRegimentMoveMessage(QString i, QPointF p , QTransform matrix)
+void CommandManager::enqueueRegimentMoveMessage(QString i, QPointF p , QTransform matrix, qreal pr)
 {
     Message m;
     m.setDest(ALL_BUT_ME);
@@ -447,6 +452,7 @@ void CommandManager::enqueueRegimentMoveMessage(QString i, QPointF p , QTransfor
     s << i;
     s << p;
     s << matrix;
+    s << pr;
 
     m.setData(data);
 
@@ -460,15 +466,17 @@ void CommandManager::handleRegimentMoveMessage(QDataStream &data)
     QString id;
     QPointF point;
     QTransform matrix;
+    qreal pr;
 
     data >> id;
     data >> point;
     data >> matrix;
+    data >> pr;
 
     QLog_Info(LOG_ID_INFO, "handleRegimentMoveMessage() : received regiment moved message with ID " + id);
 
 
-    emit moveRegiment(id,point,matrix);
+    emit moveRegiment(id,point,matrix, pr);
 }
 
 
@@ -700,7 +708,7 @@ void CommandManager::enQueueLockTerrainMessage(QString id, bool l)
     addMessageToOutQueue(m);
 }
 
-void CommandManager::enQueueMoveTerrainMessage(QString i, QPointF p, QTransform matrix)
+void CommandManager::enQueueMoveTerrainMessage(QString i, QPointF p, QTransform matrix, qreal pr)
 {
     Message m;
     m.setDest(ALL_BUT_ME);
@@ -714,6 +722,7 @@ void CommandManager::enQueueMoveTerrainMessage(QString i, QPointF p, QTransform 
     s << i;
     s << p;
     s << matrix;
+    s << pr;
 
     m.setData(data);
 
@@ -764,14 +773,16 @@ void CommandManager::handleMoveTerrainMessage(QDataStream &data)
     QString id;
     QPointF p;
     QTransform matrix;
+    qreal pr;
 
     data >> id;
     data >> p;
     data >> matrix;
+    data >> pr;
 
     QLog_Info(LOG_ID_INFO, "handleMoveTerrainMessage() : move terrain message with ID " + id);
 
-    emit moveTerrain(id, p, matrix);
+    emit moveTerrain(id, p, matrix, pr);
 }
 
 void CommandManager::handleNewBlowTempMessage(QDataStream &data)
@@ -790,14 +801,16 @@ void CommandManager::handleMoveBlowTempMessage(QDataStream &data)
     QString id;
     QPointF p;
     QTransform matrix;
+    qreal pr;
 
     data >> id;
     data >> p;
     data >> matrix;
+    data >> pr;
 
     QLog_Info(LOG_ID_INFO, "handleMoveBlowTempMessage() : move blow temp message with ID " + id);
 
-    emit moveBlowTemp(id, p, matrix);
+    emit moveBlowTemp(id, p, matrix, pr);
 }
 
 void CommandManager::handleRemoveBlowTempMessage(QDataStream &data)
@@ -834,7 +847,7 @@ void CommandManager::enQueueNewBlowTemplateMessage()
     addMessageToOutQueue(m);
 }
 
-void CommandManager::enQueueBlowTemplateMoveMessage(QString i, QPointF p, QTransform matrix)
+void CommandManager::enQueueBlowTemplateMoveMessage(QString i, QPointF p, QTransform matrix, qreal pr)
 {
     Message m;
     m.setDest(ALL_BUT_ME);
@@ -848,6 +861,7 @@ void CommandManager::enQueueBlowTemplateMoveMessage(QString i, QPointF p, QTrans
     s << i;
     s << p;
     s << matrix;
+    s << pr;
 
     m.setData(data);
 
@@ -919,7 +933,7 @@ void CommandManager::enQueueRemoveTextMessage(QString i)
     addMessageToOutQueue(m);
 }
 
-void CommandManager::enQueueTextChangeMessage(QString i, QString t, QPointF p, QTransform matrix)
+void CommandManager::enQueueTextChangeMessage(QString i, QString t, QPointF p, QTransform matrix, qreal pr)
 {
     Message m;
     m.setDest(ALL_BUT_ME);
@@ -934,6 +948,7 @@ void CommandManager::enQueueTextChangeMessage(QString i, QString t, QPointF p, Q
     s << t;
     s << p;
     s << matrix;
+    s << pr;
 
     m.setData(data);
 
@@ -963,15 +978,17 @@ void CommandManager::handleMoveTextMessage(QDataStream &data)
     QString text;
     QPointF p;
     QTransform matrix;
+    qreal pr;
 
     data >> id;
     data >> text;
     data >> p;
     data >> matrix;
+    data >> pr;
 
     QLog_Info(LOG_ID_INFO, "handleMoveTextMessage() : move blow temp message with ID " + id);
 
-    emit moveText(id, text, p, matrix);
+    emit moveText(id, text, p, matrix, pr);
 }
 
 void CommandManager::handleRemoveTextMessage(QDataStream &data)
