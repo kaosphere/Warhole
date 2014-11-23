@@ -32,7 +32,7 @@ ModelCharacter::ModelCharacter(const QString &n, const QString &move, const QStr
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_INFO), QLogger::InfoLevel);
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_ERR), QLogger::ErrorLevel);
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_WARN), QLogger::WarnLevel);
-    
+
     specialRules = specRules;
     isALord = lord;
     isTheGeneral = general;
@@ -153,6 +153,13 @@ void ModelCharacter::load(QString path)
     options = temp.getOptions();
     
     mount = temp.getMount();
+
+    // fill those to prevent problems
+    musicianPoints = 0;
+    bannerPoints = 0;
+    banner = false;
+    musician = false;
+    champion = false;
 }
 
 void ModelCharacter::save(QString path)
@@ -315,6 +322,7 @@ int ModelCharacter::computePoints()
 {
     //compute whole points of the model
     int points = computeBasePoints();
-    points += mount.getPoints();
+    if(isMounted)
+        points += mount.getPoints();
     return points;
 }

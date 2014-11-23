@@ -2,6 +2,11 @@
 
 ModelAbstract::ModelAbstract(QObject *parent) : QObject(parent)
 {
+    bannerPoints = 0;
+    musicianPoints = 0;
+    banner = false;
+    musician = false;
+    champion = false;
 }
 
 ModelAbstract::ModelAbstract(const StatsModel &stat,

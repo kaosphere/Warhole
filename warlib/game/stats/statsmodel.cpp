@@ -2,6 +2,7 @@
 
 StatsModel::StatsModel(QObject *parent) : QObject(parent)
 {
+    points = 0;
 }
 
 StatsModel::StatsModel(const StatsModel &stat) : QObject(stat.parent())
