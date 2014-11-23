@@ -11,7 +11,9 @@
 #include "gamewindow.h"
 #include "magicalobjectwindow.h"
 #include "terrainwindow.h"
+#include "warholeinfodialog.h"
 #include "Utilities/QLogger/QLogger.h"
+#include "version.h"
 
 namespace Ui {
 class MainWindow;
@@ -34,6 +36,8 @@ public slots:
    void openMagicalObjectWindow();
    void openTerrainWindow();
    void updateLogOutput(QString message);
+   void openWiki();
+   void openInfoWindow();
 
 private:
     Ui::MainWindow *ui;
@@ -45,6 +49,7 @@ private:
     GameWindow* game;
     MagicalObjectWindow* obj;
     TerrainWindow *ter;
+    WarholeInfoDialog *inf;
 };
 
 #endif // MAINWINDOW_H

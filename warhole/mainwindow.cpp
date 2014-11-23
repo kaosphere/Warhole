@@ -14,16 +14,20 @@ MainWindow::MainWindow(QWidget *parent)
     manager->addDestination("./logs/lastrun.log", QStringList("Errors"), QLogger::ErrorLevel);
     manager->addDestination("./logs/errors.log", QStringList("Errors2"), QLogger::ErrorLevel);
 
+    // Connect signal from the logger to slot that update the text edit
+    QObject::connect(manager, SIGNAL(newLogWritten(QString)), this, SLOT(updateLogOutput(QString)));
+
     mod = NULL;
     obj = NULL;
     arm = NULL;
     game = NULL;
     ter = NULL;
-
-    // Connect signal from the logger to slot that update the text edit
-    QObject::connect(manager, SIGNAL(newLogWritten(QString)), this, SLOT(updateLogOutput(QString)));
+    inf = NULL;
 
     ui->setupUi(this);
+
+    setWindowTitle("Warhole " +
+                   WARHOLE_VERSION_STRING);
 
     ui->textEdit->ensureCursorVisible();
 
@@ -68,6 +72,16 @@ MainWindow::MainWindow(QWidget *parent)
     QAction *actionCreateTerrains = new QAction(tr("&Créer des décors"), this);
     menuManageModels->addAction(actionCreateTerrains);
     connect(actionCreateTerrains, SIGNAL(triggered()), this, SLOT(openTerrainWindow()));
+
+    QMenu *menuHelp = menuBar()->addMenu(tr("Info"));
+
+    QAction *actionOpenHelp = new QAction(tr("&Wiki warhole"), this);
+    menuHelp->addAction(actionOpenHelp);
+    connect(actionOpenHelp, SIGNAL(triggered()), this, SLOT(openWiki()));
+
+    QAction *actionOpenInfoWindow = new QAction(tr("&A propos de Warhole"), this);
+    menuHelp->addAction(actionOpenInfoWindow);
+    connect(actionOpenInfoWindow, SIGNAL(triggered()), this, SLOT(openInfoWindow()));
 
     //s = new mainWidget(this);
     //setCentralWidget(s);
@@ -132,4 +146,16 @@ void MainWindow::openTerrainWindow()
 void MainWindow::updateLogOutput(QString message)
 {
     ui->textEdit->append(message);
+}
+
+void MainWindow::openWiki()
+{
+    QDesktopServices::openUrl(WARHOLE_WIKI_URL);
+}
+
+
+void MainWindow::openInfoWindow()
+{
+    inf = new WarholeInfoDialog();
+    inf->show();
 }

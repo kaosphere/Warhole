@@ -1,6 +1,8 @@
 #include "armywindow.h"
 #include "ui_armywindow.h"
 
+#include "version.h"
+
 using namespace QLogger;
 
 const QString ArmyWindow::LOG_ID_INFO = "ArmyWindow_info";
@@ -24,6 +26,7 @@ ArmyWindow::ArmyWindow(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ArmyWindow)
 {
+    QLog_Info(LOG_ID_INFO, "ArmyWindow : Entering ArmyWindow by normal constructor.");
     initArmyWindow();
 }
 
@@ -48,7 +51,10 @@ void ArmyWindow::initArmyWindow()
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_ERR), QLogger::ErrorLevel);
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_WARN), QLogger::WarnLevel);
 
-    QLog_Info(LOG_ID_INFO, "ArmyWindow : Entering ArmyWindow by normal constructor.");
+    setWindowTitle("Warhole " +
+                   WARHOLE_VERSION_STRING +
+                   tr(" - Création d'armée"));
+
     // Put list of existing races in comboBox
     ui->setupUi(this);
     // get list of existing races

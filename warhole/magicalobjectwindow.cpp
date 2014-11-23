@@ -1,6 +1,8 @@
 #include "magicalobjectwindow.h"
 #include "ui_magicalobjectwindow.h"
 
+#include "version.h"
+
 using namespace QLogger;
 
 const QString MagicalObjectWindow::LOG_ID_INFO = "MagicalObjectWindow_info";
@@ -24,6 +26,10 @@ MagicalObjectWindow::MagicalObjectWindow(QWidget *parent) :
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_WARN), QLogger::WarnLevel);
 
     ui->setupUi(this);
+
+    setWindowTitle("Warhole " +
+                   WARHOLE_VERSION_STRING +
+                   tr(" - Objets magiques"));
 
     model = new QFileSystemModel(this);
 

@@ -23,6 +23,17 @@
 #ifndef VERSION_H
 #define VERSION_H
 
-#define WARHOLE_VERSION 1
+#include <QString>
+
+const int WARHOLE_MAJOR_VERSION(1);
+const int WARHOLE_MINOR_VERSION(0);
+const int WARHOLE_BUILD_NUMBER(2);
+
+const QString WARHOLE_VERSION_STRING("v" +
+                                     QString::number(WARHOLE_MAJOR_VERSION) + "." +
+                                     QString::number(WARHOLE_MINOR_VERSION) + "." +
+                                     QString::number(WARHOLE_BUILD_NUMBER));
+
+const QString WARHOLE_WIKI_URL("https://github.com/kaosphere/Warhole/wiki");
 
 #endif // VERSION_H

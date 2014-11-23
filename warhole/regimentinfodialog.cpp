@@ -9,6 +9,8 @@ RegimentInfoDialog::RegimentInfoDialog(RegimentAbstract* reg, QWidget *parent) :
 
     r = reg;
 
+    setWindowTitle(tr("Informations du régiment"));
+
     ui->checkBox->setChecked(r->getSkirmishers());
     ui->textEdit->append(r->getGroups().first().getModel()->getSpecialRules());
 }

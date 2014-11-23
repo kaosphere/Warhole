@@ -59,7 +59,8 @@ SOURCES += main.cpp\
     graphics/graphicalobjectabstract.cpp \
     graphics/blowtemplategraphics.cpp \
     graphics/textgraphics.cpp \
-    graphics/dispersiongraphics.cpp
+    graphics/dispersiongraphics.cpp \
+    warholeinfodialog.cpp
 
 HEADERS  += mainwindow.h \
     modelwindow.h \
@@ -88,7 +89,8 @@ HEADERS  += mainwindow.h \
     graphics/graphicalobjectabstract.h \
     graphics/blowtemplategraphics.h \
     graphics/textgraphics.h \
-    graphics/dispersiongraphics.h
+    graphics/dispersiongraphics.h \
+    warholeinfodialog.h
 
 TRANSLATIONS = warhole_en.ts
 
@@ -106,7 +108,8 @@ FORMS += \
     getintdialog.ui \
     statsdisplaywidget.ui \
     terrainwindow.ui \
-    regimentinfodialog.ui
+    regimentinfodialog.ui \
+    warholeinfodialog.ui
 
 RESOURCES += \
     resources.qrc

@@ -6,6 +6,7 @@ GameConfiguratorDialog::GameConfiguratorDialog(QWidget *parent) :
     ui(new Ui::GameConfiguratorDialog)
 {
     ui->setupUi(this);
+    setWindowTitle(tr("Configuration de la partie"));
     validConditions = false;
 }
 

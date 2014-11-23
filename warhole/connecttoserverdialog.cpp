@@ -6,6 +6,8 @@ ConnectToServerDialog::ConnectToServerDialog(QWidget *parent) :
     ui(new Ui::ConnectToServerDialog)
 {
     ui->setupUi(this);
+
+    setWindowTitle(tr("Connexion au serveur"));
 }
 
 ConnectToServerDialog::~ConnectToServerDialog()

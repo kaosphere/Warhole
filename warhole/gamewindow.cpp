@@ -1,6 +1,8 @@
 #include "gamewindow.h"
 #include "ui_gamewindow.h"
 
+#include "version.h"
+
 const QString GameWindow::LOG_ID_INFO = "GameWindow_info";
 const QString GameWindow::LOG_ID_TRACE = "GameWindow_trace";
 const QString GameWindow::LOG_ID_WARN = "GameWindow_warm";
@@ -29,6 +31,10 @@ void GameWindow::initGameWindow()
     //ui parameters
     //View and scene
     ///////////////////////////////////////////
+    setWindowTitle("Warhole " +
+                   WARHOLE_VERSION_STRING +
+                   tr(" - Partie"));
+
     view.setScene(&scene);
     ui->horizontalLayout->addWidget(&view);
 

@@ -14,4 +14,7 @@
     <qresource prefix="/images">
         <file>ressources/floor_grass5.png</file>
     </qresource>
+    <qresource prefix="/text">
+        <file>ressources/license.txt</file>
+    </qresource>
 </RCC>

@@ -1,6 +1,8 @@
 #include "modelwindow.h"
 #include "ui_modelwindow.h"
 
+#include "version.h"
+
 using namespace QLogger;
 
 const QString ModelWindow::LOG_ID_INFO = "ModelWindow_info";
@@ -26,6 +28,11 @@ ModelWindow::ModelWindow(QWidget *parent) :
     QLog_Info(LOG_ID_INFO, "ModelWindow() : entered model window with default constructor.");
 
     ui->setupUi(this);
+
+    setWindowTitle("Warhole " +
+                   WARHOLE_VERSION_STRING +
+                   tr(" - Création de figurine"));
+
     image = new QPixmap();
     scene = new QGraphicsScene();
 
@@ -64,6 +71,11 @@ ModelWindow::ModelWindow(QString f, QWidget *parent) :
     QLog_Info(LOG_ID_INFO, "ModelWindow() : entered model window with loading constructor.");
 
     ui->setupUi(this);
+
+    setWindowTitle("Warhole " +
+                   WARHOLE_VERSION_STRING +
+                   tr(" - Création de figurine"));
+
     image = new QPixmap();
 
     scene = new QGraphicsScene();

@@ -1,6 +1,8 @@
 #include "terrainwindow.h"
 #include "ui_terrainwindow.h"
 
+#include "version.h"
+
 using namespace QLogger;
 
 const QString TerrainWindow::LOG_ID_INFO = "TerrainWindow_info";
@@ -20,6 +22,10 @@ TerrainWindow::TerrainWindow(QWidget *parent) :
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_WARN), QLogger::WarnLevel);
 
     ui->setupUi(this);
+
+    setWindowTitle("Warhole " +
+                   WARHOLE_VERSION_STRING +
+                   tr(" - Création de décors"));
 
     terrainItem = NULL;
 

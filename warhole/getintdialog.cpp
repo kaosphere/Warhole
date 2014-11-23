@@ -7,6 +7,7 @@ GetIntDialog::GetIntDialog(QString title, QWidget *parent) :
 {
     ui->setupUi(this);
     ui->label->setText(title);
+    setWindowTitle(title);
 }
 
 GetIntDialog::~GetIntDialog()
