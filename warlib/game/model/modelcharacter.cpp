@@ -326,3 +326,11 @@ int ModelCharacter::computePoints()
         points += mount.getPoints();
     return points;
 }
+
+int ModelCharacter::computePointsWithoutOptions()
+{
+    //compute whole points of the model
+    int points = computeBasePointsWithoutOptions();
+    points += mount.getPoints();
+    return points;
+}

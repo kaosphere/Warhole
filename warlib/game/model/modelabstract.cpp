@@ -364,6 +364,11 @@ int ModelAbstract::computeBasePoints()
     return points;
 }
 
+int ModelAbstract::computeBasePointsWithoutOptions()
+{
+    return stats.getPoints();
+}
+
 QDataStream &ModelAbstract::serializeInBase(QDataStream &in)
 {
     in >> (*this);

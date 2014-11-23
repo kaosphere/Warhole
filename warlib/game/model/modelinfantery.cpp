@@ -201,6 +201,11 @@ int ModelInfantery::computePoints()
     return points;
 }
 
+int ModelInfantery::computePointsWithoutOptions()
+{
+    return computeBasePointsWithoutOptions();
+}
+
 QDataStream & operator <<(QDataStream & out, const ModelInfantery & obj)
 {
     out << SAVE_VERSION;

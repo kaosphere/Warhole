@@ -54,7 +54,8 @@ public:
     QString getSpecialRules() const;
     void setSpecialRules(const QString &value);
 
-    int computePoints();
+    virtual int computePoints();
+    virtual int computePointsWithoutOptions();
 
     ModelType getType() const;
     void setType(const ModelType &value);

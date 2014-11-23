@@ -61,6 +61,7 @@ public:
     void clearCrew();
 
     virtual int computePoints();
+    virtual int computePointsWithoutOptions();
 
     ModelType getType() const;
     void setType(const ModelType &value);

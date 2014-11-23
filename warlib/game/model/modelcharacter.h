@@ -71,6 +71,7 @@ public:
     void setMount(const StatsModel &value);
 
     virtual int computePoints();
+    virtual int computePointsWithoutOptions();
 
     bool getHasGB() const;
     void setHasGB(bool value);

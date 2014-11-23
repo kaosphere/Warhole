@@ -286,3 +286,15 @@ int ModelMonster::computePoints()
     return points;
 }
 
+int ModelMonster::computePointsWithoutOptions()
+{
+    //compute whole points of the model
+    int points = computeBasePointsWithoutOptions();
+    QList<StatsModel>::Iterator j;
+    for(j = crew.begin(); j < crew.end(); ++j)
+    {
+        points += j->getPoints();
+    }
+    return points;
+}
+

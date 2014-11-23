@@ -54,6 +54,7 @@ public:
     virtual QString getHtml();
 
     virtual int computePoints();
+    virtual int computePointsWithoutOptions();
 
     QString getSpecialRules() const;
     void setSpecialRules(const QString &value);

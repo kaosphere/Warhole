@@ -298,3 +298,13 @@ int ModelCavalry::computePoints()
 
     return points;
 }
+
+int ModelCavalry::computePointsWithoutOptions()
+{
+    //compute whole points of the model
+    int points = computeBasePointsWithoutOptions();
+
+    points += mount.getPoints();
+
+    return points;
+}

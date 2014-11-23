@@ -265,6 +265,8 @@ public:
     int getRegimentPoints();
     int computeBasePoints();
 
+    int computeBasePointsWithoutOptions();
+    virtual int computePointsWithoutOptions() = 0;
 protected:
 
 	//! stats

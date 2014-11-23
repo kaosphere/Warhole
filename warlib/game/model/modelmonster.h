@@ -60,7 +60,8 @@ public:
     bool getHasACrew() const;
     void setHasACrew(bool value);
 
-    int computePoints();
+    virtual int computePoints();
+    virtual int computePointsWithoutOptions();
 
     ModelType getType() const;
     void setType(const ModelType &value);
