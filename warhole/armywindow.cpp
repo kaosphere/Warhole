@@ -558,7 +558,7 @@ void ArmyWindow::updateRegimentPoints()
     if(regiment.getGroups().size() > 0)
     {
         int pts = 0;
-        pts += ui->spinBoxNB->value() * regiment.getGroups().first().getModel()->getStats().getPoints();
+        pts += ui->spinBoxNB->value() * regiment.getGroups().first().getModel()->computePointsWithoutOptions();
         if (ui->checkBoxBanner->isChecked()) pts += ui->labelBannerPts->text().toUInt();
         if (ui->checkBoxChampion->isChecked()) pts += ui->labelChampionPts->text().toUInt();
         if (ui->checkBoxMusician->isChecked()) pts += ui->labelMusicianPts->text().toUInt();
@@ -816,8 +816,6 @@ void ArmyWindow::on_pushButtonExport_clicked()
         QMessageBox::warning(this, tr("Info"), tr("L'export du pdf a échoué. Vérifiez le nom du fichier."));
     }
 }
-
-
 
 void ArmyWindow::on_spinBoxNB_valueChanged(int arg1)
 {
