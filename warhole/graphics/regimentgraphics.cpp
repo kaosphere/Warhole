@@ -493,6 +493,7 @@ void RegimentGraphics::showStats()
         w->setParentItem(infoRect);
         w->setPos(infoRect->boundingRect().topLeft());
         w->setOpacity(0.9);
+        w->setZValue(REGIMENT_INFO_Z_VALUE);
         
         
         connect(s,SIGNAL(destroyed()), this, SLOT(closeInfoRect()));
