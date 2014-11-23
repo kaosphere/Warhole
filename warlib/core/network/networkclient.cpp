@@ -110,6 +110,7 @@ void NetworkClient::receiveData()
             QLog_Info(LOG_ID_INFO, "receiveData(): received network message is incomplete.");
             QLog_Info(LOG_ID_INFO, "receiveData(): arrived bytes : " + QString::number(sock->bytesAvailable()));
             QLog_Info(LOG_ID_INFO, "receiveData(): expecting " + QString::number(messageSize) + " bytes.");
+            emit receivingData(sock->bytesAvailable(), messageSize);
             return;    
         }
 

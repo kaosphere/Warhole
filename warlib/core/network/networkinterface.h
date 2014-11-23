@@ -38,6 +38,7 @@ signals:
     void playerDisconnected(Client c);
     void firstConnectionToServer();
     void disconnected();
+    void receivingData(qint64 received, quint32 expected);
     
 public slots:
     virtual void receiveData() = 0;
