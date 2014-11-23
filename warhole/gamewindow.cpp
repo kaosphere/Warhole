@@ -2,6 +2,7 @@
 #include "ui_gamewindow.h"
 
 #include "version.h"
+#include "warholeinfodialog.h"
 
 const QString GameWindow::LOG_ID_INFO = "GameWindow_info";
 const QString GameWindow::LOG_ID_TRACE = "GameWindow_trace";
@@ -1090,3 +1091,15 @@ void GameWindow::removeScatter(QString i)
     }
 }
 
+
+void GameWindow::on_actionWiki_Warhole_triggered()
+{
+    QDesktopServices::openUrl(WARHOLE_WIKI_URL);
+}
+
+void GameWindow::on_actionA_propos_triggered()
+{
+    WarholeInfoDialog* inf = new WarholeInfoDialog();
+    inf = new WarholeInfoDialog();
+    inf->show();
+}

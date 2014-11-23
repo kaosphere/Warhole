@@ -124,6 +124,10 @@ private slots:
     void requestNewText();
     void addNewScatterToScene(QString i, int a);
 
+    void on_actionWiki_Warhole_triggered();
+
+    void on_actionA_propos_triggered();
+
 signals:
     void requestNewRuler(int l);
     void requestNewRoundTemplate(int d);
