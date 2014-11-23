@@ -178,9 +178,9 @@ namespace QLogger
                 out << QString("%1 - Previuous log %2\n").arg(dtFormat).arg(newName);
 
             QString logLevel = QLoggerManager::levelToText(m_level);
-            QString text = QString("[%1] [%2] {%3} %4\n").arg(dtFormat).arg(module).arg(logLevel).arg(message);
+            QString text = QString("[%1] [%2] {%3} %4").arg(dtFormat).arg(module).arg(logLevel).arg(message);
             qDebug() << text;
-            out << text;
+            out << text << "\n";
             emit newLogWritten(text);
             file.close();
         }
