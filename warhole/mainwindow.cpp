@@ -25,7 +25,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->setupUi(this);
 
-    ui->textEdit->setReadOnly(true);
     ui->textEdit->ensureCursorVisible();
 
     QMenu *menuFichier = menuBar()->addMenu(tr("&Fichier"));
@@ -132,5 +131,5 @@ void MainWindow::openTerrainWindow()
 
 void MainWindow::updateLogOutput(QString message)
 {
-    ui->textEdit->insertPlainText(message);
+    ui->textEdit->append(message);
 }
