@@ -90,6 +90,7 @@ signals:
 public slots:
     void setNetwork();
     void clearNetwork();
+    void changeMyName(QString n);
 
 private:
     NetworkInterface* netInterface;

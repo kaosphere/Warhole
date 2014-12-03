@@ -90,6 +90,8 @@ GameController::GameController(QObject *parent) :
     ///////////////////////////////////////////
     connect(&playerAdmin, SIGNAL(playerListChanged(QList<Player>)), comManager, SLOT(enQueuePlayerListRefreshMessage(QList<Player>)));
     connect(comManager, SIGNAL(refreshPlayerList(QList<Player>)), this, SIGNAL(refreshPlayerListDisplay(QList<Player>)));
+    connect(&playerAdmin, SIGNAL(playerNameToChange(QString,QString)), comManager, SLOT(enqueuePlayerNameChangeRequest(QString, QString)));
+    connect(comManager, SIGNAL(playerNameChange(QString)), this, SLOT(changeMyName(QString)));
 }
 
 GameController::~GameController()
@@ -165,4 +167,9 @@ void GameController::clearNetwork()
 {
     network = false;
     emit networkEnabled(network);
+}
+
+void GameController::changeMyName(QString n)
+{
+    game.setMe(n);
 }
