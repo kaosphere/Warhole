@@ -20,6 +20,7 @@ public:
     * Constructor of Player class.
     */
     explicit Player();
+    Player(const Player &other);
     
     QString getName() const;
     void setName(const QString &value);
@@ -41,6 +42,7 @@ public:
 
     friend QDataStream& operator << (QDataStream &out, const Player &obj);
     friend QDataStream& operator >> (QDataStream &in, Player &);
+
 
 signals:
     

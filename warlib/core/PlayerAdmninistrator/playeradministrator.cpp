@@ -42,16 +42,10 @@ void PlayerAdministrator::authorizePlayer(const Player &p)
     {
         QLog_Info(LOG_ID_INFO, "authorizePlayer() : Player " + p.getName() +
                   " was not found in the player list, add him.");
-        bool nameTaken = false;
+
         // Verify that no one in the game already has this name
-        for(int i = 0; i < playerList.size(); ++i)
-        {
-            if(playerList.at(i).getName() == p.getName())
-            {
-                QLog_Info(LOG_ID_INFO, "authorizePlayer() : Player namefound in the list");
-                nameTaken = true;
-            }
-        }
+        bool nameTaken = isNameTaken(p.getName());
+
         if(!nameTaken)
         {
             QLog_Info(LOG_ID_INFO, "authorizePlayer() : Player name " + p.getName() +
@@ -61,10 +55,21 @@ void PlayerAdministrator::authorizePlayer(const Player &p)
         }
         else
         {
+            int cnt = 2;
+            QString newName;
             Player p2(p);
-            p2.setName(p.getName() + "_2");
+
+            while(nameTaken != false)
+            {
+                // Increment counter if someone still has the same name
+                newName = p.getName() + "_" + QString::number(cnt++);
+                nameTaken = isNameTaken(newName);
+            }
+
             QLog_Info(LOG_ID_INFO, "authorizePlayer() : Player name " + p.getName() +
                       " is already taken, inform him to change name for " + p2.getName());
+
+            p2.setName(newName);
             playerList.append(p2);
 
             // Notify the player that he has to change name
@@ -73,6 +78,19 @@ void PlayerAdministrator::authorizePlayer(const Player &p)
             emit playerListChanged(playerList);
         }
     }
+}
+
+bool PlayerAdministrator::isNameTaken(QString name)
+{
+    for(int i = 0; i < playerList.size(); ++i)
+    {
+        if(playerList.at(i).getName() == name)
+        {
+            QLog_Info(LOG_ID_INFO, "authorizePlayer() : Player name found in the list");
+            return true;
+        }
+    }
+    return false;
 }
 
 void PlayerAdministrator::handleNewPlayerConnection(Client c)

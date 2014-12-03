@@ -4,6 +4,13 @@ Player::Player()
 {
 }
 
+Player::Player(const Player& other)
+{
+    name = other.name;
+    hostAddress = other.hostAddress;
+    connected = other.connected;
+}
+
 Player::Player(QString n, QString ha, bool c)
 {
     name = n;
