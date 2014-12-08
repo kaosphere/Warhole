@@ -95,7 +95,12 @@ void CommandManager::enQueueServerInfoRequest()
 
     stream << SERVER_INFO_REQUEST;
 
-    addMessageToOutQueue(m);
+    // Player info request should be sent before any other message if some are already waiting
+    // in the queue to be handled
+    if(outQueue)
+    {
+        outQueue->addMessageAsFirst(m);
+    }
 }
 
 

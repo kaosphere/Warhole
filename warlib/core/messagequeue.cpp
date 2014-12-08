@@ -51,6 +51,12 @@ Message MessageQueue::getAndRemoveFirstMessage()
     return m;
 }
 
+void MessageQueue::addMessageAsFirst(Message &m)
+{
+    messageList.push_front(m);
+    emit newMessageAvailable();
+}
+
 bool MessageQueue::isMessageListEmpty()
 {
     return messageList.isEmpty();

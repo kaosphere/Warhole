@@ -32,6 +32,7 @@ public:
     void removeMessage(Message &m);
     void clearMessages();
     Message getAndRemoveFirstMessage();
+    void addMessageAsFirst(Message &m);
 
     bool isMessageListEmpty();
 signals:
