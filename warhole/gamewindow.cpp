@@ -42,8 +42,11 @@ void GameWindow::initGameWindow()
     // Actions load and save game
     ui->actionCharger_une_partie->setEnabled(false);
     ui->actionSave_Game->setEnabled(false);
+    ui->actionOpen_Army->setEnabled(false);
     connect(&controller, SIGNAL(networkEnabled(bool)), ui->actionCharger_une_partie, SLOT(setEnabled(bool)));
     connect(&controller, SIGNAL(networkEnabled(bool)), ui->actionSave_Game, SLOT(setEnabled(bool)));
+    connect(&controller, SIGNAL(networkEnabled(bool)), ui->actionOpen_Army, SLOT(setEnabled(bool)));
+    connect(&controller, SIGNAL(networkEnabled(bool)), this, SLOT(refreshNetworkState(bool)));
 
     // Chat widget
     cw = new ChatWidgetForm(this);
@@ -157,6 +160,8 @@ void GameWindow::initGameWindow()
     connect(&controller, SIGNAL(newScatter(QString,int)), this, SLOT(addNewScatterToScene(QString,int)));
     connect(&controller, SIGNAL(moveScatter(QString,QPointF)), this, SLOT(moveScatter(QString, QPointF)));
     connect(&controller, SIGNAL(removeScatter(QString)), this, SLOT(removeScatter(QString)));
+
+    networkOn = false;
 }
 
 
@@ -1102,4 +1107,9 @@ void GameWindow::on_actionA_propos_triggered()
     WarholeInfoDialog* inf = new WarholeInfoDialog();
     inf = new WarholeInfoDialog();
     inf->show();
+}
+
+void GameWindow::refreshNetworkState(bool s)
+{
+    networkOn = s;
 }

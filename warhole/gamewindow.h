@@ -123,10 +123,9 @@ private slots:
     void rotateView();
     void requestNewText();
     void addNewScatterToScene(QString i, int a);
-
     void on_actionWiki_Warhole_triggered();
-
     void on_actionA_propos_triggered();
+    void refreshNetworkState(bool s);
 
 signals:
     void requestNewRuler(int l);
@@ -158,6 +157,7 @@ private:
     ChatWidgetForm* cw;
     StatsDisplayForm* sd;
     
+    bool networkOn;
     bool invertedView;
 
     void initGameWindow();
