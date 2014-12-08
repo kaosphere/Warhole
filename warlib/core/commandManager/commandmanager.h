@@ -13,6 +13,7 @@ enum CommandType{
     SERVER_INFO_REQUEST = 0,
     SERVER_INFO,
     PLAYER_LIST_UPDATE,
+    PLAYER_NAME_CHANGE,
     CHAT_MESSAGE,
     NEW_RULER,
     RULER_POSITION_CHANGE,
@@ -79,6 +80,8 @@ signals:
     void newScatter(QString, int);
     void moveScatter(QString, QPointF);
     void removeScatter(QString);
+    void playerNameChange(QString);
+    void changeClientName(QString, QString);
     
 public slots:
     void processIncomingMessage();
@@ -112,6 +115,7 @@ public slots:
     void enQueueNewScatterMessage(int angle);
     void enQueueRemoveScatterMessage(QString i);
     void enQueueScatterMoveMessage(QString i, QPointF p);
+    void enqueuePlayerNameChangeRequest(QString n1, QString n2);
 
 private:
     static const QString LOG_ID_INFO;
@@ -157,6 +161,7 @@ private:
     void handleNewScatterMessage(QDataStream& data);
     void handleMoveScatterMessage(QDataStream& data);
     void handleRemoveScatterMessage(QDataStream& data);
+    void hangleChangePlayerNameMessage(QDataStream &data);
 };
 
 #endif // COMMANDMANAGER_H

@@ -1103,6 +1103,41 @@ void CommandManager::handleRemoveScatterMessage(QDataStream &data)
     emit removeScatter(id);
 }
 
+void CommandManager::enqueuePlayerNameChangeRequest(QString n1, QString n2)
+{
+    Message m;
+    m.setDest(ME);
+    m.setMessageSender(n1);
+
+    QByteArray data;
+    QDataStream s(&data, QIODevice::WriteOnly);
+
+    s << PLAYER_NAME_CHANGE;
+
+    s << n2;
+
+    m.setData(data);
+
+    QLog_Info(LOG_ID_INFO, "enqueuePlayerNameChangeRequest() : change " + n1 +
+              " name to " + n2);
+
+    addMessageToOutQueue(m);
+
+    // Ask network interface to change the player name in the network interface client list
+    emit changeClientName(n1, n2);
+}
+
+void CommandManager::hangleChangePlayerNameMessage(QDataStream &data)
+{
+    QString newName;
+
+    data >> newName;
+
+    QLog_Info(LOG_ID_INFO, "hangleChangePlayerNameMessage() : change name to " + newName);
+
+    emit playerNameChange(newName);
+}
+
 void CommandManager::processIncomingMessage()
 {
     Message m;
@@ -1153,6 +1188,11 @@ void CommandManager::processIncomingMessage()
         case PLAYER_LIST_UPDATE:
             QLog_Info(LOG_ID_INFO, "processIncomingMessage() : Player list update received.");
             handlePlayerListRefreshMessage(stream);
+            break;
+
+        case PLAYER_NAME_CHANGE:
+            QLog_Info(LOG_ID_INFO, "processIncomingMessage() : Player name change message received.");
+            hangleChangePlayerNameMessage(stream);
             break;
 
         case NEW_RULER:

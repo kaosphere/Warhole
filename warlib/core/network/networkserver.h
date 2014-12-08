@@ -35,6 +35,7 @@ public slots:
     void newClientConnected();
     void deconnectionClient();
     virtual void send();
+    void changeClientName(QString n1, QString n2);
 
 private:
     static const QString LOG_ID_INFO;

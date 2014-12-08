@@ -32,11 +32,21 @@ void PlayerAdministrator::authorizePlayer(const Player &p)
     QLog_Info(LOG_ID_INFO, "authorizePlayer() : Authorizing player " + p.getName());
     if(playerList.contains(p))
     {
-        QLog_Info(LOG_ID_INFO, "authorizePlayer() : Player " + p.getName() +
-                  " was already in the player list, reconnect him.");
-        // If player was already in the list, just reconnect him
-        playerList[playerList.indexOf(p)].setConnected(true);
-        emit playerListChanged(playerList);
+        // If player isn't connected, he's coming back
+        bool connected = playerList.at(playerList.indexOf(p)).getConnected();
+        if(!connected)
+        {
+            QLog_Info(LOG_ID_INFO, "authorizePlayer() : Player " + p.getName() +
+                      " was already in the player list, reconnect him.");
+            // If player was already in the list, just reconnect him
+            playerList[playerList.indexOf(p)].setConnected(true);
+            emit playerListChanged(playerList);
+        }
+        else
+        {
+            // Else, we have a duplicated name
+            replaceName(p);
+        }
     }
     else
     {
@@ -55,29 +65,35 @@ void PlayerAdministrator::authorizePlayer(const Player &p)
         }
         else
         {
-            int cnt = 2;
-            QString newName;
-            Player p2(p);
-
-            while(nameTaken != false)
-            {
-                // Increment counter if someone still has the same name
-                newName = p.getName() + "_" + QString::number(cnt++);
-                nameTaken = isNameTaken(newName);
-            }
-
-            QLog_Info(LOG_ID_INFO, "authorizePlayer() : Player name " + p.getName() +
-                      " is already taken, inform him to change name for " + p2.getName());
-
-            p2.setName(newName);
-            playerList.append(p2);
-
-            // Notify the player that he has to change name
-            // TODO finish implementation of player name change
-            emit playerNameToChange(p.getName(), p2.getName());
-            emit playerListChanged(playerList);
+            replaceName(p);
         }
     }
+}
+
+void PlayerAdministrator::replaceName(const Player& p)
+{
+    int cnt = 2;
+    QString newName;
+    bool nameTaken = true;
+    Player p2(p);
+
+    while(nameTaken != false)
+    {
+        // Increment counter if someone still has the same name
+        newName = p.getName() + "_" + QString::number(cnt++);
+        nameTaken = isNameTaken(newName);
+    }
+
+    QLog_Info(LOG_ID_INFO, "authorizePlayer() : Player name " + p.getName() +
+              " is already taken, inform him to change name for " + p2.getName());
+
+    p2.setName(newName);
+    playerList.append(p2);
+
+    // Notify the player that he has to change name
+    // TODO finish implementation of player name change
+    emit playerNameToChange(p.getName(), p2.getName());
+    emit playerListChanged(playerList);
 }
 
 bool PlayerAdministrator::isNameTaken(QString name)
@@ -111,6 +127,10 @@ void PlayerAdministrator::handlePlayerDisconnection(Client c)
         QLog_Info(LOG_ID_INFO, "handleNewPlayerConnection() : Player found in list, remove him from player list.");
         playerList[playerList.indexOf(p)].setConnected(false);
         emit playerListChanged(playerList);
+    }
+    else
+    {
+        QLog_Error(LOG_ID_ERR, "handlePlayerDisconnection() : Disconnected player not found in player list.");
     }
 }
 

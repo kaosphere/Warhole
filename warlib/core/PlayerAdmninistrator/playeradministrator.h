@@ -15,6 +15,7 @@ public:
     void authorizePlayer(const Player& p);
 
     bool isNameTaken(QString name);
+    void replaceName(const Player &p);
 signals:
     void playerListChanged(QList<Player> l);
     void playerNameToChange(QString p, QString p2);

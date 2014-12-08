@@ -318,3 +318,18 @@ void NetworkServer::send()
         }
     }
 }
+
+void NetworkServer::changeClientName(QString n1, QString n2)
+{
+    // Send message only to the one who sended first
+    // TODO : make this in a better way, with a QMap for example
+    for(int i = 0; i < clients.size(); ++i)
+    {
+        if(n1 == clients[i]->getName())
+        {
+            clients[i]->setName(n2);
+            QLog_Info(LOG_ID_INFO, "changeClientName() : network client name " + n1 +
+                      " changed to " + n2);
+        }
+    }
+}
