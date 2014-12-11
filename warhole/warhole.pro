@@ -56,11 +56,12 @@ SOURCES += main.cpp\
     terrainwindow.cpp \
     graphics/terraingraphics.cpp \
     regimentinfodialog.cpp \
-    graphics/graphicalobjectabstract.cpp \
     graphics/blowtemplategraphics.cpp \
     graphics/textgraphics.cpp \
     graphics/dispersiongraphics.cpp \
-    warholeinfodialog.cpp
+    warholeinfodialog.cpp \
+    components/enhancedgraphicsscene.cpp \
+    components/enhancegraphicsobject.cpp
 
 HEADERS  += mainwindow.h \
     modelwindow.h \
@@ -86,11 +87,12 @@ HEADERS  += mainwindow.h \
     terrainwindow.h \
     graphics/terraingraphics.h \
     regimentinfodialog.h \
-    graphics/graphicalobjectabstract.h \
     graphics/blowtemplategraphics.h \
     graphics/textgraphics.h \
     graphics/dispersiongraphics.h \
-    warholeinfodialog.h
+    warholeinfodialog.h \
+    components/enhancedgraphicsscene.h \
+    components/enhancegraphicsobject.h
 
 TRANSLATIONS = warhole_en.ts
 
