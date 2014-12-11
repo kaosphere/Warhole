@@ -11,10 +11,15 @@ public:
 
 protected:
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 signals:
     
 public slots:
-    
+
+private:
+    bool rubberBandOn;
+    bool clicked;
 };
 
 #endif // ENHANCEDGRAPHICSSCENE_H
