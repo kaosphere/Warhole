@@ -1,7 +1,7 @@
 #include "RoundTemplateGraphics.h"
 
 RoundTemplateGraphics::RoundTemplateGraphics(QGraphicsItem *parent) :
-    QGraphicsObject(parent)
+    EnhanceGraphicsObject(parent)
 {
     // Default diameter
     diameter = 5;
@@ -10,7 +10,7 @@ RoundTemplateGraphics::RoundTemplateGraphics(QGraphicsItem *parent) :
 }
 
 RoundTemplateGraphics::RoundTemplateGraphics(int d, QString i, QGraphicsItem* parent):
-    QGraphicsObject(parent)
+    EnhanceGraphicsObject(parent)
 {
     diameter = d;
     id = i;

@@ -8,8 +8,9 @@
 #include <QGraphicsSceneContextMenuEvent>
 #include <QPainter>
 #include "distances.h"
+#include "components/enhancegraphicsobject.h"
 
-class RoundTemplateGraphics : public QGraphicsObject
+class RoundTemplateGraphics : public EnhanceGraphicsObject
 {
     Q_OBJECT
 public:

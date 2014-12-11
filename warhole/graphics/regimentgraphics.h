@@ -14,8 +14,9 @@
 #include "getintdialog.h"
 #include "statsdisplayform.h"
 #include "regimentinfodialog.h"
+#include "components/enhancegraphicsobject.h"
 
-class RegimentGraphics : public QGraphicsObject
+class RegimentGraphics : public EnhanceGraphicsObject
 {
     Q_OBJECT
 public:

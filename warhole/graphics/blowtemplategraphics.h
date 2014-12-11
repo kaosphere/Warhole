@@ -9,8 +9,9 @@
 #include <QKeyEvent>
 #include <QMenu>
 #include "distances.h"
+#include "components/enhancegraphicsobject.h"
 
-class BlowTemplateGraphics : public QGraphicsObject
+class BlowTemplateGraphics : public EnhanceGraphicsObject
 {
     Q_OBJECT
 public:

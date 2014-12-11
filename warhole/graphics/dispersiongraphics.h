@@ -6,8 +6,9 @@
 #include <QPainter>
 #include <QGraphicsSceneMouseEvent>
 #include "distances.h"
+#include "components/enhancegraphicsobject.h"
 
-class DispersionGraphics : public QGraphicsObject
+class DispersionGraphics : public EnhanceGraphicsObject
 {
     Q_OBJECT
 public:

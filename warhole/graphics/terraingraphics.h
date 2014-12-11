@@ -9,8 +9,9 @@
 #include <QMenu>
 #include "game/terrain/terrain.h"
 #include "distances.h"
+#include "components/enhancegraphicsobject.h"
 
-class TerrainGraphics : public QGraphicsObject
+class TerrainGraphics : public EnhanceGraphicsObject
 {
     Q_OBJECT
 public:

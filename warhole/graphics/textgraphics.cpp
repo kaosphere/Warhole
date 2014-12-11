@@ -3,7 +3,7 @@
 const QString TextGraphics::DEFAULT_TEXT = tr("Entrez votre texte");
 
 TextGraphics::TextGraphics(QGraphicsItem *parent) :
-    QGraphicsObject(parent)
+    EnhanceGraphicsObject(parent)
 {
     item = NULL;
     text = DEFAULT_TEXT;

@@ -11,8 +11,9 @@
 #include <QAction>
 #include <QMenu>
 #include "distances.h"
+#include "components/enhancegraphicsobject.h"
 
-class TextGraphics : public QGraphicsObject
+class TextGraphics : public EnhanceGraphicsObject
 {
     Q_OBJECT
 public:

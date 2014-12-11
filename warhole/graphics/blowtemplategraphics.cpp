@@ -4,13 +4,14 @@ const qreal BlowTemplateGraphics::WIDTH = 2.5;
 const qreal BlowTemplateGraphics::LENGTH = 8.5;
 
 BlowTemplateGraphics::BlowTemplateGraphics(QGraphicsItem *parent) :
-    QGraphicsObject(parent)
+    EnhanceGraphicsObject(parent)
 {
     id = "";
     initRoundTemplateGraphics();
 }
 
-BlowTemplateGraphics::BlowTemplateGraphics(QString i, QGraphicsItem *parent)
+BlowTemplateGraphics::BlowTemplateGraphics(QString i, QGraphicsItem *parent) :
+    EnhanceGraphicsObject(parent)
 {
     id = i;
     initRoundTemplateGraphics();

@@ -13,8 +13,9 @@
 #include <qmath.h>
 
 #include "distances.h"
+#include "components/enhancegraphicsobject.h"
 
-class RulerGraphics : public QGraphicsObject
+class RulerGraphics : public EnhanceGraphicsObject
 {
     Q_OBJECT
 public:

@@ -9,7 +9,8 @@ const QString RegimentGraphics::LOG_ID_ERR = "RegimentGraphics_err";
 
 const int RegimentGraphics::DEFAULT_REGIMENT_WIDTH = 5;
 
-RegimentGraphics::RegimentGraphics(QGraphicsItem *parent) : QGraphicsObject(parent)
+RegimentGraphics::RegimentGraphics(QGraphicsItem *parent) :
+    EnhanceGraphicsObject(parent)
 {
     initialized = false;
     isOwnedByMe = false;
@@ -17,7 +18,7 @@ RegimentGraphics::RegimentGraphics(QGraphicsItem *parent) : QGraphicsObject(pare
 }
 
 RegimentGraphics::RegimentGraphics(const RegimentAbstract &r, bool owned, bool* iv, QGraphicsItem *parent) :
-    QGraphicsObject(parent)
+    EnhanceGraphicsObject(parent)
 {
     initialized = false;
     regiment = r;

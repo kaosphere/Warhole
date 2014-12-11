@@ -36,6 +36,7 @@
 #include "graphics/blowtemplategraphics.h"
 #include "graphics/textgraphics.h"
 #include "graphics/dispersiongraphics.h"
+#include "components/enhancedgraphicsscene.h"
 
 
 namespace Ui {
@@ -143,7 +144,7 @@ private:
     static const QString LOG_ID_ERR;
 
     Ui::GameWindow *ui;
-    QGraphicsScene scene;
+    EnhancedGraphicsScene scene;
     EnhancedGraphicsView view;
     QStandardItemModel* armyModel;
 

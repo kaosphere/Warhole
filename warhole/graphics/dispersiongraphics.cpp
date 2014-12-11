@@ -4,7 +4,7 @@ const int DispersionGraphics::LENGTH = (4 * ONE_INCH);
 const int DispersionGraphics::PEN_SIZE = 20;
 
 DispersionGraphics::DispersionGraphics(QGraphicsItem *parent) :
-    QGraphicsObject(parent)
+    EnhanceGraphicsObject(parent)
 {
     angle = 0;
     id = "";
@@ -19,7 +19,7 @@ DispersionGraphics::DispersionGraphics(QGraphicsItem *parent) :
 }
 
 DispersionGraphics::DispersionGraphics(QString i, qreal a, QGraphicsItem *parent):
-    QGraphicsObject(parent)
+    EnhanceGraphicsObject(parent)
 {
     angle = a;
     id = i;

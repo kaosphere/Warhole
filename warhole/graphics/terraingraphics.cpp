@@ -1,7 +1,7 @@
 #include "terraingraphics.h"
 
 TerrainGraphics::TerrainGraphics(QGraphicsItem *parent) :
-    QGraphicsObject(parent)
+    EnhanceGraphicsObject(parent)
 {
     setFlag(ItemIsFocusable);
     setFlag(ItemIsMovable);
@@ -24,7 +24,7 @@ TerrainGraphics::TerrainGraphics(QGraphicsItem *parent) :
 }
 
 TerrainGraphics::TerrainGraphics(Terrain ter, QGraphicsItem *parent):
-    QGraphicsObject(parent)
+    EnhanceGraphicsObject(parent)
 {
     t = ter;
     prepareGeometryChange();

@@ -7,14 +7,15 @@ const int RulerGraphics::GRADUATION_NUMBER_WIDTH = RulerGraphics::DEFAULT_RULER_
 const int RulerGraphics::GRADUATION_NUMBER_HIGHT = RulerGraphics::DEFAULT_RULER_WIDTH/2;
 const int RulerGraphics::PEN_WIDTH = 3;
 
-RulerGraphics::RulerGraphics(QGraphicsItem* parent) : QGraphicsObject(parent)
+RulerGraphics::RulerGraphics(QGraphicsItem* parent) :
+    EnhanceGraphicsObject(parent)
 {
     length = DEFAULT_RULER_LENGTH;
     initRulerGraphics();
 }
 
 RulerGraphics::RulerGraphics(const int &l, const QString& i, QGraphicsItem *parent) :
-    QGraphicsObject(parent)
+    EnhanceGraphicsObject(parent)
 {
     length = l;
     id = i;
