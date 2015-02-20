@@ -2,6 +2,7 @@
 #include <QApplication>
 #include <QDebug>
 #include <QObject>
+#include <QFile>
 
 #include <warlibinitializer.h>
 #include <Utilities/QLogger/QLogger.h>
@@ -17,6 +18,13 @@ int main(int argc, char *argv[])
     WarlibInit::initWarlib();
 
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("utf8") );
+
+    QFile File(":/stylesheet/ressources/darkorange.stylesheet");
+    File.open(QFile::ReadOnly);
+    QString StyleSheet = QLatin1String(File.readAll());
+
+    a.setStyle("windows");
+    a.setStyleSheet(StyleSheet);
 
     MainWindow w;
 
