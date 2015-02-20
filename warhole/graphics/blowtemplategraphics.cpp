@@ -24,7 +24,6 @@ void BlowTemplateGraphics::initRoundTemplateGraphics()
 
     rot = false;
     firstRot = true;
-    previousRot = 0;
     setZValue(TEMPLATE_Z_VALUE);
 
     setFlag(ItemIsMovable);
@@ -79,83 +78,6 @@ QString BlowTemplateGraphics::getId() const
     return id;
 }
 
-void BlowTemplateGraphics::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
-{
-    static qreal translation;
-    static int cnt = 0;
-    if(rot)
-    {
-        static int offset = 0;
-        if(firstRot)
-        {
-            if(event->pos().x() < boundingRect().center().x())
-            {
-                translation = boundingRect().right();
-                offset = 180;
-            }
-            else
-            {
-                translation = 0;
-                offset = 0;
-            }
-            firstRot = false;
-        }
-
-        QPointF originPoint = mapToScene(translation, 0);
-        qreal a1 = event->scenePos().x() - originPoint.x();
-        qreal a2 = event->scenePos().y() - originPoint.y();
-        qreal angle = qAtan2(a2, a1);
-        
-        QTransform trans;
-        trans.translate(translation,0).rotate(-previousRot).rotate((angle * 180 / 3.14) + offset).translate(-translation,0);
-        setTransform(trans, true);
-        
-        previousRot = ((angle * 180 / 3.14) + offset);
-
-        if((++cnt)%6 == 0)
-        {
-            cnt = 1;
-            emit templateMoved(id, pos(), transform(), previousRot);
-        }
-    }
-    else
-    {
-        if((++cnt)%6 == 0)
-        {
-            cnt = 1;
-            emit templateMoved(id, pos(), transform(), previousRot);
-        }
-        QGraphicsItem::mouseMoveEvent(event);
-    }
-}
-
-void BlowTemplateGraphics::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
-{
-    // End of movement, send final position
-    emit templateMoved(id, pos(), transform(), previousRot);
-    
-    QGraphicsItem::mouseReleaseEvent(event);
-}
-
-void BlowTemplateGraphics::keyPressEvent(QKeyEvent *event)
-{
-    if(event->key() == Qt::Key_R)
-    {
-        rot = true;
-    }
-    QGraphicsItem::keyPressEvent(event);
-}
-
-void BlowTemplateGraphics::keyReleaseEvent(QKeyEvent *event)
-{
-    if(event->key() == Qt::Key_R && !event->isAutoRepeat())
-    {
-        rot = false;
-        firstRot = true;
-    }
-    QGraphicsItem::keyReleaseEvent(event);
-}
-
 void BlowTemplateGraphics::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 {
     QMenu *menu = new QMenu;
@@ -177,10 +99,10 @@ QDataStream &BlowTemplateGraphics::serializeIn(QDataStream &in)
 
 QDataStream &operator <<(QDataStream &out, const BlowTemplateGraphics &obj)
 {
+    obj.serializeOutBase(out);
     out << obj.id
         << obj.pos()
-        << obj.transform()
-        << obj.previousRot;
+        << obj.transform();
 
     return out;
 }
@@ -190,10 +112,10 @@ QDataStream &operator >>(QDataStream &in, BlowTemplateGraphics &obj)
     QPointF position;
     QTransform matrix;
     
+    obj.serializeInBase(in);
     in >> obj.id;
     in >> position;
     in >> matrix;
-    in >> obj.previousRot;
     
     obj.setPos(position);
     obj.setTransform(matrix);
@@ -206,13 +128,13 @@ void BlowTemplateGraphics::removeTemplate()
     emit removeTemplateRequest(id);
 }
 
-qreal BlowTemplateGraphics::getPreviousRot() const
+void BlowTemplateGraphics::sendObjectMovedSignal()
 {
-    return previousRot;
+    emit templateMoved(id, pos(), transform(), previousRot);
 }
 
-void BlowTemplateGraphics::setPreviousRot(const qreal &value)
+bool BlowTemplateGraphics::isUpsideDown()
 {
-    previousRot = value;
+    if(pos().x() >= mapToScene(QPointF(boundingRect().right(), boundingRect().top())).x()) return true;
+    else return false;
 }
-

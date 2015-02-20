@@ -51,21 +51,9 @@ void DispersionGraphics::paint(QPainter *painter, const QStyleOptionGraphicsItem
     painter->drawLine(0, LENGTH, ONE_INCH, LENGTH - ONE_INCH);
 }
 
-void DispersionGraphics::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
-{
-    static int cnt = 1;
-    if((++cnt)%6 == 0)
-    {
-        cnt = 1;
-        emit scatterMoved(id, pos());
-    }
-    QGraphicsItem::mouseMoveEvent(event);
-}
-
-void DispersionGraphics::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+void DispersionGraphics::sendObjectMovedSignal()
 {
     emit scatterMoved(id, pos());
-    QGraphicsItem::mouseReleaseEvent(event);
 }
 
 void DispersionGraphics::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
@@ -89,6 +77,7 @@ QDataStream &DispersionGraphics::serializeIn(QDataStream &in)
 
 QDataStream& operator<<(QDataStream& out, const DispersionGraphics& obj)
 {
+    obj.serializeOutBase(out);
     out << obj.id;
     out << obj.angle;
     out << obj.pos();
@@ -101,6 +90,7 @@ QDataStream& operator>>(QDataStream& in, DispersionGraphics& obj)
     int angle;
     QPointF pos;
 
+    obj.serializeInBase(in);
     in >> obj.id;
     in >> angle;
     in >> pos;

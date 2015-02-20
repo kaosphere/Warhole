@@ -59,15 +59,10 @@ public:
     bool getInvertedView() const;
     void setInvertedView(bool *value);
 
-    qreal getPreviousRot() const;
-    void setPreviousRot(const qreal &value);
+    virtual void sendObjectMovedSignal();
 
 protected:
-    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent* event);
-    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
     virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
-    virtual void keyPressEvent(QKeyEvent *event);
-    virtual void keyReleaseEvent(QKeyEvent *event);
 
 private slots:
     void updateOwnership();
@@ -128,8 +123,6 @@ private:
     QGraphicsRectItem* infoRect;
     
     bool* invertedView;
-
-    qreal previousRot;
 
 private slots:
     void updateRegiment();

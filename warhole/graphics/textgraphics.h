@@ -39,16 +39,11 @@ public:
     friend QDataStream& operator<<(QDataStream& out, const TextGraphics& obj);
     friend QDataStream& operator>>(QDataStream& in, TextGraphics& obj);
 
-    void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-    void keyPressEvent(QKeyEvent *event);
-    void keyReleaseEvent(QKeyEvent *event);
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
 
     void setTextWithoutSignal(const QString &value);
 
-    qreal getPreviousRot() const;
-    void setPreviousRot(const qreal &value);
+    virtual void sendObjectMovedSignal();
 
 signals:
     void textDoubleClicked();
@@ -66,7 +61,6 @@ private:
 
     bool rot;
     bool firstRot;
-    qreal previousRot;
 
     static const QString DEFAULT_TEXT;
     

@@ -28,8 +28,6 @@ public:
     void setId(QString value);
 
     void initRoundTemplateGraphics();
-    void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
     
@@ -38,6 +36,8 @@ public:
 
     friend QDataStream& operator<<(QDataStream& out, const RoundTemplateGraphics& obj);
     friend QDataStream& operator>>(QDataStream& in, RoundTemplateGraphics& obj);
+
+    virtual void sendObjectMovedSignal();
 
 signals:
     void templateMoved(QString, QPointF);

@@ -34,7 +34,6 @@ void RulerGraphics::initRulerGraphics()
 
     rot = false;
     firstRot = true;
-    previousRot = 0;
 
     setFlag(ItemIsMovable);
     setFlag(ItemIsFocusable);
@@ -113,90 +112,6 @@ void RulerGraphics::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
     menu->popup(event->screenPos());
 }
 
-void RulerGraphics::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
-{
-    static qreal translation;
-    if(rot)
-    {
-        static int offset = 0;
-
-        if(firstRot)
-        {
-
-            if(event->pos().x() < boundingRect().center().x())
-            {
-                translation = boundingRect().right();
-                offset = 180;
-            }
-            else
-            {
-                translation = 0;
-                offset = 0;
-            }
-            firstRot = false;
-        }
-
-        QPointF originPoint = mapToScene(translation, 0);
-
-        qreal a1 = event->scenePos().x() - originPoint.x();
-        qreal a2 = event->scenePos().y() - originPoint.y();
-        qreal angle = qAtan2(a2, a1);
-
-        QTransform trans;
-        trans.translate(translation,0).rotate(-previousRot).rotate((angle * 180 / 3.14) + offset).translate(-translation,0);
-        setTransform(trans, true);
-        previousRot = ((angle * 180 / 3.14) + offset);
-
-        qDebug() << "Computed angle : " << angle;
-        qDebug() << "Previous Rot : " << previousRot;
-        qDebug() << "Real Rot : " << rotation();
-
-        if((++cnt)%6 == 0)
-        {
-            cnt = 1;
-            emit rulerMoved(id, pos(), transform(), previousRot);
-        }
-    }
-    else
-    {
-        if((++cnt)%6 == 0)
-        {
-            cnt = 1;
-            emit rulerMoved(id, pos(), transform(), previousRot);
-        }
-        QGraphicsItem::mouseMoveEvent(event);
-    }
-}
-
-void RulerGraphics::keyPressEvent(QKeyEvent *event)
-{
-    if(event->key() == Qt::Key_R && !event->isAutoRepeat())
-    {
-        rot = true;
-    }
-    QGraphicsItem::keyPressEvent(event);
-}
-
-void RulerGraphics::keyReleaseEvent(QKeyEvent *event)
-{
-    if(event->key() == Qt::Key_R && !event->isAutoRepeat())
-    {
-        rot = false;
-        firstRot = true;
-        //previousRot = rotation();
-    }
-    QGraphicsItem::keyReleaseEvent(event);
-}
-
-void RulerGraphics::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
-{
-    // End of movement, send final position
-    qDebug() << "Finalizing movement";
-    emit rulerMoved(id, pos(), transform(), previousRot);
-
-    QGraphicsItem::mouseReleaseEvent(event);
-}
-
 QString RulerGraphics::getId() const
 {
     return id;
@@ -226,11 +141,11 @@ QDataStream& RulerGraphics::serializeIn(QDataStream& in)
 
 QDataStream& operator<<(QDataStream& out, const RulerGraphics& obj)
 {
+    obj.serializeOutBase(out);
     out << obj.id
         << obj.length
         << obj.pos()
-        << obj.transform()
-        << obj.previousRot;
+        << obj.transform();
 
     return out;
 }
@@ -240,6 +155,7 @@ QDataStream& operator>>(QDataStream& in, RulerGraphics& obj)
     QPointF position;
     QTransform trans;
 
+    obj.serializeInBase(in);
     in >> obj.id;
     in >> obj.length;
     in >> position;
@@ -247,21 +163,14 @@ QDataStream& operator>>(QDataStream& in, RulerGraphics& obj)
     obj.setPos(position);
 
     in >> trans;
-    in >> obj.previousRot;
 
     obj.setTransform(trans);
 
     return in;
 }
 
-
-qreal RulerGraphics::getPreviousRot() const
+void RulerGraphics::sendObjectMovedSignal()
 {
-return previousRot;
-}
-
-void RulerGraphics::setPreviousRot(const qreal &value)
-{
-previousRot = value;
+    emit rulerMoved(id, pos(), transform(), previousRot);
 }
 

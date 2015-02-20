@@ -33,13 +33,9 @@ public:
     void setWidth(int value);
 
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
-    void keyPressEvent(QKeyEvent *event);
-    void keyReleaseEvent(QKeyEvent *event);
-    void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     QString getId() const;
     void setId(const QString &value);
 
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
     
     QDataStream& serializeOut(QDataStream& out);
     QDataStream& serializeIn(QDataStream& in);
@@ -47,8 +43,7 @@ public:
     friend QDataStream& operator<<(QDataStream& out, const RulerGraphics& obj);
     friend QDataStream& operator>>(QDataStream& in, RulerGraphics& obj);
 
-    qreal getPreviousRot() const;
-    void setPreviousRot(const qreal &value);
+    virtual void sendObjectMovedSignal();
 
 public slots:
     void removeRulerRequest();
@@ -85,7 +80,6 @@ private:
     bool rot;
     bool firstRot;
     QPointF initialPos;
-    qreal previousRot;
 
     void initRulerGraphics();
 };

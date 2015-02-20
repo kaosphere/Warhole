@@ -24,8 +24,6 @@ public:
     int getAngle() const;
     void setAngle(const int &value);
 
-    void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-
     QDataStream& serializeOut(QDataStream& out);
     QDataStream& serializeIn(QDataStream& in);
 
@@ -33,7 +31,9 @@ public:
     friend QDataStream& operator>>(QDataStream& in, DispersionGraphics& obj);
 
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+
+    virtual void sendObjectMovedSignal();
+
 signals:
     void scatterMoved(QString, QPointF);
     void removeScatter(QString);

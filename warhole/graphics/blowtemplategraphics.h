@@ -26,10 +26,6 @@ public:
     void setId(QString value);
 
     void initRoundTemplateGraphics();
-    void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-    void keyPressEvent(QKeyEvent *event);
-    void keyReleaseEvent(QKeyEvent *event);
 
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
 
@@ -38,9 +34,10 @@ public:
 
     friend QDataStream& operator<<(QDataStream& out, const BlowTemplateGraphics& obj);
     friend QDataStream& operator>>(QDataStream& in, BlowTemplateGraphics& obj);
-    
-    qreal getPreviousRot() const;
-    void setPreviousRot(const qreal &value);
+
+    virtual void sendObjectMovedSignal();
+    //virtual void applyRotation(QPointF center, qreal angle);
+    virtual bool isUpsideDown();
 
 signals:
     void templateMoved(QString, QPointF, QTransform, qreal);
@@ -54,7 +51,6 @@ private:
     QAction* actionRemoveTemplate;
     bool rot;
     bool firstRot;
-    qreal previousRot;
 
     static const qreal WIDTH;
     static const qreal LENGTH;

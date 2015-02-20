@@ -65,29 +65,13 @@ QPainterPath RoundTemplateGraphics::shape() const
     return p;
 }
 
-void RoundTemplateGraphics::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
-{
-    static int cnt = 0;
-    if(++cnt % 6 == 0)
-    {
-        emit templateMoved(id, pos());
-    }
-    QGraphicsItem::mouseMoveEvent(event);
-}
-
-void RoundTemplateGraphics::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
-{
-    // Finalize movement
-    emit templateMoved(id, pos());
-    QGraphicsItem::mouseReleaseEvent(event);
-}
-
 void RoundTemplateGraphics::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 {
     QMenu *menu = new QMenu;
     menu->addAction(actionRemoveTemplate);
     menu->popup(event->screenPos());
 }
+
 
 void RoundTemplateGraphics::removeTemplate()
 {
@@ -128,6 +112,7 @@ QDataStream& RoundTemplateGraphics::serializeIn(QDataStream& in)
 
 QDataStream& operator<<(QDataStream& out, const RoundTemplateGraphics& obj)
 {
+    obj.serializeOutBase(out);
     out << obj.id
         << obj.diameter
         << obj.pos();
@@ -139,6 +124,7 @@ QDataStream& operator>>(QDataStream& in, RoundTemplateGraphics& obj)
 {
     QPointF position;
 
+    obj.serializeInBase(in);
     in >> obj.id;
     in >> obj.diameter;
     in >> position;
@@ -147,3 +133,9 @@ QDataStream& operator>>(QDataStream& in, RoundTemplateGraphics& obj)
 
     return in;
 }
+
+void RoundTemplateGraphics::sendObjectMovedSignal()
+{
+    emit templateMoved(id, pos());
+}
+

@@ -9,7 +9,6 @@ TerrainGraphics::TerrainGraphics(QGraphicsItem *parent) :
 
     rot = false;
     firstRot = true;
-    previousRot = 0;
     lock = false;
     setZValue(TERRAIN_Z_VALUE);
 
@@ -35,7 +34,6 @@ TerrainGraphics::TerrainGraphics(Terrain ter, QGraphicsItem *parent):
 
     rot = false;
     firstRot = true;
-    previousRot = 0;
     lock = false;
     setZValue(TERRAIN_Z_VALUE);
 
@@ -60,86 +58,6 @@ QRectF TerrainGraphics::boundingRect() const
 void TerrainGraphics::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     painter->drawPixmap(boundingRect().toRect(), t.getTerrainImage());
-}
-
-void TerrainGraphics::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
-{
-    static qreal translation;
-
-    static int cnt = 0;
-    if(rot && !lock)
-    {
-        static int offset = 0;
-
-        if(firstRot)
-        {
-
-            if(event->pos().x() < boundingRect().center().x())
-            {
-                translation = boundingRect().right();
-                offset = 180;
-            }
-            else
-            {
-                translation = 0;
-                offset = 0;
-            }
-            firstRot = false;
-        }
-
-        QPointF originPoint = mapToScene(translation, 0);
-
-        qreal a1 = event->scenePos().x() - originPoint.x();
-        qreal a2 = event->scenePos().y() - originPoint.y();
-        qreal angle = qAtan2(a2, a1);
-
-        QTransform trans;
-        trans.translate(translation,0).rotate(-previousRot).rotate((angle * 180 / 3.14) + offset).translate(-translation,0);
-        setTransform(trans, true);
-        previousRot = ((angle * 180 / 3.14) + offset);
-
-        if((++cnt)%6 == 0)
-        {
-            cnt = 1;
-            emit terrainMoved(id, pos(), transform(), previousRot);
-        }
-    }
-    else
-    {
-        if((++cnt)%6 == 0)
-        {
-            cnt = 1;
-            emit terrainMoved(id, pos(), transform(), previousRot);
-        }
-        QGraphicsItem::mouseMoveEvent(event);
-    }
-}
-
-void TerrainGraphics::keyPressEvent(QKeyEvent *event)
-{
-    if(event->key() == Qt::Key_R)
-    {
-        rot = true;
-    }
-    QGraphicsItem::keyPressEvent(event);
-}
-
-void TerrainGraphics::keyReleaseEvent(QKeyEvent *event)
-{
-    if(event->key() == Qt::Key_R && !event->isAutoRepeat())
-    {
-        rot = false;
-        firstRot = true;
-    }
-    QGraphicsItem::keyReleaseEvent(event);
-}
-
-void TerrainGraphics::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
-{
-    // End of movement, send final position
-    emit terrainMoved(id, pos(), transform(), previousRot);
-
-    QGraphicsItem::mouseReleaseEvent(event);
 }
 
 Terrain TerrainGraphics::getT() const
@@ -241,6 +159,7 @@ QDataStream& TerrainGraphics::serializeIn(QDataStream& in)
 
 QDataStream& operator<<(QDataStream& out, const TerrainGraphics& obj)
 {
+    obj.serializeOutBase(out);
     out << obj.id
         << obj.t
         << obj.lock
@@ -257,6 +176,7 @@ QDataStream& operator>>(QDataStream& in, TerrainGraphics& obj)
     QPointF position;
     QTransform matrix;
     
+    obj.serializeInBase(in);
     in >> obj.id;
     in >> obj.t;
     in >> l;
@@ -267,19 +187,13 @@ QDataStream& operator>>(QDataStream& in, TerrainGraphics& obj)
     obj.setPos(position);
     
     in >> matrix;
-    in >> obj.previousRot;
     obj.setTransform(matrix);
     
     return in;
 }
 
-qreal TerrainGraphics::getPreviousRot() const
+void TerrainGraphics::sendObjectMovedSignal()
 {
-    return previousRot;
-}
-
-void TerrainGraphics::setPreviousRot(const qreal &value)
-{
-    previousRot = value;
+    emit terrainMoved(id, pos(), transform(), previousRot);
 }
 

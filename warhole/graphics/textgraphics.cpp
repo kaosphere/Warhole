@@ -20,7 +20,6 @@ void TextGraphics::initTextItem()
 {
     rot = false;
     firstRot = true;
-    previousRot = 0;
     setZValue(TEXT_Z_VALUE);
 
     actionRemove = new QAction(tr("Retirer"), this);
@@ -46,86 +45,6 @@ void TextGraphics::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
     Q_UNUSED(widget);
 }
 
-void TextGraphics::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
-{
-    static qreal translation;
-
-    static int cnt = 0;
-    if(rot)
-    {
-        static int offset = 0;
-
-        if(firstRot)
-        {
-
-            if(event->pos().x() < boundingRect().center().x())
-            {
-                translation = boundingRect().right();
-                offset = 180;
-            }
-            else
-            {
-                translation = 0;
-                offset = 0;
-            }
-            firstRot = false;
-        }
-
-        QPointF originPoint = mapToScene(translation, 0);
-
-        qreal a1 = event->scenePos().x() - originPoint.x();
-        qreal a2 = event->scenePos().y() - originPoint.y();
-        qreal angle = qAtan2(a2, a1);
-
-        QTransform trans;
-        trans.translate(translation,0).rotate(-previousRot).rotate((angle * 180 / 3.14) + offset).translate(-translation,0);
-        setTransform(trans, true);
-        previousRot = ((angle * 180 / 3.14) + offset);
-
-        if((++cnt)%6 == 0)
-        {
-            cnt = 1;
-            emit textChanged(id, text, pos(), transform(), previousRot);
-        }
-    }
-    else
-    {
-        if((++cnt)%6 == 0)
-        {
-            cnt = 1;
-            emit textChanged(id, text, pos(), transform(), previousRot);
-        }
-        QGraphicsItem::mouseMoveEvent(event);
-    }
-}
-
-void TextGraphics::keyPressEvent(QKeyEvent *event)
-{
-    if(event->key() == Qt::Key_R)
-    {
-        rot = true;
-    }
-    QGraphicsItem::keyPressEvent(event);
-}
-
-void TextGraphics::keyReleaseEvent(QKeyEvent *event)
-{
-    if(event->key() == Qt::Key_R && !event->isAutoRepeat())
-    {
-        rot = false;
-        firstRot = true;
-    }
-    QGraphicsItem::keyReleaseEvent(event);
-}
-
-void TextGraphics::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
-{
-    // End of movement, send final position
-    emit textChanged(id, text, pos(), transform(), previousRot);
-
-    QGraphicsItem::mouseReleaseEvent(event);
-}
-
 void TextGraphics::refreshItemText()
 {
     item->setHtml("<font color=\"Blue\"strong>" + text + "</font></strong>");
@@ -145,11 +64,11 @@ QDataStream &TextGraphics::serializeOut(QDataStream &out)
 
 QDataStream& operator<<(QDataStream& out, const TextGraphics& obj)
 {
+    obj.serializeOutBase(out);
     out << obj.id;
     out << obj.text;
     out << obj.pos();
     out << obj.transform();
-    out << obj.previousRot;
 
     return out;
 }
@@ -159,11 +78,11 @@ QDataStream& operator>>(QDataStream& in, TextGraphics& obj)
     QPointF position;
     QTransform matrix;
 
+    obj.serializeInBase(in);
     in >> obj.id;
     in >> obj.text;
     in >> position;
     in >> matrix;
-    in >> obj.previousRot;
 
     obj.setPos(position);
     obj.setTransform(matrix);
@@ -211,7 +130,6 @@ void TextGraphics::setTextWithoutSignal(const QString &value)
 void TextGraphics::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 {
     QMenu *menu = new QMenu;
-    menu->addAction(actionRemove);
     menu->popup(event->screenPos());
 }
 
@@ -220,13 +138,8 @@ void TextGraphics::removeText()
     emit removeTextRequest(id);
 }
 
-qreal TextGraphics::getPreviousRot() const
+void TextGraphics::sendObjectMovedSignal()
 {
-    return previousRot;
-}
-
-void TextGraphics::setPreviousRot(const qreal &value)
-{
-    previousRot = value;
+    emit textChanged(id, text, pos(), transform(), previousRot);
 }
 
