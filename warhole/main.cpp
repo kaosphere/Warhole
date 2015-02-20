@@ -19,7 +19,6 @@ int main(int argc, char *argv[])
 
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("utf8") );
 
-    //QFile File(":/stylesheet/ressources/darkorange.stylesheet");
     QFile File(":/stylesheet/ressources/darkstyle.qss");
     File.open(QFile::ReadOnly);
     QString StyleSheet = QLatin1String(File.readAll());
