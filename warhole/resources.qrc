@@ -22,5 +22,31 @@
         <file>ressources/checkbox.png</file>
         <file alias="down_arrow.png">ressources/down_arrow.png</file>
         <file>ressources/handle.png</file>
+        <file>ressources/rc/branch_closed.png</file>
+        <file>ressources/rc/branch_closed-on.png</file>
+        <file>ressources/rc/branch_open.png</file>
+        <file>ressources/rc/branch_open-on.png</file>
+        <file>ressources/rc/checkbox.png</file>
+        <file>ressources/rc/checkbox_indeterminate.png</file>
+        <file>ressources/rc/close.png</file>
+        <file>ressources/rc/down_arrow.png</file>
+        <file>ressources/rc/down_arrow_disabled.png</file>
+        <file>ressources/rc/Hmovetoolbar.png</file>
+        <file>ressources/rc/Hsepartoolbar.png</file>
+        <file>ressources/rc/left_arrow.png</file>
+        <file>ressources/rc/left_arrow_disabled.png</file>
+        <file>ressources/rc/right_arrow.png</file>
+        <file>ressources/rc/right_arrow_disabled.png</file>
+        <file>ressources/rc/sizegrip.png</file>
+        <file>ressources/rc/stylesheet-branch-end.png</file>
+        <file>ressources/rc/stylesheet-branch-more.png</file>
+        <file>ressources/rc/stylesheet-vline.png</file>
+        <file>ressources/rc/transparent.png</file>
+        <file>ressources/rc/undock.png</file>
+        <file>ressources/rc/up_arrow.png</file>
+        <file>ressources/rc/up_arrow_disabled.png</file>
+        <file>ressources/rc/Vmovetoolbar.png</file>
+        <file>ressources/rc/Vsepartoolbar.png</file>
+        <file>ressources/darkstyle.qss</file>
     </qresource>
 </RCC>
