@@ -17,4 +17,10 @@
     <qresource prefix="/text">
         <file>ressources/license.txt</file>
     </qresource>
+    <qresource prefix="/stylesheet">
+        <file>ressources/darkorange.stylesheet</file>
+        <file>ressources/checkbox.png</file>
+        <file alias="down_arrow.png">ressources/down_arrow.png</file>
+        <file>ressources/handle.png</file>
+    </qresource>
 </RCC>
