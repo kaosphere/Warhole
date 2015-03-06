@@ -3,6 +3,7 @@
 
 #include <QGraphicsScene>
 #include <QKeyEvent>
+#include "Utilities/QLogger/QLogger.h"
 
 class EnhancedGraphicsScene : public QGraphicsScene
 {
@@ -23,6 +24,10 @@ signals:
 public slots:
 
 private:
+    static const QString LOG_ID_TRACE;
+    static const QString LOG_ID_INFO;
+    static const QString LOG_ID_WARN;
+    static const QString LOG_ID_ERR;
 
     bool rubberBandOn;
     bool clicked;
