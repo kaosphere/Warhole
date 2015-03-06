@@ -6,9 +6,22 @@
 #include <qmath.h>
 #include "components/enhancegraphicsobject.h"
 
+using namespace QLogger;
+
+const QString EnhancedGraphicsScene::LOG_ID_INFO = "EnhancedGraphicsScene_info";
+const QString EnhancedGraphicsScene::LOG_ID_TRACE = "EnhancedGraphicsScene_trace";
+const QString EnhancedGraphicsScene::LOG_ID_WARN = "EnhancedGraphicsScene_warm";
+const QString EnhancedGraphicsScene::LOG_ID_ERR = "EnhancedGraphicsScene_err";
+
 EnhancedGraphicsScene::EnhancedGraphicsScene(QObject *parent) :
     QGraphicsScene(parent)
 {
+    QLoggerManager *manager = QLoggerManager::getInstance();
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_INFO), QLogger::InfoLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_ERR), QLogger::ErrorLevel);
+    manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_WARN), QLogger::WarnLevel);
+
     rubberBandOn = false;
     rot = false;
     firstRot = true;
@@ -52,17 +65,17 @@ void EnhancedGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent * mouseEvent
     {
         if(rot)
         {
+            QLog_Info(LOG_ID_INFO, "entering rotation code");
             // we must find the most east point of all selected object as well
             // as the most west point. With this, we determine if we turn around
             // one or the other
             QGraphicsItemGroup *group = createItemGroup(selectedItems());
-            QList<QGraphicsItem *> items = selectedItems();
+            //QList<QGraphicsItem *> items = selectedItems();
 
             // Get the bounding rect of the group to determine the rotation
 
             int offset = 0;
             qreal translation = 0;
-
 
             if(firstRot)
             {
@@ -86,12 +99,17 @@ void EnhancedGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent * mouseEvent
             qreal a2 = mouseEvent->scenePos().y() - originPoint.y();
             qreal angle = qAtan2(a2, a1);
 
-            for (int i=0; i<items.count(); ++i)
-            {
-                EnhanceGraphicsObject* tmp = dynamic_cast<EnhanceGraphicsObject*>(items[i]->toGraphicsObject());
-                if(tmp != 0)
-                    tmp->applyRotation(originPoint, angle, offset);
-            }
+            QTransform trans;
+            trans.translate(originPoint.x(),originPoint.y())
+                    .rotate((angle * 180 / 3.14) + offset)
+                    .translate(-originPoint.x(),-originPoint.y());
+
+            group->setTransform(trans, true);
+
+            // group must be destroyed so that we can interact with the items
+            destroyItemGroup(group);
+
+            //previousRot = ((angle * 180 / 3.14) + offset);
 
             // In case of a rotation, we don't want the graphics items
             // to get the mouse move event, so we return without
@@ -157,5 +175,3 @@ void EnhancedGraphicsScene::keyReleaseEvent(QKeyEvent *event)
     }
     QGraphicsScene::keyReleaseEvent(event);
 }
-
-
