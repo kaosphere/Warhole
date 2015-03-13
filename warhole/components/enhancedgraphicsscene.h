@@ -3,6 +3,7 @@
 
 #include <QGraphicsScene>
 #include <QKeyEvent>
+#include "QPointF"
 #include "Utilities/QLogger/QLogger.h"
 
 class EnhancedGraphicsScene : public QGraphicsScene
@@ -33,6 +34,11 @@ private:
     bool clicked;
     bool rot;
     bool firstRot;
+
+    int offset;
+    qreal translation0;
+    qreal previousRot;
+    QPointF originPoint;
 };
 
 #endif // ENHANCEDGRAPHICSSCENE_H

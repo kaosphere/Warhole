@@ -54,7 +54,7 @@ void EnhancedGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent * mouseEvent
         return;
     }
 
-    if (pItem->isSelected() == false)
+    if (pItem->isSelected() == false && !rot && !selectedItems().isEmpty())
     {
         QGraphicsScene::mouseMoveEvent(mouseEvent);
         return;
@@ -70,39 +70,53 @@ void EnhancedGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent * mouseEvent
             // as the most west point. With this, we determine if we turn around
             // one or the other
             QGraphicsItemGroup *group = createItemGroup(selectedItems());
-            //QList<QGraphicsItem *> items = selectedItems();
+            //QList<QGraphicsItem *> items = selectedItems();rrr
+
 
             // Get the bounding rect of the group to determine the rotation
 
-            int offset = 0;
-            qreal translation = 0;
-
             if(firstRot)
             {
-
-                if(mouseEvent->pos().x() < group->boundingRect().center().x())
+                if(mouseEvent->scenePos().x() < group->boundingRect().center().x())
                 {
-                    translation = group->boundingRect().right();
+                    originPoint.setX(group->boundingRect().right());
+                    originPoint.setY(group->boundingRect().y());
+                    previousRot = 0;
                     offset = 180;
                 }
                 else
                 {
-                    translation = 0;
+                    originPoint.setX(group->boundingRect().left());
+                    originPoint.setY(group->boundingRect().y());
+                    previousRot = 0;
                     offset = 0;
                 }
                 firstRot = false;
             }
 
-            QPointF originPoint(translation, 0);
+            QGraphicsEllipseItem it(30,30,30,30);
+            QPen pen(QColor(Qt::blue));
+            QBrush brush(QColor(Qt::blue));
+            it.setPen(pen);
+            it.setBrush(brush);
+            addItem(&it);
+            it.setPos(originPoint);
+
+            qDebug() << "Origin point : ( " << originPoint.x() << " , " << originPoint.y() << ")";
 
             qreal a1 = mouseEvent->scenePos().x() - originPoint.x();
             qreal a2 = mouseEvent->scenePos().y() - originPoint.y();
             qreal angle = qAtan2(a2, a1);
 
+            qDebug() << "Angle : " << angle;
+
             QTransform trans;
-            trans.translate(originPoint.x(),originPoint.y())
+            trans.translate(originPoint.x(), originPoint.y())
+                    .rotate(-previousRot)
                     .rotate((angle * 180 / 3.14) + offset)
-                    .translate(-originPoint.x(),-originPoint.y());
+                    .translate(-originPoint.x(), -originPoint.y());
+
+            previousRot = (angle * 180 / 3.14) + offset;
 
             group->setTransform(trans, true);
 
@@ -159,8 +173,9 @@ void EnhancedGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 void EnhancedGraphicsScene::keyPressEvent(QKeyEvent *event)
 {
-    if(event->key() == Qt::Key_R)
+    if(event->key() == Qt::Key_R && !event->isAutoRepeat())
     {
+        qDebug() << "début de rotation";
         rot = true;
     }
     QGraphicsScene::keyPressEvent(event);
@@ -170,6 +185,7 @@ void EnhancedGraphicsScene::keyReleaseEvent(QKeyEvent *event)
 {
     if(event->key() == Qt::Key_R && !event->isAutoRepeat())
     {
+        qDebug() << "fin de rotation";
         rot = false;
         firstRot = true;
     }
