@@ -19,6 +19,7 @@ protected:
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
     virtual void keyPressEvent(QKeyEvent *event);
     virtual void keyReleaseEvent(QKeyEvent *event);
+    QPointF findRotationPivot(QList<QGraphicsItem*>& list, bool right);
 
 signals:
     
