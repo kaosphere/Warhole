@@ -69,7 +69,8 @@ void EnhancedGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent * mouseEvent
             // we must find the most east point of all selected object as well
             // as the most west point. With this, we determine if we turn around
             // one or the other
-            QGraphicsItemGroup *group = createItemGroup(selectedItems());
+            QList<QGraphicsItem*> selectionList = selectedItems();
+            QGraphicsItemGroup *group = createItemGroup(selectionList);
             //QList<QGraphicsItem *> items = selectedItems();rrr
 
 
@@ -79,15 +80,13 @@ void EnhancedGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent * mouseEvent
             {
                 if(mouseEvent->scenePos().x() < group->boundingRect().center().x())
                 {
-                    originPoint.setX(group->boundingRect().right());
-                    originPoint.setY(group->boundingRect().y());
+                    originPoint = findRotationPivot(selectionList, false);
                     previousRot = 0;
                     offset = 180;
                 }
                 else
                 {
-                    originPoint.setX(group->boundingRect().left());
-                    originPoint.setY(group->boundingRect().y());
+                    originPoint = findRotationPivot(selectionList, true);
                     previousRot = 0;
                     offset = 0;
                 }
@@ -95,10 +94,10 @@ void EnhancedGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent * mouseEvent
             }
 
             QGraphicsEllipseItem it(30,30,30,30);
-            QPen pen(QColor(Qt::blue));
-            QBrush brush(QColor(Qt::blue));
-            it.setPen(pen);
-            it.setBrush(brush);
+            //QPen pen(QColor(Qt::blue));
+            //QBrush brush(QColor(Qt::blue));
+            //it.setPen(pen);
+            //it.setBrush(brush);
             addItem(&it);
             it.setPos(originPoint);
 
@@ -190,4 +189,34 @@ void EnhancedGraphicsScene::keyReleaseEvent(QKeyEvent *event)
         firstRot = true;
     }
     QGraphicsScene::keyReleaseEvent(event);
+}
+
+
+QPointF EnhancedGraphicsScene::findRotationPivot(QList<QGraphicsItem*>& list, bool right)
+{
+    QPointF origin;
+    if(!list.isEmpty())
+    {
+        origin = list.first()->scenePos();
+    }
+    else return origin;
+
+    // Find pivot of the rotation
+
+    for(int i = 1 ; i < list.size(); ++i)
+    {
+        // pivot is on the right of the center of the group's bounding rect
+        if(right)
+        {
+            if (list.at(i)->x() > origin.x())
+                origin = list.at(i)->scenePos();
+        }
+        // pivot is on the left of the center of the group's bounding rect
+        else
+        {
+            if (list.at(i)->x() < origin.x())
+                origin = list.at(i)->boundingRect().topRight();
+        }
+    }
+    return origin;
 }
