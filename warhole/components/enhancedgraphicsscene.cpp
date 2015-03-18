@@ -80,12 +80,16 @@ void EnhancedGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent * mouseEvent
             {
                 if(mouseEvent->scenePos().x() < group->boundingRect().center().x())
                 {
+                    qDebug() << "left";
+                    qDebug() << "Mouse x: " << mouseEvent->scenePos().x() << ", group center : " << group->boundingRect().center().x();
                     originPoint = findRotationPivot(selectionList, false);
                     previousRot = 0;
                     offset = 180;
                 }
                 else
                 {
+                    qDebug() << "right";
+                    qDebug() << "Mouse x: " << mouseEvent->scenePos().x() << ", group center : " << group->boundingRect().center().x();
                     originPoint = findRotationPivot(selectionList, true);
                     previousRot = 0;
                     offset = 0;
@@ -123,11 +127,6 @@ void EnhancedGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent * mouseEvent
             destroyItemGroup(group);
 
             //previousRot = ((angle * 180 / 3.14) + offset);
-
-            // In case of a rotation, we don't want the graphics items
-            // to get the mouse move event, so we return without
-            // calling mouse move event of qgraphicsscene
-            return;
         }
 
         if(cnt++ % 6 == 0)
@@ -135,6 +134,10 @@ void EnhancedGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent * mouseEvent
             cnt = 0;
             refreshItemPositionsOnNetwork();
         }
+        // In case of a rotation, we don't want the graphics items
+        // to get the mouse move event, so we return without
+        // calling mouse move event of qgraphicsscene
+        if(rot) return;
     }
 
     QGraphicsScene::mouseMoveEvent(mouseEvent);
@@ -197,7 +200,21 @@ QPointF EnhancedGraphicsScene::findRotationPivot(QList<QGraphicsItem*>& list, bo
     QPointF origin;
     if(!list.isEmpty())
     {
-        origin = list.first()->scenePos();
+        QPointF p = list.first()->mapToScene(list.first()->boundingRect().topRight());
+        if(right)
+        {
+            if(list.first()->scenePos().x() < p.x())
+                origin = list.first()->scenePos();
+            else
+                origin = p;
+        }
+        else
+        {
+            if(list.first()->scenePos().x() > p.x())
+                origin = list.first()->scenePos();
+            else
+                origin = p;
+        }
     }
     else return origin;
 
@@ -208,14 +225,20 @@ QPointF EnhancedGraphicsScene::findRotationPivot(QList<QGraphicsItem*>& list, bo
         // pivot is on the right of the center of the group's bounding rect
         if(right)
         {
-            if (list.at(i)->x() > origin.x())
+            QPointF p = list.at(i)->mapToScene(list.at(i)->boundingRect().topRight());
+            if (list.at(i)->x() < origin.x())
                 origin = list.at(i)->scenePos();
+            if ( p.x() < origin.x())
+                origin = p;
         }
         // pivot is on the left of the center of the group's bounding rect
         else
         {
-            if (list.at(i)->x() < origin.x())
-                origin = list.at(i)->boundingRect().topRight();
+            QPointF p = list.at(i)->mapToScene(list.at(i)->boundingRect().topRight());
+            if ( p.x() > origin.x())
+                origin = p;
+            if (list.at(i)->x() > origin.x())
+                origin = list.at(i)->scenePos();
         }
     }
     return origin;
