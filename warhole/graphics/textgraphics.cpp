@@ -130,6 +130,7 @@ void TextGraphics::setTextWithoutSignal(const QString &value)
 void TextGraphics::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 {
     QMenu *menu = new QMenu;
+    menu->addAction(actionRemove);
     menu->popup(event->screenPos());
 }
 
