@@ -212,7 +212,7 @@
           <cursorShape>WhatsThisCursor</cursorShape>
          </property>
          <property name="toolTip">
-          <string>Ici sont décrites les règles spéciale de la figurine, comme la peur, la terreur, l'immunité à la psychologie...</string>
+          <string>Ici sont décrites les règles spéciales que confère l'objet magique</string>
          </property>
          <property name="text">
           <string>Règles spéciales supplémentaires</string>
