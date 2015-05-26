@@ -1,4 +1,4 @@
-#include "RoundTemplateGraphics.h"
+#include "roundtemplategraphics.h"
 
 RoundTemplateGraphics::RoundTemplateGraphics(QGraphicsItem *parent) :
     EnhanceGraphicsObject(parent)
