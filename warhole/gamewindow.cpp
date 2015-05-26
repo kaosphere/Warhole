@@ -58,6 +58,9 @@ void GameWindow::initGameWindow()
 
     // Terrain
     terrainsModel = new QFileSystemModel(this);
+
+    // Check if terrain folder exists, create it otherwise
+    if(!QDir(TERRAIN_PATH).exists()) QDir().mkdir(TERRAIN_PATH);
     ui->treeViewTerrains->setModel(terrainsModel);
     ui->treeViewTerrains->setRootIndex(terrainsModel->setRootPath(TERRAIN_PATH));
     // hide size, type and date collumns

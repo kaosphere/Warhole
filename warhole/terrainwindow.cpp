@@ -28,10 +28,7 @@ TerrainWindow::TerrainWindow(QWidget *parent) :
                    tr(" - Création de décors"));
 
     terrainItem = NULL;
-
     sceneRefresh = true;
-
-
 
     view = new EnhancedGraphicsView();
     view->setMinimumHeight(250);
@@ -42,6 +39,8 @@ TerrainWindow::TerrainWindow(QWidget *parent) :
 
     model = new QFileSystemModel(this);
     ui->treeViewExistingTerrains->setModel(model);
+    // Check if terrain folder exists, create it otherwise
+    if(!QDir(TERRAIN_PATH).exists()) QDir().mkdir(TERRAIN_PATH);
     ui->treeViewExistingTerrains->setRootIndex(model->setRootPath(TERRAIN_PATH));
     // hide size, type and date collumns
     ui->treeViewExistingTerrains->hideColumn(1);
