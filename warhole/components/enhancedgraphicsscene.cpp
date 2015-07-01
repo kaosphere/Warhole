@@ -50,11 +50,13 @@ void EnhancedGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent * mouseEvent
 
     if (pItem == 0)
     {
-        QGraphicsScene::mouseMoveEvent(mouseEvent);
-        return;
+        if(!rot && !selectedItems().isEmpty())
+        {
+            QGraphicsScene::mouseMoveEvent(mouseEvent);
+            return;
+        }
     }
-
-    if (pItem->isSelected() == false && !rot && !selectedItems().isEmpty())
+    else if (pItem->isSelected() == false && !rot && !selectedItems().isEmpty())
     {
         QGraphicsScene::mouseMoveEvent(mouseEvent);
         return;
@@ -109,21 +111,15 @@ void EnhancedGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent * mouseEvent
                 firstRot = false;
             }
 
-            QGraphicsEllipseItem it(30,30,30,30);
-            //QPen pen(QColor(Qt::blue));
-            //QBrush brush(QColor(Qt::blue));
-            //it.setPen(pen);
-            //it.setBrush(brush);
-            addItem(&it);
-            it.setPos(originPoint);
-
-            qDebug() << "Origin point : ( " << originPoint.x() << " , " << originPoint.y() << ")";
+            qDebug() << "Origin point :  " << originPoint;
+            qDebug() << "Mouse point :  " << mouseEvent->scenePos();
 
             qreal a1 = mouseEvent->scenePos().x() - originPoint.x();
             qreal a2 = mouseEvent->scenePos().y() - originPoint.y();
             qreal angle = qAtan2(a2, a1);
 
             qDebug() << "Previous angle : " << previousAngle;
+            qDebug() << "a1 : " << a1 << " ; a2 : " << a2;
             qDebug() << "Angle : " << angle;
             qDebug() << "Rotation : " << angle - previousAngle;
 
@@ -139,8 +135,6 @@ void EnhancedGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent * mouseEvent
 
             // group must be destroyed so that we can interact with the items
             destroyItemGroup(group);
-
-            //previousRot = ((angle * 180 / 3.14) + offset);
         }
 
         if(cnt++ % 6 == 0)
