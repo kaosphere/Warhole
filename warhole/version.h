@@ -27,7 +27,7 @@
 
 const int WARHOLE_MAJOR_VERSION(1);
 const int WARHOLE_MINOR_VERSION(0);
-const int WARHOLE_BUILD_NUMBER(4);
+const int WARHOLE_BUILD_NUMBER(5);
 
 const QString WARHOLE_VERSION_STRING("v" +
                                      QString::number(WARHOLE_MAJOR_VERSION) + "." +
