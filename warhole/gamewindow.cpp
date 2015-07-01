@@ -309,7 +309,6 @@ void GameWindow::moveRuler(QString id, QPointF p, QTransform matrix, qreal pr)
         QLog_Info(LOG_ID_INFO, "moveRuler() : ruler with ID " + id + " found, now moving it.");
         rulerList[id]->setPos(p);
         rulerList[id]->setTransform(matrix);
-        rulerList[id]->setPreviousRot(pr);
     }
     else
     {
@@ -340,7 +339,6 @@ void GameWindow::moveRegiment(QString id, QPointF p, QTransform matrix, qreal pr
         QLog_Info(LOG_ID_INFO, "moveRegiment() : regiment with ID " + id + " found, now moving it.");
         regimentMap[id]->setPos(p);
         regimentMap[id]->setTransform(matrix);
-        regimentMap[id]->setPreviousRot(pr);
     }
     else
     {
@@ -913,7 +911,6 @@ void GameWindow::moveTerrain(QString id, QPointF p, QTransform matrix, qreal pr)
                   " found, now moving it");
         terrainMap[id]->setPos(p);
         terrainMap[id]->setTransform(matrix);
-        terrainMap[id]->setPreviousRot(pr);
     }
     else
     {
@@ -943,7 +940,6 @@ void GameWindow::moveBlowTemplate(QString id, QPointF p, QTransform matrix, qrea
                   " found, now moving it");
         blowTemplateList[id]->setPos(p);
         blowTemplateList[id]->setTransform(matrix);
-        blowTemplateList[id]->setPreviousRot(pr);
     }
     else
     {
@@ -1009,7 +1005,6 @@ void GameWindow::moveText(QString i, QString text, QPointF p, QTransform matrix,
         t->setPos(p);
         t->setTransform(matrix);
         t->setTextWithoutSignal(text);
-        t->setPreviousRot(pr);
     }
     else
     {

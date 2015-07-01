@@ -3,32 +3,7 @@
 EnhanceGraphicsObject::EnhanceGraphicsObject(QGraphicsItem *parent) :
     QGraphicsObject(parent)
 {
-    previousRot = 0;
-}
 
-void EnhanceGraphicsObject::applyRotation(QPointF center, qreal angle, qreal offset)
-{
-    QPointF relativeCenter = mapFromItem(this, center);
-
-    QTransform trans;
-    trans.translate(relativeCenter.x(),relativeCenter.y())
-            .rotate(-previousRot)
-            .rotate((angle * 180 / 3.14) + offset)
-            .translate(-relativeCenter.x(),-relativeCenter.y());
-
-    setTransform(trans, true);
-
-    previousRot = ((angle * 180 / 3.14) + offset);
-}
-
-qreal EnhanceGraphicsObject::getPreviousRot() const
-{
-    return previousRot;
-}
-
-void EnhanceGraphicsObject::setPreviousRot(const qreal &value)
-{
-    previousRot = value;
 }
 
 QDataStream &EnhanceGraphicsObject::serializeInBase(QDataStream &in)
@@ -57,8 +32,4 @@ QDataStream &operator >>(QDataStream &in, EnhanceGraphicsObject &obj)
     return in;
 }
 
-
-bool EnhanceGraphicsObject::isUpsideDown()
-{
-}
 
