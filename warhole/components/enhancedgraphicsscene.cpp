@@ -75,21 +75,30 @@ void EnhancedGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent * mouseEvent
             // Get the bounding rect of the group to determine the rotation
             if(firstRot)
             {
-                if(mouseEvent->scenePos().x() < group->boundingRect().center().x())
+                // Calculate X coordinate of the center of the top segment, we need to separate cases if there is only
+                // one selected object, and to use this object's bounding rect. Otherwise, the bounding rect of the group
+                // won't fit the object
+                qreal center = 0;
+                if(selectionList.size() == 1)
+                {
+                    center = (selectionList.first()->mapToScene(0,0).x() + selectionList.first()->mapToScene(selectionList.first()->boundingRect().topRight()).x()) / 2;
+                }
+                else
+                    center = group->boundingRect().center().x();
+
+                if(mouseEvent->scenePos().x() < center)
                 {
                     qDebug() << "left";
-                    qDebug() << "Mouse x: " << mouseEvent->scenePos().x() << ", group center : " << group->boundingRect().center().x();
+                    qDebug() << "Mouse x: " << mouseEvent->scenePos().x() << ", group center : " << center;
                     originPoint = findRotationPivot(selectionList, false);
                     previousRot = 0;
-                    offset = 180;
                 }
                 else
                 {
                     qDebug() << "right";
-                    qDebug() << "Mouse x: " << mouseEvent->scenePos().x() << ", group center : " << group->boundingRect().center().x();
+                    qDebug() << "Mouse x: " << mouseEvent->scenePos().x() << ", group center : " << center;
                     originPoint = findRotationPivot(selectionList, true);
                     previousRot = 0;
-                    offset = 0;
                 }
 
                 // Check the rotation offset of the position of the mouse
@@ -203,6 +212,8 @@ void EnhancedGraphicsScene::keyReleaseEvent(QKeyEvent *event)
 QPointF EnhancedGraphicsScene::findRotationPivot(QList<QGraphicsItem*>& list, bool right)
 {
     QPointF origin;
+
+    // We set the origin with the first selected graphics item in order to compare it to every other selected items
     if(!list.isEmpty())
     {
         QPointF p = list.first()->mapToScene(list.first()->boundingRect().topRight());
