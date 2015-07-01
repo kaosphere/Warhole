@@ -37,6 +37,7 @@ private:
     bool firstRot;
 
     int offset;
+    qreal previousAngle;
     qreal translation0;
     qreal previousRot;
     QPointF originPoint;

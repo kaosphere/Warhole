@@ -71,11 +71,8 @@ void EnhancedGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent * mouseEvent
             // one or the other
             QList<QGraphicsItem*> selectionList = selectedItems();
             QGraphicsItemGroup *group = createItemGroup(selectionList);
-            //QList<QGraphicsItem *> items = selectedItems();rrr
-
 
             // Get the bounding rect of the group to determine the rotation
-
             if(firstRot)
             {
                 if(mouseEvent->scenePos().x() < group->boundingRect().center().x())
@@ -94,6 +91,12 @@ void EnhancedGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent * mouseEvent
                     previousRot = 0;
                     offset = 0;
                 }
+
+                // Check the rotation offset of the position of the mouse
+                qreal a1 = mouseEvent->scenePos().x() - originPoint.x();
+                qreal a2 = mouseEvent->scenePos().y() - originPoint.y();
+                previousAngle = qAtan2(a2, a1);
+
                 firstRot = false;
             }
 
@@ -111,15 +114,17 @@ void EnhancedGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent * mouseEvent
             qreal a2 = mouseEvent->scenePos().y() - originPoint.y();
             qreal angle = qAtan2(a2, a1);
 
+            qDebug() << "Previous angle : " << previousAngle;
             qDebug() << "Angle : " << angle;
+            qDebug() << "Rotation : " << angle - previousAngle;
 
             QTransform trans;
             trans.translate(originPoint.x(), originPoint.y())
                     .rotate(-previousRot)
-                    .rotate((angle * 180 / 3.14) + offset)
+                    .rotate(( (angle - previousAngle) * 180 / 3.14))
                     .translate(-originPoint.x(), -originPoint.y());
 
-            previousRot = (angle * 180 / 3.14) + offset;
+            previousRot = ((angle - previousAngle) * 180 / 3.14);
 
             group->setTransform(trans, true);
 
