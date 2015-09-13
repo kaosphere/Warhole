@@ -561,6 +561,22 @@ void ModelWindow::fillUI(ModelAbstract* m, QString path)
     ui->spinPU->setValue(m->getUnitPower());
     ui->lineEditImage->setText(m->getUrlImage());
 
+    switch(m->getType())
+    {
+    case BASE:
+        ui->radioBase->setChecked(true);
+        break;
+    case SPECIAL:
+        ui->radioSpecial->setChecked(true);
+        break;
+    case RARE:
+        ui->radioRare->setChecked(true);
+        break;
+    default:
+        QLog_Error(LOG_ID_ERR, "fillUI : can't find a valid type.");
+        break;
+    }
+
     if(image->load(m->getUrlImage()))
     {
     	scene->clear();
@@ -601,21 +617,6 @@ void ModelWindow::fillUI(ModelAbstract* m, QString path)
                     <<new QStandardItem(cav->getMount().getSvgInv());
             crew->appendRow(newCrew);
             ui->textEdit->append(cav->getSpecialRules());
-            switch(cav->getType())
-            {
-            case BASE:
-                ui->radioBase->setChecked(true);
-                break;
-            case SPECIAL:
-                ui->radioSpecial->setChecked(true);
-                break;
-            case RARE:
-                ui->radioRare->setChecked(true);
-                break;
-            default:
-                QLog_Error(LOG_ID_ERR, "fillUI : can't find a valid type.");
-                break;
-            }
             ui->spinPointsChamp->setValue(cav->getChampionStats().getPoints());
             ui->lineEditMChamp->setText(cav->getChampionStats().getM());
             ui->lineEditCCChamp->setText(cav->getChampionStats().getWs());
@@ -690,21 +691,6 @@ void ModelWindow::fillUI(ModelAbstract* m, QString path)
                 crew->appendRow(newCrew);
             }
             ui->textEdit->append(ch->getSpecialRules());
-            switch(ch->getType())
-            {
-            case BASE:
-                ui->radioBase->setChecked(true);
-                break;
-            case SPECIAL:
-                ui->radioSpecial->setChecked(true);
-                break;
-            case RARE:
-                ui->radioRare->setChecked(true);
-                break;
-            default:
-                QLog_Error(LOG_ID_ERR, "fillUI : can't find a valid type.");
-                break;
-            }
             ui->spinPointsChamp->setValue(ch->getChampionStats().getPoints());
             ui->lineEditMChamp->setText(ch->getChampionStats().getM());
             ui->lineEditCCChamp->setText(ch->getChampionStats().getWs());
@@ -729,21 +715,6 @@ void ModelWindow::fillUI(ModelAbstract* m, QString path)
         if (inf)
         {
             ui->textEdit->append(inf->getSpecialRules());
-            switch(inf->getType())
-            {
-            case BASE:
-                ui->radioBase->setChecked(true);
-                break;
-            case SPECIAL:
-                ui->radioSpecial->setChecked(true);
-                break;
-            case RARE:
-                ui->radioRare->setChecked(true);
-                break;
-            default:
-                QLog_Error(LOG_ID_ERR, "fillUI : can't find a valid type.");
-                break;
-            }
             ui->spinPointsChamp->setValue(inf->getChampionStats().getPoints());
             ui->lineEditMChamp->setText(inf->getChampionStats().getM());
             ui->lineEditCCChamp->setText(inf->getChampionStats().getWs());
@@ -787,21 +758,6 @@ void ModelWindow::fillUI(ModelAbstract* m, QString path)
                 crew->appendRow(newCrew);
             }
             ui->textEdit->append(mon->getSpecialRules());
-            switch(mon->getType())
-            {
-            case BASE:
-                ui->radioBase->setChecked(true);
-                break;
-            case SPECIAL:
-                ui->radioSpecial->setChecked(true);
-                break;
-            case RARE:
-                ui->radioRare->setChecked(true);
-                break;
-            default:
-                QLog_Error(LOG_ID_ERR, "fillUI : can't find a valid type.");
-                break;
-            }
         }
         else
             QLog_Error(LOG_ID_ERR, "FillUI : DYNAMIC_CAST ERROR : Can't cast to ModelMonster.");
@@ -831,21 +787,6 @@ void ModelWindow::fillUI(ModelAbstract* m, QString path)
                 crew->appendRow(newCrew);
             }
             ui->textEdit->append(war->getSpecialRules());
-            switch(war->getType())
-            {
-            case BASE:
-                ui->radioBase->setChecked(true);
-                break;
-            case SPECIAL:
-                ui->radioSpecial->setChecked(true);
-                break;
-            case RARE:
-                ui->radioRare->setChecked(true);
-                break;
-            default:
-                QLog_Error(LOG_ID_ERR, "fillUI : can't find a valid type.");
-                break;
-            }
         }
         else
             QLog_Error(LOG_ID_ERR, "FillUI : DYNAMIC_CAST ERROR : Can't cast to ModelWarMachine.");
@@ -937,7 +878,11 @@ void ModelWindow::save(QString path)
 {
     QLog_Info(LOG_ID_INFO, "save() : saving model with path : " + path);
     ParamsfromUImodel* params = new ParamsfromUImodel();
-    if(ui->radioBase->isChecked())
+    if(ui->comboUnitType->itemText(ui->comboUnitType->currentIndex()) == CHARACTER_STRING)
+    {
+        params->setType(CHARACTER);
+    }
+    else if(ui->radioBase->isChecked())
     {
         params->setType(BASE);
     }
