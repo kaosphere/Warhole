@@ -580,6 +580,25 @@ void ArmyWindow::loadRegimentInUI(RegimentAbstract& r)
     regiment = r;
     clearRegimentDisplay();
 
+    switch(regiment.getGroups().first().getModel()->getType())
+    {
+    case BASE:
+        ui->labelType->setText("Unité de base");
+        break;
+    case SPECIAL:
+        ui->labelType->setText("Unité spéciale");
+        break;
+    case RARE:
+        ui->labelType->setText("Unité rare");
+        break;
+    case CHARACTER:
+        ui->labelType->setText("Personnage");
+        break;
+    default:
+        ui->labelType->setText("ERROR");
+        break;
+    }
+
     ui->modelPtsLabel->setText(QString::number(regiment.getGroups().first().getModel()->getStats().getPoints()));
     ui->modelNameLabel->setText(regiment.getGroups().first().getModel()->getStats().getName());
     ui->labelModelM->setText(regiment.getGroups().first().getModel()->getStats().getM());
