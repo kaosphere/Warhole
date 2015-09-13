@@ -12,15 +12,13 @@ ModelInfantery::ModelInfantery(const QString &n, const QString &move, const QStr
                                const int &widthBase, const int &lengthBase, const int &unitP, const QString &urlImage,
                                bool figSup, const QString &specRules, const ModelType &t, QObject* parent) :
     ModelAbstract(n,move,weaponS,balisticS, strength, toughness, wounds, init, attacks, leadership, save,
-                  invSave, points, widthBase, lengthBase, unitP, urlImage, figSup, parent)
+                  invSave, points, widthBase, lengthBase, unitP, urlImage, figSup, t, parent)
 {
-    type = t;
     specialRules = specRules;
 }
 
 ModelInfantery::ModelInfantery(const ModelInfantery &copy) : ModelAbstract(copy)
 {
-    type = copy.type;
     specialRules = copy.specialRules;
 }
 
@@ -135,24 +133,6 @@ QString ModelInfantery::displayStringInfo()
 {
     QString s;
     QTextStream info(&s);
-    info << endl << "====================================================" << endl;
-    info << QString(QString::fromUtf8("Unité "));
-    switch(type)
-    {
-    case 0:
-        info << "Base" << endl;
-        break;
-    case 1:
-        info << QString(QString::fromUtf8("Spéciale")) << endl;
-        break;
-    case 2:
-        info << "Rare" << endl;
-        break;
-    default:
-        info << "ERROR" << endl;
-        break;
-    }
-    info << endl << "====================================================" << endl;
     info << "Model Infantery : " << endl;
     info << displayBaseInfo();
     info << "====================================================" << endl;
@@ -183,16 +163,6 @@ void ModelInfantery::setSpecialRules(const QString &value)
     specialRules = value;
 }
 
-ModelType ModelInfantery::getType() const
-{
-    return type;
-}
-
-void ModelInfantery::setType(const ModelType &value)
-{
-    type = value;
-}
-
 int ModelInfantery::computePoints()
 {
     //compute whole points of the model
@@ -210,32 +180,38 @@ QDataStream & operator <<(QDataStream & out, const ModelInfantery & obj)
 {
     out << SAVE_VERSION;
     obj.serializeOutBase(out);
-    out << obj.type
-        << obj.specialRules;
+    out << obj.specialRules;
     return out;
 }
 
 QDataStream & operator >>(QDataStream & in, ModelInfantery & obj)
 {
-    int type;
     int version = 0;
 
     in >> version;
     obj.serializeInBase(in);
-    in >> type;
-    switch(type)
+    if( version < 3)
     {
-    case 0:
-        obj.type = BASE;
-        break;
-    case 1:
-        obj.type = SPECIAL;
-        break;
-    case 2:
-        obj.type = RARE;
-        break;
-    default:
-        break;
+        int type = 0;
+        in >> type;
+
+        switch(type)
+        {
+        case 0:
+            obj.type = BASE;
+            break;
+        case 1:
+            obj.type = SPECIAL;
+            break;
+        case 2:
+            obj.type = RARE;
+            break;
+        case 3:
+            obj.type = CHARACTER;
+            break;
+        default:
+            break;
+        }
     }
     in >> obj.specialRules;
 

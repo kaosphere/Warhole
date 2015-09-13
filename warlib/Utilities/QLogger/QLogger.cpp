@@ -179,7 +179,7 @@ namespace QLogger
 
             QString logLevel = QLoggerManager::levelToText(m_level);
             QString text = QString("[%1] [%2] {%3} %4").arg(dtFormat).arg(module).arg(logLevel).arg(message);
-            qDebug() << text;
+            //qDebug() << text;
             out << text << "\n";
             emit newLogWritten(text);
             file.close();

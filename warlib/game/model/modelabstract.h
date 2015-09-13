@@ -68,13 +68,14 @@ public:
 	* \param leadership Leadership value of the model
 	* \param save Armor save of the model
 	* \param invSave Invulnerable armor save of the model
-	* \param p Points of the model
+    * \param unitP Points of the model
+    * \param type Type of the model
 	*/
     ModelAbstract(const QString &n, const QString &move, const QString &weaponS,
                   const QString &balisticS, const QString &strength, const QString &toughness,
                   const QString &wounds, const QString &init, const QString &attacks,
                   const QString &leadership, const QString &save, const QString &invSave, const int points, const int &widthBase,
-                  const int &lengthBase, const int &unitP, const QString& url, bool figSup, QObject* parent = 0);
+                  const int &lengthBase, const int &unitP, const QString& url, bool figSup, ModelType modType, QObject* parent = 0);
 	
 	//! Copy Constructor.
 	/*!
@@ -267,12 +268,16 @@ public:
 
     int computeBasePointsWithoutOptions();
     virtual int computePointsWithoutOptions() = 0;
+
+    ModelType getType() const;
+    void setType(const ModelType &value);
+
 protected:
 
-	//! stats
-	/*!
-	* StatsModel object of the model
-	*/
+    //! stats
+    /*!
+    * StatsModel object of the model
+    */
     StatsModel stats;
     //QList<ModelAbstract *> champion; //list of possible champion
 
@@ -320,6 +325,9 @@ protected:
 
     /// Stats of the champion that the model can be assigned to.
     StatsModel championStats;
+
+    /// Type of the model (base, special, rare or character)
+    ModelType type;
 	
 	//! QDataStream & operator <<
 	/*!

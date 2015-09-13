@@ -63,16 +63,12 @@ public:
     virtual int computePoints();
     virtual int computePointsWithoutOptions();
 
-    ModelType getType() const;
-    void setType(const ModelType &value);
-
 private:
     static const QString LOG_ID_INFO;
     static const QString LOG_ID_TRACE;
     static const QString LOG_ID_WARN;
     static const QString LOG_ID_ERR;
 
-    ModelType type;
     QString specialRules;
     StatsModel mount;
 

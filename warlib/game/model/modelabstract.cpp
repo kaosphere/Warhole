@@ -7,6 +7,7 @@ ModelAbstract::ModelAbstract(QObject *parent) : QObject(parent)
     banner = false;
     musician = false;
     champion = false;
+    type = BASE;
 }
 
 ModelAbstract::ModelAbstract(const StatsModel &stat,
@@ -46,6 +47,7 @@ ModelAbstract::ModelAbstract(const QString &n,
                              const int &unitP,
                              const QString &url,
                              bool figSup,
+                             ModelType modType,
                              QObject *parent) : QObject(parent)
 {
     stats.setName(n);
@@ -71,6 +73,7 @@ ModelAbstract::ModelAbstract(const QString &n,
     urlImage = url;
 
     figSupInd = figSup;
+    type = modType;
 
 }
 
@@ -89,6 +92,7 @@ ModelAbstract::ModelAbstract(const ModelAbstract &copy) : QObject(copy.parent())
     musicianPoints = copy.musicianPoints;
     champion = copy.champion;
     championStats = copy.championStats;
+    type = copy.type;
 }
 
 ModelAbstract::~ModelAbstract()
@@ -100,6 +104,27 @@ QString ModelAbstract::displayBaseInfo()
 {
     QString s;
     QTextStream info(&s);
+    info << endl << "====================================================" << endl;
+    info << QString(QString::fromUtf8("Unité"));
+    switch(type)
+    {
+    case 0:
+        info << "Base" << endl;
+        break;
+    case 1:
+        info << QString(QString::fromUtf8("Spéciale")) << endl;
+        break;
+    case 2:
+        info << "Rare" << endl;
+        break;
+    case 3:
+        info << "Personnage" << endl;
+        break;
+    default:
+        info << "ERROR" << endl;
+        break;
+    }
+    info << endl << "====================================================" << endl;
     info << stats.getName() << endl;
     info << "Points : " << computePoints() << endl;
     info << "====================================================" << endl;
@@ -172,6 +197,7 @@ ModelAbstract &ModelAbstract::operator =(const ModelAbstract &other)
     musicianPoints = other.musicianPoints;
     champion = other.champion;
     championStats = other.championStats;
+    type = other.type;
 
     return *this;
 }
@@ -369,6 +395,17 @@ int ModelAbstract::computeBasePointsWithoutOptions()
     return stats.getPoints();
 }
 
+ModelType ModelAbstract::getType() const
+{
+    return type;
+}
+
+void ModelAbstract::setType(const ModelType &value)
+{
+    type = value;
+}
+
+
 QDataStream &ModelAbstract::serializeInBase(QDataStream &in)
 {
     in >> (*this);
@@ -416,7 +453,8 @@ QDataStream &operator <<(QDataStream & out, const ModelAbstract & obj)
         << obj.musician
         << obj.musicianPoints
         << obj.champion
-        << obj.championStats;
+        << obj.championStats
+        << obj.type;
 
     return out;
 }
@@ -459,6 +497,30 @@ QDataStream &operator >>(QDataStream & in, ModelAbstract & obj)
     in >> obj.musicianPoints;
     in >> obj.champion;
     in >> obj.championStats;
+
+    if (version >= 3)
+    {
+        int type = 0;
+        in >> type;
+
+        switch(type)
+        {
+        case 0:
+            obj.type = BASE;
+            break;
+        case 1:
+            obj.type = SPECIAL;
+            break;
+        case 2:
+            obj.type = RARE;
+            break;
+        case 3:
+            obj.type = CHARACTER;
+            break;
+        default:
+            break;
+        }
+     }
 
     return in;
 }

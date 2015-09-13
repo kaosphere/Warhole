@@ -23,9 +23,9 @@ ModelCharacter::ModelCharacter(const QString &n, const QString &move, const QStr
                                const QString &leadership, const QString &save, const QString &invSave, const int points,
                                const int &widthBase, const int &lengthBase, const int &unitP, const QString &urlImage,
                                bool figSup, const QString &specRules, bool lord, bool general, bool mage,
-                               bool mounted, bool gb, QObject *parent) :
+                               bool mounted, bool gb, ModelType &t, QObject *parent) :
     ModelAbstract(n,move,weaponS,balisticS, strength, toughness, wounds, init, attacks, leadership, save,
-                  invSave, points, widthBase, lengthBase, unitP, urlImage, figSup, parent)
+                  invSave, points, widthBase, lengthBase, unitP, urlImage, figSup, t, parent)
 {
     QLoggerManager *manager = QLoggerManager::getInstance();
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
@@ -98,6 +98,7 @@ ModelCharacter *ModelCharacter::setFromUI(const ParamsfromUImodel *params)
     
     ModelCharacter* tmp = new ModelCharacter(*this);
     // ModelAbstract params
+    tmp->setType(params->getType());
     tmp->setStats(params->getStats());
     tmp->setSquareBaseW(params->getWidthBase());
     tmp->setSquareBaseL(params->getLengthBase());
@@ -130,6 +131,7 @@ void ModelCharacter::load(QString path)
     QSettings readFile(path, QSettings::IniFormat);
     temp = readFile.value("ModelCharacter", qVariantFromValue( ModelCharacter())).value< ModelCharacter>();
     
+    type = temp.getType();
     stats = temp.getStats();
     squareBaseW = temp.getSquareBaseW();
     squareBaseL = temp.getSquareBaseL();

@@ -63,11 +63,7 @@ public:
     virtual int computePoints();
     virtual int computePointsWithoutOptions();
 
-    ModelType getType() const;
-    void setType(const ModelType &value);
-
 private:
-    ModelType type;
     QString specialRules;
     QList<StatsModel> crew;
 

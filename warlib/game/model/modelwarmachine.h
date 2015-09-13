@@ -59,9 +59,6 @@ public:
     QString getSpecialRules() const;
     void setSpecialRules(const QString &value);
 
-    ModelType getType() const;
-    void setType(const ModelType &value);
-
     QList<StatsModel> getCrew() const;
     void setCrew(const QList<StatsModel> &value);
     void addCrew(StatsModel c);
@@ -69,7 +66,6 @@ public:
 
 private:
     QString specialRules;
-    ModelType type;
 
     //TODO : remove this crew shit
     QList<StatsModel> crew;

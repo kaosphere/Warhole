@@ -12,7 +12,7 @@ ModelMonster::ModelMonster(const QString &n, const QString &move, const QString 
       const int &widthBase, const int &lengthBase, const int &unitP, const QString &urlImage,
       bool figSup, const QString &specRules, const ModelType &t, QObject* parent) :
     ModelAbstract(n,move,weaponS,balisticS, strength, toughness, wounds, init, attacks, leadership, save,
-                  invSave, points, widthBase, lengthBase, unitP, urlImage, figSup, parent)
+                  invSave, points, widthBase, lengthBase, unitP, urlImage, figSup, t, parent)
 {
     type = t;
     specialRules = specRules;
@@ -22,7 +22,6 @@ ModelMonster::ModelMonster(const QString &n, const QString &move, const QString 
 ModelMonster::ModelMonster(const ModelMonster &copy) : ModelAbstract(copy)
 {
     specialRules = copy.specialRules;
-    type = copy.type;
     crew = copy.crew;
 }
 
@@ -123,24 +122,6 @@ QString ModelMonster::displayStringInfo()
 {
     QString s;
     QTextStream info(&s);
-    info << endl << "====================================================" << endl;
-    info << QString(QString::fromUtf8("Unité "));
-    switch(type)
-    {
-    case 0:
-        info << "Base" << endl;
-        break;
-    case 1:
-        info << QString(QString::fromUtf8("Spéciale")) << endl;
-        break;
-    case 2:
-        info << "Rare" << endl;
-        break;
-    default:
-        info << "ERROR" << endl;
-        break;
-    }
-    info << endl << "====================================================" << endl;
     info << "Model Monster : " << endl;
     info << displayBaseInfo();
     info << "====================================================" << endl;
@@ -196,8 +177,7 @@ QDataStream & operator <<(QDataStream & out, const ModelMonster & obj)
 {
     out << SAVE_VERSION;
     obj.serializeOutBase(out);
-    out << obj.type
-        << obj.specialRules
+    out << obj.specialRules
         << obj.crew.size();
 
     for(int i = 0 ; i < obj.crew.size() ; i++)
@@ -209,26 +189,33 @@ QDataStream & operator <<(QDataStream & out, const ModelMonster & obj)
 
 QDataStream & operator >>(QDataStream & in, ModelMonster & obj)
 {
-    int type;
     int nb;
     int version = 0;
 
     in >> version;
     obj.serializeInBase(in);
-    in >> type;
-    switch(type)
+    if( version < 3)
     {
-    case 0:
-        obj.type = BASE;
-        break;
-    case 1:
-        obj.type = SPECIAL;
-        break;
-    case 2:
-        obj.type = RARE;
-        break;
-    default:
-        break;
+        int type = 0;
+        in >> type;
+
+        switch(type)
+        {
+        case 0:
+            obj.type = BASE;
+            break;
+        case 1:
+            obj.type = SPECIAL;
+            break;
+        case 2:
+            obj.type = RARE;
+            break;
+        case 3:
+            obj.type = CHARACTER;
+            break;
+        default:
+            break;
+        }
     }
     in >> obj.specialRules;
     in >> nb;
@@ -241,16 +228,6 @@ QDataStream & operator >>(QDataStream & in, ModelMonster & obj)
     }
 
     return in;
-}
-
-ModelType ModelMonster::getType() const
-{
-    return type;
-}
-
-void ModelMonster::setType(const ModelType &value)
-{
-    type = value;
 }
 
 QList<StatsModel> ModelMonster::getCrew() const

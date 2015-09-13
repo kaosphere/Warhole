@@ -19,7 +19,7 @@ public:
                   const QString &init, const QString &attacks, const QString &leadership,
                   const QString &save, const QString &invSave, const int points, const int &widthBase,
                   const int &lengthBase, const int &unitP, const QString& urlImage , bool figSup,
-                  const QString& specRules, bool lord, bool general, bool mage, bool mounted, bool gb, QObject* parent = 0);
+                  const QString& specRules, bool lord, bool general, bool mage, bool mounted, bool gb, ModelType &t, QObject* parent = 0);
     ModelCharacter(const ModelCharacter &copy);
     virtual ~ModelCharacter();
 
