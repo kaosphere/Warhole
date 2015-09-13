@@ -306,6 +306,10 @@ QDataStream & operator >>(QDataStream & in, ModelCharacter & obj)
     in >> obj.isMounted;
     in >> obj.hasGB;
     in >> obj.mount;
+
+    // type didn't exist for character before version 3
+    // This prevent version 2 characters to end up with no type
+    if(version < 3) obj.type = CHARACTER;
     
     return in;
 }
