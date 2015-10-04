@@ -183,22 +183,28 @@ void ArmyWindow::on_comboBoxRace_currentIndexChanged(const QString &raceDir)
         {
             existingModels = modelDir->entryList();
         }
+        else
+        {
+            // Clear the list if no models
+            ui->treeViewExistingModels->setModel(NULL);
+        }
         if(existingModels.isEmpty())
         {
             QLog_Info(LOG_ID_INFO, "on_comboBoxRace_currentIndexChanged() : No Model found in race : " + raceDir);
             QMessageBox::warning(this, tr("Erreur"), tr("Aucune figurine existante ; commencez par créer des figurines"));
         }
-
-        // set the root path of the tree view
-        ui->treeViewExistingModels->setModel(model);
-        ui->treeViewExistingModels->setRootIndex(model->setRootPath(MODEL_PATH + "/" + raceDir));
-        // hide size, type and date collumns
-        ui->treeViewExistingModels->hideColumn(1);
-        ui->treeViewExistingModels->hideColumn(2);
-        ui->treeViewExistingModels->hideColumn(3);
-
-        updateTreeView(raceDir);
+        else
+        {
+            // set the root path of the tree view
+            ui->treeViewExistingModels->setModel(model);
+            ui->treeViewExistingModels->setRootIndex(model->setRootPath(MODEL_PATH + "/" + raceDir));
+            // hide size, type and date collumns
+            ui->treeViewExistingModels->hideColumn(1);
+            ui->treeViewExistingModels->hideColumn(2);
+            ui->treeViewExistingModels->hideColumn(3);
+        }
     }
+    updateTreeView(raceDir);
 }
 
 void ArmyWindow::updateTreeView(QString raceDir)
