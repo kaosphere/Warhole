@@ -4,6 +4,7 @@
 
 using namespace QLogger;
 
+// TODO : change that shitty class name that is here because I'm lazy...
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
 {
