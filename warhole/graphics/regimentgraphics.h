@@ -119,6 +119,9 @@ private:
     QAction* actionAddModels;
     QAction* actionChangeRegInfo;
     QAction* actionShowStats;
+    QAction* actionShowLineOfSight;
+
+    bool showLineOfSight;
 
     QGraphicsRectItem* infoRect;
     
@@ -127,6 +130,7 @@ private:
 private slots:
     void updateRegiment();
     void showStats();
+    void displayLineOfSight();
 
 signals:
 

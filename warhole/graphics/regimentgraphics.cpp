@@ -57,6 +57,7 @@ void RegimentGraphics::initRegimentGraphics()
     hasImage = true;
     rot = false;
     firstRot = true;
+    showLineOfSight = false;
 
     setZValue(REGIMENT_Z_VALUE);
     
@@ -74,6 +75,8 @@ void RegimentGraphics::initRegimentGraphics()
     connect(actionChangeRegInfo, SIGNAL(triggered()), this, SLOT(changeRegimentInfoRequest()));
     actionShowStats = new QAction(tr("Afficher informations"), this);
     connect(actionShowStats, SIGNAL(triggered()), this, SLOT(showStats()));
+    actionShowLineOfSight = new QAction(tr("Afficher lignes de vue"), this);
+    connect(actionShowLineOfSight, SIGNAL(triggered()), this, SLOT(displayLineOfSight()));
     
     // Item will be enabled for drag and drop if owned only
     connect(this, SIGNAL(ownerChanged()), this, SLOT(updateOwnership()));
@@ -238,6 +241,8 @@ QPainterPath RegimentGraphics::shape() const
     {
         path.addRect(models.at(i)->boundingRect());
     }
+
+    // Add line of sight shape if it's shown
     
     return path;
 }
@@ -422,6 +427,11 @@ void RegimentGraphics::showStats()
         }
         scene()->addItem(infoRect);
     }
+}
+
+void RegimentGraphics::displayLineOfSight()
+{
+
 }
 
 void RegimentGraphics::closeInfoRect()
