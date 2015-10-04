@@ -61,7 +61,8 @@ SOURCES += main.cpp\
     graphics/dispersiongraphics.cpp \
     warholeinfodialog.cpp \
     components/enhancedgraphicsscene.cpp \
-    components/enhancegraphicsobject.cpp
+    components/enhancegraphicsobject.cpp \
+    graphics/lineofsightgraphics.cpp
 
 HEADERS  += mainwindow.h \
     modelwindow.h \
@@ -92,7 +93,8 @@ HEADERS  += mainwindow.h \
     graphics/dispersiongraphics.h \
     warholeinfodialog.h \
     components/enhancedgraphicsscene.h \
-    components/enhancegraphicsobject.h
+    components/enhancegraphicsobject.h \
+    graphics/lineofsightgraphics.h
 
 TRANSLATIONS = warhole_en.ts
 
