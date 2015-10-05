@@ -10,13 +10,14 @@
 #include "game/terrain/terrain.h"
 #include "distances.h"
 #include "components/enhancegraphicsobject.h"
+#include <QGraphicsRectItem>
 
 class TerrainGraphics : public EnhanceGraphicsObject
 {
     Q_OBJECT
 public:
-    explicit TerrainGraphics(QGraphicsItem *parent = 0);
-    TerrainGraphics(Terrain ter, QGraphicsItem *parent = 0);
+    explicit TerrainGraphics(bool *iv, QGraphicsItem *parent = 0);
+    TerrainGraphics(Terrain ter, bool *iv, QGraphicsItem *parent = 0);
     
     virtual QRectF boundingRect() const;
     virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
@@ -43,6 +44,9 @@ public:
 
     virtual void sendObjectMovedSignal();
 
+    bool *getInvertedView() const;
+    void setInvertedView(bool *value);
+
 protected:
 
 signals:
@@ -55,15 +59,19 @@ public slots:
     void lockTerrainRequest();
     void unlockTerrainRequest();
     void displayTerrainInfo();
+    void closeInfoRect();
 
 private:
     Terrain t;
     QString id;
 
+    QGraphicsRectItem* infoRect;
+
     bool rot;
     bool firstRot;
 
     bool lock;
+    bool* invertedView;
 
     QAction* actionRemoveTerrain;
     QAction* actionLockTerrain;

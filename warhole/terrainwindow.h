@@ -58,6 +58,9 @@ private:
     TerrainGraphics* terrainItem;
     EnhancedGraphicsView* view;
     QString currentSelectedPath;
+
+    // Bool mandatory to instanciate a terrain graphics
+    bool invertedView;
 };
 
 #endif // TERRAINWINDOW_H

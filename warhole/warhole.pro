@@ -62,7 +62,8 @@ SOURCES += main.cpp\
     warholeinfodialog.cpp \
     components/enhancedgraphicsscene.cpp \
     components/enhancegraphicsobject.cpp \
-    graphics/lineofsightgraphics.cpp
+    graphics/lineofsightgraphics.cpp \
+    terraininfodisplayform.cpp
 
 HEADERS  += mainwindow.h \
     modelwindow.h \
@@ -94,7 +95,8 @@ HEADERS  += mainwindow.h \
     warholeinfodialog.h \
     components/enhancedgraphicsscene.h \
     components/enhancegraphicsobject.h \
-    graphics/lineofsightgraphics.h
+    graphics/lineofsightgraphics.h \
+    terraininfodisplayform.h
 
 TRANSLATIONS = warhole_en.ts
 
@@ -113,7 +115,8 @@ FORMS += \
     statsdisplaywidget.ui \
     terrainwindow.ui \
     regimentinfodialog.ui \
-    warholeinfodialog.ui
+    warholeinfodialog.ui \
+    terraininfodisplayform.ui
 
 RESOURCES += \
     resources.qrc

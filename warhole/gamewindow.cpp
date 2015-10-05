@@ -733,7 +733,7 @@ void GameWindow::setGlobalInfo(QDataStream& stream)
     stream >> size;
     for(int i = 0; i < size; ++i)
     {
-        TerrainGraphics* t = new TerrainGraphics();
+        TerrainGraphics* t = new TerrainGraphics(&invertedView);
         t->serializeIn(stream);
         terrainMap[t->getId()] = t;
 
@@ -860,7 +860,7 @@ void GameWindow::placeTerrainRequest()
 
 void GameWindow::addNewTerrainToScene(QString id, Terrain t)
 {
-    TerrainGraphics* ter = new TerrainGraphics(t);
+    TerrainGraphics* ter = new TerrainGraphics(t, &invertedView);
     ter->setId(id);
 
     connect(ter, SIGNAL(removeTerrainRequest(QString)), &controller, SIGNAL(removeTerrainRequest(QString)));

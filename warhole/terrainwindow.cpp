@@ -29,6 +29,7 @@ TerrainWindow::TerrainWindow(QWidget *parent) :
 
     terrainItem = NULL;
     sceneRefresh = true;
+    invertedView = false;
 
     view = new EnhancedGraphicsView();
     view->setMinimumHeight(250);
@@ -150,7 +151,7 @@ void TerrainWindow::refreshScene()
         currentTerrain.setHeigth(ui->spinBox->value());
     }
     else currentTerrain.setResize(false);
-    terrainItem = new TerrainGraphics(currentTerrain);
+    terrainItem = new TerrainGraphics(currentTerrain, &invertedView);
     scene->addItem(terrainItem);
 }
 

@@ -1,6 +1,8 @@
 #include "terraingraphics.h"
+#include "terraininfodisplayform.h"
+#include <QGraphicsProxyWidget>
 
-TerrainGraphics::TerrainGraphics(QGraphicsItem *parent) :
+TerrainGraphics::TerrainGraphics(bool* iv, QGraphicsItem *parent) :
     EnhanceGraphicsObject(parent)
 {
     setFlag(ItemIsFocusable);
@@ -10,6 +12,7 @@ TerrainGraphics::TerrainGraphics(QGraphicsItem *parent) :
     rot = false;
     firstRot = true;
     lock = false;
+    invertedView = iv;
     setZValue(TERRAIN_Z_VALUE);
 
     actionRemoveTerrain = new QAction(tr("Retirer"), this);
@@ -22,7 +25,7 @@ TerrainGraphics::TerrainGraphics(QGraphicsItem *parent) :
     connect(actionUnlockTerrain, SIGNAL(triggered()), this, SLOT(unlockTerrainRequest()));
 }
 
-TerrainGraphics::TerrainGraphics(Terrain ter, QGraphicsItem *parent):
+TerrainGraphics::TerrainGraphics(Terrain ter, bool* iv, QGraphicsItem *parent):
     EnhanceGraphicsObject(parent)
 {
     t = ter;
@@ -35,6 +38,7 @@ TerrainGraphics::TerrainGraphics(Terrain ter, QGraphicsItem *parent):
     rot = false;
     firstRot = true;
     lock = false;
+    invertedView = iv;
     setZValue(TERRAIN_Z_VALUE);
 
     actionRemoveTerrain = new QAction(tr("Retirer"), this);
@@ -144,6 +148,49 @@ void TerrainGraphics::unlockTerrainRequest()
 
 void TerrainGraphics::displayTerrainInfo()
 {
+    TerrainInfoDisplayForm* s = new TerrainInfoDisplayForm(t);
+    QGraphicsProxyWidget* w = new QGraphicsProxyWidget();
+    w->setWidget(s);
+
+    infoRect = new QGraphicsRectItem(this->pos().x() + boundingRect().width(),
+                                     pos().y(),
+                                     s->width(),
+                                     s->height());
+    infoRect->setFlag(ItemIsMovable);
+    infoRect->setFlag(ItemIsSelectable);
+
+    w->setParentItem(infoRect);
+    w->setPos(infoRect->boundingRect().topLeft());
+    w->setOpacity(0.9);
+    infoRect->setZValue(REGIMENT_INFO_Z_VALUE);
+
+
+    connect(s,SIGNAL(destroyed()), this, SLOT(closeInfoRect()));
+
+    if(*invertedView)
+    {
+        // Display stats according to view side
+        infoRect->setTransformOriginPoint(pos());
+        infoRect->setRotation(180);
+    }
+    scene()->addItem(infoRect);
+}
+
+void TerrainGraphics::closeInfoRect()
+{
+    scene()->removeItem(infoRect);
+    delete infoRect;
+    infoRect = NULL;
+}
+
+bool *TerrainGraphics::getInvertedView() const
+{
+    return invertedView;
+}
+
+void TerrainGraphics::setInvertedView(bool *value)
+{
+    invertedView = value;
 }
 
 QDataStream& TerrainGraphics::serializeOut(QDataStream& out)
