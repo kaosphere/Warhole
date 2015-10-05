@@ -2,7 +2,9 @@
 #define LINEOFSIGHTGRAPHICS_H
 
 #include <QGraphicsItem>
-#include <QPoint>
+#include <QPointF>
+#include <QPainterPath>
+#include <QPainter>
 
 //////////////////////////////////////////////////////////////////////////////
 /// \brief The LineOfSightGraphics class
@@ -32,8 +34,8 @@
 ///  They are used to find the position of X1(x1,y1) and X2(x2,y2)
 ///  relatively to the origin O1 which is also the origin of the regiment.
 ///
-///  x1 = -l*cos(45)          x2 = l*cos(45) + xO2
-///  y1 = l*sin(45)           y2 = l*sin(45) + yO2
+///  x1 = -l*sin(45)          x2 = l*sin(45) + xO2
+///  y1 = -l*cos(45)           y2 = l*cos(45) + yO2
 ///
 //////////////////////////////////////////////////////////////////////////////
 
@@ -41,19 +43,28 @@
 class LineOfSightGraphics : public QGraphicsItem
 {
 public:
-    LineOfSightGraphics();
+    LineOfSightGraphics(QGraphicsItem* parent = 0);
     LineOfSightGraphics(int bw,
-                        QPoint origin1,
-                        QPoint origin2,
-                        int l);
+                        QPointF origin1,
+                        QPointF origin2,
+                        int l,
+                        QGraphicsItem *parent = 0);
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     QRectF boundingRect() const;
+    QPainterPath shape() const;
+
+    void computeXPoints();
 
 private:
     int baseWidth;
-    QPoint O1;
-    QPoint O2;
+    QPointF O1;
+    QPointF O2;
     int length;
+
+    QPointF X1;
+    QPointF X2;
+
+    qreal radius;
 };
 
 #endif // LINEOFSIGHTGRAPHICS_H

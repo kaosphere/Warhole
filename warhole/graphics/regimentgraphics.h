@@ -15,6 +15,7 @@
 #include "statsdisplayform.h"
 #include "regimentinfodialog.h"
 #include "components/enhancegraphicsobject.h"
+#include "lineofsightgraphics.h"
 
 class RegimentGraphics : public EnhanceGraphicsObject
 {
@@ -107,6 +108,8 @@ private:
 
     QList<ModelGraphics*> models;
 
+    LineOfSightGraphics* los;
+
     QPen* childrenPen;
 
     QBrush childrenBrush;
@@ -120,6 +123,7 @@ private:
     QAction* actionChangeRegInfo;
     QAction* actionShowStats;
     QAction* actionShowLineOfSight;
+    QAction* actionHideLineOfSight;
 
     bool showLineOfSight;
 
@@ -131,6 +135,7 @@ private slots:
     void updateRegiment();
     void showStats();
     void displayLineOfSight();
+    void hideLineOfSight();
 
 signals:
 

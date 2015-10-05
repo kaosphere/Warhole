@@ -77,6 +77,8 @@ void RegimentGraphics::initRegimentGraphics()
     connect(actionShowStats, SIGNAL(triggered()), this, SLOT(showStats()));
     actionShowLineOfSight = new QAction(tr("Afficher lignes de vue"), this);
     connect(actionShowLineOfSight, SIGNAL(triggered()), this, SLOT(displayLineOfSight()));
+    actionHideLineOfSight = new QAction(tr("Cacher la ligne de vue"), this);
+    connect(actionHideLineOfSight, SIGNAL(triggered()), this, SLOT(hideLineOfSight()));
     
     // Item will be enabled for drag and drop if owned only
     connect(this, SIGNAL(ownerChanged()), this, SLOT(updateOwnership()));
@@ -387,6 +389,12 @@ void RegimentGraphics::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
         menu->addAction(actionAddModels);
         menu->addAction(actionChangeRegInfo);
     }
+
+    if(showLineOfSight)
+        menu->addAction(actionHideLineOfSight);
+    else
+        menu->addAction(actionShowLineOfSight);
+
     menu->addAction(actionShowStats);
     menu->popup(event->screenPos());
 }
@@ -431,7 +439,22 @@ void RegimentGraphics::showStats()
 
 void RegimentGraphics::displayLineOfSight()
 {
+    showLineOfSight = true;
 
+    // 12 inch LOS
+    los = new LineOfSightGraphics(regimentWidth*regiment.getGroupsConst().first().getModel()->getSquareBaseW() * ONE_MILLIMETER,
+                                  boundingRect().topLeft(),
+                                  boundingRect().topRight(),
+                                  12 * ONE_INCH,
+                                  this);
+}
+
+void RegimentGraphics::hideLineOfSight()
+{
+    showLineOfSight = false;
+
+    delete los;
+    los = NULL;
 }
 
 void RegimentGraphics::closeInfoRect()
