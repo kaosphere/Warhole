@@ -439,19 +439,31 @@ void RegimentGraphics::showStats()
 
 void RegimentGraphics::displayLineOfSight()
 {
-    showLineOfSight = true;
+    int distance = 6;
 
-    // 12 inch LOS
-    los = new LineOfSightGraphics(regimentWidth*regiment.getGroupsConst().first().getModel()->getSquareBaseW() * ONE_MILLIMETER,
-                                  boundingRect().topLeft(),
-                                  boundingRect().topRight(),
-                                  12 * ONE_INCH,
-                                  this);
+    GetIntDialog d(tr("Distance de la ligne de vue?"));
+    d.setModal(true);
+    d.setNb(&distance);
+    if(d.exec() && distance > 0)
+    {
+        showLineOfSight = true;
+
+        los = new LineOfSightGraphics(regimentWidth*regiment.getGroupsConst().first().getModel()->getSquareBaseW() * ONE_MILLIMETER,
+                                      boundingRect().topLeft(),
+                                      boundingRect().topRight(),
+                                      distance * ONE_INCH,
+                                      this);
+    }
 }
 
 void RegimentGraphics::hideLineOfSight()
 {
     showLineOfSight = false;
+
+    // Remove object from the parent
+    los->setParentItem(NULL);
+    // Remove object from the scene
+    scene()->removeItem(los);
 
     delete los;
     los = NULL;
