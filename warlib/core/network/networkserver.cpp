@@ -78,30 +78,32 @@ void NetworkServer::receiveData()
     QString name;
     int dest;
     QTcpSocket* s;
-    // 1 : on reçoit un paquet (ou un sous-paquet) d'un des clients
 
-    // On détermine quel client envoie le message (recherche du QTcpSocket du client)
+    // Receive packet or part from a client
+    // We determine which client sends the message
     Client *c = qobject_cast<Client *>(sender());
-    if (c == 0) // Si par hasard on n'a pas trouvé le client à l'origine du signal, on arrête la méthode
+    if (c == 0) // If no client was found, stop
         return;
     s = c->getSocket();
 
-    // Si tout va bien, on continue : on récupère le message
+    // Client found, get message
     QDataStream in(s);
 
     do
         {
-
-        if (c->getMessageSize() == 0) // Si on ne connaît pas encore la taille du message, on essaie de la récupérer
+        // Try to get message size
+        if (c->getMessageSize() == 0)
         {
-            if (s->bytesAvailable() < (int)sizeof(quint32)) // On n'a pas reçu la taille du message en entier
+            // The size hasn't been received yet
+            if (s->bytesAvailable() < (int)sizeof(quint32))
                 return;
 
-            in >> tailleMsg; // Si on a reçu la taille du message en entier, on la récupère
+            // Get message size
+            in >> tailleMsg;
             c->setMessageSize(tailleMsg);
         }
 
-        // Si on connaît la taille du message, on vérifie si on a reçu le message en entier
+        // We know the size, so check if everything has been received or not
         if (s->bytesAvailable() < c->getMessageSize())
         {
             QLog_Info(LOG_ID_INFO, "receiveData(): received network message is incomplete.");
@@ -112,7 +114,7 @@ void NetworkServer::receiveData()
         }
 
 
-        // Si ces lignes s'exécutent, c'est qu'on a reçu tout le message : on peut le récupérer !
+        // Coming here, the whole message has been received, so stream it.
         Message m;
         QByteArray d;
         in >> name;
