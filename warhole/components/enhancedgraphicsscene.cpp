@@ -90,15 +90,11 @@ void EnhancedGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent * mouseEvent
 
                 if(mouseEvent->scenePos().x() < center)
                 {
-                    qDebug() << "left";
-                    qDebug() << "Mouse x: " << mouseEvent->scenePos().x() << ", group center : " << center;
                     originPoint = findRotationPivot(selectionList, false);
                     previousRot = 0;
                 }
                 else
                 {
-                    qDebug() << "right";
-                    qDebug() << "Mouse x: " << mouseEvent->scenePos().x() << ", group center : " << center;
                     originPoint = findRotationPivot(selectionList, true);
                     previousRot = 0;
                 }
@@ -111,17 +107,9 @@ void EnhancedGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent * mouseEvent
                 firstRot = false;
             }
 
-            qDebug() << "Origin point :  " << originPoint;
-            qDebug() << "Mouse point :  " << mouseEvent->scenePos();
-
             qreal a1 = mouseEvent->scenePos().x() - originPoint.x();
             qreal a2 = mouseEvent->scenePos().y() - originPoint.y();
             qreal angle = qAtan2(a2, a1);
-
-            qDebug() << "Previous angle : " << previousAngle;
-            qDebug() << "a1 : " << a1 << " ; a2 : " << a2;
-            qDebug() << "Angle : " << angle;
-            qDebug() << "Rotation : " << angle - previousAngle;
 
             QTransform trans;
             trans.translate(originPoint.x(), originPoint.y())
@@ -163,7 +151,6 @@ void EnhancedGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
         if((pItem->flags() & QGraphicsItem::ItemIsMovable) == 0)
         {
             rubberBandOn = true;
-            qDebug() << "rubberband ON";
         }
     }
 
@@ -185,7 +172,6 @@ void EnhancedGraphicsScene::keyPressEvent(QKeyEvent *event)
 {
     if(event->key() == Qt::Key_R && !event->isAutoRepeat())
     {
-        qDebug() << "début de rotation";
         rot = true;
     }
     QGraphicsScene::keyPressEvent(event);
@@ -195,7 +181,6 @@ void EnhancedGraphicsScene::keyReleaseEvent(QKeyEvent *event)
 {
     if(event->key() == Qt::Key_R && !event->isAutoRepeat())
     {
-        qDebug() << "fin de rotation";
         rot = false;
         firstRot = true;
     }
