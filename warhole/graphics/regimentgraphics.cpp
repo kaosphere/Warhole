@@ -430,7 +430,7 @@ void RegimentGraphics::showStats()
         if(*invertedView)
         {
             // Display stats according to view side
-            infoRect->setTransformOriginPoint(pos());
+            infoRect->setTransformOriginPoint(0,0);
             infoRect->setRotation(180);
         }
         scene()->addItem(infoRect);
