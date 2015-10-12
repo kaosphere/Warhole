@@ -32,7 +32,7 @@ void PlayerAdministrator::authorizePlayer(const Player &p)
     QLog_Info(LOG_ID_INFO, "authorizePlayer() : Authorizing player " + p.getName());
     if(playerList.contains(p))
     {
-        // If player isn't connected, he's coming back
+        // If player is known but isn't connected, he's coming back
         bool connected = playerList.at(playerList.indexOf(p)).getConnected();
         if(!connected)
         {
