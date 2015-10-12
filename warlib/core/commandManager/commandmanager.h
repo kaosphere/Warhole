@@ -28,6 +28,8 @@ enum CommandType{
     REGIMENT_REMOVE,
     REGIMENT_ADD_MODELS,
     REGIMENT_CHANGE_INFO,
+    REGIMENT_SHOW_LOS,
+    REGIMENT_HIDE_LOS,
     NEW_TERRAIN,
     TERRAIN_MOVE,
     TERRAIN_DELETE,
@@ -65,6 +67,8 @@ signals:
     void changeRegimentWidth(QString, int);
     void addModels(QString, int);
     void changeRegInfo(QString, RegimentAbstract);
+    void showLineOfSight(QString);
+    void hideLineOfSight(QString);
     void serverInfoRequested(QString);
     void loadGlobalInfoUpdate(QByteArray);
     void newTerrain(QString, Terrain);
@@ -102,6 +106,8 @@ public slots:
     void enqueueChangeWidthMessage(QString i, int w);
     void enqueueAddModelMessage(QString i, int nb);
     void enqueueChangeRegInfoMessage(QString i, RegimentAbstract r);
+    void enqueueShowLineOfSightMessage(QString i);
+    void enqueueHideLineOfSightMessage(QString i);
     void enQueueNewTerrainMessage(Terrain t);
     void enQueueRemoveTerrainMessage(QString id);
     void enQueueLockTerrainMessage(QString id, bool l);
@@ -148,6 +154,8 @@ private:
     void handleChangeWidthRegimentMessage(QDataStream &data);
     void handleAddModelsMessage(QDataStream &data);
     void handleChangeRegInfoMessage(QDataStream &data);
+    void handleShowLineOfSightMessage(QDataStream &data);
+    void handleHideLineOfSightMessage(QDataStream &data);
     void handleNewTerrainMessage(QDataStream &data);
     void handleRemoveTerrainMessage(QDataStream& data);
     void handleLockTerrainMessage(QDataStream& data);

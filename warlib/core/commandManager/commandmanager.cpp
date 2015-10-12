@@ -71,8 +71,6 @@ void CommandManager::enQueueChatMessage(QString message)
 
     m.setData(data);
 
-    qDebug() << "Destination du chat : " + QString::number((int)(m.getDest()));
-
     addMessageToOutQueue(m);
 }
 
@@ -585,6 +583,28 @@ void CommandManager::handleChangeWidthRegimentMessage(QDataStream &data)
     emit changeRegimentWidth(id,w);
 }
 
+void CommandManager::handleShowLineOfSightMessage(QDataStream &data)
+{
+    QString id;
+
+    data >> id;
+
+    QLog_Info(LOG_ID_INFO, "handleShowLineOfSightMessage() : show LOS message to regiment with ID " + id);
+
+    emit showLineOfSight(id);
+}
+
+void CommandManager::handleHideLineOfSightMessage(QDataStream &data)
+{
+    QString id;
+
+    data >> id;
+
+    QLog_Info(LOG_ID_INFO, "handleHideLineOfSightMessage() : show LOS message to regiment with ID " + id);
+
+    emit hideLineOfSight(id);
+}
+
 void CommandManager::handleAddModelsMessage(QDataStream &data)
 {
     QString id;
@@ -606,11 +626,10 @@ void CommandManager::handleChangeRegInfoMessage(QDataStream &data)
     data >> id;
     data >> r;
 
-    QLog_Info(LOG_ID_INFO, "handleAddModelsMessage() : change reg info, regiment with ID " + id);
+    QLog_Info(LOG_ID_INFO, "handleChangeRegInfoMessage() : change reg info, regiment with ID " + id);
 
     emit changeRegInfo(id,r);
 }
-
 
 void CommandManager::enqueueAddModelMessage(QString i, int nb)
 {
@@ -648,7 +667,45 @@ void CommandManager::enqueueChangeRegInfoMessage(QString i, RegimentAbstract r)
 
     m.setData(data);
 
-    QLog_Info(LOG_ID_INFO, "enqueueChangeRegInfoMessage() : change reg indo message with ID " + i);
+    QLog_Info(LOG_ID_INFO, "enqueueChangeRegInfoMessage() : change reg info message with ID " + i);
+
+    addMessageToOutQueue(m);
+}
+
+void CommandManager::enqueueShowLineOfSightMessage(QString i)
+{
+    Message m;
+    m.setDest(ALL);
+    m.setMessageSender(game->getMe());
+
+    QByteArray data;
+    QDataStream s(&data, QIODevice::WriteOnly);
+
+    s << REGIMENT_SHOW_LOS;
+    s << i;
+
+    m.setData(data);
+
+    QLog_Info(LOG_ID_INFO, "enqueueShowLineOfSightMessage() : show LOS message with ID " + i);
+
+    addMessageToOutQueue(m);
+}
+
+void CommandManager::enqueueHideLineOfSightMessage(QString i)
+{
+    Message m;
+    m.setDest(ALL);
+    m.setMessageSender(game->getMe());
+
+    QByteArray data;
+    QDataStream s(&data, QIODevice::WriteOnly);
+
+    s << REGIMENT_HIDE_LOS;
+    s << i;
+
+    m.setData(data);
+
+    QLog_Info(LOG_ID_INFO, "enqueueShowLineOfSightMessage() : hide LOS message with ID " + i);
 
     addMessageToOutQueue(m);
 }
@@ -1263,6 +1320,16 @@ void CommandManager::processIncomingMessage()
         case REGIMENT_CHANGE_INFO:
             QLog_Info(LOG_ID_INFO, "processIncomingMessage() :Regiment info change message received.");
             handleChangeRegInfoMessage(stream);
+            break;
+
+        case REGIMENT_SHOW_LOS:
+            QLog_Info(LOG_ID_INFO, "processIncomingMessage() : Show LOS message received.");
+            handleShowLineOfSightMessage(stream);
+            break;
+
+        case REGIMENT_HIDE_LOS:
+            QLog_Info(LOG_ID_INFO, "processIncomingMessage() : Hide LOS message received.");
+            handleHideLineOfSightMessage(stream);
             break;
 
         case NEW_TERRAIN:

@@ -45,11 +45,15 @@ GameController::GameController(QObject *parent) :
     connect(this, SIGNAL(changeWidthRequest(QString, int)), comManager, SLOT(enqueueChangeWidthMessage(QString, int)));
     connect(this, SIGNAL(addModelToRegRequest(QString,int)), comManager, SLOT(enqueueAddModelMessage(QString, int)));
     connect(this, SIGNAL(changeRegInfoRequest(QString,RegimentAbstract)), comManager, SLOT(enqueueChangeRegInfoMessage(QString, RegimentAbstract)));
+    connect(this, SIGNAL(showLineOfSightRequest(QString)), comManager, SLOT(enqueueShowLineOfSightMessage(QString)));
+    connect(this, SIGNAL(hideLineOfSightRequest(QString)), comManager, SLOT(enqueueHideLineOfSightMessage(QString)));
     connect(comManager, SIGNAL(removeRegiment(QString)), this, SIGNAL(removeRegiment(QString)));
     connect(comManager, SIGNAL(removeDeads(QString,int)), this, SIGNAL(removeDeads(QString, int)));
     connect(comManager, SIGNAL(changeRegimentWidth(QString,int)), this, SIGNAL(changeRegimentWidth(QString, int)));
     connect(comManager, SIGNAL(addModels(QString,int)), this, SIGNAL(addModels(QString, int)));
     connect(comManager, SIGNAL(changeRegInfo(QString,RegimentAbstract)), this, SIGNAL(changeRegInfo(QString, RegimentAbstract)));
+    connect(comManager, SIGNAL(showLineOfSight(QString)), this, SIGNAL(showLineOfSight(QString)));
+    connect(comManager, SIGNAL(hideLineOfSight(QString)), this, SIGNAL(hideLineOfSight(QString)));
 
     connect(comManager, SIGNAL(serverInfoRequested(QString)), this, SIGNAL(serverInfoRequested(QString)));
     connect(this, SIGNAL(sendGlobalInfoUpdate(QString, QByteArray)), comManager, SLOT(enQueueServerInfo(QString, QByteArray)));

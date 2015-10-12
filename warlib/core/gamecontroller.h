@@ -57,6 +57,10 @@ signals:
     void changeRegInfoRequest(QString, RegimentAbstract);
     void addModels(QString, int);
     void changeRegInfo(QString, RegimentAbstract);
+    void showLineOfSightRequest(QString);
+    void showLineOfSight(QString);
+    void hideLineOfSightRequest(QString);
+    void hideLineOfSight(QString);
     void serverInfoRequested(QString);
     void sendGlobalInfoUpdate(QString, QByteArray);
     void loadGlobalInfoUpdate(QByteArray);
