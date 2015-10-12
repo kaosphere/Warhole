@@ -62,6 +62,9 @@ public:
 
     virtual void sendObjectMovedSignal();
 
+    void displayLineOfSight();
+    void hideLineOfSight();
+
 protected:
     virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
 
@@ -73,6 +76,10 @@ private slots:
     void addModelRequest();
     void changeRegimentInfoRequest();
     void closeInfoRect();
+    void updateRegiment();
+    void showStats();
+    void showLineOfSightRequest();
+    void hideLineOfSightRequest();
 
 private:
     void initRegimentGraphics();
@@ -131,12 +138,6 @@ private:
     
     bool* invertedView;
 
-private slots:
-    void updateRegiment();
-    void showStats();
-    void displayLineOfSight();
-    void hideLineOfSight();
-
 signals:
 
     void removeRegimentRequest(QString);
@@ -167,6 +168,9 @@ signals:
     * But when a new regiment is set, it means that the display has to be updated.
     */
     void regimentUpdated();
+
+    void lineOfSightRequested(QString);
+    void lineOfSightHideRequest(QString);
 
 };
 

@@ -2,6 +2,7 @@
 #include <QtMath>
 #include <QBrush>
 #include <QPen>
+#include "distances.h"
 
 LineOfSightGraphics::LineOfSightGraphics(QGraphicsItem *parent) :
     QGraphicsItem(parent)
@@ -14,6 +15,8 @@ LineOfSightGraphics::LineOfSightGraphics(int bw,
                                          QGraphicsItem* parent) :
     QGraphicsItem(parent)
 {
+    setZValue(REGIMENT_LOS_Z_VALUE);
+
     baseWidth = bw;
     O1 = origin1;
     O2 = origin2;

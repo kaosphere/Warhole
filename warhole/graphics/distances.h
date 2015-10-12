@@ -9,9 +9,12 @@
 #define ONE_FOOT TWELVE_INCHES
 #define TWO_FEET ONE_FOOT*2
 
+#define LINE_OF_SIGHT_DISTANCE  40
+
 #define TERRAIN_Z_VALUE         1.0
 #define REGIMENT_Z_VALUE        2.0
 #define TEXT_Z_VALUE            3.0
+#define REGIMENT_LOS_Z_VALUE    4.0
 #define TEMPLATE_Z_VALUE        10.0
 #define RULER_Z_VALUE           11.0
 #define SCATTER_Z_VALUE         12.0

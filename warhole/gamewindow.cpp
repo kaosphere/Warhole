@@ -136,6 +136,8 @@ void GameWindow::initGameWindow()
     connect(&controller, SIGNAL(changeRegimentWidth(QString,int)), this, SLOT(changeRegimentWidth(QString, int)));
     connect(&controller, SIGNAL(addModels(QString,int)), this, SLOT(addModelToRegiment(QString, int)));
     connect(&controller, SIGNAL(changeRegInfo(QString,RegimentAbstract)), this, SLOT(changeRegInfo(QString, RegimentAbstract)));
+    connect(&controller, SIGNAL(showLineOfSight(QString)), this, SLOT(showRegimentLineOfSight(QString)));
+    connect(&controller, SIGNAL(hideLineOfSight(QString)), this, SLOT(hideRegimentLineOfSight(QString)));
 
     connect(&controller, SIGNAL(serverInfoRequested(QString)), this, SLOT(packGameDataForGlobalUpdate(QString)));
     connect(this, SIGNAL(sendGlobalInfoUpdate(QString,QByteArray)), &controller, SIGNAL(sendGlobalInfoUpdate(QString, QByteArray)));
@@ -258,6 +260,8 @@ void GameWindow::addRegimentToGameScene(QString id, QString owner, RegimentAbstr
         connect(rg, SIGNAL(changeWidthRequest(QString, int)), &controller, SIGNAL(changeWidthRequest(QString, int)));
         connect(rg, SIGNAL(addModelRequest(QString,int)), &controller, SIGNAL(addModelToRegRequest(QString, int)));
         connect(rg, SIGNAL(changeRegimentInfoRequest(QString,RegimentAbstract)), &controller, SIGNAL(changeRegInfoRequest(QString, RegimentAbstract)));
+        connect(rg, SIGNAL(lineOfSightRequested(QString)), &controller, SIGNAL(showLineOfSightRequest(QString)));
+        connect(rg, SIGNAL(lineOfSightHideRequest(QString)), &controller, SIGNAL(hideLineOfSightRequest(QString)));
 
         scene.addItem(rg);
         scene.clearSelection();
@@ -418,6 +422,34 @@ void GameWindow::changeRegInfo(QString id, RegimentAbstract r)
     else
     {
         QLog_Error(LOG_ID_ERR, "changeRegInfo() : regiment with ID " + id + " not found is map.");
+    }
+}
+
+void GameWindow::showRegimentLineOfSight(QString id)
+{
+    if(regimentMap.contains(id))
+    {
+        QLog_Info(LOG_ID_INFO, "showRegimentLineOfSight() : regiment with ID " + id +
+                  " found, now displaying line of sight");
+        regimentMap[id]->displayLineOfSight();
+    }
+    else
+    {
+        QLog_Error(LOG_ID_ERR, "showRegimentLineOfSight() : regiment with ID " + id + " not found is map.");
+    }
+}
+
+void GameWindow::hideRegimentLineOfSight(QString id)
+{
+    if(regimentMap.contains(id))
+    {
+        QLog_Info(LOG_ID_INFO, "hideRegimentLineOfSight() : regiment with ID " + id +
+                  " found, now hiding line of sight");
+        regimentMap[id]->hideLineOfSight();
+    }
+    else
+    {
+        QLog_Error(LOG_ID_ERR, "hideRegimentLineOfSight() : regiment with ID " + id + " not found is map.");
     }
 }
 

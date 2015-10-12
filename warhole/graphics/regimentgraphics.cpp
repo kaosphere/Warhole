@@ -76,9 +76,9 @@ void RegimentGraphics::initRegimentGraphics()
     actionShowStats = new QAction(tr("Afficher informations"), this);
     connect(actionShowStats, SIGNAL(triggered()), this, SLOT(showStats()));
     actionShowLineOfSight = new QAction(tr("Afficher lignes de vue"), this);
-    connect(actionShowLineOfSight, SIGNAL(triggered()), this, SLOT(displayLineOfSight()));
+    connect(actionShowLineOfSight, SIGNAL(triggered()), this, SLOT(showLineOfSightRequest()));
     actionHideLineOfSight = new QAction(tr("Cacher la ligne de vue"), this);
-    connect(actionHideLineOfSight, SIGNAL(triggered()), this, SLOT(hideLineOfSight()));
+    connect(actionHideLineOfSight, SIGNAL(triggered()), this, SLOT(hideLineOfSightRequest()));
     
     // Item will be enabled for drag and drop if owned only
     connect(this, SIGNAL(ownerChanged()), this, SLOT(updateOwnership()));
@@ -439,21 +439,15 @@ void RegimentGraphics::showStats()
 
 void RegimentGraphics::displayLineOfSight()
 {
-    int distance = 6;
+    int distance = LINE_OF_SIGHT_DISTANCE;
 
-    GetIntDialog d(tr("Distance de la ligne de vue?"));
-    d.setModal(true);
-    d.setNb(&distance);
-    if(d.exec() && distance > 0)
-    {
-        showLineOfSight = true;
+    showLineOfSight = true;
 
-        los = new LineOfSightGraphics(regimentWidth*regiment.getGroupsConst().first().getModel()->getSquareBaseW() * ONE_MILLIMETER,
-                                      boundingRect().topLeft(),
-                                      boundingRect().topRight(),
-                                      distance * ONE_INCH,
-                                      this);
-    }
+    los = new LineOfSightGraphics(regimentWidth*regiment.getGroupsConst().first().getModel()->getSquareBaseW() * ONE_MILLIMETER,
+                                  boundingRect().topLeft(),
+                                  boundingRect().topRight(),
+                                  distance * ONE_INCH,
+                                  this);
 }
 
 void RegimentGraphics::hideLineOfSight()
@@ -467,6 +461,16 @@ void RegimentGraphics::hideLineOfSight()
 
     delete los;
     los = NULL;
+}
+
+void RegimentGraphics::showLineOfSightRequest()
+{
+    emit lineOfSightRequested(regimentID);
+}
+
+void RegimentGraphics::hideLineOfSightRequest()
+{
+    emit lineOfSightHideRequest(regimentID);
 }
 
 void RegimentGraphics::closeInfoRect()

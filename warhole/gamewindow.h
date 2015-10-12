@@ -94,6 +94,8 @@ public slots:
     void changeRegimentWidth(QString id, int w);
     void addModelToRegiment(QString id, int nb);
     void changeRegInfo(QString id, RegimentAbstract r);
+    void showRegimentLineOfSight(QString id);
+    void hideRegimentLineOfSight(QString id);
     void packGameDataForGlobalUpdate(QString sender);
     void loadGlobalInfoUpdate(QByteArray info);
     void placeTerrainRequest();
