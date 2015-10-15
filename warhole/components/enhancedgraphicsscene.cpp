@@ -141,7 +141,9 @@ void EnhancedGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent * mouseEvent
 
 void EnhancedGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    clicked = true;
+    if(event->button() == Qt::LeftButton)
+        clicked = true;
+
     QPointF mousePosition = event->scenePos();
     QGraphicsItem* pItem = itemAt(mousePosition.x(), mousePosition.y(), QTransform());
 
