@@ -390,10 +390,14 @@ void RegimentGraphics::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
         menu->addAction(actionChangeRegInfo);
     }
 
-    if(showLineOfSight)
-        menu->addAction(actionHideLineOfSight);
-    else
-        menu->addAction(actionShowLineOfSight);
+    // Display line of sight only if regiment isn't skirmishers
+    if(!regiment.getSkirmishers())
+    {
+        if(showLineOfSight)
+            menu->addAction(actionHideLineOfSight);
+        else
+            menu->addAction(actionShowLineOfSight);
+    }
 
     menu->addAction(actionShowStats);
     menu->popup(event->screenPos());
@@ -448,19 +452,24 @@ void RegimentGraphics::displayLineOfSight()
                                   boundingRect().topRight(),
                                   distance * ONE_INCH,
                                   this);
+    prepareGeometryChange();
 }
 
 void RegimentGraphics::hideLineOfSight()
 {
     showLineOfSight = false;
 
-    // Remove object from the parent
-    los->setParentItem(NULL);
-    // Remove object from the scene
-    scene()->removeItem(los);
+    if(los)
+    {
+        // Remove object from the parent
+        los->setParentItem(NULL);
+        // Remove object from the scene
+        scene()->removeItem(los);
 
-    delete los;
-    los = NULL;
+        delete los;
+        los = NULL;
+    }
+    prepareGeometryChange();
 }
 
 void RegimentGraphics::showLineOfSightRequest()
@@ -489,7 +498,14 @@ RegimentAbstract RegimentGraphics::getRegiment() const
 void RegimentGraphics::setRegiment(const RegimentAbstract &value)
 {
     regiment = value;
+
     updateChildrenPositions();
+
+    // If regiment have become skirmishers and had their line of sight displayed, destroy it
+    if(regiment.getSkirmishers() && showLineOfSight)
+    {
+        emit lineOfSightHideRequest(regimentID);
+    }
 }
 
 bool RegimentGraphics::getIsOwnedByMe() const
