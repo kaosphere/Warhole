@@ -194,6 +194,9 @@ void RegimentGraphics::addModels(int nb)
     // Add the number to the regiment
     regiment.getGroups().first().setNb(regiment.getGroups().first().getNb() + nb);
     prepareGeometryChange();
+
+    // refresh line of sight in case it is currently shown
+    if(showLineOfSight) updateLineOfSight();
 }
 
 void RegimentGraphics::updateChildrenBrushes()
@@ -472,6 +475,14 @@ void RegimentGraphics::hideLineOfSight()
     prepareGeometryChange();
 }
 
+void RegimentGraphics::updateLineOfSight()
+{
+    // Quickest way to update line of sight, hide and show again
+    emit lineOfSightHideRequest(regimentID);
+
+    emit lineOfSightRequested(regimentID);
+}
+
 void RegimentGraphics::showLineOfSightRequest()
 {
     emit lineOfSightRequested(regimentID);
@@ -533,6 +544,13 @@ void RegimentGraphics::removeDeads(int nb)
         scene()->removeItem(m);
         delete m;
     }
+
+    // If the regiment is narrower than the width after removing the deads
+    // change the width of the regiment
+    if(models.size() < regimentWidth) regimentWidth = models.size();
+
+    // refresh line of sight in case it is currently shown
+    if(showLineOfSight) updateLineOfSight();
 }
 
 QString RegimentGraphics::getOwner() const
@@ -561,6 +579,9 @@ void RegimentGraphics::setRegimentWidth(int value)
         regimentWidth = value;
     }
     updateChildrenPositions();
+
+    // refresh line of sight in case it is currently shown
+    if(showLineOfSight) updateLineOfSight();
 }
 
 QDataStream& RegimentGraphics::serializeOut(QDataStream& out)

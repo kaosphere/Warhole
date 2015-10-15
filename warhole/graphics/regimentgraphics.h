@@ -88,6 +88,8 @@ private:
     void paintClassicRegiment(QPainter *painter);
     void paintSkirmishRegiment(QPainter *painter);
 
+    void updateLineOfSight();
+
     static const QString LOG_ID_TRACE;
     static const QString LOG_ID_INFO;
     static const QString LOG_ID_WARN;
