@@ -1,3 +1,4 @@
+
 #include "gameconfiguratordialog.h"
 #include "ui_gameconfiguratordialog.h"
 

@@ -80,6 +80,7 @@ public slots:
     void add12InchesRuler();
     void add18InchesRuler();
     void add24InchesRuler();
+    void selectTerrainType();
     void printSpecialMessage(QString state);
     void addRulerToScene(QString id, int l);
     void moveRuler(QString id, QPointF p, QTransform matrix, qreal pr);

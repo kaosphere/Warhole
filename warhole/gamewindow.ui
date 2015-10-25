@@ -22,7 +22,7 @@
      <x>0</x>
      <y>0</y>
      <width>1025</width>
-     <height>21</height>
+     <height>27</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFichier">
@@ -41,6 +41,8 @@
     </property>
     <addaction name="actionHost_Game"/>
     <addaction name="actionConnect_to_a_game_2"/>
+    <addaction name="separator"/>
+    <addaction name="actionS_lectionner_le_type_de_terrain"/>
    </widget>
    <widget class="QMenu" name="menuFen_tre">
     <property name="title">
@@ -298,6 +300,11 @@
   <action name="actionA_propos">
    <property name="text">
     <string>A propos...</string>
+   </property>
+  </action>
+  <action name="actionS_lectionner_le_type_de_terrain">
+   <property name="text">
+    <string>Sélectionner le type de terrain</string>
    </property>
   </action>
  </widget>

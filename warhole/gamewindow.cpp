@@ -3,6 +3,7 @@
 
 #include "version.h"
 #include "warholeinfodialog.h"
+#include "backgroundselectiondialog.h"
 
 const QString GameWindow::LOG_ID_INFO = "GameWindow_info";
 const QString GameWindow::LOG_ID_TRACE = "GameWindow_trace";
@@ -113,6 +114,8 @@ void GameWindow::initGameWindow()
 
     connect(ui->actionPivoter_la_vue, SIGNAL(triggered()), this, SLOT(rotateView()));
     invertedView = false;
+
+    connect(ui->actionS_lectionner_le_type_de_terrain, SIGNAL(triggered()), this, SLOT(selectTerrainType()));
 
     actionDeploy = new QAction(tr("Déployer"), this);
     connect(actionDeploy, SIGNAL(triggered()),this,SLOT(deployRegiment()));
@@ -291,6 +294,20 @@ void GameWindow::add18InchesRuler()
 void GameWindow::add24InchesRuler()
 {
     emit requestNewRuler(24);
+}
+
+void GameWindow::selectTerrainType()
+{
+    backGroundSelectionDialog* w = new backGroundSelectionDialog(this);
+
+    int c;
+
+    w->setChoice(&c);
+
+    if(w->exec())
+    {
+        qDebug() << "Selected background : " << c;
+    }
 }
 
 void GameWindow::addRulerToScene(QString id, int l)
