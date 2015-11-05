@@ -1,0 +1,7 @@
+#ifndef BACKGROUNDTYPES_H
+#define BACKGROUNDTYPES_H
+
+enum BackGroundTypes {GRASS, DIRT, SAND, SNOW, ROCK};
+
+#endif // BACKGROUNDTYPES_H
+

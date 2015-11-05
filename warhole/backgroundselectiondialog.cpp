@@ -17,11 +17,11 @@ backGroundSelectionDialog::backGroundSelectionDialog(QWidget *parent) :
     ui->listView->setIconSize(QSize(64,64));
     ui->listView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
-    QStandardItem* grass = new QStandardItem(QIcon(":/tile/ressources/tiles/grass.jpg"),tr("Herbe"));
-    QStandardItem* dirt = new QStandardItem(QIcon(":/tile/ressources/tiles/dirt.png"),tr("Terre"));
+    QStandardItem* grass = new QStandardItem(QIcon(":/tile/ressources/tiles/grass.png"),tr("Herbe"));
+    QStandardItem* dirt = new QStandardItem(QIcon(":/tile/ressources/tiles/dirt.jpg"),tr("Terre"));
     QStandardItem* sand = new QStandardItem(QIcon(":/tile/ressources/tiles/sand.jpg"),tr("Sable"));
     QStandardItem* snow = new QStandardItem(QIcon(":/tile/ressources/tiles/snow.jpg"),tr("Neige"));
-    QStandardItem* rock = new QStandardItem(QIcon(":/tile/ressources/tiles/rock.png"),tr("Roche"));
+    QStandardItem* rock = new QStandardItem(QIcon(":/tile/ressources/tiles/rock.jpg"),tr("Roche"));
 
     model->appendRow(grass);
     model->appendRow(dirt);

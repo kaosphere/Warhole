@@ -37,6 +37,7 @@
 #include "graphics/textgraphics.h"
 #include "graphics/dispersiongraphics.h"
 #include "components/enhancedgraphicsscene.h"
+#include "graphics/backgroundtypes.h"
 
 
 namespace Ui {
@@ -114,6 +115,7 @@ public slots:
     void requestNewScatter();
     void moveScatter(QString i, QPointF p);
     void removeScatter(QString i);
+    void changeBackground(int b);
 
 private slots:
 
@@ -130,6 +132,7 @@ private slots:
     void on_actionWiki_Warhole_triggered();
     void on_actionA_propos_triggered();
     void refreshNetworkState(bool s);
+    void updateBackground(BackGroundTypes b);
 
 signals:
     void requestNewRuler(int l);
@@ -139,6 +142,7 @@ signals:
     void requestNewTerrain(Terrain);
     void requestNewText(QString);
     void requestNewScatter(int);
+    void requestBackgroundChange(int t);
 
 private:
     static const QString LOG_ID_TRACE;
@@ -151,9 +155,11 @@ private:
     EnhancedGraphicsView view;
     QStandardItemModel* armyModel;
 
+    BackGroundTypes backType;
     BackGroundItem* back;
     QBrush* backGroundBrush;
     QPixmap background;
+
 
     QAction* actionDeploy;
     QModelIndex indexArmy;

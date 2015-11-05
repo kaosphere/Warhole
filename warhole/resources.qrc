@@ -50,10 +50,10 @@
         <file>ressources/darkstyle.qss</file>
     </qresource>
     <qresource prefix="/tile">
-        <file>ressources/tiles/dirt.png</file>
-        <file>ressources/tiles/grass.jpg</file>
-        <file>ressources/tiles/rock.png</file>
         <file>ressources/tiles/sand.jpg</file>
         <file>ressources/tiles/snow.jpg</file>
+        <file>ressources/tiles/rock.jpg</file>
+        <file>ressources/tiles/grass.png</file>
+        <file>ressources/tiles/dirt.jpg</file>
     </qresource>
 </RCC>

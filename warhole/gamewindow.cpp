@@ -44,10 +44,12 @@ void GameWindow::initGameWindow()
     ui->actionCharger_une_partie->setEnabled(false);
     ui->actionSave_Game->setEnabled(false);
     ui->actionOpen_Army->setEnabled(false);
+    ui->actionS_lectionner_le_type_de_terrain->setEnabled(false);
     connect(&controller, SIGNAL(networkEnabled(bool)), ui->actionCharger_une_partie, SLOT(setEnabled(bool)));
     connect(&controller, SIGNAL(networkEnabled(bool)), ui->actionSave_Game, SLOT(setEnabled(bool)));
     connect(&controller, SIGNAL(networkEnabled(bool)), ui->actionOpen_Army, SLOT(setEnabled(bool)));
     connect(&controller, SIGNAL(networkEnabled(bool)), this, SLOT(refreshNetworkState(bool)));
+    connect(&controller, SIGNAL(networkEnabled(bool)), ui->actionS_lectionner_le_type_de_terrain, SLOT(setEnabled(bool)));
 
     // Chat widget
     cw = new ChatWidgetForm(this);
@@ -73,7 +75,7 @@ void GameWindow::initGameWindow()
     connect(placeTerrain, SIGNAL(triggered()), this, SLOT(placeTerrainRequest()));
 
     ///////////////////////////////////////////
-    //Tree view of army
+    /// Tree view of army
     ///////////////////////////////////////////
     armyModel = new QStandardItemModel(this);
     ui->treeViewArmy->setModel(armyModel);
@@ -83,22 +85,19 @@ void GameWindow::initGameWindow()
                      SLOT(openArmyModelContextMenu(QPoint)));
 
     ///////////////////////////////////////////
-    //background of the game (To be removed afterwards)
+    /// background of the game (To be removed afterwards)
     ///////////////////////////////////////////
-    if(!background.load(":/images/ressources/floor_grass5.png"))
-    {
-        QLog_Error(LOG_ID_ERR, "GAMEWINDOW : Can't load background image");
-    }
 
-    backGroundBrush = new QBrush(QColor(51,102,0));
-    backGroundBrush = new QBrush(background);
-    scene.setBackgroundBrush(*backGroundBrush);
+    backGroundBrush = NULL;
+
+    // Default background type is grass
+    updateBackground(GRASS);
 
     back = new BackGroundItem(5400,2700);
     scene.addItem(back);
 
     ///////////////////////////////////////////
-    //Actions
+    /// Actions
     ///////////////////////////////////////////
     connect(ui->actionRuler_6_inches, SIGNAL(triggered()), this, SLOT(add6InchesRuler()));
     connect(ui->actionRuler_12_inches, SIGNAL(triggered()),this, SLOT(add12InchesRuler()));
@@ -116,6 +115,8 @@ void GameWindow::initGameWindow()
     invertedView = false;
 
     connect(ui->actionS_lectionner_le_type_de_terrain, SIGNAL(triggered()), this, SLOT(selectTerrainType()));
+    connect(this, SIGNAL(requestBackgroundChange(int)), &controller, SIGNAL(requestBackgroundChange(int)));
+    connect(&controller, SIGNAL(changeBackground(int)), this, SLOT(changeBackground(int)));
 
     actionDeploy = new QAction(tr("Déployer"), this);
     connect(actionDeploy, SIGNAL(triggered()),this,SLOT(deployRegiment()));
@@ -306,7 +307,7 @@ void GameWindow::selectTerrainType()
 
     if(w->exec())
     {
-        qDebug() << "Selected background : " << c;
+        emit requestBackgroundChange(c);
     }
 }
 
@@ -592,9 +593,16 @@ void GameWindow::removeRoundTemplate(QString id)
 
 void GameWindow::getGlobalInfo(QDataStream& stream)
 {
-    QLog_Info(LOG_ID_INFO, "on_actionSave_Game_triggered(): starting to gather game info...");
+    QLog_Info(LOG_ID_INFO, "getGlobalInfo(): starting to gather game info...");
+
+    // Store version of the game
+    stream << WARHOLE_VERSION_STRING;
+
     // Store game info
     stream << controller.getGame();
+
+    // Store background
+    stream << (int)backType;
 
     // Store regiments
     stream << regimentMap.size();
@@ -651,7 +659,7 @@ void GameWindow::getGlobalInfo(QDataStream& stream)
         (*o)->serializeOut(stream);
         ++o;
     }
-    QLog_Info(LOG_ID_INFO, "on_actionSave_Game_triggered(): finished to gather game info");
+    QLog_Info(LOG_ID_INFO, "getGlobalInfo(): finished to gather game info");
 }
 
 void GameWindow::clearAllMaps()
@@ -721,6 +729,17 @@ void GameWindow::setGlobalInfo(QDataStream& stream)
     int size;
     Game g;
     QString me;
+    QString version;
+
+    // get version
+    stream >> version;
+
+    if(version != WARHOLE_VERSION_STRING)
+    {
+        QMessageBox::warning(this, tr("Version"), tr("Attention : Votre version de Warhole (") +
+                             WARHOLE_VERSION_STRING + tr(") est différente de la version du serveur (") +
+                             version + tr("). Utiliser des versions différentes peut rendre le logiciel instable et provoquer des crashs."));
+    }
 
     // Store game info
     stream >> g;
@@ -730,6 +749,11 @@ void GameWindow::setGlobalInfo(QDataStream& stream)
     me = controller.getGame().getMe();
     controller.setGame(g);
     controller.getGamePtr()->setMe(me);
+
+    // Store background and update it
+    int b;
+    stream >> b;
+    updateBackground((BackGroundTypes)b);
 
     // Store regiments
     stream >> size;
@@ -1143,6 +1167,10 @@ void GameWindow::removeScatter(QString i)
     }
 }
 
+void GameWindow::changeBackground(int b)
+{
+    updateBackground((BackGroundTypes)b);
+}
 
 void GameWindow::on_actionWiki_Warhole_triggered()
 {
@@ -1159,4 +1187,42 @@ void GameWindow::on_actionA_propos_triggered()
 void GameWindow::refreshNetworkState(bool s)
 {
     networkOn = s;
+}
+
+void GameWindow::updateBackground(BackGroundTypes b)
+{
+    QString path;
+
+    // update type value
+    backType = b;
+
+    switch(b)
+    {
+    case GRASS:
+        path = ":/tile/ressources/tiles/grass.png";
+        break;
+    case DIRT:
+        path = ":/tile/ressources/tiles/dirt.png";
+        break;
+    case SAND:
+        path = ":/tile/ressources/tiles/sand.jpg";
+        break;
+    case SNOW:
+        path = ":/tile/ressources/tiles/snow.jpg";
+        break;
+    case ROCK:
+        path = ":/tile/ressources/tiles/rock.jpg";
+        break;
+    default:
+        break;
+    }
+
+    if(!background.load(path))
+    {
+        QLog_Error(LOG_ID_ERR, "GAMEWINDOW : Can't load background image");
+    }
+
+    if(backGroundBrush) delete backGroundBrush;
+    backGroundBrush = new QBrush(background);
+    scene.setBackgroundBrush(*backGroundBrush);
 }

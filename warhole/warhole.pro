@@ -98,7 +98,8 @@ HEADERS  += mainwindow.h \
     components/enhancegraphicsobject.h \
     graphics/lineofsightgraphics.h \
     terraininfodisplayform.h \
-    backgroundselectiondialog.h
+    backgroundselectiondialog.h \
+    graphics/backgroundtypes.h
 
 TRANSLATIONS = warhole_en.ts
 
