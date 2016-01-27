@@ -90,6 +90,8 @@ signals:
     void newScatter(QString, int);
     void moveScatter(QString, QPointF);
     void removeScatter(QString);
+    void requestBackgroundChange(int);
+    void changeBackground(int);
 
 public slots:
     void setNetwork();

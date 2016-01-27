@@ -42,7 +42,8 @@ enum CommandType{
     REMOVE_TEXT,
     NEW_SCATTER,
     SCATTER_MOVE,
-    REMOVE_SCATTER
+    REMOVE_SCATTER,
+    CHANGE_BACKGROUND
 };
 
 class CommandManager : public QObject
@@ -86,6 +87,7 @@ signals:
     void removeScatter(QString);
     void playerNameChange(QString);
     void changeClientName(QString, QString);
+    void changeBackground(int);
     
 public slots:
     void processIncomingMessage();
@@ -122,6 +124,7 @@ public slots:
     void enQueueRemoveScatterMessage(QString i);
     void enQueueScatterMoveMessage(QString i, QPointF p);
     void enqueuePlayerNameChangeRequest(QString n1, QString n2);
+    void enqueueBackgroundChangeMessage(int b);
 
 private:
     static const QString LOG_ID_INFO;
@@ -170,6 +173,7 @@ private:
     void handleMoveScatterMessage(QDataStream& data);
     void handleRemoveScatterMessage(QDataStream& data);
     void hangleChangePlayerNameMessage(QDataStream &data);
+    void handleChangeBackgroundMessage(QDataStream &data);
 };
 
 #endif // COMMANDMANAGER_H

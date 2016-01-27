@@ -1189,6 +1189,26 @@ void CommandManager::enqueuePlayerNameChangeRequest(QString n1, QString n2)
     emit changeClientName(n1, n2);
 }
 
+void CommandManager::enqueueBackgroundChangeMessage(int b)
+{
+    Message m;
+    m.setDest(ALL);
+    m.setMessageSender(game->getMe());
+
+    QByteArray data;
+    QDataStream s(&data, QIODevice::WriteOnly);
+
+    s << CHANGE_BACKGROUND;
+
+    s << b;
+
+    m.setData(data);
+
+    QLog_Info(LOG_ID_INFO, "enqueueBackgroundChangeMessage() : change back to " + b);
+
+    addMessageToOutQueue(m);
+}
+
 void CommandManager::hangleChangePlayerNameMessage(QDataStream &data)
 {
     QString newName;
@@ -1198,6 +1218,17 @@ void CommandManager::hangleChangePlayerNameMessage(QDataStream &data)
     QLog_Info(LOG_ID_INFO, "hangleChangePlayerNameMessage() : change name to " + newName);
 
     emit playerNameChange(newName);
+}
+
+void CommandManager::handleChangeBackgroundMessage(QDataStream &data)
+{
+    int back;
+
+    data >> back;
+
+    QLog_Info(LOG_ID_INFO, "handleChangeBackgroundMessage() : change background to " + back);
+
+    emit changeBackground(back);
 }
 
 void CommandManager::processIncomingMessage()
@@ -1395,6 +1426,11 @@ void CommandManager::processIncomingMessage()
         case REMOVE_SCATTER:
             QLog_Info(LOG_ID_INFO, "processIncomingMessage() : scatter remove message received.");
             handleRemoveScatterMessage(stream);
+            break;
+
+        case CHANGE_BACKGROUND:
+            QLog_Info(LOG_ID_INFO, "processIncomingMessage() : background change message received.");
+            handleChangeBackgroundMessage(stream);
             break;
 
         default:

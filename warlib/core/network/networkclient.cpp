@@ -16,7 +16,7 @@ NetworkClient::NetworkClient(MessageQueue *in, MessageQueue* out, QObject *paren
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_ERR), QLogger::ErrorLevel);
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_WARN), QLogger::WarnLevel);
 
-    connect(this, SIGNAL(clientStateChanged(QString)), this, SIGNAL(stateChanged(QString)));
+    //connect(this, SIGNAL(clientStateChanged(QString)), this, SIGNAL(stateChanged(QString)));
 
     sock = new QTcpSocket(this);
 

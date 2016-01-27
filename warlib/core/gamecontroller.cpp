@@ -89,6 +89,9 @@ GameController::GameController(QObject *parent) :
     connect(comManager, SIGNAL(moveScatter(QString,QPointF)), this, SIGNAL(moveScatter(QString, QPointF)));
     connect(comManager, SIGNAL(removeScatter(QString)), this, SIGNAL(removeScatter(QString)));
 
+    connect(this, SIGNAL(requestBackgroundChange(int)), comManager, SLOT(enqueueBackgroundChangeMessage(int)));
+    connect(comManager, SIGNAL(changeBackground(int)), this, SIGNAL(changeBackground(int)));
+
     ///////////////////////////////////////////
     // Player Administrator
     ///////////////////////////////////////////
