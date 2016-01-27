@@ -13,7 +13,6 @@
 #include <QMimeData>
 #include <QDrag>
 #include <QPixmap>
-#include <QException>
 #include <QHBoxLayout>
 
 #include "graphics/testgi.h"

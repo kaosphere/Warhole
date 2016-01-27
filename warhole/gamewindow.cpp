@@ -1202,7 +1202,7 @@ void GameWindow::updateBackground(BackGroundTypes b)
         path = ":/tile/ressources/tiles/grass.png";
         break;
     case DIRT:
-        path = ":/tile/ressources/tiles/dirt.png";
+        path = ":/tile/ressources/tiles/dirt.jpg";
         break;
     case SAND:
         path = ":/tile/ressources/tiles/sand.jpg";
