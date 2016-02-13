@@ -372,7 +372,7 @@ void ModelWindow::on_toolButtonImage_pressed()
     else
     {
         QMessageBox::warning(this, tr("Info"), tr("URL de l'image non valide"));
-        QLog_Info(LOG_ID_INFO, "on_toolButtonImage_pressed() : invalid image with path : " + fileName);
+        QLog_Error(LOG_ID_ERR, "on_toolButtonImage_pressed() : invalid image with path : " + fileName);
     }
 
 }
@@ -559,7 +559,9 @@ void ModelWindow::fillUI(ModelAbstract* m, QString path)
     ui->spinWidth->setValue(m->getSquareBaseW());
     ui->spinLength->setValue(m->getSquareBaseL());
     ui->spinPU->setValue(m->getUnitPower());
-    ui->lineEditImage->setText(m->getUrlImage());
+    // The Url of the image isn't needed anymore
+    // Keep commented for testing purpose, to be removed in the future
+    //ui->lineEditImage->setText(m->getUrlImage());
 
     switch(m->getType())
     {
@@ -577,12 +579,16 @@ void ModelWindow::fillUI(ModelAbstract* m, QString path)
         break;
     }
 
-    if(image->load(m->getUrlImage()))
+    if(image = &(m->getImage()))
     {
     	scene->clear();
     	scene->addPixmap(*image);
     }
-    else  QMessageBox::warning(this, tr("Info"), tr("URL de l'image non valide"));
+    else
+    {
+        QMessageBox::warning(this, tr("Error"), tr("Problème lors du chargement de l'image du modèle."));
+        QLog_Error(LOG_ID_ERR, "fillUI() : Failed to load image model");
+    }
 
     for(int i = 0 ; i < m->getOptions().length() ; i++)
     {
