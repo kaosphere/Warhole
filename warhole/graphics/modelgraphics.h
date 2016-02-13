@@ -16,7 +16,7 @@ class ModelGraphics : public QGraphicsItem
 {
 public:
     ModelGraphics(QGraphicsItem *parent = 0);
-    ModelGraphics(int x, int y, int w, int h, QString n, QPixmap *i = NULL, QGraphicsItem *parent = 0);
+    ModelGraphics(int x, int y, int w, int h, QString n, QPixmap i, QGraphicsItem *parent = 0);
 
     virtual ~ModelGraphics();
 
@@ -35,7 +35,7 @@ public:
     void setPosXY(qreal x, qreal y);
 private:
     QString modelName;
-    QPixmap* image;
+    QPixmap image;
     int width;
     int hight;
     int posx;

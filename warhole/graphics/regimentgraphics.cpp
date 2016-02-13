@@ -112,7 +112,7 @@ void RegimentGraphics::initModels()
                                       regiment.getGroups().at(i).getModel()->getSquareBaseW() * ONE_MILLIMETER,
                                       regiment.getGroups().at(i).getModel()->getSquareBaseL() * ONE_MILLIMETER,
                                       regiment.getGroups().at(i).getModel()->getStats().getName(),
-                                      &(regiment.getGroups().at(i).getModel()->getImage()),
+                                      regiment.getGroups().at(i).getModel()->getImage(),
                                       this);
             }
             else
@@ -123,7 +123,7 @@ void RegimentGraphics::initModels()
                                       regiment.getGroups().at(i).getModel()->getSquareBaseW() * ONE_MILLIMETER,
                                       regiment.getGroups().at(i).getModel()->getSquareBaseL() * ONE_MILLIMETER,
                                       regiment.getGroups().at(i).getModel()->getStats().getName(),
-                                      &(regiment.getGroups().at(i).getModel()->getImage()),
+                                      regiment.getGroups().at(i).getModel()->getImage(),
                                       this);
             }
             r->setBrush(childrenBrush);
@@ -172,7 +172,7 @@ void RegimentGraphics::addModels(int nb)
                                   regiment.getGroups().first().getModel()->getSquareBaseW() * ONE_MILLIMETER,
                                   regiment.getGroups().first().getModel()->getSquareBaseL() * ONE_MILLIMETER,
                                   regiment.getGroups().first().getModel()->getStats().getName(),
-                                  &(regiment.getGroups().first().getModel()->getImage()),
+                                  regiment.getGroups().first().getModel()->getImage(),
                                   this);
         }
         else
@@ -183,7 +183,7 @@ void RegimentGraphics::addModels(int nb)
                                   regiment.getGroups().first().getModel()->getSquareBaseW() * ONE_MILLIMETER,
                                   regiment.getGroups().first().getModel()->getSquareBaseL() * ONE_MILLIMETER,
                                   regiment.getGroups().first().getModel()->getStats().getName(),
-                                  &(regiment.getGroups().first().getModel()->getImage()),
+                                  regiment.getGroups().first().getModel()->getImage(),
                                   this);
         }
         r->setBrush(childrenBrush);
@@ -246,8 +246,6 @@ QPainterPath RegimentGraphics::shape() const
     {
         path.addRect(models.at(i)->boundingRect());
     }
-
-    // Add line of sight shape if it's shown
     
     return path;
 }
@@ -260,6 +258,7 @@ void RegimentGraphics::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     // Display graphics overlay, depending on ownership
     if(!isOwnedByMe && hasImage)
     {
+        // Display red semi-transparent rectangle over not owned regiments
         QBrush b(QColor::fromRgba(qRgba(255, 0, 0, 30)));
         painter->setBrush(b);
         painter->drawPath(shape());
@@ -268,6 +267,7 @@ void RegimentGraphics::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     // Handle selection
     if(this->isSelected())
     {
+        // Display white semi-transparent rectangle over selected regiment
         QBrush b(QColor::fromRgba(qRgba(255, 255, 255, 75)));
         painter->setBrush(b);
         painter->drawPath(shape());
