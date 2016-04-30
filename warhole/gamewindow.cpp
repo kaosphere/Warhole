@@ -734,6 +734,8 @@ void GameWindow::setGlobalInfo(QDataStream& stream)
     // get version
     stream >> version;
 
+    QLog_Info(LOG_ID_INFO, "setGlobalInfo() version : " + version);
+
     if(version != WARHOLE_VERSION_STRING)
     {
         QMessageBox::warning(this, tr("Version"), tr("Attention : Votre version de Warhole (") +
@@ -757,6 +759,7 @@ void GameWindow::setGlobalInfo(QDataStream& stream)
 
     // Store regiments
     stream >> size;
+    QLog_Info(LOG_ID_INFO, "setGlobalInfo() Storing " + QString::number(size) + " regiments");
     for(int i = 0; i < size; ++i)
     {
         RegimentGraphics* r = new RegimentGraphics();
@@ -778,6 +781,7 @@ void GameWindow::setGlobalInfo(QDataStream& stream)
 
     // Store rulers
     stream >> size;
+    QLog_Info(LOG_ID_INFO, "setGlobalInfo() Storing " + QString::number(size) + " rulers");
     for(int i = 0; i < size; ++i)
     {
         RulerGraphics* r = new RulerGraphics();
@@ -791,6 +795,7 @@ void GameWindow::setGlobalInfo(QDataStream& stream)
 
     // Store templates
     stream >> size;
+    QLog_Info(LOG_ID_INFO, "setGlobalInfo() Storing " + QString::number(size) + " templates");
     for(int i = 0; i < size; ++i)
     {
         RoundTemplateGraphics* r = new RoundTemplateGraphics();
@@ -804,6 +809,7 @@ void GameWindow::setGlobalInfo(QDataStream& stream)
     
     // Store terrains
     stream >> size;
+    QLog_Info(LOG_ID_INFO, "setGlobalInfo() Storing " + QString::number(size) + " terrains");
     for(int i = 0; i < size; ++i)
     {
         TerrainGraphics* t = new TerrainGraphics(&invertedView);
@@ -819,6 +825,7 @@ void GameWindow::setGlobalInfo(QDataStream& stream)
     
     // Store blow template
     stream >> size;
+    QLog_Info(LOG_ID_INFO, "setGlobalInfo() Storing " + QString::number(size) + " blow templates");
     for(int i = 0; i < size; ++i)
     {
         BlowTemplateGraphics* b = new BlowTemplateGraphics();
@@ -833,6 +840,7 @@ void GameWindow::setGlobalInfo(QDataStream& stream)
 
     // Store text
     stream >> size;
+    QLog_Info(LOG_ID_INFO, "setGlobalInfo() Storing " + QString::number(size) + " texts");
     for(int i = 0; i < size; ++i)
     {
         TextGraphics* b = new TextGraphics();
@@ -847,6 +855,7 @@ void GameWindow::setGlobalInfo(QDataStream& stream)
 
     // Store scatters
     stream >> size;
+    QLog_Info(LOG_ID_INFO, "setGlobalInfo() Storing " + QString::number(size) + " scatters");
     for(int i = 0; i < size; ++i)
     {
         DispersionGraphics* b = new DispersionGraphics();
@@ -890,7 +899,7 @@ void GameWindow::on_actionCharger_une_partie_triggered()
     setGlobalInfo(stream);
 
     // Send global info to all
-    packGameDataForGlobalUpdate("");
+    //packGameDataForGlobalUpdate("");
 
     emit cw->newMessageToSend("<em><font color=\"DimGray\">" + tr("Fichier de partie chargé : ") + path + "</em></font>");
     
