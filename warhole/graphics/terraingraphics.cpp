@@ -235,6 +235,8 @@ QDataStream& operator>>(QDataStream& in, TerrainGraphics& obj)
     
     in >> matrix;
     obj.setTransform(matrix);
+
+    in >> obj.previousRot;
     
     return in;
 }
