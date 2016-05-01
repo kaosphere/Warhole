@@ -1,6 +1,7 @@
 #include "terraingraphics.h"
 #include "terraininfodisplayform.h"
 #include <QGraphicsProxyWidget>
+#include <QDebug>
 
 TerrainGraphics::TerrainGraphics(bool* iv, QGraphicsItem *parent) :
     EnhanceGraphicsObject(parent)
@@ -152,10 +153,12 @@ void TerrainGraphics::displayTerrainInfo()
     QGraphicsProxyWidget* w = new QGraphicsProxyWidget();
     w->setWidget(s);
 
-    infoRect = new QGraphicsRectItem(this->pos().x() + boundingRect().width(),
-                                     pos().y(),
+    QPointF origin(pos().x() + boundingRect().width(), pos().y());
+    infoRect = new QGraphicsRectItem(0,
+                                     0,
                                      s->width(),
                                      s->height());
+
     infoRect->setFlag(ItemIsMovable);
     infoRect->setFlag(ItemIsSelectable);
 
@@ -167,13 +170,20 @@ void TerrainGraphics::displayTerrainInfo()
 
     connect(s,SIGNAL(destroyed()), this, SLOT(closeInfoRect()));
 
+    scene()->addItem(infoRect);
+
+    QTransform trans;
     if(*invertedView)
     {
         // Display stats according to view side
-        infoRect->setTransformOriginPoint(0,0);
-        infoRect->setRotation(180);
+        trans.rotate(180)
+             .translate(-origin.x(), -origin.y());
     }
-    scene()->addItem(infoRect);
+    else
+    {
+        trans.translate(origin.x(), origin.y());
+    }
+    infoRect->setTransform(trans);
 }
 
 void TerrainGraphics::closeInfoRect()

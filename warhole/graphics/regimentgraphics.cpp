@@ -418,9 +418,10 @@ void RegimentGraphics::showStats()
         StatsDisplayForm* s = new StatsDisplayForm(regiment, isOwnedByMe, owner);
         QGraphicsProxyWidget* w = new QGraphicsProxyWidget();
         w->setWidget(s);
-        
-        infoRect = new QGraphicsRectItem(this->pos().x() + boundingRect().width(),
-                                         pos().y(),
+
+        QPointF origin(pos().x() + boundingRect().width(), pos().y());
+        infoRect = new QGraphicsRectItem(0,
+                                         0,
                                          s->width(),
                                          s->height());
         infoRect->setFlag(ItemIsMovable);
@@ -434,13 +435,20 @@ void RegimentGraphics::showStats()
         
         connect(s,SIGNAL(destroyed()), this, SLOT(closeInfoRect()));
         
+        scene()->addItem(infoRect);
+
+        QTransform trans;
         if(*invertedView)
         {
             // Display stats according to view side
-            infoRect->setTransformOriginPoint(0,0);
-            infoRect->setRotation(180);
+            trans.rotate(180)
+                 .translate(-origin.x(), -origin.y());
         }
-        scene()->addItem(infoRect);
+        else
+        {
+            trans.translate(origin.x(), origin.y());
+        }
+        infoRect->setTransform(trans);
     }
 }
 
