@@ -463,12 +463,11 @@ void ModelWindow::on_pushButtonSave_clicked()
     //begin to check if everything is ok
 
     if(ui->lineEditName->text().isEmpty() ||
-       ui->lineEditImage->text().isEmpty() ||
        ui->comboRace->currentIndex() == 0 ||
        ui->comboUnitType->currentIndex() == 0 )
     {
         QMessageBox::warning(this, tr("Info"),
-                tr("Vous devez obligatoirement choisir une race, un type d'unité et remplir un nom et une image."));
+                tr("Vous devez obligatoirement choisir une race, un type d'unité et remplir un nom."));
         return;
     }
     // If any type was chosen, abort instead the model is a character because character don't have a type.
