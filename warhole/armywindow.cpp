@@ -113,6 +113,7 @@ void ArmyWindow::initArmyWindow()
 
     changeRace = true;
     editing = false;
+    armyFileLoading = false;
 
     setEnableChampionStats(false);
 }
@@ -146,7 +147,7 @@ void ArmyWindow::closeEvent (QCloseEvent *event)
 void ArmyWindow::on_comboBoxRace_currentIndexChanged(const QString &raceDir)
 {
     bool updateDir = true;
-    if(reg->rowCount() > 0)
+    if(reg->rowCount() > 0 && !armyFileLoading)
     {
         // The changeRace member prevents infinite loop when changing
         // race and saying no when confirming is asked
@@ -205,6 +206,7 @@ void ArmyWindow::on_comboBoxRace_currentIndexChanged(const QString &raceDir)
         }
     }
     updateTreeView(raceDir);
+    armyFileLoading = false;
 }
 
 void ArmyWindow::updateTreeView(QString raceDir)
@@ -813,6 +815,7 @@ void ArmyWindow::load(QString path)
         QLog_Info(LOG_ID_INFO, currentArmy.displayInfo());
         updateRegModel();
 
+        armyFileLoading = true;
         QString s = path.section('/',-2,-2);
         ui->comboBoxRace->setCurrentText(s);
         ui->lineEditName->setText(currentArmy.getName());

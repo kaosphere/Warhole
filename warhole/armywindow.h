@@ -85,6 +85,7 @@ private:
     QString currentSelectedPath;
     Army currentArmy;
     bool editing;
+    bool armyFileLoading;
 
     static const QStringList OPTION_HEADER;
     static const QStringList OBJECT_HEADER;
