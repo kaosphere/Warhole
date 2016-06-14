@@ -769,12 +769,15 @@ void GameWindow::setGlobalInfo(QDataStream& stream)
         r->setInvertedView(&invertedView);
         regimentMap[r->getRegimentID()] = r;
 
+        // TODO : put all this in a method so that code isn't duplicated
         connect(r, SIGNAL(regimentMoved(QString,QPointF,QTransform, qreal)), &controller, SIGNAL(regimentMoved(QString, QPointF, QTransform, qreal)));
         connect(r, SIGNAL(removeRegimentRequest(QString)), &controller, SIGNAL(removeRegimentRequest(QString)));
         connect(r, SIGNAL(removeDeadsRequest(QString, int)), &controller, SIGNAL(removeDeadsRequest(QString, int)));
         connect(r, SIGNAL(changeWidthRequest(QString, int)), &controller, SIGNAL(changeWidthRequest(QString, int)));
         connect(r, SIGNAL(addModelRequest(QString,int)), &controller, SIGNAL(addModelToRegRequest(QString, int)));
         connect(r, SIGNAL(changeRegimentInfoRequest(QString,RegimentAbstract)), &controller, SIGNAL(changeRegInfoRequest(QString, RegimentAbstract)));
+        connect(r, SIGNAL(lineOfSightRequested(QString)), &controller, SIGNAL(showLineOfSightRequest(QString)));
+        connect(r, SIGNAL(lineOfSightHideRequest(QString)), &controller, SIGNAL(hideLineOfSightRequest(QString)));
 
         scene.addItem(r);
     }
