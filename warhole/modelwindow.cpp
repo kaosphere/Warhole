@@ -985,7 +985,7 @@ void ModelWindow::load(QString path)
     if(!path.isEmpty())
     {
         QLogger::QLog_Info(LOG_ID_INFO, "Loading model with path : " + path);
-        //if(poupik))delete poupik;
+        //if(poupik))delete poupik; //TODO : Memory leak here !!!!
         poupik = fac.createFromFile(path);
         QLog_Info(LOG_ID_INFO, "load() : model loaded : " + poupik->displayStringInfo());
         fillUI(poupik, path);

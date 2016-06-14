@@ -85,7 +85,7 @@ private:
     ModelMonster* monster;
     ModelWarMachine* machine;
 
-    ModelAbstract* poupik;
+    ModelAbstract* poupik = NULL;
 
     ParamsfromUImodel* pfUI;
     ModelFactory fac;
