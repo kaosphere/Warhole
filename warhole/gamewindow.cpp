@@ -902,7 +902,7 @@ void GameWindow::on_actionCharger_une_partie_triggered()
     setGlobalInfo(stream);
 
     // Send global info to all
-    //packGameDataForGlobalUpdate("");
+    packGameDataForGlobalUpdate("");
 
     emit cw->newMessageToSend("<em><font color=\"DimGray\">" + tr("Fichier de partie chargé : ") + path + "</em></font>");
     
