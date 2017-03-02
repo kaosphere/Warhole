@@ -81,6 +81,9 @@ public:
     StatsModel getChampionStats() const;
     void setChampionStats(const StatsModel &value);
 
+    QPixmap getImage() const;
+    void setImage(const QPixmap &value);
+
 private:
     // modelabstract params
     StatsModel stats;
@@ -90,7 +93,8 @@ private:
     int widthBase;
     int lengthBase;
     int unitP;
-    QString urlImage;
+    QString urlImage; // Obsolete
+    QPixmap image;
     bool figSup;
     // warMachine, monster, infantery, charriot, character, cavalery params
     QString specRules;

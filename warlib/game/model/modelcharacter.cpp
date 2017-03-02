@@ -105,9 +105,7 @@ ModelCharacter *ModelCharacter::setFromUI(const ParamsfromUImodel *params)
     tmp->setUnitPower(params->getUnitP());
     tmp->setFigSupInd(params->getFigSup());
     tmp->setUrlImage(params->getUrlImage());
-    QPixmap p;
-    p.load(params->getUrlImage());
-    tmp->setImage(p);
+    tmp->setImage(params->getImage());
     tmp->setOptions(params->getOptions());
     
     // ModelCharacter params
