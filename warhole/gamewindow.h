@@ -180,6 +180,7 @@ private:
     QMap<QString, DispersionGraphics*> scatterMap;
 
     GameController controller;
+    QThread controllerThread;
 
     Army army;
 

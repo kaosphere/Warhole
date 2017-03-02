@@ -45,6 +45,12 @@ void GameWindow::initGameWindow()
     ui->actionSave_Game->setEnabled(false);
     ui->actionOpen_Army->setEnabled(false);
     ui->actionS_lectionner_le_type_de_terrain->setEnabled(false);
+
+    // Move controller to its thread
+    qRegisterMetaType<QList<Player> >();
+    qRegisterMetaType<RegimentAbstract>();
+    controller.moveToThread(&controllerThread);
+
     connect(&controller, SIGNAL(networkEnabled(bool)), ui->actionCharger_une_partie, SLOT(setEnabled(bool)));
     connect(&controller, SIGNAL(networkEnabled(bool)), ui->actionSave_Game, SLOT(setEnabled(bool)));
     connect(&controller, SIGNAL(networkEnabled(bool)), ui->actionOpen_Army, SLOT(setEnabled(bool)));
@@ -84,9 +90,9 @@ void GameWindow::initGameWindow()
                      SIGNAL(customContextMenuRequested(QPoint)),
                      SLOT(openArmyModelContextMenu(QPoint)));
 
-    ///////////////////////////////////////////
-    /// background of the game (To be removed afterwards)
-    ///////////////////////////////////////////
+    /////////////////////////////////////////////////////////
+    /// background of the game (To be removed afterwards) ///
+    /////////////////////////////////////////////////////////
 
     backGroundBrush = NULL;
 
@@ -127,7 +133,7 @@ void GameWindow::initGameWindow()
     connect(ui->actionOpen_Army, SIGNAL(triggered()), this, SLOT(openArmyMenuClicked()));
 
     /////////////////////////////////////////////
-    //GameController
+    /// GameController
     /////////////////////////////////////////////
     connect(&controller, SIGNAL(refreshPlayerListDisplay(QList<Player>)), cw, SLOT(refreshPlayerListDisplay(QList<Player>)));
     connect(&controller, SIGNAL(moveRuler(QString,QPointF, QTransform, qreal)), this, SLOT(moveRuler(QString,QPointF, QTransform, qreal)));
@@ -170,6 +176,9 @@ void GameWindow::initGameWindow()
     connect(&controller, SIGNAL(moveScatter(QString,QPointF)), this, SLOT(moveScatter(QString, QPointF)));
     connect(&controller, SIGNAL(removeScatter(QString)), this, SLOT(removeScatter(QString)));
 
+    // start controller thread
+    controllerThread.start();
+
     networkOn = false;
 }
 
@@ -182,6 +191,7 @@ GameWindow::~GameWindow()
     actionDeploy->deleteLater();
     placeTerrain->deleteLater();
     cw->deleteLater();
+    controllerThread.quit();
 }
 
 void GameWindow::closeEvent(QCloseEvent *)
