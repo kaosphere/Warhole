@@ -117,4 +117,6 @@ private:
     int points;
 };
 
+Q_DECLARE_METATYPE(QList<Player>)
+
 #endif // GAME_H

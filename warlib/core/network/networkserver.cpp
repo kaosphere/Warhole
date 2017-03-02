@@ -166,7 +166,7 @@ void NetworkServer::receiveData()
             }
         }
 
-        // Do nothig if dest is ME, because it means that a special answer is need, and will
+        // Do nothig if dest is ME, because it means that a special answer is needed, and will
         // be treated by command manager
 
         // set message size to 0 to be able to receive new packets from this client

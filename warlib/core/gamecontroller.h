@@ -2,6 +2,7 @@
 #define GAMECONTROLLER_H
 
 #include <QObject>
+#include <QThread>
 #include "commandManager/commandmanager.h"
 #include "network/networkinterface.h"
 #include "network/networkclient.h"
@@ -106,6 +107,7 @@ private:
     MessageQueue outQueue;
     Game game;
     bool network;
+    QThread networkThread;
 };
 
 #endif // GAMECONTROLLER_H

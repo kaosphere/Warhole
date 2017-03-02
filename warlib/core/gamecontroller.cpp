@@ -105,6 +105,7 @@ GameController::~GameController()
 {
     comManager->deleteLater();
     netInterface->deleteLater();
+    networkThread.quit();
 }
 
 void GameController::createNetworkInterface(NetworkType t, QString ip)
@@ -112,7 +113,10 @@ void GameController::createNetworkInterface(NetworkType t, QString ip)
     switch(t)
     {
     case SERVER:
-        netInterface = new NetworkServer(&inQueue, &outQueue, this);
+        // Register Client as a metatype, to enable object passing through signals of different threads
+        qRegisterMetaType<Client>();
+        netInterface = new NetworkServer(&inQueue, &outQueue);
+        netInterface->moveToThread(&networkThread);
         connect(netInterface, SIGNAL(newPlayerConnected(Client)), &playerAdmin, SLOT(handleNewPlayerConnection(Client)));
         connect(netInterface, SIGNAL(playerDisconnected(Client)), &playerAdmin, SLOT(handlePlayerDisconnection(Client)));
         connect(&playerAdmin, SIGNAL(playerListChanged(QList<Player>)), SIGNAL(refreshPlayerListDisplay(QList<Player>)));
@@ -122,7 +126,8 @@ void GameController::createNetworkInterface(NetworkType t, QString ip)
         setNetwork();
         break;
     case CLIENT:
-        netInterface = new NetworkClient(&inQueue, &outQueue, this, ip);
+        netInterface = new NetworkClient(&inQueue, &outQueue, ip);
+        netInterface->moveToThread(&networkThread);
         connect(netInterface, SIGNAL(firstConnectionToServer()), comManager, SLOT(enQueueServerInfoRequest()));
         connect(netInterface, SIGNAL(firstConnectionToServer()), this, SLOT(setNetwork()));
         connect(netInterface, SIGNAL(disconnected()), this, SLOT(clearNetwork()));
@@ -136,6 +141,10 @@ void GameController::createNetworkInterface(NetworkType t, QString ip)
     //connect(netInterface, SIGNAL(stateChanged(QString)),comManager, SIGNAL(newChatMessageToPrint(QString,QString)));
     connect(&outQueue, SIGNAL(newMessageAvailable()), netInterface, SLOT(send()));
     connect(netInterface, SIGNAL(networkEvent(QString)), this, SIGNAL(networkEvent(QString)));
+
+    // Move network interface to network thread so that all networking doesn't impact UI rendering
+    networkThread.start();
+
     //printNetworkState(netInterface->getState());
 }
 

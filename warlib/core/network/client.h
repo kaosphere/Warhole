@@ -43,4 +43,6 @@ private:
     quint32 messageSize;
 };
 
+Q_DECLARE_METATYPE(Client)
+
 #endif // CLIENT_H

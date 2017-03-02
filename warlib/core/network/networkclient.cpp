@@ -7,7 +7,7 @@ const QString NetworkClient::LOG_ID_TRACE = "NetworkClient_trace";
 const QString NetworkClient::LOG_ID_WARN = "NetworkClient_warm";
 const QString NetworkClient::LOG_ID_ERR = "NetworkClient_err";
 
-NetworkClient::NetworkClient(MessageQueue *in, MessageQueue* out, QObject *parent, QString ip, int port) :
+NetworkClient::NetworkClient(MessageQueue *in, MessageQueue* out, QString ip, int port, QObject *parent) :
     NetworkInterface(in, out, parent)
 {
     QLoggerManager *manager = QLoggerManager::getInstance();
@@ -71,7 +71,7 @@ void NetworkClient::send()
 void NetworkClient::sendToServer(const Message& m)
 {
     QLog_Info(LOG_ID_INFO, "sendToServer() : sending to server with sender "+ m.getMessageSender() +
-              " Destination : " + QString::number(m.getDest()) + " Data : " + QString::number(m.getData().toUShort()));
+              " Destination : " + QString::number(m.getDest()) + " Data : " + QString::number(m.getData().toULongLong()));
 
     // Préparation du paquet
     QByteArray packet;

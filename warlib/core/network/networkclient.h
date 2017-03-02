@@ -11,9 +11,9 @@ class NetworkClient : public NetworkInterface
 public:
     explicit NetworkClient(MessageQueue* in,
                            MessageQueue* out,
-                           QObject *parent = 0,
                            QString ip = "127.0.0.1",
-                           int port = 50885);
+                           int port = 50885,
+                           QObject *parent = 0);
     ~NetworkClient();
 
     void sendToServer(const Message& m);

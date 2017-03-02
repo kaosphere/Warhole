@@ -70,4 +70,6 @@ private:
     int startingCount;
 };
 
+Q_DECLARE_METATYPE(RegimentAbstract)
+
 #endif // REGIMENTABSTRACT_H
