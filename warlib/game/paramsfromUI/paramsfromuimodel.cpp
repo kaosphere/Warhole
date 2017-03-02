@@ -204,6 +204,16 @@ void ParamsfromUImodel::setChampionStats(const StatsModel &value)
 {
     championStats = value;
 }
+QPixmap ParamsfromUImodel::getImage() const
+{
+    return image;
+}
+
+void ParamsfromUImodel::setImage(const QPixmap &value)
+{
+    image = value;
+}
+
 
 bool ParamsfromUImodel::getChampion() const
 {
