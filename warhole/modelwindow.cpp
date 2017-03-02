@@ -973,6 +973,7 @@ void ModelWindow::save(QString path)
     params->setMounted(ui->checkMounted->isChecked());
     params->setGeneral(ui->checkGeneral->isChecked());
     params->setHasGB(ui->checkGB->isChecked());
+    params->setImage(*image);
 
     // save in class with factory + save in file
     poupik = fac.createFromUI(ui->comboUnitType->currentText(), params);
