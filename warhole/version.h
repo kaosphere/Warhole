@@ -27,8 +27,8 @@
 
 const int WARHOLE_MAJOR_VERSION(1);
 const int WARHOLE_MINOR_VERSION(0);
-const int WARHOLE_BUILD_NUMBER(9);
-const QString WARHOLE_BUILD_SPECIAL_MENTION("NET_THREAD");
+const int WARHOLE_BUILD_NUMBER(10);
+const QString WARHOLE_BUILD_SPECIAL_MENTION("Dev");
 
 const QString WARHOLE_VERSION_STRING("v" +
                                      QString::number(WARHOLE_MAJOR_VERSION) + "." +
