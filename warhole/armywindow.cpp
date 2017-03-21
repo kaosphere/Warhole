@@ -39,7 +39,7 @@ ArmyWindow::ArmyWindow(QString fileName, QWidget *parent) :
     QLog_Info(LOG_ID_INFO, "ArmyWindow() : Entering ArmyWindow by loading constructor.");
     QLog_Info(LOG_ID_INFO, "ArmyWindow() : File name to load : " + fileName);
 
-    changeRace = false;
+    //changeRace = false;
     load(fileName);
 }
 
@@ -175,7 +175,7 @@ void ArmyWindow::on_comboBoxRace_currentIndexChanged(const QString &raceDir)
             }
         }
     }
-    if(changeRace && updateDir)
+    if((changeRace && updateDir) || armyFileLoading)
     {
         // get list of existing models to verify if some exist
         QDir* modelDir = new QDir(MODEL_PATH + "/" + raceDir);
