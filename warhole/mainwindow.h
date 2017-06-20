@@ -8,6 +8,7 @@
 
 #include "modelwindow.h"
 #include "armywindow.h"
+#include "armywindowevolved.h"
 #include "gamewindow.h"
 #include "magicalobjectwindow.h"
 #include "terrainwindow.h"
@@ -31,6 +32,7 @@ public slots:
    void openModelWindow();
    void openEditModelWindow();
    void openArmyWindow();
+   void openArmyWindowEv();
    void openEditArmyWindow();
    void openGameWindow();
    void openMagicalObjectWindow();
@@ -46,6 +48,7 @@ private:
 
     ModelWindow* mod;
     ArmyWindow* arm;
+    ArmyWindowEvolved* armEv;
     GameWindow* game;
     MagicalObjectWindow* obj;
     TerrainWindow *ter;

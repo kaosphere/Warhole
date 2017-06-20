@@ -70,6 +70,11 @@ MainWindow::MainWindow(QWidget *parent)
     actionEditArmy->setShortcut(QKeySequence("Ctrl+D"));
     connect(actionEditArmy, SIGNAL(triggered()), this, SLOT(openEditArmyWindow()));
 
+    // Army window evolved
+    QAction *actionCreateArmyEv = new QAction(tr("&Créer une armée (evolved)"), this);
+    menuManageModels->addAction(actionCreateArmyEv);
+    connect(actionCreateArmyEv, SIGNAL(triggered()), this, SLOT(openArmyWindowEv()));
+
     QAction *actionCreateTerrains = new QAction(tr("&Créer des décors"), this);
     menuManageModels->addAction(actionCreateTerrains);
     connect(actionCreateTerrains, SIGNAL(triggered()), this, SLOT(openTerrainWindow()));
@@ -112,10 +117,22 @@ void MainWindow::openEditModelWindow()
     mod->show();
 }
 
+/**
+ * @brief MainWindow::openArmyWindow Open the army editor window
+ */
 void MainWindow::openArmyWindow()
 {
     arm = new ArmyWindow();
     arm->show();
+}
+
+/**
+ * @brief MainWindow::openArmyWindowEv Opens the new Army window
+ */
+void MainWindow::openArmyWindowEv()
+{
+    armEv = new ArmyWindowEvolved();
+    armEv->show();
 }
 
 void MainWindow::openEditArmyWindow()

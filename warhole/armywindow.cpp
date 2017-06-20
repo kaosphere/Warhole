@@ -51,12 +51,13 @@ void ArmyWindow::initArmyWindow()
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_ERR), QLogger::ErrorLevel);
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_WARN), QLogger::WarnLevel);
 
+     // Put list of existing races in comboBox
+    ui->setupUi(this);
+
     setWindowTitle("Warhole " +
                    WARHOLE_VERSION_STRING +
                    tr(" - Création d'armée"));
 
-    // Put list of existing races in comboBox
-    ui->setupUi(this);
     // get list of existing races
     QDir* modelDir = new QDir(MODEL_PATH);
 
