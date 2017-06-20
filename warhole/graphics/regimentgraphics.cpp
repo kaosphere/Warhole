@@ -263,6 +263,9 @@ void RegimentGraphics::paint(QPainter *painter, const QStyleOptionGraphicsItem *
         painter->setBrush(b);
         painter->drawPath(shape());
     }
+
+    // If there is no image, display a little sign on top, depending on the unit type
+
     
     // Handle selection
     if(this->isSelected())
