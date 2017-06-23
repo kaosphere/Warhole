@@ -65,7 +65,8 @@ SOURCES += main.cpp\
     graphics/lineofsightgraphics.cpp \
     terraininfodisplayform.cpp \
     backgroundselectiondialog.cpp \
-    armywindowevolved.cpp
+    armywindowevolved.cpp \
+    addregimentdialog.cpp
 
 HEADERS  += mainwindow.h \
     modelwindow.h \
@@ -101,7 +102,8 @@ HEADERS  += mainwindow.h \
     terraininfodisplayform.h \
     backgroundselectiondialog.h \
     graphics/backgroundtypes.h \
-    armywindowevolved.h
+    armywindowevolved.h \
+    addregimentdialog.h
 
 TRANSLATIONS = warhole_en.ts
 
@@ -123,7 +125,8 @@ FORMS += \
     warholeinfodialog.ui \
     terraininfodisplayform.ui \
     backgroundselectiondialog.ui \
-    armywindowevolved.ui
+    armywindowevolved.ui \
+    addregimentdialog.ui
 
 RESOURCES += \
     resources.qrc
