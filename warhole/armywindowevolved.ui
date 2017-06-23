@@ -17,30 +17,37 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QToolButton" name="toolButton_4">
+      <widget class="QToolButton" name="toolButtonNew">
        <property name="text">
         <string>new</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QToolButton" name="toolButton">
+      <widget class="QToolButton" name="toolButtonAdd">
        <property name="text">
         <string>+</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QToolButton" name="toolButton_2">
+      <widget class="QToolButton" name="toolButtonSave">
        <property name="text">
         <string>save</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QToolButton" name="toolButton_3">
+      <widget class="QToolButton" name="toolButton_Load">
        <property name="text">
         <string>load</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="toolButtonPdf">
+       <property name="text">
+        <string>pdf</string>
        </property>
       </widget>
      </item>
@@ -83,7 +90,7 @@
     </layout>
    </item>
    <item>
-    <widget class="QListView" name="listView"/>
+    <widget class="QTreeView" name="treeView"/>
    </item>
   </layout>
  </widget>
