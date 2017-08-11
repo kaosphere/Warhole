@@ -16,12 +16,17 @@ public:
     explicit ArmyWindowEvolved(QWidget *parent = 0);
     ~ArmyWindowEvolved();
 
+public slots:
+
+
 protected:
     void initArmyWindow();
     void appendRegimentToTreeViewCategory(RegimentAbstract *r, QStandardItem *category);
 
 private slots:
     void on_toolButtonAdd_clicked();
+    void on_toolButtonPdf_clicked();
+    void updateGlobalArmyPoints();
 
 private:
     static const QString LOG_ID_TRACE;

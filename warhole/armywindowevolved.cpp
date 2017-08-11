@@ -91,6 +91,8 @@ void ArmyWindowEvolved::initArmyWindow()
     armyModel->appendRow(baseItem);
     armyModel->appendRow(specialItem);
     armyModel->appendRow(rareItem);
+
+    updateGlobalArmyPoints();
 }
 
 /**
@@ -181,10 +183,38 @@ void ArmyWindowEvolved::on_toolButtonAdd_clicked()
                 break;
             }
             currentArmy.addUnit(*newRegiment);
+            updateGlobalArmyPoints();
         }
     }
     else
     {
         QMessageBox::warning(this, tr("Races"), tr("Aucune race existente. Veuillez créer des figurines pour pouvoir constituer une armée."));
     }
+}
+
+/**
+ * @brief ArmyWindowEvolved::on_toolButtonPdf_clicked Slot called when the pdf button is clicked
+ */
+void ArmyWindowEvolved::on_toolButtonPdf_clicked()
+{
+    currentArmy.setName(ui->lineEditArmyName->text());
+    QLog_Info(LOG_ID_INFO, "on_pushButtonExport_clicked : Exporting army to PDF file.");
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Sauvegarde du fichier"), "./export.pdf", tr("fichiers pdf(*.pdf)"));
+
+    if(PdfExporter::exportHtmlToPdfFile(fileName, currentArmy.getHtml()))
+    {
+        QMessageBox::information(this, tr("Info"), tr("PDF exporté avec succès."));
+    }
+    else
+    {
+        QMessageBox::warning(this, tr("Info"), tr("L'export du pdf a échoué. Vérifiez le nom du fichier."));
+    }
+}
+
+/**
+ * @brief ArmyWindowEvolved::updateGlobalArmyPoints Sets the army points label with the total army points
+ */
+void ArmyWindowEvolved::updateGlobalArmyPoints()
+{
+    ui->labelPts->setText(QString::number(currentArmy.computePoints()));
 }
