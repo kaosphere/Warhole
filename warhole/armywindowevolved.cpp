@@ -100,10 +100,57 @@ void ArmyWindowEvolved::initArmyWindow()
  */
 void ArmyWindowEvolved::appendRegimentToTreeViewCategory(RegimentAbstract* r, QStandardItem* category)
 {
+    QList<QStandardItem*> itemList;
     QStandardItem* item;
+    QString options;
+    bool firstOption = true;
 
     item = new QStandardItem(r->getName());
-    category->appendRow(item);
+    itemList.append(item);
+    item = new QStandardItem(QString::number(r->computeTotalNb()));
+    itemList.append(item);
+    item = new QStandardItem(QString::number(r->computePoints()));
+    itemList.append(item);
+
+    // Fill options
+    if(r->getGroups().first().getModel()->getMusician())
+    {
+        options += tr("Musicien");
+        firstOption = false;
+    }
+    if(r->getGroups().first().getModel()->getBanner())
+    {
+        if(!firstOption)
+            options += ", ";
+        options += tr("Bannière");
+        firstOption = false;
+    }
+    if(r->getGroups().first().getModel()->getChampion())
+    {
+        if(!firstOption)
+            options += ", ";
+        options += tr("Champion");
+        firstOption = false;
+    }
+    for(int i = 0; i < r->getGroups().first().getModel()->getOptions().size(); ++i)
+    {
+        if(r->getGroups().first().getModel()->getOptions().at(i).isActivated())
+        {
+            if(!firstOption)
+                options += ", ";
+            options += r->getGroups().first().getModel()->getOptions().at(i).getName();
+            firstOption = false;
+        }
+    }
+    for(int i = 0; i < r->getGroups().first().getObjects().length(); ++i)
+    {
+        if(!firstOption)
+            options += ", ";
+        options += r->getGroups().first().getObjects().at(i).getName();
+    }
+    item = new QStandardItem(options);
+    itemList.append(item);
+    category->appendRow(itemList);
 }
 
 void ArmyWindowEvolved::on_toolButtonAdd_clicked()
