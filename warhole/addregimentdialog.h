@@ -26,7 +26,7 @@ class AddRegimentDialog : public QDialog
     Q_OBJECT
 
 public:
-    AddRegimentDialog(QString armyRace, RegimentAbstract* r,QWidget *parent = 0);
+    AddRegimentDialog(QString armyRace, RegimentAbstract* r, bool edit, QWidget *parent = 0);
     ~AddRegimentDialog();
 
     void updateTreeView(QString raceDir);
@@ -85,7 +85,8 @@ private:
     QStandardItemModel* objects;
     QString currentSelectedPath;
     Army currentArmy;
-    bool editing;
+    bool editing;           // Started editing a regiment
+    bool editingExistingRegiment;  // Regiment passed as parameter in constructor to be edited
     bool armyFileLoading;
     QGraphicsScene *scene;
     QPixmap* image;

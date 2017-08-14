@@ -23,7 +23,7 @@ const QStringList AddRegimentDialog::OBJECT_HEADER = QStringList()
                             << QObject::tr("Règles");
 
 
-AddRegimentDialog::AddRegimentDialog(QString armyRace, RegimentAbstract* r, QWidget *parent) :
+AddRegimentDialog::AddRegimentDialog(QString armyRace, RegimentAbstract* r, bool edit, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::AddRegimentDialog)
 {
@@ -31,6 +31,11 @@ AddRegimentDialog::AddRegimentDialog(QString armyRace, RegimentAbstract* r, QWid
     extReg = r;
     regiment = NULL;
     initAddRegimentDialog();
+    editingExistingRegiment = edit;
+
+    // If we are editing a model
+    if(edit)
+        loadRegimentInUI(*r);
 }
 
 void AddRegimentDialog::initAddRegimentDialog()
@@ -334,7 +339,7 @@ void AddRegimentDialog::updateRegModel()
 bool AddRegimentDialog::fillRegimentInfo()
 {
     editing = false;
-    if(currentSelectedPath.isEmpty())
+    if(currentSelectedPath.isEmpty() && !editingExistingRegiment)
     {
         QMessageBox::warning(this, tr("Info"), tr("Sélectionnez d'abord une figurine."));
         return false;
