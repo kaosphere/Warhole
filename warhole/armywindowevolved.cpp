@@ -175,7 +175,7 @@ void ArmyWindowEvolved::appendRegimentToTreeViewCategory(int id, RegimentAbstrac
 void ArmyWindowEvolved::on_toolButtonAdd_clicked()
 {
     // More that the "<none>" selection item in the combo box
-    if(ui->comboBoxRace->count() > 1)
+    if(ui->comboBoxRace->currentIndex() != 0)
     {
         RegimentAbstract *newRegiment = new RegimentAbstract();
         regDialog = new AddRegimentDialog(ui->comboBoxRace->itemText(ui->comboBoxRace->currentIndex()), newRegiment, false);
@@ -190,9 +190,13 @@ void ArmyWindowEvolved::on_toolButtonAdd_clicked()
         }
         newRegiment->deleteLater();
     }
-    else
+    else if (!ui->comboBoxRace->count() > 1)
     {
         QMessageBox::warning(this, tr("Races"), tr("Aucune race existente. Veuillez créer des figurines pour pouvoir constituer une armée."));
+    }
+    else
+    {
+        QMessageBox::warning(this, tr("Races"), tr("Sélectionner d'abbord une race."));
     }
 }
 
