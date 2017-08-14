@@ -16,6 +16,7 @@ class ArmyWindowEvolved : public QWidget
 
 public:
     explicit ArmyWindowEvolved(QWidget *parent = 0);
+    ArmyWindowEvolved(QString path, QWidget *parent = 0);
     ~ArmyWindowEvolved();
 
 public slots:

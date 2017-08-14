@@ -30,6 +30,14 @@ ArmyWindowEvolved::ArmyWindowEvolved(QWidget *parent) :
     initArmyWindow();
 }
 
+ArmyWindowEvolved::ArmyWindowEvolved(QString path, QWidget *parent) :
+    QWidget(parent),
+    ui(new Ui::ArmyWindowEvolved)
+{
+    initArmyWindow();
+    load(path);
+}
+
 ArmyWindowEvolved::~ArmyWindowEvolved()
 {
     delete ui;
@@ -49,7 +57,7 @@ void ArmyWindowEvolved::initArmyWindow()
 
     setWindowTitle("Warhole " +
                    WARHOLE_VERSION_STRING +
-                   tr(" - Création d'armée (evolved)"));
+                   tr(" - Création d'armée"));
 
     // get list of existing races
     QDir* modelDir = new QDir(MODEL_PATH);

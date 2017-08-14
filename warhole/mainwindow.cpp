@@ -60,20 +60,15 @@ MainWindow::MainWindow(QWidget *parent)
     actionManageMagicalObjects->setShortcut(QKeySequence("Ctrl+O"));
     connect(actionManageMagicalObjects, SIGNAL(triggered()), this, SLOT(openMagicalObjectWindow()));
 
+    // Army window evolved
     QAction *actionCreateArmy = new QAction(tr("&Créer une armée"), this);
     menuManageModels->addAction(actionCreateArmy);
-    actionCreateArmy->setShortcut(QKeySequence("Ctrl+A"));
-    connect(actionCreateArmy, SIGNAL(triggered()), this, SLOT(openArmyWindow()));
+    connect(actionCreateArmy, SIGNAL(triggered()), this, SLOT(openArmyWindowEv()));
 
     QAction *actionEditArmy = new QAction(tr("&Editer une armée"), this);
     menuManageModels->addAction(actionEditArmy);
     actionEditArmy->setShortcut(QKeySequence("Ctrl+D"));
-    connect(actionEditArmy, SIGNAL(triggered()), this, SLOT(openEditArmyWindow()));
-
-    // Army window evolved
-    QAction *actionCreateArmyEv = new QAction(tr("&Créer une armée (evolved)"), this);
-    menuManageModels->addAction(actionCreateArmyEv);
-    connect(actionCreateArmyEv, SIGNAL(triggered()), this, SLOT(openArmyWindowEv()));
+    connect(actionEditArmy, SIGNAL(triggered()), this, SLOT(openEditArmyWindowEv()));
 
     QAction *actionCreateTerrains = new QAction(tr("&Créer des décors"), this);
     menuManageModels->addAction(actionCreateTerrains);
@@ -141,6 +136,14 @@ void MainWindow::openEditArmyWindow()
 
     arm = new ArmyWindow(fileName);
     arm->show();
+}
+
+void MainWindow::openEditArmyWindowEv()
+{
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open Model"), "./armies", tr("Model files (*.army)"));
+
+    armEv = new ArmyWindowEvolved(fileName);
+    armEv->show();
 }
 
 void MainWindow::openGameWindow()

@@ -26,8 +26,8 @@
 #include <QString>
 
 const int WARHOLE_MAJOR_VERSION(1);
-const int WARHOLE_MINOR_VERSION(0);
-const int WARHOLE_BUILD_NUMBER(10);
+const int WARHOLE_MINOR_VERSION(1);
+const int WARHOLE_BUILD_NUMBER(1);
 const QString WARHOLE_BUILD_SPECIAL_MENTION("Dev");
 
 const QString WARHOLE_VERSION_STRING("v" +

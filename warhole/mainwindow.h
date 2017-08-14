@@ -34,6 +34,7 @@ public slots:
    void openArmyWindow();
    void openArmyWindowEv();
    void openEditArmyWindow();
+   void openEditArmyWindowEv();
    void openGameWindow();
    void openMagicalObjectWindow();
    void openTerrainWindow();
