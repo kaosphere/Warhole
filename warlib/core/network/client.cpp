@@ -94,3 +94,13 @@ void Client::printBufferInfo(qint64 n)
     QLog_Info(LOG_ID_INFO, " printBufferInfo() : Socket to " + name + " : bytes written : " +
               QString::number(n) + ". Bytes to write : " + QString::number(sock->bytesToWrite()));
 }
+
+QString Client::getLocalAddress() const
+{
+    return localAddress;
+}
+
+void Client::setLocalAddress(const QString &value)
+{
+    localAddress = value;
+}

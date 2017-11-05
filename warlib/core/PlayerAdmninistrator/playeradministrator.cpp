@@ -111,7 +111,7 @@ bool PlayerAdministrator::isNameTaken(QString name)
 
 void PlayerAdministrator::handleNewPlayerConnection(Client c)
 {
-    Player p(c.getName(), c.getSocket()->localAddress().toString(), true);
+    Player p(c.getName(), c.getLocalAddress(), true);
     QLog_Info(LOG_ID_INFO, "handleNewPlayerConnection() : New player connected : " +
               p.getName() + " Ip : " + p.getHostAddress());
     authorizePlayer(p);
@@ -119,7 +119,7 @@ void PlayerAdministrator::handleNewPlayerConnection(Client c)
 
 void PlayerAdministrator::handlePlayerDisconnection(Client c)
 {
-    Player p(c.getName(), c.getSocket()->localAddress().toString(), false);
+    Player p(c.getName(), c.getLocalAddress(), false);
     QLog_Info(LOG_ID_INFO, "handleNewPlayerConnection() : Player disconnected : " +
               p.getName() + " Ip : " + p.getHostAddress());
     if(playerList.contains(p))

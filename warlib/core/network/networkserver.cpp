@@ -178,6 +178,7 @@ void NetworkServer::newClientConnected()
 {
     QTcpSocket *newClientSocket = serveur->nextPendingConnection();
     Client* newClient = new Client(newClientSocket, 0);
+    newClient->setLocalAddress(newClientSocket->localAddress().toString());
     clients << newClient;
 
     QLog_Info(LOG_ID_INFO, "newClientConnected() : un nouveau client s'est connecté au réseau");

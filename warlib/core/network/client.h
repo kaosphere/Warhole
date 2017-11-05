@@ -25,6 +25,9 @@ public:
     QString getName() const;
     void setName(const QString &value);
 
+    QString getLocalAddress() const;
+    void setLocalAddress(const QString &value);
+
 public slots:
     void printBufferInfo(qint64 n);
 
@@ -39,6 +42,7 @@ private:
     static const QString LOG_ID_ERR;
 
     QTcpSocket* sock;
+    QString localAddress;
     QString name;
     quint32 messageSize;
 };
