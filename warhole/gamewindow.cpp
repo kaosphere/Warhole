@@ -18,10 +18,10 @@ GameWindow::GameWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    initGameWindow();
+    initGameWindow(false);
 }
 
-void GameWindow::initGameWindow()
+void GameWindow::initGameWindow(bool messageListHandling)
 {
     QLoggerManager *manager = QLoggerManager::getInstance();
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
@@ -46,6 +46,11 @@ void GameWindow::initGameWindow()
     ui->actionOpen_Army->setEnabled(false);
     ui->actionS_lectionner_le_type_de_terrain->setEnabled(false);
 
+    // We check if a message list has to be handled or not
+    handleMessageList = qApp->arguments().contains(MESSAGE_LIST_ARGUMENT) || messageListHandling;
+    if(handleMessageList)
+        QLog_Info(LOG_ID_INFO, "We are handling previous chat message !");
+
     // Move controller to its thread
     qRegisterMetaType<QList<Player> >();
     qRegisterMetaType<RegimentAbstract>();
@@ -60,8 +65,13 @@ void GameWindow::initGameWindow()
     // Chat widget
     cw = new ChatWidgetForm(this);
     ui->dockWidget_2->setWidget(cw);
-    connect(cw, SIGNAL(newMessageToSend(QString)), &controller, SIGNAL(newChatMessageToSend(QString)));
+    connect(cw, SIGNAL(newMessageToSend(QString, bool, QString)), &controller, SIGNAL(newChatMessageToSend(QString, bool, QString)));
     connect(&controller, SIGNAL(newChatMessageToPrint(QString,QString)), cw, SLOT(printNewChatMessage(QString,QString)));
+    if(handleMessageList)
+    {
+        connect(&controller, SIGNAL(newChatMessageToPrint(QString,QString)), this, SLOT(addChatMessageToList(QString,QString)));
+        connect(this, SIGNAL(newMessageToSend(QString, bool, QString)), &controller, SIGNAL(newChatMessageToSend(QString, bool, QString)));
+    }
 
     tabifyDockWidget(ui->dockWidget, ui->dockWidget_5);
 
@@ -197,6 +207,17 @@ GameWindow::~GameWindow()
 void GameWindow::closeEvent(QCloseEvent *)
 {
     controller.disconnectNetworkInterface();
+}
+
+/**
+ * @brief GameWindow::sendAllPreviousChatMessages Sends all previous messages contained in the chat message list
+ */
+void GameWindow::sendAllPreviousChatMessages(QString sender)
+{
+    for(int i = 0; i < chatMessageList.length(); ++i)
+    {
+        emit newMessageToSend(chatMessageList.at(i), true, sender);
+    }
 }
 
 void GameWindow::loadArmy()
@@ -490,6 +511,11 @@ void GameWindow::packGameDataForGlobalUpdate(QString sender)
     getGlobalInfo(stream);
 
     emit sendGlobalInfoUpdate(sender, data);
+
+    // If we are handling a copy of all chat messages, send them as well
+    if(handleMessageList)
+        sendAllPreviousChatMessages(sender);
+
 }
 
 void GameWindow::loadGlobalInfoUpdate(QByteArray info)
@@ -502,11 +528,11 @@ void GameWindow::loadGlobalInfoUpdate(QByteArray info)
 void GameWindow::openArmyMenuClicked()
 {
     loadArmy();
-    emit cw->newMessageToSend("<em><font color=\"DimGray\">" +
-                              tr("Armée chargée : ") +
-                              army.getName() + " " +
-                              QString::number(army.computePoints()) +
-                              tr(" points") +  "</em></font>");
+    emit newMessageToSend("<em><font color=\"DimGray\">" +
+                          tr("Armée chargée : ") +
+                          army.getName() + " " +
+                          QString::number(army.computePoints()) +
+                          tr(" points") +  "</em></font>", false);
 }
 
 void GameWindow::on_actionHost_Game_triggered()
@@ -542,7 +568,6 @@ void GameWindow::on_actionConnect_to_a_game_2_triggered()
         controller.createNetworkInterface(CLIENT, info.ip);
     }
 }
-
 
 void GameWindow::printSpecialMessage(QString state)
 {
@@ -895,7 +920,7 @@ void GameWindow::on_actionSave_Game_triggered()
 
     getGlobalInfo(stream);
 
-    emit cw->newMessageToSend("<em><font color=\"DimGray\">" + tr("Partie sauvegardée.") + "</em></font>");
+    emit newMessageToSend("<em><font color=\"DimGray\">" + tr("Partie sauvegardée.") + "</em></font>", false);
     file.close();
 }
 
@@ -914,7 +939,7 @@ void GameWindow::on_actionCharger_une_partie_triggered()
     // Send global info to all
     packGameDataForGlobalUpdate("");
 
-    emit cw->newMessageToSend("<em><font color=\"DimGray\">" + tr("Fichier de partie chargé : ") + path + "</em></font>");
+    emit newMessageToSend("<em><font color=\"DimGray\">" + tr("Fichier de partie chargé : ") + path + "</em></font>", false);
     
     file.close();
 }
@@ -1126,7 +1151,7 @@ void GameWindow::removeText(QString i)
 
 void GameWindow::requestNewScatter()
 {
-    emit cw->newMessageToSend("<em><font color=\"DimGray\">" + tr("Lance un dé de dispersion.") + "</em></font>");
+    emit newMessageToSend("<em><font color=\"DimGray\">" + tr("Lance un dé de dispersion.") + "</em></font>", false);
     int angle = DiceRoller::getDispersion();
     emit requestNewScatter(angle);
 }
@@ -1247,4 +1272,13 @@ void GameWindow::updateBackground(BackGroundTypes b)
     if(backGroundBrush) delete backGroundBrush;
     backGroundBrush = new QBrush(background);
     scene.setBackgroundBrush(*backGroundBrush);
+}
+
+void GameWindow::addChatMessageToList(QString sender, QString msg)
+{
+    QString s;
+    QTextStream stream(&s);
+    stream << "<strong>" << sender << " : </strong>" << msg;
+
+    chatMessageList.append(s);
 }

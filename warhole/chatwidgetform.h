@@ -28,7 +28,7 @@ private slots:
     void on_pushButton_2_clicked();
 
 signals:
-    void newMessageToSend(QString m);
+    void newMessageToSend(QString m, bool previous, QString sender="");
 
 private:
     Ui::ChatWidgetForm *ui;

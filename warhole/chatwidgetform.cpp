@@ -22,7 +22,7 @@ ChatWidgetForm::~ChatWidgetForm()
 
 void ChatWidgetForm::on_pushButton_clicked()
 {
-    emit newMessageToSend(ui->lineEdit->text());
+    emit newMessageToSend(ui->lineEdit->text(), false);
     ui->lineEdit->clear(); // On vide la zone d'écriture du message
     ui->lineEdit->setFocus(); // Et on remet le curseur à l'intérieur
 }
@@ -31,7 +31,9 @@ void ChatWidgetForm::printNewChatMessage(QString sender, QString msg)
 {
     QString s;
     QTextStream stream(&s);
-    stream << "<strong>" << sender << " : </strong>" << msg;
+    if(!sender.isEmpty())
+        stream << "<strong>" << sender << " : </strong>";
+    stream << msg;
     appendString(s);
 }
 
@@ -55,5 +57,5 @@ void ChatWidgetForm::appendString(QString s)
 
 void ChatWidgetForm::on_pushButton_2_clicked()
 {
-    emit newMessageToSend(DiceRoller::rollDiceString(D6, ui->spinBox->value()));
+    emit newMessageToSend(DiceRoller::rollDiceString(D6, ui->spinBox->value()), false);
 }

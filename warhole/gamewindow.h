@@ -57,6 +57,8 @@ class GameWindow : public QMainWindow
 public:
     explicit GameWindow(QWidget *parent = 0);
     ~GameWindow();
+
+    void initGameWindow(bool messageListHandling);
     
     bool addPlayerToGame(Player p);
     bool addArmyToPlayer(Army a, QString playerName);
@@ -67,6 +69,7 @@ public:
     void createNetworkInterface(NetworkType t, QString ip);
     virtual void closeEvent(QCloseEvent *);
 
+    void sendAllPreviousChatMessages(QString sender);
 
     void getGlobalInfo(QDataStream &stream);
     void setGlobalInfo(QDataStream &stream);
@@ -132,6 +135,7 @@ private slots:
     void on_actionA_propos_triggered();
     void refreshNetworkState(bool s);
     void updateBackground(BackGroundTypes b);
+    void addChatMessageToList(QString sender, QString msg);
 
 signals:
     void requestNewRuler(int l);
@@ -142,6 +146,7 @@ signals:
     void requestNewText(QString);
     void requestNewScatter(int);
     void requestBackgroundChange(int t);
+    void newMessageToSend(QString, bool, QString sender="");
 
 private:
     static const QString LOG_ID_TRACE;
@@ -159,6 +164,7 @@ private:
     QBrush* backGroundBrush;
     QPixmap background;
 
+    QList<QString> chatMessageList;
 
     QAction* actionDeploy;
     QModelIndex indexArmy;
@@ -168,8 +174,7 @@ private:
     
     bool networkOn;
     bool invertedView;
-
-    void initGameWindow();
+    bool handleMessageList;
 
     QMap<QString, RulerGraphics*> rulerList;
     QMap<QString, RoundTemplateGraphics*> roundTemplateList;
