@@ -57,16 +57,26 @@ void CommandManager::addMessageToOutQueue(const Message& m)
 }
 
 
-void CommandManager::enQueueChatMessage(QString message)
+void CommandManager::enQueueChatMessage(QString message, bool isPrevious, QString dest)
 {
     QLog_Info(LOG_ID_INFO, "enQueueChatMessage() : sending chat message to all.");
     Message m;
-    m.setMessageSender(game->getMe());
-    m.setDest(ALL);
+
+    if(dest == "")
+    {
+        m.setMessageSender(game->getMe());
+        m.setDest(ALL);
+    }
+    else
+    {
+        m.setMessageSender(dest);
+        m.setDest(ME);
+    }
     QByteArray data;
     QDataStream stream(&data, QIODevice::ReadWrite);
 
     stream << CHAT_MESSAGE
+           << isPrevious
            << message;
 
     m.setData(data);
@@ -77,8 +87,14 @@ void CommandManager::enQueueChatMessage(QString message)
 void CommandManager::handleNewChatMessage(const Message& m, QDataStream& data)
 {
     QString msg;
+    bool isPrevious;
+    data >> isPrevious;
     data >> msg;
-    emit newChatMessageAvailable(m.getMessageSender(), msg);
+
+    if(isPrevious)
+        emit newChatMessageAvailable("", msg);
+    else
+        emit newChatMessageAvailable(m.getMessageSender(), msg);
 }
 
 void CommandManager::enQueueServerInfoRequest()

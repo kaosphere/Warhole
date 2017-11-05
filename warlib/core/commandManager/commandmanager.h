@@ -91,7 +91,7 @@ signals:
     
 public slots:
     void processIncomingMessage();
-    void enQueueChatMessage(QString message);
+    void enQueueChatMessage(QString message, bool isPrevious, QString dest);
     void enQueueServerInfoRequest();
     void enQueueServerInfo(QString destination, QByteArray info);
     void enQueuePlayerListRefreshMessage(QList<Player> l);

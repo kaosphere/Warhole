@@ -14,7 +14,7 @@ GameController::GameController(QObject *parent) :
     ///////////////////////////////////////////
     comManager = new CommandManager(&inQueue, &outQueue, &game, this);
     connect(comManager, SIGNAL(newChatMessageAvailable(QString, QString)), this, SIGNAL(newChatMessageToPrint(QString,QString)));
-    connect(this, SIGNAL(newChatMessageToSend(QString)), comManager, SLOT(enQueueChatMessage(QString)));
+    connect(this, SIGNAL(newChatMessageToSend(QString, bool, QString)), comManager, SLOT(enQueueChatMessage(QString, bool, QString)));
 
     connect(this, SIGNAL(addRulerToGameSceneRequest(int)), comManager, SLOT(enQueueCreateRulerMessage(int)));
     connect(comManager, SIGNAL(createRuler(QString, int)), this, SIGNAL(addRulerToGameScene(QString, int)));

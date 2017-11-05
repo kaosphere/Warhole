@@ -19,6 +19,8 @@ const QString INFANTERY_STRING("Infanterie");
 const QString MONSTER_STRING("Monstre");
 const QString WARMACHINE_STRING("Machine de Guerre");
 
+const QString MESSAGE_LIST_ARGUMENT("ml");
+
 #define CAVALERY_TYPE 0
 #define CHARACTER_TYPE 1
 #define CHARRIOT_TYPE 2

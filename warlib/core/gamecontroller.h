@@ -29,7 +29,7 @@ public:
 signals:
     void networkEnabled(bool);
     void newChatMessageToPrint(QString, QString);
-    void newChatMessageToSend(QString);
+    void newChatMessageToSend(QString, bool, QString);
     void refreshPlayerListDisplay(QList<Player>);
     void networkEvent(QString);
     void addRulerToGameScene(QString id, int l);
