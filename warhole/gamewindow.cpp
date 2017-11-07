@@ -37,7 +37,11 @@ void GameWindow::initGameWindow(bool messageListHandling)
                    WARHOLE_VERSION_STRING +
                    tr(" - Partie"));
 
-    view.setScene(&scene);
+    // Assign the scene to the view only if we want graphics ON
+    // Typically, a server would like its graphics OFF to keep ressources for network
+    if (!qApp->arguments().contains(NO_GRAPHICS_ARGUMENT))
+        view.setScene(&scene);
+
     ui->horizontalLayout->addWidget(&view);
 
     // Actions load and save game
