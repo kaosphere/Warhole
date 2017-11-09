@@ -11,6 +11,7 @@ class EnhancedGraphicsScene : public QGraphicsScene
     Q_OBJECT
 public:
     explicit EnhancedGraphicsScene(QObject *parent = 0);
+    virtual ~EnhancedGraphicsScene();
 
 protected:
     void refreshItemPositionsOnNetwork();

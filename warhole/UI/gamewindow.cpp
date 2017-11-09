@@ -196,7 +196,6 @@ void GameWindow::initGameWindow(bool messageListHandling)
     networkOn = false;
 }
 
-
 GameWindow::~GameWindow()
 {
     delete ui;

@@ -11,9 +11,9 @@
 #include "distances.h"
 #include "game/regiment/regimentabstract.h"
 #include "Utilities/QLogger/QLogger.h"
-#include "getintdialog.h"
-#include "statsdisplayform.h"
-#include "regimentinfodialog.h"
+#include "UI/getintdialog.h"
+#include "UI/statsdisplayform.h"
+#include "UI/regimentinfodialog.h"
 #include "components/enhancegraphicsobject.h"
 #include "lineofsightgraphics.h"
 

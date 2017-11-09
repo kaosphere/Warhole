@@ -1,5 +1,5 @@
 #include "terraingraphics.h"
-#include "terraininfodisplayform.h"
+#include "UI/terraininfodisplayform.h"
 #include <QGraphicsProxyWidget>
 #include <QDebug>
 

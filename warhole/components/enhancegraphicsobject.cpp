@@ -6,6 +6,10 @@ EnhanceGraphicsObject::EnhanceGraphicsObject(QGraphicsItem *parent) :
 
 }
 
+EnhanceGraphicsObject::~EnhanceGraphicsObject()
+{
+}
+
 QDataStream &EnhanceGraphicsObject::serializeInBase(QDataStream &in)
 {
     //in >> (*this);

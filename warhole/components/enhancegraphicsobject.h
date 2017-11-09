@@ -10,6 +10,7 @@ class EnhanceGraphicsObject : public QGraphicsObject
     friend class EnhancedGraphicsScene;
 public:
     explicit EnhanceGraphicsObject(QGraphicsItem *parent = 0);
+    virtual ~EnhanceGraphicsObject();
 
     virtual void sendObjectMovedSignal() = 0;
 

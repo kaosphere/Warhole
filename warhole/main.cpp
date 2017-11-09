@@ -1,10 +1,10 @@
-#include "mainwindow.h"
+#include "UI/mainwindow.h"
 #include <QApplication>
 #include <QDebug>
 #include <QObject>
 #include <QFile>
 
-#include <warlibinitializer.h>
+#include "warlibinitializer.h"
 #include <Utilities/QLogger/QLogger.h>
 
 

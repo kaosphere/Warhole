@@ -45,7 +45,7 @@ public:
 	/*!
 	* VIRTUAL : Base destructor of ModelAbstract class
 	*/
-    virtual ~HistoricAbstractItem() = 0;
+    virtual ~HistoricAbstractItem();
 
     //! operator <<
 	/*!

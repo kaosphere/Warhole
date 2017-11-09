@@ -12,6 +12,11 @@ HistoricAbstractItem::HistoricAbstractItem(HistoricAbstractItem & copy)
     source = copy.source;
 }
 
+HistoricAbstractItem::~HistoricAbstractItem()
+{
+
+}
+
 QString HistoricAbstractItem::getMessage() const
 {
     return message;

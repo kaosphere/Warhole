@@ -28,6 +28,10 @@ EnhancedGraphicsScene::EnhancedGraphicsScene(QObject *parent) :
     clicked = false;
 }
 
+EnhancedGraphicsScene::~EnhancedGraphicsScene()
+{
+}
+
 void EnhancedGraphicsScene::refreshItemPositionsOnNetwork()
 {
     // Get all selected items
