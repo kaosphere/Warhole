@@ -37,7 +37,7 @@ NetworkClient::NetworkClient(MessageQueue *in, MessageQueue* out, QString ip, in
 
 NetworkClient::~NetworkClient()
 {
-
+    sock->deleteLater();
 }
 
 void NetworkClient::connection(QString ip, int port)

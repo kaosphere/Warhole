@@ -105,7 +105,6 @@ GameController::~GameController()
 {
     comManager->deleteLater();
     netInterface->deleteLater();
-    networkThread.quit();
 }
 
 void GameController::createNetworkInterface(NetworkType t, QString ip)
@@ -151,7 +150,10 @@ void GameController::createNetworkInterface(NetworkType t, QString ip)
 void GameController::disconnectNetworkInterface()
 {
     if(netInterface)
+    {
+        networkThread.quit();
         netInterface->disconnection();
+    }
 }
 
 Game GameController::getGame() const
