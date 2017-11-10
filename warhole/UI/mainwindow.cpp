@@ -84,8 +84,9 @@ MainWindow::MainWindow(QWidget *parent)
     menuHelp->addAction(actionOpenInfoWindow);
     connect(actionOpenInfoWindow, SIGNAL(triggered()), this, SLOT(openInfoWindow()));
 
-    //s = new mainWidget(this);
-    //setCentralWidget(s);
+    // If launch-server is passed as an argument we want to launch it right away
+    if(qApp->arguments().contains(LAUNCH_SERVER_OPTION))
+        openGameWindowAndLaunchServer();
 }
 
 MainWindow::~MainWindow()
@@ -149,6 +150,12 @@ void MainWindow::openEditArmyWindowEv()
 void MainWindow::openGameWindow()
 {
     game = new GameWindow();
+    game->show();
+}
+
+void MainWindow::openGameWindowAndLaunchServer()
+{
+    game = new GameWindow(true);
     game->show();
 }
 

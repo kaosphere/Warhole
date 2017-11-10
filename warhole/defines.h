@@ -21,6 +21,7 @@ const QString WARMACHINE_STRING("Machine de Guerre");
 
 const QString MESSAGE_LIST_ARGUMENT("ml");
 const QString NO_GRAPHICS_ARGUMENT("no-graphics");
+const QString LAUNCH_SERVER_OPTION("launch-server");
 
 #define CAVALERY_TYPE 0
 #define CHARACTER_TYPE 1

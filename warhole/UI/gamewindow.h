@@ -55,10 +55,10 @@ class GameWindow : public QMainWindow
     Q_OBJECT
     
 public:
-    explicit GameWindow(QWidget *parent = 0);
+    explicit GameWindow(bool launchServer = false, QWidget *parent = 0);
     ~GameWindow();
 
-    void initGameWindow(bool messageListHandling);
+    void initGameWindow(bool launchServer, bool messageListHandling);
     
     bool addPlayerToGame(Player p);
     bool addArmyToPlayer(Army a, QString playerName);

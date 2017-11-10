@@ -12,16 +12,16 @@ const QString GameWindow::LOG_ID_ERR = "GameWindow_err";
 
 using namespace QLogger;
 
-GameWindow::GameWindow(QWidget *parent) :
+GameWindow::GameWindow(bool launchServer, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::GameWindow)
 {
     ui->setupUi(this);
 
-    initGameWindow(false);
+    initGameWindow(launchServer, false);
 }
 
-void GameWindow::initGameWindow(bool messageListHandling)
+void GameWindow::initGameWindow(bool launchServer, bool messageListHandling)
 {
     QLoggerManager *manager = QLoggerManager::getInstance();
     manager->addDestination("./logs/lastrun.log", QStringList(LOG_ID_TRACE), QLogger::TraceLevel);
@@ -194,6 +194,14 @@ void GameWindow::initGameWindow(bool messageListHandling)
     controllerThread.start();
 
     networkOn = false;
+
+    // If launchServer is true, launch a server right away
+    if(launchServer)
+    {
+        QLog_Info(LOG_ID_INFO, "Launching server right away.");
+        controller.getGamePtr()->setMe("_SERVER");
+        controller.createNetworkInterface(SERVER);
+    }
 }
 
 GameWindow::~GameWindow()

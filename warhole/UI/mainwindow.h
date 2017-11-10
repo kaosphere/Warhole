@@ -36,6 +36,7 @@ public slots:
    void openEditArmyWindow();
    void openEditArmyWindowEv();
    void openGameWindow();
+   void openGameWindowAndLaunchServer();
    void openMagicalObjectWindow();
    void openTerrainWindow();
    void updateLogOutput(QString message);
