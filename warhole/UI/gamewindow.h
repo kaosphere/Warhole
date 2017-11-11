@@ -14,6 +14,7 @@
 #include <QDrag>
 #include <QPixmap>
 #include <QHBoxLayout>
+#include <QTimer>
 
 #include "graphics/testgi.h"
 #include "graphics/fieldlimits.h"
@@ -126,6 +127,8 @@ private slots:
     void on_actionExpTemplateSmall_triggered();
     void on_actionExpTemplateBig_triggered();
     void on_actionSave_Game_triggered();
+    void saveGame(QString path);
+    void autosave();
     void on_actionCharger_une_partie_triggered();
     void on_treeViewTerrains_customContextMenuRequested(const QPoint &pos);
     void rotateView();
@@ -158,6 +161,8 @@ private:
     EnhancedGraphicsScene scene;
     EnhancedGraphicsView view;
     QStandardItemModel* armyModel;
+
+    QTimer autosaveTimer;
 
     BackGroundTypes backType;
     BackGroundItem* back;

@@ -28,6 +28,8 @@ Game::Game(const Game &other) :
     me = other.me;
     historic = other.historic;
     points = other.points;
+    autosave = other.autosave;
+    autosaveIntervalInMinutes = other.autosaveIntervalInMinutes;
 }
 
 QString Game::getName() const
@@ -146,14 +148,36 @@ Game &Game::operator=(const Game &other)
     me = other.me;
     historic = other.historic;
     points = other.points;
+    autosave = other.autosave;
+    autosaveIntervalInMinutes = other.autosaveIntervalInMinutes;
 
     return (*this);
+}
+
+bool Game::getAutosave() const
+{
+    return autosave;
+}
+
+void Game::setAutosave(bool value)
+{
+    autosave = value;
+}
+
+int Game::getAutosaveIntervalInMinutes() const
+{
+    return autosaveIntervalInMinutes;
+}
+
+void Game::setAutosaveIntervalInMinutes(int value)
+{
+    autosaveIntervalInMinutes = value;
 }
 
 QDataStream& operator<<(QDataStream& out, const Game& obj)
 {
     // TODO historic and players not streamed
-
+    
     out << obj.name
         << obj.spectators
         << obj.playerNumber

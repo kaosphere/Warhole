@@ -43,6 +43,8 @@ void GameConfiguratorDialog::on_pushButton_clicked()
         g->setSpectators(ui->checkBox->isChecked());
         g->setPlayerNumber(ui->spinBoxPlayerNb->value());
         g->setPoints(ui->spinBoxPts->value());
+        g->setAutosave(ui->autosaveCheck->isChecked());
+        g->setAutosaveIntervalInMinutes(ui->autosaveInterval->value());
         this->accept();
     }
     // TODO error handling

@@ -57,6 +57,12 @@ public:
     friend QDataStream& operator<<(QDataStream& out, const Game& obj);
     friend QDataStream& operator>>(QDataStream& in, Game& obj);
 
+    bool getAutosave() const;
+    void setAutosave(bool value);
+
+    int getAutosaveIntervalInMinutes() const;
+    void setAutosaveIntervalInMinutes(int value);
+
 signals:
     
 public slots:
@@ -115,6 +121,10 @@ private:
     * Number of points for the players to pick in the game (only informative)
     */
     int points;
+
+    bool autosave;
+
+    int autosaveIntervalInMinutes;
 };
 
 Q_DECLARE_METATYPE(QList<Player>)

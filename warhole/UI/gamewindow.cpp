@@ -202,6 +202,14 @@ void GameWindow::initGameWindow(bool launchServer, bool messageListHandling)
         controller.getGamePtr()->setMe("_SERVER");
         controller.createNetworkInterface(SERVER);
     }
+
+    // If auto saving is activated launch autosave timer
+    connect(&autosaveTimer, SIGNAL(timeout()),this, SLOT(autosave()));
+    if(qApp->arguments().contains(AUTOSAVE_ARGUMENT))
+    {
+        autosaveTimer.start(AUTOSAVE_INTERVAL);
+        QLog_Info(LOG_ID_INFO, "Starting autosave timer");
+    }
 }
 
 GameWindow::~GameWindow()
@@ -554,6 +562,12 @@ void GameWindow::on_actionHost_Game_triggered()
     if(d.exec())
     {
         controller.createNetworkInterface(SERVER);
+
+        if(controller.getGame().getAutosave())
+        {
+            QLog_Info(LOG_ID_INFO, "Starting autosave timer every " + QString::number(controller.getGame().getAutosaveIntervalInMinutes()) + " minutes");
+            autosaveTimer.start(controller.getGame().getAutosaveIntervalInMinutes() * 60000);
+        }
         // TODO ugly
         printSpecialMessage(tr("<strong><font color=\"blue\"> Partie créée :</strong></font>\n\r") +
              "- " + controller.getGame().getName() + "\n\r" +
@@ -919,13 +933,14 @@ void GameWindow::setGlobalInfo(QDataStream& stream)
 }
 
 
-void GameWindow::on_actionSave_Game_triggered()
+void GameWindow::saveGame(QString path)
 {
-    QString path = QFileDialog::getSaveFileName(this, tr("Sauvegarde du fichier"), controller.getGame().getName() + ".war", tr("fichiers war(*.war)"));
-
     QFile file(path);
     if (!file.open(QIODevice::WriteOnly))
-             return;
+    {
+        QLog_Error(LOG_ID_ERR, "Couldn't open file : " + path);
+        return;
+    }
 
     QDataStream stream(&file);
 
@@ -933,6 +948,28 @@ void GameWindow::on_actionSave_Game_triggered()
 
     emit newMessageToSend("<em><font color=\"DimGray\">" + tr("Partie sauvegardée.") + "</em></font>", false);
     file.close();
+}
+
+void GameWindow::on_actionSave_Game_triggered()
+{
+    QString path = QFileDialog::getSaveFileName(this, tr("Sauvegarde du fichier"), controller.getGame().getName() + ".war", tr("fichiers war(*.war)"));
+
+    saveGame(path);
+}
+
+void GameWindow::autosave()
+{
+    if(!QDir(AUTOSAVE_PATH).exists())
+        QDir().mkdir(AUTOSAVE_PATH);
+
+    if(controller.networkActive())
+    {
+        saveGame(AUTOSAVE_PATH +
+                 "/" + controller.getGame().getName() +
+                 AUTOSAVE_FILE_NAME + "_" +
+                 QDate().currentDate().toString("yyMMdd") +
+                 QTime().currentTime().toString("HHmmss") + ".war");
+    }
 }
 
 void GameWindow::on_actionCharger_une_partie_triggered()

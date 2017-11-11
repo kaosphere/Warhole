@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>312</width>
-    <height>340</height>
+    <height>360</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -215,6 +215,50 @@
        </property>
        <property name="tristate">
         <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_7">
+     <item>
+      <widget class="QLabel" name="label_8">
+       <property name="text">
+        <string>Autosave :</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="autosaveCheck">
+       <property name="layoutDirection">
+        <enum>Qt::RightToLeft</enum>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="tristate">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_9">
+       <property name="text">
+        <string>Interval (mn):</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="autosaveInterval">
+       <property name="minimumSize">
+        <size>
+         <width>75</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximum">
+        <number>999999999</number>
        </property>
       </widget>
      </item>
